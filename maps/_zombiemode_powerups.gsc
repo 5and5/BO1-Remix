@@ -2732,14 +2732,37 @@ tesla_weapon_powerup( ent_player, time )
 	ent_player._zombie_gun_before_tesla = ent_player GetCurrentWeapon();
 
 	// give player a minigun
-	ent_player GiveWeapon( "tesla_gun_zm" );
-	ent_player GiveMaxAmmo( "tesla_gun_zm" );
-	ent_player SwitchToWeapon( "tesla_gun_zm" );
+	ent_player GiveWeapon( "tesla_gun_upgraded_zm" );
+	ent_player GiveMaxAmmo( "tesla_gun_upgraded_zm" );
+	ent_player SwitchToWeapon( "tesla_gun_upgraded_zm" );
 
 	ent_player.zombie_vars[ "zombie_powerup_tesla_on" ] = true;
 
 	level thread tesla_weapon_powerup_countdown( ent_player, "tesla_time_over", time );
 	level thread tesla_weapon_powerup_replace( ent_player, "tesla_time_over" );
+	level thread tesla_weapon_powerup_weapon_change( ent_player, "tesla_time_over" );
+}
+
+tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
+{
+    ent_player endon( "death" );
+    ent_player endon( "disconnect" );
+    ent_player endon( "player_downed" );
+    ent_player endon( str_gun_return_notify );
+    ent_player endon( "replace_weapon_powerup" );
+
+    while(ent_player GetCurrentWeapon() != "tesla_gun_upgraded_zm")
+    {
+        ent_player waittill("weapon_change_complete");
+    }
+    ent_player EnableWeaponCycling();
+
+    while(!ent_player IsSwitchingWeapons())
+    {
+        wait_network_frame();
+    }
+
+    level thread tesla_weapon_powerup_remove( ent_player, str_gun_return_notify, false );
 }
 
 tesla_weapon_powerup_countdown( ent_player, str_gun_return_notify, time )
@@ -2757,9 +2780,9 @@ tesla_weapon_powerup_countdown( ent_player, str_gun_return_notify, time )
 	{
 		ent_player waittill_any( "weapon_fired", "reload", "zmb_max_ammo" );
 
-		if ( !ent_player GetWeaponAmmoStock( "tesla_gun_zm" ) )
+		if ( !ent_player GetWeaponAmmoStock( "tesla_gun_upgraded_zm" ) )
 		{
-			clip_count = ent_player GetWeaponAmmoClip( "tesla_gun_zm" );
+			clip_count = ent_player GetWeaponAmmoClip( "tesla_gun_upgraded_zm" );
 
 			if ( !clip_count )
 			{
@@ -2797,7 +2820,7 @@ tesla_weapon_powerup_replace( ent_player, str_gun_return_notify )
 
 	ent_player waittill( "replace_weapon_powerup" );
 
-	ent_player TakeWeapon( "tesla_gun_zm" );
+	ent_player TakeWeapon( "tesla_gun_upgraded_zm" );
 
 	ent_player.zombie_vars[ "zombie_powerup_tesla_on" ] = false;
 
@@ -2813,7 +2836,7 @@ tesla_weapon_powerup_remove( ent_player, str_gun_return_notify )
 	ent_player endon( "player_downed" );
 
 	// take the minigun back
-	ent_player TakeWeapon( "tesla_gun_zm" );
+	ent_player TakeWeapon( "tesla_gun_upgraded_zm" );
 
 	ent_player.zombie_vars[ "zombie_powerup_tesla_on" ] = false;
 	ent_player._show_solo_hud = false;

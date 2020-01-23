@@ -3931,7 +3931,7 @@ chalk_round_over()
 
 round_think()
 {
-	level.round_number = 64; //69
+	level.round_number = 420; //69
 	level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
