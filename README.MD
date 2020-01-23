@@ -108,12 +108,17 @@
 * Monkeys will allows give you jug on the first Monkey round
 * Monkeys health caps out at 1500
 * Monkeys taking revive doesn't count as a down
-### Call of the Dead/Shangri-la/Moon
-* No changes made just play reimagined for these maps -.-
+### Call of the Dead
+* VR11 un-upgraded now also gives players instakill
+* VR11 can now give yourself instakill
+* VR11 no longer gives players invisibility
+### Shangri-la/Moon
+* No changes made
 
 ### TODO
-* Get the VR11 to work on your self paped/unpaped
-* Make the waffe not kill novas
+* Make the waffe not kill novas (five)
+* Make hitting the box faster
+* Set COTD box to allows spawn at mule
 
 
 ## Huge shout out to

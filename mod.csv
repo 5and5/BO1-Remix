@@ -10,6 +10,7 @@ rawfile,maps/_zombiemode_spawner.gsc
 rawfile,maps/_zombiemode_betty.gsc
 //rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
+rawfile,maps/_zombiemode_weap_humangun.gsc
 
 //NACHT
 rawfile,maps/zombie_cod5_prototype.gsc
