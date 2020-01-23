@@ -241,6 +241,8 @@ post_all_players_connected()
 	{
 		level.music_override = false;
 	}
+
+	level thread timer_hud();
 }
 
 zombiemode_melee_miss()
@@ -1711,6 +1713,8 @@ onPlayerSpawned()
 
 				self thread player_grenade_watcher();
 
+				// zombies reamining hud
+				self thread zombies_remaining_hud();
 			}
 		}
 	}
@@ -7034,4 +7038,39 @@ set_sidequest_completed(id)
 	}
 }
 
+zombies_remaining_hud()
+{
+	zombs_remaining = NewClientHudElem( self );
+	zombs_remaining.horzAlign = "right";
+	zombs_remaining.vertAlign = "top";
+	zombs_remaining.alignX = "right";
+	zombs_remaining.alignY = "top";
+	//zombs_remaining.y -= 100;
+	zombs_remaining.x -= 4;
+	zombs_remaining.foreground = true;
+	zombs_remaining.fontScale = 1.4;
+	zombs_remaining.alpha = 1;
+	zombs_remaining.color = ( 1.0, 1.0, 1.0 );
+	while(1)
+	{
+		zombs = level.zombie_total + get_enemy_count();
+		zombs_remaining SetText("Remaining: " + zombs);
+		wait .05;
+	}
+}
 
+timer_hud()
+{
+	timer = NewHudElem();
+	timer.horzAlign = "left";
+	timer.vertAlign = "top";
+	timer.alignX = "left";
+	timer.alignY = "top";
+	timer.y += 0;
+	timer.x += 4;
+	timer.foreground = true;
+	timer.fontScale = 1.6;
+	timer.alpha = 1;
+	timer.color = ( 1.0, 1.0, 1.0 );
+	timer SetTimerUp(0);
+}

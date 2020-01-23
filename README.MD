@@ -18,6 +18,8 @@
 * Starting points changed from 500 to 555
 * Defualt fov set to 75
 * Fixed backwards walking speed
+* Game timer
+* Zombie counter
 
 ## Weapons
 #### Wunderwaffe
@@ -118,7 +120,6 @@
 ### TODO
 * Make the waffe not kill novas (five)
 * Make hitting the box faster
-* Make tesla perk will give paped waffe
 * Set COTD box to allows spawn at mule
 
 
