@@ -23,7 +23,7 @@
 #### Wunderwaffe
 * Added Wunderwaffe to Five and Verruckt
 * Upgraded version max kills increased from 10 to 12
-#### Explosive Scaling 
+#### Explosive Scaling
 * Increased
 #### General Weapons
 * Added PPSH
@@ -61,7 +61,7 @@
 * Is attainable on all maps
 * Added to powerup cycle on round 25
 * Kills zombies in 3 body shots or 2 head shots
-* Switching weapons ends powerup 
+* Switching weapons ends powerup
 #### Double Points
 * Removed from powerup cycle on round 25
 
@@ -75,7 +75,6 @@
 * Added trigger to cabinet that upgrades the Thunder Gun
 ### Verruckt
 * Added Wunderwaffe
-* Added trigger to toilet that upgrades the Wunderwaffe
 ### Shi-no-numa
 * Added trigger to first room radio that upgrades the Wunderwaffe
 * Removed fishing hut box location
@@ -88,7 +87,7 @@
 * Only two of the three teleporter are needed to open PaP
 * Removed catwalk box location
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
-* Changed the spawn zones of power to only include only it self(3 windows)
+* Changed the spawn zones of power to only include only it self (3 windows)
 ### Kino Der Toten
 * Removed nova crawlers
 * Added trigger to meteor in the first room that turns on the power
@@ -96,7 +95,7 @@
 * Decrease time spent at PaP from 45 to 30 seconds
 * Set first box to fire trap room
 * Removed alley, control room and pm63 room box locations
-* Changed the spawn zone of the spawn rooms to only include it self(4 windows) 
+* Changed the spawn zone of the spawn rooms to only include it self (4 windows)
 ### Five
 * Added Wunderwaffe
 * Added trigger to phones up/down stairs that upgrades the Wunderwaffe
@@ -111,6 +110,10 @@
 * Monkeys taking revive doesn't count as a down
 ### Call of the Dead/Shangri-la/Moon
 * No changes made just play reimagined for these maps -.-
+
+### TODO
+* Get the VR11 to work on your self paped/unpaped
+* Make the waffe not kill novas
 
 
 ## Huge shout out to

@@ -600,7 +600,7 @@ toilet_useage()
 		wait(0.5);
 
 		toilet_trig waittill( "trigger", player);
-		toilet_counter ++;
+		/*toilet_counter ++;
 		if(toilet_counter == 1)
 		{
 			if(player HasWeapon("tesla_gun_zm"))
@@ -611,16 +611,16 @@ toilet_useage()
 					player SwitchToWeapon( "tesla_gun_upgraded_zm" );
 					player PlaySound( "mus_wonder_weapon_stinger" );
 				}
-		}
+		}*/
 
 		toilet_trig playsound ("toilet_flush", "sound_done");
 		toilet_trig waittill ("sound_done");
-		toilet_counter = 0;
+		toilet_counter++;
 
 		if(toilet_counter == 2)
 		{
 			playsoundatposition ("zmb_cha_ching", toilet_trig.origin);
-			//level thread play_music_easter_egg();
+			level thread play_music_easter_egg();
 			toilet_counter = 0;
 		}
 	}
