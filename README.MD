@@ -118,6 +118,7 @@
 ### TODO
 * Make the waffe not kill novas (five)
 * Make hitting the box faster
+* Make tesla perk will give paped waffe
 * Set COTD box to allows spawn at mule
 
 

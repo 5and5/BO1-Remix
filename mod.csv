@@ -45,6 +45,10 @@ rawfile,maps/zombie_cosmodrome.gsc
 rawfile,maps/_zombiemode_ai_monkey.gsc
 rawfile,maps/_zombiemode_ai_ape.gsc
 
+//COTD
+rawfile,maps/zombie_coast_flinger.gsc
+rawfile,maps/zombie_coast.gsc
+
 //MOON
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc

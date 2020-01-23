@@ -952,19 +952,33 @@ init_starting_chest_location()
 		}
 
 		else if(level.script == "zombie_pentagon")
+			{
+				if(level.chests[i].script_noteworthy == "start_chest")
+				//if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
 				{
-					if(level.chests[i].script_noteworthy == "start_chest")
-					//if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
-					{
-						level.chest_index = i;
-						level.chests[level.chest_index] hide_rubble();
-						level.chests[level.chest_index].hidden = false;
-					}
-					else
-					{
-						level.chests[i] hide_chest();
-					}
+					level.chest_index = i;
+					level.chests[level.chest_index] hide_rubble();
+					level.chests[level.chest_index].hidden = false;
 				}
+				else
+				{
+					level.chests[i] hide_chest();
+				}
+			}
+
+		/*else if(level.script == "zombie_coast")
+			{
+				if(IsSubStr(level.chests[i].script_noteworthy,  "ship_chest" ))
+				{
+					level.chest_index = i;
+					level.chests[level.chest_index] hide_rubble();
+					level.chests[level.chest_index].hidden = false;
+				}
+				else
+				{
+					level.chests[i] hide_chest();
+				}
+			}*/
 
 		else if( isdefined( level.random_pandora_box_start ) && level.random_pandora_box_start == true )
 		{
@@ -1869,8 +1883,8 @@ treasure_chest_lid_open()
 	openRoll = 105;
 	openTime = 0.5;
 
-	self RotateRoll( 105, openTime, ( openTime * 0.5 ) );
-
+	self RotateRoll( 105, openTime, ( openTime * 0.2 ) );
+	//TODO
 	play_sound_at_pos( "open_chest", self.origin );
 	play_sound_at_pos( "music_chest", self.origin );
 }
@@ -1880,7 +1894,7 @@ treasure_chest_lid_close( timedOut )
 	closeRoll = -105;
 	closeTime = 0.5;
 
-	self RotateRoll( closeRoll, closeTime, ( closeTime * 0.5 ) );
+	self RotateRoll( closeRoll, closeTime, ( closeTime * 0.2 ) );
 	play_sound_at_pos( "close_chest", self.origin );
 
 	self notify("lid_closed");
