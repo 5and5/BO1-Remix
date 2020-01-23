@@ -1,0 +1,90 @@
+// Note to translators:
+// If a sentence is the same in your language then please change it to "#same"
+//
+// eg:
+// LANG_ENGLISH  "HALT"
+// LANG_GERMAN   "#same"
+//
+// (This is so we can tell which strings have been signed-off as ok to be the same words for QA
+//  and because we do not store duplicate strings, which will then get exported again next time
+//  as being untranslated.)
+//
+//VERSION             "1"
+//CONFIG              "C:\projects\cod\t5\bin\StringEd.cfg"
+//FILENOTES           ""
+
+//HINTSTRINGS
+
+REFERENCE           WEAPONCOSTAMMO
+LANG_ENGLISH        "Hold ^3[{+activate}]^7 to buy Weapon [Cost: &&1], Ammo [Cost: &&2]"
+
+REFERENCE           WEAPONCOSTAMMO_UPGRADE
+LANG_ENGLISH        "Hold ^3[{+activate}]^7 to buy Weapon [Cost: &&1], Ammo [Cost: &&2],\n                     Upgraded Ammo [Cost: 2500]"
+
+REFERENCE           WEAPONCOSTAMMO_UPGRADE_HACKED
+LANG_ENGLISH        "Hold ^3[{+activate}]^7 to buy Upgraded Weapon [Cost: &&1], Ammo [Cost: &&2],\n                         Upgraded Ammo [Cost: &&3]"
+
+REFERENCE          	MYSTERY_BOX
+LANG_ENGLISH        "Hold ^3[{+activate}]^7 to use Mystery Box [Cost: &&1]"
+
+REFERENCE          	TRADE_EQUIPMENT
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to trade Equipment"
+
+REFERENCE          	BETTY_PICKUP
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to Pick Up Bouncing Betty"
+
+REFERENCE          	BETTY_PURCHASE
+LANG_ENGLISH        "Hold ^3[{+activate}]^7 to buy Bouncing Betty [Cost: 1000]"
+
+REFERENCE          	DOOR_CLOSED
+LANG_ENGLISH       	"The door must be opened"
+
+REFERENCE          	PERK_QUICKREVIVE
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to buy Quick Revive [Cost: &&1]"
+
+REFERENCE          	LANDER_INACTIVE
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to activate lander station"
+
+REFERENCE          	LANDER_CALL
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to call lander to position"
+
+REFERENCE          	LANDER_IN_USE
+LANG_ENGLISH       	"The lander is currently in use"
+
+REFERENCE          	POWER_UP_TPAD
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to initiate link to the mainframe"
+
+REFERENCE          	LINK_TPAD
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to link the teleport pad to the mainframe"
+
+//WEAPONS
+
+REFERENCE          	CROSSBOW_EXPLOSIVE
+LANG_ENGLISH       	"Crossbow Explosive Bolt"
+
+REFERENCE          	PES
+LANG_ENGLISH       	"P.E.S."
+
+REFERENCE          	AK47_UPGRADED
+LANG_ENGLISH       	"The Red Mist"
+
+REFERENCE          	PPSH_UPGRADED
+LANG_ENGLISH       	"The Reaper"
+
+REFERENCE          	STONER63_UPGRADED
+LANG_ENGLISH       	"Stoned69"
+
+REFERENCE          	COMBAT_KNIFE
+LANG_ENGLISH       	"Combat Knife"
+
+REFERENCE          	BOWIE_KNIFE
+LANG_ENGLISH       	"Bowie Knife"
+
+REFERENCE          	SICKLE_KNIFE
+LANG_ENGLISH       	"Sickle"
+
+
+
+
+
+ENDMARKER
