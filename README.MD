@@ -16,9 +16,9 @@
 * Removed Mulekick
 * Removed knife lunge
 * Starting points changed from 500 to 555
-* Defualt fov set to 75
+* Defualt fov set to 80
 * Fixed backwards walking speed
-* Game timer
+* In game timer
 * Zombie counter
 
 ## Weapons
@@ -61,11 +61,11 @@
 * Removed from powerup cycle after first box moves
 #### Death Machines
 * Is attainable on all maps
-* Added to powerup cycle on round 25
+* Added to powerup cycle on round 65
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
 #### Double Points
-* Removed from powerup cycle on round 25
+* Removed from powerup cycle on round 65
 
 ## Mystery Box
 * Increased probability of getting Monkeys - by 100% every 5 rounds till 20
@@ -112,15 +112,21 @@
 * Monkeys taking revive doesn't count as a down
 ### Call of the Dead
 * VR11 un-upgraded now also gives players instakill
-* VR11 can now give yourself instakill
+* VR11 can now give yourself instakill by shooting the ground
 * VR11 no longer gives players invisibility
+* George now drops an upgraded waffe
+* Flinger now kills zombies instead of respawning them
 ### Shangri-la/Moon
 * No changes made
 
 ### TODO
 * Make the waffe not kill novas (five)
 * Make hitting the box faster
-* Set COTD box to allows spawn at mule
+* Set COTD box to allows spawn at mule (i can find the name using reimagened config or printl)
+* Fix timer to start when zombies spawn
+* Add round timer
+* Add PAP to SNN
+* Drop tracker??
 
 
 ## Huge shout out to
