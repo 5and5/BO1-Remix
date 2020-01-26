@@ -49,6 +49,8 @@
 * Now do 50% of zombies max health
 #### Boucing Bettys
 * Now do 50% of zombies max health
+* Now explode in 1.5 seconds instead of 2 seconds
+* Limited to 22 on the map at one time
 
 ## Power Ups
 ### General

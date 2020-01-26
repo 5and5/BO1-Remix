@@ -9,8 +9,9 @@
 
 main()
 {
-	//level.player_too_many_weapons_monitor = true;
-	//level.player_too_many_weapons_monitor_func = ::player_too_many_weapons_monitor;
+
+	level.max_mines = 22;
+
 	level._dontInitNotifyMessage = 1;
 	level.uses_tesla_powerup = true; // fix lights on tesla
 

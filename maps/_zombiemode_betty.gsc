@@ -1,4 +1,4 @@
-#include common_scripts\utility; 
+#include common_scripts\utility;
 #include maps\_utility;
 #include maps\_zombiemode_utility;
 init()
@@ -6,8 +6,8 @@ init()
 	trigs = getentarray("betty_purchase","targetname");
 	for(i=0; i<trigs.size; i++)
 	{
-		model = getent( trigs[i].target, "targetname" ); 
-		model hide(); 
+		model = getent( trigs[i].target, "targetname" );
+		model hide();
 	}
 	array_thread(trigs,::buy_bouncing_betties);
 	level thread give_betties_after_rounds();
@@ -15,7 +15,7 @@ init()
 buy_bouncing_betties()
 {
 	self.zombie_cost = 1000;
-	self sethintstring( &"ZOMBIE_BETTY_PURCHASE" );	
+	self sethintstring( &"ZOMBIE_BETTY_PURCHASE" );
 	self setCursorHint( "HINT_NOICON" );
 	level thread set_betty_visible();
 	self.betties_triggered = false;
@@ -29,20 +29,20 @@ buy_bouncing_betties()
 		if( is_player_valid( who ) )
 		{
 			if( who.score >= self.zombie_cost )
-			{				
+			{
 				if ( !who is_player_placeable_mine( "mine_bouncing_betty" ) )
 				{
 					play_sound_at_pos( "purchase", self.origin );
-					
-					who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost ); 
+
+					who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
 					who maps\_zombiemode_weapons::check_collector_achievement( "mine_bouncing_betty" );
 					who thread bouncing_betty_setup();
 					who thread show_betty_hint("betty_purchased");
-					
+
 					if( self.betties_triggered == false )
-					{						
-						model = getent( self.target, "targetname" ); 					
-						model thread maps\_zombiemode_weapons::weapon_show( who ); 
+					{
+						model = getent( self.target, "targetname" );
+						model thread maps\_zombiemode_weapons::weapon_show( who );
 						self.betties_triggered = true;
 					}
 					trigs = getentarray("betty_purchase","targetname");
@@ -53,7 +53,7 @@ buy_bouncing_betties()
 				}
 				else
 				{
-					
+
 				}
 			}
 		}
@@ -61,14 +61,14 @@ buy_bouncing_betties()
 }
 set_betty_visible()
 {
-	players = getplayers();	
+	players = getplayers();
 	trigs = getentarray("betty_purchase","targetname");
 	while(1)
 	{
 		for(j = 0; j < players.size; j++)
 		{
 			if( !players[j] is_player_placeable_mine( "mine_bouncing_betty" ) )
-			{						
+			{
 				for(i = 0; i < trigs.size; i++)
 				{
 					trigs[i] SetInvisibleToPlayer(players[j], false);
@@ -76,7 +76,7 @@ set_betty_visible()
 			}
 		}
 		wait(1);
-		players = getplayers();	
+		players = getplayers();
 	}
 }
 bouncing_betty_watch()
@@ -103,7 +103,7 @@ betty_death_think()
 	self delete();
 }
 bouncing_betty_setup()
-{	
+{
 	self thread bouncing_betty_watch();
 	self giveweapon("mine_bouncing_betty");
 	self set_player_placeable_mine("mine_bouncing_betty");
@@ -112,12 +112,59 @@ bouncing_betty_setup()
 }
 betty_think()
 {
-	wait(2);
+	if(!isdefined(self.owner.mines))
+		self.owner.mines = [];
+	self.owner.mines = array_add( self.owner.mines, self );
+
+	amount = level.max_mines / get_players().size;
+
+	if( self.owner.mines.size > amount )
+	{
+		self.owner.mines[0].too_many_mines_explode = true;
+		self.owner.mines[0].trigger notify("trigger");
+		self.owner.mines = array_remove_nokeys( self.owner.mines, self.owner.mines[0] );
+	}
+
 	trigger = spawn("trigger_radius",self.origin,9,80,64);
-	trigger waittill( "trigger" );
-	trigger = trigger;
+	self.trigger = trigger;
+
+	wait(1.5);
+
+	while(1)
+	{
+		trigger waittill( "trigger", ent );
+
+		if(IsDefined(self.too_many_mines_explode) && self.too_many_mines_explode)
+			break;
+
+		if ( isdefined( self.owner ) && ent == self.owner )
+		{
+			continue;
+		}
+
+		if( isDefined( ent.pers ) && isDefined( ent.pers["team"] ) && ent.pers["team"] != "axis" )
+		{
+			continue;
+		}
+
+		if( IsPlayer(ent) && ent.vsteam == self.owner.vsteam )
+		{
+			continue;
+		}
+
+		if ( ent damageConeTrace(self.origin, self) == 0 )
+		{
+			continue;
+		}
+
+		break;
+	}
+
+	//trigger = spawn("trigger_radius",self.origin,9,80,64);
+	//trigger waittill( "trigger" );
+	//trigger = trigger;
 	self playsound("betty_activated");
-	wait(.1);	
+	wait(.1);
 	fake_model = spawn("script_model",self.origin);
 	fake_model setmodel(self.model);
 	self hide();
@@ -190,7 +237,7 @@ init_hint_hudelem(x, y, alignX, alignY, fontscale, alpha)
 	self.fontScale = fontScale;
 	self.alpha = alpha;
 	self.sort = 20;
-	
+
 }
 setup_client_hintelem()
 {
@@ -214,4 +261,4 @@ show_betty_hint(string)
 	self.hintelem setText(text);
 	wait(3.5);
 	self.hintelem settext("");
-}  
+}
