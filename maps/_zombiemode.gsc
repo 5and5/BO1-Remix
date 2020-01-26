@@ -242,6 +242,7 @@ post_all_players_connected()
 		level.music_override = false;
 	}
 
+	// ingame timer
 	level thread timer_hud();
 }
 
@@ -1544,7 +1545,7 @@ onPlayerConnect_clientDvars()
 		"compass", "0",
 		"hud_showStance", "0",
 		"cg_thirdPerson", "0",
-		"cg_fov", "80",
+		"cg_fov", "90",
 		"cg_thirdPersonAngle", "0",
 		"ammoCounterHide", "1",
 		"miniscoreboardhide", "1",
@@ -1584,8 +1585,8 @@ onPlayerConnect_clientDvars()
 		"dtp_startup_delay", 100);
 
 	// turn zombies remaining HUD off initially
-	self SetClientDvar("hud_zombs_remaining_on_game", false);
-	self SetClientDvar("zombs_remaining", "");
+	//self SetClientDvar("hud_zombs_remaining_on_game", false);
+	//self SetClientDvar("zombs_remaining", "");
 
 	// no cheats
 	//self SetClientDvar("sv_cheats", 0);
@@ -1653,8 +1654,15 @@ onPlayerSpawned()
 		self PlayerKnockback( false );
 
 		self SetClientDvars( "cg_thirdPerson", "0",
-			"cg_fov", "65",
-			"cg_thirdPersonAngle", "0" );
+			"cg_fov", "80",
+			"cg_thirdPersonAngle", "0",
+			"player_strafeSpeedScale", 1,
+			"player_backSpeedScale", 1,
+			"cg_hudDamageIconHeight", 150,
+			"cg_hudDamageIconInScope", 0,
+			"cg_hudDamageIconOffset", 10,
+			"cg_hudDamageIconTime", 4000,
+			"cg_hudDamageIconWidth", 25);
 
 		self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
@@ -1715,6 +1723,9 @@ onPlayerSpawned()
 
 				// zombies reamining hud
 				self thread zombies_remaining_hud();
+
+				// round timer hud
+				//self thread timer_round_hud();
 			}
 		}
 	}
@@ -3935,7 +3946,7 @@ chalk_round_over()
 
 round_think()
 {
-	level.round_number = 420; //69
+	//level.round_number = 1; //69
 	level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
@@ -4927,7 +4938,13 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
-	// Turrets - kill in 4 shots
+	// have waffe not kill novas
+	if (weapon == "tesla_gun_zm" || "tesla_gun_upgraded_zm")
+	{
+
+	}
+
+	// Turrets - kill in 2 shots
 	if(meansofdeath == "MOD_RIFLE_BULLET" && weapon == "zombie_bullet_crouch")
 	{
 		damage = int(self.maxhealth/2) + 1;
@@ -7045,7 +7062,6 @@ zombies_remaining_hud()
 	zombs_remaining.vertAlign = "top";
 	zombs_remaining.alignX = "right";
 	zombs_remaining.alignY = "top";
-	//zombs_remaining.y -= 100;
 	zombs_remaining.x -= 4;
 	zombs_remaining.foreground = true;
 	zombs_remaining.fontScale = 1.4;
@@ -7069,8 +7085,232 @@ timer_hud()
 	timer.y += 0;
 	timer.x += 4;
 	timer.foreground = true;
-	timer.fontScale = 1.6;
+	timer.fontScale = 1.4;
 	timer.alpha = 1;
 	timer.color = ( 1.0, 1.0, 1.0 );
-	timer SetTimerUp(0);
+
+	if (level.script == "zombie_cosmodrome")
+	{
+		timer SetTimerUp(9);
+	} else
+	timer SetTimerUp(2.8);
 }
+/*
+timer_round_hud()
+{
+	round_timer = NewClientHudElem( self );
+	round_timer.horzAlign = "left";
+	round_timer.vertAlign = "top";
+	round_timer.alignX = "left";
+	round_timer.alignY = "top";
+	round_timer.y += 15;
+	round_timer.x += 4;
+	round_timer.foreground = true;
+	round_timer.fontScale = 1.4;
+	round_timer.alpha = 1;
+	round_timer.color = ( 1.0, 1.0, 1.0 );
+
+	level.round_time = 0;
+	//level thread round_time();
+	//level thread round_time_loop();
+
+	/*while(1)
+	{
+		time = format_time(level.round_time);
+
+		round_timer SetText(time);
+		wait .5;
+	}
+
+	//level endon( "intermission" );
+	//flag_wait( "begin_spawning" );
+	while(1)
+	{
+		time = format_time(level.round_time);
+		round_timer SetText(time);
+		wait 1;
+		//level thread round_time();
+		level notify("stop_round_time");
+		level waittill("between_round_over");
+		level waittill( "start_of_round" );
+	}
+}
+
+round_time_loop()
+{
+	level endon( "intermission" );
+	flag_wait( "begin_spawning" );
+	while(1)
+	{
+		time = format_time(level.round_time);
+		round_timer SetText(time);
+		wait 1;
+
+		level thread round_time();
+		level notify("stop_round_time");
+		level waittill("between_round_over");
+		level waittill( "start_of_round" );
+	}
+}
+
+round_time()
+{
+	level endon( "intermission" );
+	level endon("stop_round_time");
+
+	round_timer = NewClientHudElem( self );
+	round_timer.horzAlign = "left";
+	round_timer.vertAlign = "top";
+	round_timer.alignX = "left";
+	round_timer.alignY = "top";
+	round_timer.y += 15;
+	round_timer.x += 4;
+	round_timer.foreground = true;
+	round_timer.fontScale = 1.4;
+	round_timer.alpha = 1;
+	round_timer.color = ( 1.0, 1.0, 1.0 );
+
+	level.round_time = 0;
+	while(1)
+	{
+		time = format_time(level.round_time);
+
+		round_timer SetText(time);
+		wait 1;
+	}
+}
+
+format_time(seconds)
+{
+	hours = int(seconds / 3600);
+	minutes = int((seconds - (hours * 3600)) / 60);
+	seconds = int(seconds - (hours * 3600) - (minutes * 60));
+
+	if( minutes < 10 && hours >= 1 )
+	{
+		minutes = "0" + minutes;
+	}
+	if( seconds < 10 )
+	{
+		seconds = "0" + seconds;
+	}
+
+	combined = "";
+	if(hours >= 1)
+	{
+		combined = "" + hours + ":" + minutes + ":" + seconds;
+	}
+	else
+	{
+		combined = "" + minutes + ":" + seconds;
+	}
+
+	return combined;
+}
+
+round_time_loop()
+{
+	level endon( "intermission" );
+
+	flag_wait( "begin_spawning" );
+
+
+	while(1)
+	{
+		level thread round_time();
+
+		//end round timer when last enemy of round is killed
+		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
+		{
+			level waittill( "last_dog_down" );
+		}
+		else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
+		{
+			flag_wait( "last_thief_down" );
+		}
+		else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
+		{
+			flag_wait( "last_monkey_down" );
+		}
+		else
+		{
+			level waittill( "end_of_round" );
+		}
+
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "end_of_round" ); //end no man's land
+			level waittill( "end_of_round" ); //end actual round
+		}
+
+		level notify("stop_round_time");
+
+
+		level.round_total_time = level.total_time;
+
+		update_time(level.round_total_time, "round_total_time");
+
+		level waittill("between_round_over");
+
+		level waittill( "start_of_round" );
+
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "start_of_round" );
+		}
+	}
+}
+
+update_time(level_var, client_var)
+{
+	time = to_mins_short(level_var);
+
+	players = get_players();
+	for(i=0;i<players.size;i++)
+	{
+		players[i] SetClientDvar(client_var, time);
+	}
+}
+
+round_time()
+{
+	level endon( "intermission" );
+	level endon("stop_round_time");
+	level.round_time = 0;
+	while(1)
+	{
+		update_time(level.round_time, "round_time");
+
+		wait 1;
+
+		level.round_time++;
+	}
+}
+
+to_mins_short(seconds)
+{
+	hours = int(seconds / 3600);
+	minutes = int((seconds - (hours * 3600)) / 60);
+	seconds = int(seconds - (hours * 3600) - (minutes * 60));
+
+	if( minutes < 10 && hours >= 1 )
+	{
+		minutes = "0" + minutes;
+	}
+	if( seconds < 10 )
+	{
+		seconds = "0" + seconds;
+	}
+
+	combined = "";
+	if(hours >= 1)
+	{
+		combined = "" + hours + ":" + minutes + ":" + seconds;
+	}
+	else
+	{
+		combined = "" + minutes + ":" + seconds;
+	}
+
+	return combined;
+}*/

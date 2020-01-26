@@ -18,8 +18,9 @@
 * Starting points changed from 500 to 555
 * Defualt fov set to 80
 * Fixed backwards walking speed
+* Reduced hitmarker size
 * In game timer
-* Zombie counter
+* Zombie remaining counter
 
 ## Weapons
 #### Wunderwaffe
@@ -95,7 +96,7 @@
 * Added trigger to meteor in the first room that turns on the power
 * Turrets kill in 2 bullets
 * Decrease time spent at PaP from 45 to 30 seconds
-* Set first box to fire trap room
+* Set initial box to fire trap room
 * Removed alley, control room and pm63 room box locations
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
 ### Five
@@ -103,7 +104,7 @@
 * Added trigger to phones up/down stairs that upgrades the Wunderwaffe
 * Set windows
 * Set power room telepoter to always take you up stairs
-* Set first box to dead guy room
+* Set initial box to the dead guy room
 * Removed alarm from theif round to fix audio glitch
 ### Ascension
 * Turrets kill in 2 bullets
@@ -116,15 +117,13 @@
 * VR11 no longer gives players invisibility
 * George now drops an upgraded waffe
 * Flinger now kills zombies instead of respawning them
+* Set initial box to mule kick boat
 ### Shangri-la/Moon
 * No changes made
 
 ### TODO
 * Make the waffe not kill novas (five)
 * Make hitting the box faster
-* Set COTD box to allows spawn at mule (i can find the name using reimagened config or printl)
-* Fix timer to start when zombies spawn
-* Add round timer
 * Add PAP to SNN
 * Drop tracker??
 
