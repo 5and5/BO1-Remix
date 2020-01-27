@@ -10,6 +10,7 @@ rawfile,maps/_zombiemode_betty.gsc
 rawfile,maps/_zombiemode_claymore.gsc
 //rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
+rawfile,map/_zombiemode_weap_cymbal_monkey.gsc
 rawfile,maps/_zombiemode_weap_humangun.gsc
 rawfile,maps/_zombiemode_weap_tesla.gsc
 

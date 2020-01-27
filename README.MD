@@ -45,6 +45,7 @@
 ## Equipment
 #### Monkey Bombs
 * Now do 50% of zombies max health
+* Allows work if thrown in a playable area
 #### Claymores
 * Now do 50% of zombies max health
 * Limited to 20 on the map at one time
