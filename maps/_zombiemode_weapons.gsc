@@ -937,21 +937,7 @@ init_starting_chest_location()
     start_chest_found = false;
     for( i = 0; i < level.chests.size; i++ )
     {
-        if(level.script == "zombie_theater")
-        {
-            if(IsSubStr(level.chests[i].script_noteworthy,  "crematorium_chest" ))
-            {
-                level.chest_index = i;
-                level.chests[level.chest_index] hide_rubble();
-                level.chests[level.chest_index].hidden = false;
-            }
-            else
-                {
-                level.chests[i] hide_chest();
-                }
-        }
-
-        else if(level.script == "zombie_pentagon")
+        if(level.script == "zombie_pentagon")
             {
                 if(level.chests[i].script_noteworthy == "start_chest")
                 //if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
@@ -965,6 +951,20 @@ init_starting_chest_location()
                     level.chests[i] hide_chest();
                 }
             }
+
+		else if(level.script == "zombie_theater")
+		        {
+		            if(IsSubStr(level.chests[i].script_noteworthy,  "crematorium_chest" ))
+		            {
+		                level.chest_index = i;
+		                level.chests[level.chest_index] hide_rubble();
+		                level.chests[level.chest_index].hidden = false;
+		            }
+		            else
+		                {
+		                level.chests[i] hide_chest();
+		                }
+		        }
 
         else if(level.script == "zombie_coast")
             {
@@ -1496,7 +1496,6 @@ decide_hide_show_hint( endon_notify )
 	{
 		use_choke = true;
 	}
-
 
 	while( true )
 	{

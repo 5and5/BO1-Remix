@@ -1,2 +1,8 @@
-xanim,run_death_fallonback
-xanim,exposed_death_02
+xanim,run_death_facedown
+xanim,void_loop
+xanim,void_loop
+xanim,void_loop
+xanim,void_loop
+xanim,void_loop
+xanim,void_loop
+xanim,exposed_death_firing_02

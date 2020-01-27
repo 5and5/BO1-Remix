@@ -120,7 +120,7 @@ init_powerups()
 	add_zombie_powerup( "free_perk", "zombie_pickup_perk_bottle", &"ZOMBIE_POWERUP_FREE_PERK", false, false, false );
 
 	// tesla
-	add_zombie_powerup( "tesla", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MINIGUN", true, false, false );
+	add_zombie_powerup( "tesla", "lightning_bolt", &"ZOMBIE_POWERUP_MINIGUN", true, false, false );
 
 	// random weapon
 	add_zombie_powerup( "random_weapon", "zombie_pickup_minigun", &"ZOMBIE_POWERUP_MAX_AMMO", true, false, false );
@@ -962,11 +962,11 @@ powerup_setup( powerup_override )
 	{
 		powerup = powerup_override;
 
-		if ( "tesla" == powerup && tesla_powerup_active() )
+		/*if ( "tesla" == powerup && tesla_powerup_active() )
 		{
 			// only one tesla at a time, give a minigun instead
 			powerup = "minigun";
-		}
+		}*/
 	}
 
 	struct = level.zombie_powerups[powerup];
@@ -1016,6 +1016,14 @@ powerup_setup( powerup_override )
 	{
 		self SetModel( struct.model_name );
 	}
+
+	if(powerup == "tesla")
+	{
+		self.weapon = "tesla_gun_powerup_upgraded_zm";
+		self.base_weapon = self.weapon;
+		struct.weapon = self.weapon;
+	}
+
 
 	//TUEY Spawn Powerup
 	playsoundatposition("zmb_spawn_powerup", self.origin);

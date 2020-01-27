@@ -3,14 +3,15 @@ rawfile,maps/_zombiemode.gsc
 rawfile,maps/_zombiemode_weapons.gsc
 rawfile,maps/_zombiemode_perks.gsc
 rawfile,maps/_zombiemode_powerups.gsc
-rawfile,maps/_zombiemode_weap_tesla.gsc
 rawfile,maps/_zombiemode_zone_manager.gsc
 rawfile,maps/_zombiemode_traps.gsc
 rawfile,maps/_zombiemode_spawner.gsc
 rawfile,maps/_zombiemode_betty.gsc
+rawfile,maps/_zombiemode_claymore.gsc
 //rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 rawfile,maps/_zombiemode_weap_humangun.gsc
+rawfile,maps/_zombiemode_weap_tesla.gsc
 
 //NACHT
 rawfile,maps/zombie_cod5_prototype.gsc
@@ -98,6 +99,7 @@ xmodel,t5_weapon_stoner_world
 xmodel,weapon_rus_ppsh_smg
 xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
+xmodel,lightning_bolt
 
 //XANIM
 xanim,viewmodel_tesla_d2p_in

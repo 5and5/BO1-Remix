@@ -57,6 +57,9 @@ LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to initiate link to the mainframe"
 REFERENCE          	LINK_TPAD
 LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to link the teleport pad to the mainframe"
 
+REFERENCE          	SWITCH_POWER_KINO
+LANG_ENGLISH       	"Hold ^3[{+activate}]^7 to turn on power"
+
 //WEAPONS
 
 REFERENCE          	CROSSBOW_EXPLOSIVE

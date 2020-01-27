@@ -9,8 +9,8 @@
 
 main()
 {
-
-	level.max_mines = 22;
+	// limited betties/claymores on the map
+	level.max_mines = 20;
 
 	level._dontInitNotifyMessage = 1;
 	level.uses_tesla_powerup = true; // fix lights on tesla
@@ -1432,7 +1432,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 5555555; //555
+		players[p].score = 55555555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -3947,7 +3947,7 @@ chalk_round_over()
 
 round_think()
 {
-	//level.round_number = 1; //69
+	level.round_number = 100; //69
 	level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
@@ -7096,222 +7096,3 @@ timer_hud()
 	} else
 	timer SetTimerUp(2.8);
 }
-/*
-timer_round_hud()
-{
-	round_timer = NewClientHudElem( self );
-	round_timer.horzAlign = "left";
-	round_timer.vertAlign = "top";
-	round_timer.alignX = "left";
-	round_timer.alignY = "top";
-	round_timer.y += 15;
-	round_timer.x += 4;
-	round_timer.foreground = true;
-	round_timer.fontScale = 1.4;
-	round_timer.alpha = 1;
-	round_timer.color = ( 1.0, 1.0, 1.0 );
-
-	level.round_time = 0;
-	//level thread round_time();
-	//level thread round_time_loop();
-
-	/*while(1)
-	{
-		time = format_time(level.round_time);
-
-		round_timer SetText(time);
-		wait .5;
-	}
-
-	//level endon( "intermission" );
-	//flag_wait( "begin_spawning" );
-	while(1)
-	{
-		time = format_time(level.round_time);
-		round_timer SetText(time);
-		wait 1;
-		//level thread round_time();
-		level notify("stop_round_time");
-		level waittill("between_round_over");
-		level waittill( "start_of_round" );
-	}
-}
-
-round_time_loop()
-{
-	level endon( "intermission" );
-	flag_wait( "begin_spawning" );
-	while(1)
-	{
-		time = format_time(level.round_time);
-		round_timer SetText(time);
-		wait 1;
-
-		level thread round_time();
-		level notify("stop_round_time");
-		level waittill("between_round_over");
-		level waittill( "start_of_round" );
-	}
-}
-
-round_time()
-{
-	level endon( "intermission" );
-	level endon("stop_round_time");
-
-	round_timer = NewClientHudElem( self );
-	round_timer.horzAlign = "left";
-	round_timer.vertAlign = "top";
-	round_timer.alignX = "left";
-	round_timer.alignY = "top";
-	round_timer.y += 15;
-	round_timer.x += 4;
-	round_timer.foreground = true;
-	round_timer.fontScale = 1.4;
-	round_timer.alpha = 1;
-	round_timer.color = ( 1.0, 1.0, 1.0 );
-
-	level.round_time = 0;
-	while(1)
-	{
-		time = format_time(level.round_time);
-
-		round_timer SetText(time);
-		wait 1;
-	}
-}
-
-format_time(seconds)
-{
-	hours = int(seconds / 3600);
-	minutes = int((seconds - (hours * 3600)) / 60);
-	seconds = int(seconds - (hours * 3600) - (minutes * 60));
-
-	if( minutes < 10 && hours >= 1 )
-	{
-		minutes = "0" + minutes;
-	}
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds;
-	}
-
-	combined = "";
-	if(hours >= 1)
-	{
-		combined = "" + hours + ":" + minutes + ":" + seconds;
-	}
-	else
-	{
-		combined = "" + minutes + ":" + seconds;
-	}
-
-	return combined;
-}
-
-round_time_loop()
-{
-	level endon( "intermission" );
-
-	flag_wait( "begin_spawning" );
-
-
-	while(1)
-	{
-		level thread round_time();
-
-		//end round timer when last enemy of round is killed
-		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
-		{
-			level waittill( "last_dog_down" );
-		}
-		else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
-		{
-			flag_wait( "last_thief_down" );
-		}
-		else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
-		{
-			flag_wait( "last_monkey_down" );
-		}
-		else
-		{
-			level waittill( "end_of_round" );
-		}
-
-		if(is_true(flag("enter_nml")))
-		{
-			level waittill( "end_of_round" ); //end no man's land
-			level waittill( "end_of_round" ); //end actual round
-		}
-
-		level notify("stop_round_time");
-
-
-		level.round_total_time = level.total_time;
-
-		update_time(level.round_total_time, "round_total_time");
-
-		level waittill("between_round_over");
-
-		level waittill( "start_of_round" );
-
-		if(is_true(flag("enter_nml")))
-		{
-			level waittill( "start_of_round" );
-		}
-	}
-}
-
-update_time(level_var, client_var)
-{
-	time = to_mins_short(level_var);
-
-	players = get_players();
-	for(i=0;i<players.size;i++)
-	{
-		players[i] SetClientDvar(client_var, time);
-	}
-}
-
-round_time()
-{
-	level endon( "intermission" );
-	level endon("stop_round_time");
-	level.round_time = 0;
-	while(1)
-	{
-		update_time(level.round_time, "round_time");
-
-		wait 1;
-
-		level.round_time++;
-	}
-}
-
-to_mins_short(seconds)
-{
-	hours = int(seconds / 3600);
-	minutes = int((seconds - (hours * 3600)) / 60);
-	seconds = int(seconds - (hours * 3600) - (minutes * 60));
-
-	if( minutes < 10 && hours >= 1 )
-	{
-		minutes = "0" + minutes;
-	}
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds;
-	}
-
-	combined = "";
-	if(hours >= 1)
-	{
-		combined = "" + hours + ":" + minutes + ":" + seconds;
-	}
-	else
-	{
-		combined = "" + minutes + ":" + seconds;
-	}
-
-	return combined;
-}*/

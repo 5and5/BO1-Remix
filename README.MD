@@ -47,10 +47,11 @@
 * Now do 50% of zombies max health
 #### Claymores
 * Now do 50% of zombies max health
+* Limited to 20 on the map at one time
 #### Boucing Bettys
 * Now do 50% of zombies max health
 * Now explode in 1.5 seconds instead of 2 seconds
-* Limited to 22 on the map at one time
+* Limited to 20 on the map at one time
 
 ## Power Ups
 ### General
@@ -84,19 +85,20 @@
 * Added trigger to first room radio that upgrades the Wunderwaffe
 * Removed fishing hut box location
 * Set double tap to always spawn in the fishing hut
-* Decreased electric trap recharge time from 90 to 25
+* Decreased electric traps recharge time from 90 to 25
+* Decreased flogger damage to 100
 * Changed the spawn zones of the main hut to only include it self
 * Changed the spawn zone of all four areas leading to a hut to not include the main hut
 ### Der Riese
-* Turning on power now give you the bowie knife
 * Only two of the three teleporter are needed to open PaP
+* Turning on power now give you the bowie knife
 * Removed catwalk box location
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
 * Changed the spawn zones of power to only include only it self (3 windows)
 ### Kino Der Toten
 * Removed nova crawlers
-* Added trigger to meteor in the first room that turns on the power
-* Turrets kill in 2 bullets
+* Meteor in the first room now turns on power
+* Turrets kill in two bullets at any round
 * Decrease time spent at PaP from 45 to 30 seconds
 * Set initial box to fire trap room
 * Removed alley, control room and pm63 room box locations
@@ -127,6 +129,9 @@
 * Make the waffe not kill novas (five)
 * Make hitting the box faster
 * Add PAP to SNN
+* COTD pap always up
+* fix 4 monkey glitch
+* Remove point gain from traps
 * Drop tracker??
 
 
