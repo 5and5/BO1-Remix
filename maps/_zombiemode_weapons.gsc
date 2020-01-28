@@ -144,14 +144,48 @@ default_tesla_weighting_func()
 	return num_to_add;
 }
 
+default_thundergun_weighting_func()
+{
+	num_to_add = 1;
+	if( isDefined( level.pulls_since_last_thundergun ) )
+	{
+		// player has dropped the tgun for another weapon
+		if( isDefined(level.player_drops_thundergun) && level.player_drops_thundergun == true )
+		{
+				// after 16 pulls the tgun percentage increases to 30%
+				if( level.pulls_since_last_thundergun > 16 )
+				{
+					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
+				}
+				// after 12 pulls the tgun percentage increases to 20%
+				else if( level.pulls_since_last_thundergun > 12 )
+				{
+					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
+				}
+				// after 6 pulls the tgun percentage increases to 10%
+				else if( level.pulls_since_last_thundergun > 6 )
+				{
+					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
+				}
+		}
+
+		// player has not seen tesla gun in late rounds
+		if( !isDefined(level.player_seen_thundergun) || level.player_seen_thundergun == false )
+		{
+			// after round 10 the Tesla gun percentage increases to 15%
+			if( level.round_number > 10 )
+			{
+				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
+			}
+		}
+	}
+	return num_to_add;
+}
+
 
 //	Greatly elevate the chance to get it until someone has it, then make it even
 default_cymbal_monkey_weighting_func()
 {
-		/*if ( level.round_number > 0 )
-		{
-			return 1;
-		}*/
 		if( level.round_number > 5 )
 		{
 			return 2;
@@ -174,16 +208,58 @@ default_cymbal_monkey_weighting_func()
 		}
 }
 
-default_thundergun_weighting_func()
+/*default_thundergun_weighting_func()
 {
 	num = 1.5;
 	return num;
-}
+}*/
 
 default_zombie_black_hole_bomb_weighting_func()
 {
-	num = 1.5;
-	return num;
+	if( level.round_number > 5 )
+		{
+			return 2;
+		}
+		else if( level.round_number > 10 )
+		{
+			return 3;
+		}
+		else if( level.round_number > 15 )
+		{
+			return 4;
+		}
+		else if( level.round_number > 20 )
+		{
+			return 5; //TODO
+		}
+		else
+		{
+			return 1;
+		}
+}
+
+default_zombie_doll_weighting_func()
+{
+	if( level.round_number > 5 )
+		{
+			return 2;
+		}
+		else if( level.round_number > 10 )
+		{
+			return 3;
+		}
+		else if( level.round_number > 15 )
+		{
+			return 4;
+		}
+		else if( level.round_number > 20 )
+		{
+			return 5;
+		}
+		else
+		{
+			return 1;
+		}
 }
 
 //	For weapons which should only appear once the box moves
@@ -1397,7 +1473,7 @@ treasure_chest_think()
 
 		// PI_CHANGE_BEGIN
 		// JMA - we only update counters when it's available
-		if( level.chest_moves > 0 && isDefined(level.pulls_since_last_ray_gun) )
+		if( isDefined(level.pulls_since_last_ray_gun) )
 		{
 			level.pulls_since_last_ray_gun += 1;
 		}
@@ -1405,6 +1481,11 @@ treasure_chest_think()
 		if( isDefined(level.pulls_since_last_tesla_gun) )
 		{
 			level.pulls_since_last_tesla_gun += 1;
+		}
+
+		if( isDefined(level.pulls_since_last_thundergun) )
+		{
+			level.pulls_since_last_thundergun += 1;
 		}
 
 
@@ -1419,7 +1500,7 @@ treasure_chest_think()
 		//Chris_P
 		//magic box dissapears and moves to a new spot after a predetermined number of uses
 
-		wait 3;
+		wait 1; //3
 		if ( (is_true( level.zombie_vars["zombie_powerup_fire_sale_on"] ) && self [[level._zombiemode_check_firesale_loc_valid_func]]()) || self == level.chests[level.chest_index] )
 		{
 			self enable_trigger();
@@ -1840,10 +1921,10 @@ rotateroll_box()
 	while(isdefined(self))
 	{
 		self RotateRoll(angles + angles2, 0.5);
-		wait(0.7);
+		wait(0.40); //0.7
 		angles2 = 40;
 		self RotateRoll(angles * -2, 0.5);
-		wait(0.7);
+		wait(0.40); //0.7
 	}
 
 
@@ -1880,16 +1961,16 @@ treasure_chest_timeout()
 	self.chest_origin endon( "box_hacked_respin" );
 	self.chest_origin endon( "box_hacked_rerespin" );
 
-	wait( 10 );
+	wait( 8 );
 	self notify( "trigger", level );
 }
 
 treasure_chest_lid_open()
 {
 	openRoll = 105;
-	openTime = 0.5;
+	openTime = 0.3; //0.5
 
-	self RotateRoll( 105, openTime, ( openTime * 0.2 ) );
+	self RotateRoll( 105, openTime, ( openTime * 0.4 ) ); //0.2
 	//TODO
 	play_sound_at_pos( "open_chest", self.origin );
 	play_sound_at_pos( "music_chest", self.origin );
@@ -1898,9 +1979,9 @@ treasure_chest_lid_open()
 treasure_chest_lid_close( timedOut )
 {
 	closeRoll = -105;
-	closeTime = 0.5;
+	closeTime = 0.3;
 
-	self RotateRoll( closeRoll, closeTime, ( closeTime * 0.2 ) );
+	self RotateRoll( closeRoll, closeTime, ( closeTime * 0.4 ) );
 	play_sound_at_pos( "close_chest", self.origin );
 
 	self notify("lid_closed");
@@ -2103,7 +2184,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 	self.weapon_string = undefined;
 	modelname = undefined;
 	rand = undefined;
-	number_cycles = 40;
+	number_cycles = 40; //40
 
 	chest.chest_box setclientflag(level._ZOMBIE_SCRIPTMOVER_FLAG_BOX_RANDOM);
 
@@ -2112,19 +2193,19 @@ treasure_chest_weapon_spawn( chest, player, respin )
 
 		if( i < 20 )
 		{
-			wait( 0.05 );
+			wait( 0.025 ); // 0.05
 		}
 		else if( i < 30 )
 		{
-			wait( 0.1 );
+			wait( 0.05 ); // 0.1
 		}
 		else if( i < 35 )
 		{
-			wait( 0.2 );
+			wait( 0.1 ); // 0.2
 		}
 		else if( i < 38 )
 		{
-			wait( 0.3 );
+			wait( 0.15 ); // 0.3
 		}
 
 		if( i + 1 < number_cycles )
@@ -2181,7 +2262,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 
 		if( !isdefined( level.chest_min_move_usage ) )
 		{
-			level.chest_min_move_usage = 4;
+			level.chest_min_move_usage = 5;
 		}
 
 		if( level.chest_accessed < level.chest_min_move_usage )
@@ -2283,7 +2364,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 	{
 		wait .5;	// we need a wait here before this notify
 		level notify("weapon_fly_away_start");
-		wait 2;
+		wait 1; //2
 		self.weapon_model MoveZ(500, 4, 3);
 
 		if(IsDefined(self.weapon_model_dw))
@@ -2308,7 +2389,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 		acquire_weapon_toggle( rand, player );
 
 		//turn off power weapon, since player just got one
-		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" )
+		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm")
 		{
 			if( rand == "ray_gun_zm" )
 			{
@@ -2321,6 +2402,13 @@ treasure_chest_weapon_spawn( chest, player, respin )
 				level.pulls_since_last_tesla_gun = 0;
 				level.player_seen_tesla_gun = true;
 			}
+
+			if( rand == "thundergun_zm" )
+			{
+				level.pulls_since_last_thundergun = 0;
+				level.player_seen_thundergun = true;
+			}
+
 		}
 
 		if(!IsDefined(respin))
@@ -2367,7 +2455,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 //
 chest_get_min_usage()
 {
-	min_usage = 4;
+	min_usage = 5;
 
 	/*
 	players = get_players();
@@ -2473,7 +2561,7 @@ timer_til_despawn(floatHeight)
 {
 	self endon("kill_weapon_movement");
 	// SRS 9/3/2008: if we timed out, move the weapon back into the box instead of deleting it
-	putBackTime = 12;
+	putBackTime = 8;
 	self MoveTo( self.origin - ( 0, 0, floatHeight ), putBackTime, ( putBackTime * 0.5 ) );
 	wait( putBackTime );
 
@@ -2540,6 +2628,12 @@ treasure_chest_give_weapon( weapon_string )
 				{
 					level.player_drops_tesla_gun = true;
 				}
+				// added thundergun
+				if( current_weapon == "thundergun_zm" )
+				{
+					level.player_drops_thundergun = true;
+				}
+
 				// PI_CHANGE_END
 
 				if ( issubstr( current_weapon, "knife_ballistic_" ) )

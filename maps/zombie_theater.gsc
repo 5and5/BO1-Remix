@@ -11,6 +11,11 @@
 
 main()
 {
+	// for weight functions
+	level.pulls_since_last_thundergun = 0;
+	level.player_seen_thundergun = false;
+	level.player_drops_thundergun = false;
+
 	level thread maps\zombie_theater_ffotd::main_start();
 
 	maps\zombie_theater_fx::main();
@@ -241,7 +246,7 @@ include_weapons()
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
 
-	include_weapon( "thundergun_zm", true, maps\_zombiemode_weapons::default_thundergun_weighting_func );
+	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_thundergun_weighting_func );
 	include_weapon( "thundergun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );

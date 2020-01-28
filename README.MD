@@ -73,9 +73,15 @@
 * Removed from powerup cycle on round 65
 
 ## Mystery Box
+* Decreased weapon pickup time from 12 to 8 seconds
+* Decreased box opening and closing from 0.5 to 0.3 seconds
+* Decreased weapon spining time from 4 to 2 seconds
+* Decreased time after grabing weapon from 3 to 1 seconds
 * Increased probability of getting Monkeys - by 100% every 5 rounds till 20
-* Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits
-* Increased probability of getting Wunderwaffe - by 10% after 6 hits - 20 % after 12 hits - 30% after 16 hits
+* Increased probability of getting Gershes - by 100% every 5 rounds till 20
+* Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
+* Increased probability of getting Wunder Waffe - by 10% after 6 hits - 20 % after 12 hits - 30% after 16 hits
+* Increased probability of getting Thunder Gun - by 10% after 6 hits - 20 % after 12 hits - 30% after 16 hits
 
 ## Maps
 ### Nacht Der Untoten
@@ -122,21 +128,19 @@
 * VR11 no longer gives players invisibility
 * George now drops an upgraded waffe
 * Flinger now kills zombies instead of respawning them
-* Set initial box to mule kick boat
+* Set initial box to back of mule kick boat
 ### Shangri-la/Moon
 * No changes made
 
 ### TODO
 * Make the waffe not kill novas (five)
-* Make hitting the box faster
 * Add PAP to SNN
 * COTD pap always up
-* fix 4 monkey glitch
-* Remove point gain from traps
+* Change probablity of weapons on COTD
+* See why shang crashes
 * Drop tracker??
 
-
-## Huge shout out to
+## Huge shout out to:
 * **_SE2Dev_** - For making LinkerMod
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
