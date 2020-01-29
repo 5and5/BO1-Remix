@@ -5594,9 +5594,11 @@ end_game()
 		game_over[i].alpha = 0;
 		game_over[i].color = ( 1.0, 1.0, 1.0 );
 
-		if (level.win_game) {
+		if (level.win_game)
+		{
 			game_over[i] SetText( "YOU WIN" );
-		} else {
+		} else
+		{
 			game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
 		}
 

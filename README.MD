@@ -14,10 +14,12 @@
 * Zombies start running at round 1
 * Weapon limit increased from 2 to 3
 * Removed Mulekick
-* Removed knife lunge
 * Starting points changed from 500 to 555
 * Defualt fov set to 80
 * Fixed backwards walking speed
+* Reset now happens at exactly 20 hours
+
+## UI
 * Reduced hitmarker size
 * In game timer
 * Zombie remaining counter
@@ -137,9 +139,11 @@
 * Add PAP to SNN
 * COTD pap always up
 * Change probablity of weapons on COTD
-* See why shang crashes
-* Drop tracker??
-* 20h reset??
+* Add display for 30, 50, 100 times
+
+* Make leader board spread sheet
+* Look into weapon random error
+* See why shang crashes ^^ same reason
 
 ## Huge shout out to:
 * **_SE2Dev_** - For making LinkerMod
