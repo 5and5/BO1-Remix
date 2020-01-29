@@ -1,5 +1,4 @@
 images\~$white-rgb&mtl_p7_zm_power_u~389956e1.iwi
-images\~$white-rr&$black-r&~-rtesla_~2d8b1672.iwi
 images\~~-ggold_spec-rgb&~-rblacknes~9126c4c9.iwi
 images\~~-gmtl_p7_zm_power_up_s-rgb&~33f0ac7c.iwi
 images\~~-gmtl_p7_zm_power_up_s-rgb&~8054e1fa.iwi
@@ -13,7 +12,6 @@ images\~-gmtl_t5_weapon_m14_c_1024.iwi
 images\~-gmtl_t5_weapon_m14_rail_c.iwi
 images\~-gray_gun.iwi
 images\~-gt5_weapon_carry_minigun_c.iwi
-images\~-gtesla_c.iwi
 images\~-gw_tommy_c.iwi
 images\~-gweapon_parbolic_knife_col.iwi
 images\~-gwpn_t7_zmb_gersch_device_c.iwi
@@ -28,6 +26,8 @@ images\camo_packapunch_spec.iwi
 images\fxt_zombie_moon.iwi
 images\fxt_zombie_moon_prototype.iwi
 images\grenadeicon.iwi
+images\-gtesla_c.iwi
+images\-gtesla_s-rgb-rtesla_gtesla_n-l.iwi
 images\hit_direction.iwi
 images\hud_40mmgrenade.iwi
 images\hud_40mmgrenade_32x32.iwi

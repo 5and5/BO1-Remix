@@ -12,6 +12,9 @@ main()
 	// limited betties/claymores on the map
 	level.max_mines = 20;
 
+	// added win con
+	level.win_game = false;
+
 	level._dontInitNotifyMessage = 1;
 	level.uses_tesla_powerup = true; // fix lights on tesla
 
@@ -1724,6 +1727,7 @@ onPlayerSpawned()
 
 				// zombies reamining hud
 				self thread zombies_remaining_hud();
+				self thread reset_timer();
 
 				// round timer hud
 				//self thread timer_round_hud();
@@ -5589,7 +5593,12 @@ end_game()
 		game_over[i].fontScale = 3;
 		game_over[i].alpha = 0;
 		game_over[i].color = ( 1.0, 1.0, 1.0 );
-		game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
+
+		if (level.win_game) {
+			game_over[i] SetText( "YOU WIN" );
+		} else {
+			game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
+		}
 
 		game_over[i] FadeOverTime( 1 );
 		game_over[i].alpha = 1;
@@ -7076,6 +7085,23 @@ zombies_remaining_hud()
 	}
 }
 
+reset_timer()
+{
+	level.total_time = 0;
+
+	while(1) {
+		wait 1;
+		level.total_time++;
+
+		if (level.total_time == 72002.8)
+		{
+			level notify( "end_game" );
+		}
+	}
+}
+
+
+
 timer_hud()
 {
 	timer = NewHudElem();
@@ -7095,4 +7121,13 @@ timer_hud()
 		timer SetTimerUp(9);
 	} else
 	timer SetTimerUp(2.8);
+
+	level waittill ( "end_game");
+
+	if (level.win_game)
+	{
+		timer SetText("20:00:00");
+	} else
+	timer SetText( "" );
+
 }

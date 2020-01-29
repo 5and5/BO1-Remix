@@ -12,10 +12,10 @@ rawfile,maps/_zombiemode_claymore.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 
 //WEAPONS
-rawfile,map/_zombiemode_weap_cymbal_monkey.gsc
+rawfile,maps/_zombiemode_weap_cymbal_monkey.gsc
 rawfile,maps/_zombiemode_weap_humangun.gsc
 rawfile,maps/_zombiemode_weap_tesla.gsc
-rawfile,map/_zombiemode_weap_thundergun.gsc
+rawfile,maps/_zombiemode_weap_thundergun.gsc
 
 //NACHT
 rawfile,maps/zombie_cod5_prototype.gsc

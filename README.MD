@@ -139,6 +139,7 @@
 * Change probablity of weapons on COTD
 * See why shang crashes
 * Drop tracker??
+* 20h reset??
 
 ## Huge shout out to:
 * **_SE2Dev_** - For making LinkerMod
