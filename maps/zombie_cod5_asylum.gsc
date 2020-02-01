@@ -10,7 +10,7 @@
 
 main()
 {
-	//level.uses_tesla_powerup = true;
+	level.uses_tesla_powerup = true;
 	maps\zombie_cod5_asylum_fx::main();
 
 	// viewmodel arms for the level
@@ -561,6 +561,10 @@ include_powerups()
 
 	PreCacheItem( "minigun_zm" );
 	include_powerup( "minigun" );
+
+	// fix waffe?
+	PreCacheItem( "tesla_gun_zm" );
+	include_powerup( "tesla" );
 }
 
 

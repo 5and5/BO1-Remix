@@ -1435,7 +1435,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 55555555; //555
+		players[p].score = 5555555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -3951,7 +3951,7 @@ chalk_round_over()
 
 round_think()
 {
-	level.round_number = 100; //69
+	level.round_number = 40; //69
 	level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
@@ -5050,8 +5050,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			{
 				self.water_damage = true;
 			}
-
-			return self.maxhealth + 1000;
+				return self.maxhealth + 1000;
 		}
 	}
 
@@ -5400,7 +5399,14 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 	if((weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm") && self.animname != "director_zombie")
 	{
-		return self.maxhealth + 1000;
+		min_damage = 10000;
+		damage = int(self.maxhealth / 2) + 10;
+
+		if(damage < min_damage && damage < 20000)
+		{
+			damage = min_damage;
+		}
+		return damage;
 	}
 
 	if(attacker HasPerk("specialty_rof") && (meansofdeath == "MOD_PISTOL_BULLET" || meansofdeath == "MOD_RIFLE_BULLET"))
@@ -5442,7 +5448,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			return damage;
 		}
 
-	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie")
+	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" || self.animname == "director_zombie")
 		{
 			return 1500;
 		}

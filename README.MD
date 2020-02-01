@@ -67,12 +67,15 @@
 * Added to powerup cycle on round 5
 * Removed from powerup cycle after first box moves
 #### Death Machines
-* Is attainable on all maps
-* Added to powerup cycle on round 65
+* Added to powerup cycle on all maps on round 65
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
+* Death machines now stack
 #### Double Points
 * Removed from powerup cycle on round 65
+* Double points now stack
+#### Insta kill
+* Insta kills now stack
 
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 8 seconds
@@ -113,8 +116,8 @@
 * Removed alley, control room and pm63 room box locations
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
 ### Five
-* Added Wunderwaffe
-* Added trigger to phones up/down stairs that upgrades the Wunderwaffe
+* Killing the theif before he takes a weapon now gives waffe powerup instead of a bonfire sale
+* Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Set windows
 * Set power room telepoter to always take you up stairs
 * Set initial box to the dead guy room
@@ -130,16 +133,18 @@
 * VR11 no longer gives players invisibility
 * George now drops an upgraded waffe
 * Flinger now kills zombies instead of respawning them
-* Set initial box to back of mule kick boat
+* Set initial box to on top of flopper
+* Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
+* Increased pack-a-punch time on map from 2 minutes to 3 minutes
 ### Shangri-la/Moon
 * No changes made
 
 ### TODO
-* Make the waffe not kill novas (five)
 * Add PAP to SNN
-* COTD pap always up
 * Change probablity of weapons on COTD
-* Add display for 30, 50, 100 times
+* Fix waffe lights
+
+* Add display for 30, 50, 100 times or at the end of every round
 
 * Make leader board spread sheet
 * Look into weapon random error

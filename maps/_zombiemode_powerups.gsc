@@ -1853,7 +1853,8 @@ double_points_powerup( drop_item )
 	level thread point_doubler_on_hud( drop_item );
 
 	level.zombie_vars["zombie_point_scalar"] = 2;
-	wait 30;
+
+	wait self.zombie_vars["zombie_powerup_point_doubler_time"];
 
 	level.zombie_vars["zombie_point_scalar"] = 1;
 }
@@ -1891,13 +1892,14 @@ insta_kill_powerup( drop_item )
 {
 	level notify( "powerup instakill" );
 	level endon( "powerup instakill" );
+	self endon ("disconnect");
 
 
 	//	array_thread (players, ::insta_kill_on_hud, drop_item);
 	level thread insta_kill_on_hud( drop_item );
 
 	level.zombie_vars["zombie_insta_kill"] = 1;
-	wait( 30 );
+	wait self.zombie_vars["zombie_powerup_insta_kill_time"];
 	level.zombie_vars["zombie_insta_kill"] = 0;
 	players = get_players();
 	for(i = 0; i < players.size; i++)
@@ -1921,7 +1923,7 @@ check_for_instakill( player, mod, hit_location )
 			return;
 		}
 
-		if( IsDefined(self.animname) && self.animname == "ape_zombie" )
+		if( IsDefined(self.animname) && self.animname == "director_zombie" )
 		{
 			return;
 		}
@@ -1960,8 +1962,13 @@ insta_kill_on_hud( drop_item )
 	if ( level.zombie_vars["zombie_powerup_insta_kill_on"] )
 	{
 		// reset the time and keep going
-		level.zombie_vars["zombie_powerup_insta_kill_time"] = 30;
+		level.zombie_vars["zombie_powerup_insta_kill_time"] += 30;
 		return;
+	}
+
+	else
+	{
+		self.zombie_vars["zombie_powerup_insta_kill_time"] = 30;
 	}
 
 	level.zombie_vars["zombie_powerup_insta_kill_on"] = true;
@@ -1984,6 +1991,7 @@ insta_kill_on_hud( drop_item )
 
 time_remaning_on_insta_kill_powerup()
 {
+	self endon ("disconnect");
 	//self setvalue( level.zombie_vars["zombie_powerup_insta_kill_time"] );
 	//level thread maps\_zombiemode_audio::do_announcer_playvox( level.devil_vox["powerup"]["instakill"] );
 	temp_enta = spawn("script_origin", (0,0,0));
@@ -2034,8 +2042,12 @@ point_doubler_on_hud( drop_item )
 	if ( level.zombie_vars["zombie_powerup_point_doubler_on"] )
 	{
 		// reset the time and keep going
-		level.zombie_vars["zombie_powerup_point_doubler_time"] = 30;
+		level.zombie_vars["zombie_powerup_point_doubler_time"] += 30;
 		return;
+	}
+	else
+	{
+		self.zombie_vars["zombie_powerup_point_doubler_time"] = 30;
 	}
 
 	level.zombie_vars["zombie_powerup_point_doubler_on"] = true;

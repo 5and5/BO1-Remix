@@ -46,7 +46,7 @@ phone_egg()
 
 	level.phone_counter = level.phone_counter + 1;
 
-	if(level.phone_counter == 1)
+	/*if(level.phone_counter == 1)
 		{
 			if(player HasWeapon("tesla_gun_zm"))
 				{
@@ -57,7 +57,7 @@ phone_egg()
 					player PlaySound( "mus_wonder_weapon_stinger" );
 				}
 			level thread setup_phone_audio();
-		}
+		}*/
 
 	if( level.phone_counter == 2 )
 	{

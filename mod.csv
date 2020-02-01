@@ -6,12 +6,12 @@ rawfile,maps/_zombiemode_powerups.gsc
 rawfile,maps/_zombiemode_zone_manager.gsc
 rawfile,maps/_zombiemode_traps.gsc
 rawfile,maps/_zombiemode_spawner.gsc
-rawfile,maps/_zombiemode_betty.gsc
-rawfile,maps/_zombiemode_claymore.gsc
 //rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 
 //WEAPONS
+rawfile,maps/_zombiemode_betty.gsc
+rawfile,maps/_zombiemode_claymore.gsc
 rawfile,maps/_zombiemode_weap_cymbal_monkey.gsc
 rawfile,maps/_zombiemode_weap_humangun.gsc
 rawfile,maps/_zombiemode_weap_tesla.gsc
@@ -53,10 +53,15 @@ rawfile,maps/_zombiemode_ai_ape.gsc
 //COTD
 rawfile,maps/zombie_coast_flinger.gsc
 rawfile,maps/zombie_coast.gsc
+rawfile,maps/zombie_coast_lighthouse.gsc
+rawfile,maps/_zombiemode_ai_director.gsc
 
 //MOON
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc
+
+//CLIENTSCRIPTS
+rawfile,clientscripts/_zombiemode_weap_tesla.csc
 
 //WEAPONS
 weapon,sp/tesla_gun_zm
@@ -70,7 +75,6 @@ weapon,sp/ak47_ft_upgraded_zm
 weapon,sp/minigun_zm
 
 //FX
-fx,maps/zombie/fx_zmb_ent_stolen
 fx,maps/zombie/fx_zombie_tesla_bolt_secondary
 fx,maps/zombie/fx_zombie_tesla_electric_bolt
 fx,maps/zombie/fx_zombie_tesla_neck_spurt
@@ -88,10 +92,6 @@ fx,maps/zombie/fx_zombie_tesla_tube_view2_ug
 fx,maps/zombie/fx_zombie_tesla_tube_view3
 fx,maps/zombie/fx_zombie_tesla_tube_view3_ug
 fx,maps/zombie/fx_zombie_tesla_ug_elec_bolt
-
-fx,misc/fx_zombie_powerup_on_red
-fx,misc/fx_zombie_powerup_red_grab
-fx,misc/fx_zombie_powerup_red_wave
 fx,explosions/fx_grenade_flash
 
 //XMODLES
