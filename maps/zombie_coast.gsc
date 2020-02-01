@@ -197,7 +197,7 @@ main()
 	// TODO: Get it working then hand off to Laufer so he can transfer it to csc
 	level thread coast_power_on_lighthouse_react();
 
-	level thread coast_spawn_init_delay();
+	//level thread coast_spawn_init_delay();
 
 	level thread maps\zombie_coast_fx:: manage_blizzard();
 
@@ -258,30 +258,7 @@ custom_add_weapons()
 	maps\_zombiemode_weapons::add_zombie_weapon( "sniper_explosive_zm",		"sniper_explosive_upgraded_zm",			&"ZOMBIE_WEAPON_SNIPER_EXPLOSIVE",		2500,	"ubersniper",	"",		undefined );
 }
 
-coast_spawn_init_delay(director)
-{
-	flag_wait( "begin_spawning" );
-	flag_clear( "spawn_zombies");
-	director_zomb = undefined;
 
-	while(!IsDefined(director_zomb))
-	{
-		zombs = GetAIArray ("axis");
-		for ( i = 0; i < zombs.size; i++ )
-		{
-			if(IsDefined(zombs[i].animname) && zombs[i].animname == "director_zombie")
-			{
-				director_zomb = zombs[i];
-			}
-		}
-		wait_network_frame();
-	}
-
-	director_zomb waittill_notify_or_timeout( "director_spawn_zombies", 30 );
-	//wait(30.0);
-
-	flag_set( "spawn_zombies");
-}
 
 
 // ------------------------------------------------------------------------------------------------

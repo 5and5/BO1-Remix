@@ -64,7 +64,7 @@ init()
 		level.director_devgui_health = ::director_devgui_health;
 	}
 
-	precacheshellshock( "electrocution" );
+	//precacheshellshock( "electrocution" );
 
 	// Number of current active boss zombies
 	level.num_director_zombies = 0;
@@ -91,7 +91,7 @@ init()
 	}
 	if( !isDefined( level.director_zombie_scream_a_radius ) )
 	{
-		level.director_zombie_scream_a_radius_sq = 1024*1024;
+		level.director_zombie_scream_a_radius_sq = 512*512; //1024*1024 old
 	}
 	if( !isDefined( level.director_zombie_scream_b_chance ) )
 	{
@@ -807,7 +807,7 @@ director_watch_damage()
 	}
 	else
 	{
-		level thread maps\_zombiemode_powerups::specific_powerup_drop( "minigun", self.origin );
+		level thread maps\_zombiemode_powerups::specific_powerup_drop( "tesla", self.origin );
 	}
 
 	forward = VectorNormalize( AnglesToForward( self.angles ) );
@@ -856,9 +856,14 @@ director_scream_in_water()
 
 	if ( !isDefined( self.water_scream ) )
 	{
+		if ( is_true( self.is_melee ) )
+		{
+			return;
+		}
+
 		self.water_scream = true;
 
-		if ( is_true( self.is_melee ) )
+		/*if ( is_true( self.is_melee ) )
 		{
 			while ( 1 )
 			{
@@ -868,7 +873,7 @@ director_scream_in_water()
 				}
 				wait_network_frame();
 			}
-		}
+		}*/
 
         if( IsDefined( level._audio_director_vox_play ) )
 	    {
@@ -892,6 +897,8 @@ director_scream_in_water()
 
 director_scream_delay()
 {
+	self endon( "director_exit" );
+
 	wait( 2.6 );
 	clientnotify( "ZDA" );
 	self thread director_blur();
@@ -906,7 +913,7 @@ director_blur()
 	for ( i = 0; i < players.size; i++ )
 	{
 		player = players[i];
-		player ShellShock( "electrocution", 1.7, true );
+		player ShellShock( "electrocution", 1, true );
 	}
 }
 
@@ -2223,7 +2230,7 @@ scream_b_watcher( animname )
 	}
 	for( i = 0; i < affected_players.size; i++ )
 	{
-		affected_players[i] ShellShock( "electrocution", 1.5, true );
+		affected_players[i] ShellShock( "electrocution", 0.5, true ); //1.7 old
 	}
 }
 
@@ -2369,9 +2376,9 @@ player_electrify()
 	if ( !IsDefined( self.electrified ) )
 	{
 		self.electrified = true;
-		self setelectrified( SHOCK_TIME );
-		self ShellShock( "electrocution", 0.5, true );
-		self PlaySound("zmb_director_damage_zort");
+		//self setelectrified( SHOCK_TIME );
+		//self ShellShock( "electrocution", 0.5, true );
+		//self PlaySound("zmb_director_damage_zort");
 		self setclientflag( level._CF_PLAYER_ELECTRIFIED );
 		wait( SHOCK_TIME );
 		self clearclientflag( level._CF_PLAYER_ELECTRIFIED );
@@ -2493,7 +2500,7 @@ director_max_ammo_watcher()
 		{
 			level.director_max_ammo_available = true;
 			level waittill( "director_max_ammo_drop" );
-			level.director_max_ammo_round = level.round_number + randomintrange( 4, 6 );
+			level.director_max_ammo_round = level.round_number + randomintrange( 4, 5 );
 
 			director_print( "next max ammo round " + level.director_max_ammo_round );
 		}

@@ -128,20 +128,21 @@
 * Monkeys health caps out at 1500
 * Monkeys taking revive doesn't count as a down
 ### Call of the Dead
+* Removed initial spawn delay on round 1
 * VR11 un-upgraded now also gives players instakill
 * VR11 can now give yourself instakill by shooting the ground
 * VR11 no longer gives players invisibility
 * George now drops an upgraded waffe
+* George no longer zaps you from a distance
 * Flinger now kills zombies instead of respawning them
-* Set initial box to on top of flopper
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
 * Increased pack-a-punch time on map from 2 minutes to 3 minutes
+* Set initial box to on top of flopper
 ### Shangri-la/Moon
 * No changes made
 
-### TODO
+#### TODO
 * Add PAP to SNN
-* Add mp5 to verruckt
 
 * Change probablity of weapons on COTD (reuse monkey func)
 * Make dolls one shot
@@ -160,5 +161,5 @@
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
 * **_JBird_** - For helping me with the mod this wouldn't be possible without him
-
+* **_Clippy95_** - For helping with scripting
 
