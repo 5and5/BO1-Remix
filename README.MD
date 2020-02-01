@@ -141,12 +141,17 @@
 
 ### TODO
 * Add PAP to SNN
-* Change probablity of weapons on COTD
-* Fix waffe lights
+* Add mp5 to verruckt
 
+* Change probablity of weapons on COTD (reuse monkey func)
+* Make dolls one shot
+* Fix waffe lights
+* Change george to not hit from a distance and spawn zombie right away
 * Add display for 30, 50, 100 times or at the end of every round
 
 * Make leader board spread sheet
+
+* Add early insta kill rounds??
 * Look into weapon random error
 * See why shang crashes ^^ same reason
 

@@ -62,6 +62,7 @@ main()
 
 	include_weapons();
 	include_powerups();
+	spawn_mp5k_wallbuy();
 
 	if(getdvar("light_mode") != "")
 	{
@@ -451,7 +452,7 @@ init_sounds()
 //-------------------------------------------------------------------------------
 include_weapons()
 {
-	include_weapon( "m1911_zm", false );						// colt
+	include_weapon("m1911_zm", false );						// colt
 	include_weapon("python_zm");
 	include_weapon("cz75_zm");
 	include_weapon("g11_lps_zm");
@@ -498,6 +499,7 @@ include_weapons()
 	include_weapon( "stoner63_upgraded_zm",false );
 	include_weapon( "ak47_zm" );
  	include_weapon( "ak47_upgraded_zm", false);
+ 	include_weapon( "mp5k_zm", false, true );
 
 	// Special
 	include_weapon( "freezegun_zm", false );
@@ -1846,4 +1848,20 @@ mature_settings_changes()
 			asylum_chair_mature SetModel("zombie_asylum_chair_nogore");
 		}
 	}
+}
+
+spawn_mp5k_wallbuy()
+{
+    PreCacheModel( "weapon_upgrade_mp5" );
+    model = Spawn( "script_model", ( -567.0, 745.3, 285.1 ) );
+    model.angles = ( 0, 0, 0 );
+    model SetModel( GetWeaponModel( "mp5k_zm" ) );
+    model.targetname = "weapon_upgrade_mp5";
+    trigger = Spawn( "trigger_radius_use", model.origin, 0, 20, 20 );
+    trigger.targetname = "weapon_upgrade";
+    trigger.target = "weapon_upgrade_mp5";
+    trigger.zombie_weapon_upgrade = "mp5k_zm";
+    chalk = Spawn( "script_model", model.origin );
+    chalk.angles = ( 0, 180, 0 );
+    chalk SetModel( "t5_weapon_mp5_world" );
 }

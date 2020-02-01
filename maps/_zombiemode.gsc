@@ -1435,7 +1435,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 5555555; //555
+		players[p].score = 55555555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -3951,8 +3951,8 @@ chalk_round_over()
 
 round_think()
 {
-	level.round_number = 40; //69
-	level.zombie_vars["zombie_spawn_delay"] = .08;
+	//level.round_number = 40; //69
+	//level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
 
