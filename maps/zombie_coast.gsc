@@ -481,6 +481,14 @@ include_weapons()
 	include_weapon( "knife_ballistic_sickle_upgraded_zm", false );
 	level._uses_retrievable_ballisitic_knives = true;
 
+	// new weapons
+	include_weapon( "ppsh_zm" );
+	include_weapon( "ppsh_upgraded_zm", false );
+	include_weapon( "stoner63_zm" );
+	include_weapon( "stoner63_upgraded_zm", false );
+	include_weapon( "ak47_zm" );
+ 	include_weapon( "ak47_ft_upgraded_zm", false);
+
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );

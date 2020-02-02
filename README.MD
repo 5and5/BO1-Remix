@@ -57,6 +57,15 @@
 * Removed China Lake
 * Removed Winters Howl
 
+## Mystery Box
+* Decreased weapon pickup time from 12 to 8 seconds
+* Decreased box opening and closing from 0.5 to 0.3 seconds
+* Decreased weapon spining time from 4 to 2 seconds
+* Decreased time after grabing weapon from 3 to 1 seconds
+* Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
+* Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
+* Increased probability of getting Wonder Weapons - by 10% after 5 hits - 20 % after 10 hits - 30% after 15 hits
+
 ## Equipment
 #### Monkey Bombs
 * Now do 50% of zombies max health
@@ -90,20 +99,12 @@
 #### Insta kill
 * Insta kills now stack
 
-## Mystery Box
-* Decreased weapon pickup time from 12 to 8 seconds
-* Decreased box opening and closing from 0.5 to 0.3 seconds
-* Decreased weapon spining time from 4 to 2 seconds
-* Decreased time after grabing weapon from 3 to 1 seconds
-* Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
-* Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
-* Increased probability of getting Wonder Weapons - by 10% after 5 hits - 20 % after 10 hits - 30% after 15 hits
-
 ## Maps
 ### Nacht Der Untoten
 * Added trigger to cabinet that upgrades the Thunder Gun
 ### Verruckt
-* Added Wunderwaffe
+* Added Wunderwaffe to the box
+* Added mp5 wall buy in the speed cola room
 ### Shi-no-numa
 * Added trigger to first room radio that upgrades the Wunderwaffe
 * Removed fishing hut box location
@@ -153,9 +154,11 @@
 * No changes made
 
 #### TODO
+* Fix claymore killing george
 * Add PAP to SNN
 * Fix waffe lights
 * Add display for 30, 50, 100 times or at the end of every round
+* Remove COTD cutscene
 * might change kino box to mp40
 
 * Make leader board spread sheet

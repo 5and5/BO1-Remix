@@ -1435,7 +1435,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 55555555; //555
+		players[p].score = 555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -5422,9 +5422,10 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	if(self.animname == "director_zombie")
 	{
 		self.dmg_taken += int(final_damage);
+		return self.dmg_taken;
 	}
 
-	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && self.animname != "thief_zombie")
+	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && (self.animname != "thief_zombie" || self.animname != "director_zombie"))
 		{
 			min_damage = 2000;
 			damage = int(self.maxhealth / 2) + 10;
