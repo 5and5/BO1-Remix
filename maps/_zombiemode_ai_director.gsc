@@ -2500,7 +2500,7 @@ director_max_ammo_watcher()
 		{
 			level.director_max_ammo_available = true;
 			level waittill( "director_max_ammo_drop" );
-			level.director_max_ammo_round = level.round_number + randomintrange( 4, 5 );
+			level.director_max_ammo_round = level.round_number + randomintrange( 4 ); //(4, 6) old
 
 			director_print( "next max ammo round " + level.director_max_ammo_round );
 		}

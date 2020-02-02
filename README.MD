@@ -24,6 +24,19 @@
 * In game timer
 * Zombie remaining counter
 
+## Special Rounds
+#### Dogs
+* First dogs is always round 5
+* Always 4 rounds between dog rounds
+### Theif
+* First theif round is always the round after you turn on power
+* Always 4 rounds between theif rounds
+### Monkeys
+* First monkey round is always the round after you turn on power and have purchased a perk
+* Always 4 rounds between theif rounds
+### George
+* Always give a max every 4 rounds
+
 ## Weapons
 #### Wunderwaffe
 * Added Wunderwaffe to Five and Verruckt
@@ -82,11 +95,9 @@
 * Decreased box opening and closing from 0.5 to 0.3 seconds
 * Decreased weapon spining time from 4 to 2 seconds
 * Decreased time after grabing weapon from 3 to 1 seconds
-* Increased probability of getting Monkeys - by 100% every 5 rounds till 20
-* Increased probability of getting Gershes - by 100% every 5 rounds till 20
+* Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 * Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
-* Increased probability of getting Wunder Waffe - by 10% after 6 hits - 20 % after 12 hits - 30% after 16 hits
-* Increased probability of getting Thunder Gun - by 10% after 6 hits - 20 % after 12 hits - 30% after 16 hits
+* Increased probability of getting Wonder Weapons - by 10% after 5 hits - 20 % after 10 hits - 30% after 15 hits
 
 ## Maps
 ### Nacht Der Untoten
@@ -112,15 +123,15 @@
 * Meteor in the first room now turns on power
 * Turrets kill in two bullets at any round
 * Decrease time spent at PaP from 45 to 30 seconds
-* Set initial box to fire trap room
 * Removed alley, control room and pm63 room box locations
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
+* Set initial box to fire trap room
 ### Five
-* Killing the theif before he takes a weapon now gives waffe powerup instead of a bonfire sale
-* Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Set windows
 * Set power room telepoter to always take you up stairs
 * Set initial box to the dead guy room
+* Killing the theif before he takes a weapon now gives waffe powerup instead of a bonfire sale
+* Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Removed alarm from theif round to fix audio glitch
 ### Ascension
 * Turrets kill in 2 bullets
@@ -143,12 +154,9 @@
 
 #### TODO
 * Add PAP to SNN
-
-* Change probablity of weapons on COTD (reuse monkey func)
-* Make dolls one shot
 * Fix waffe lights
-* Change george to not hit from a distance and spawn zombie right away
 * Add display for 30, 50, 100 times or at the end of every round
+* might change kino box to mp40
 
 * Make leader board spread sheet
 

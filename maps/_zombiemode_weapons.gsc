@@ -182,6 +182,82 @@ default_thundergun_weighting_func()
 	return num_to_add;
 }
 
+default_humangun_weighting_func()
+{
+	num_to_add = 1;
+	if( isDefined( level.pulls_since_last_humangun ) )
+	{
+		// player has dropped for another weapon
+		if( isDefined(level.player_drops_humangun) && level.player_drops_humangun == true )
+		{
+				// after 16 pulls the percentage increases to 30%
+				if( level.pulls_since_last_humangun > 15 )
+				{
+					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
+				}
+				// after 12 pulls the percentage increases to 20%
+				else if( level.pulls_since_last_humangun > 10 )
+				{
+					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
+				}
+				// after 6 pulls the percentage increases to 10%
+				else if( level.pulls_since_last_humangun > 5 )
+				{
+					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
+				}
+		}
+
+		// player has not seen gun in late rounds
+		if( !isDefined(level.player_seen_humangun) || level.player_seen_humangun == false )
+		{
+			// after round 10 the gun percentage increases to 15%
+			if( level.round_number > 10 )
+			{
+				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
+			}
+		}
+	}
+	return num_to_add;
+}
+
+default_sniper_explosive_weighting_func()
+{
+	num_to_add = 1;
+	if( isDefined( level.pulls_since_last_sniper_explosive ) )
+	{
+		// player has dropped the for another weapon
+		if( isDefined(level.player_drops_sniper_explosive) && level.player_drops_sniper_explosive == true )
+		{
+				// after 16 pulls the percentage increases to 30%
+				if( level.pulls_since_last_sniper_explosive > 15 )
+				{
+					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
+				}
+				// after 12 pulls the percentage increases to 20%
+				else if( level.pulls_since_last_sniper_explosive > 10 )
+				{
+					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
+				}
+				// after 6 pulls the percentage increases to 10%
+				else if( level.pulls_since_last_sniper_explosive > 5 )
+				{
+					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
+				}
+		}
+
+		// player has not seen gun in late rounds
+		if( !isDefined(level.player_seen_sniper_explosive) || level.player_seen_sniper_explosive == false )
+		{
+			// after round 10 the gun percentage increases to 15%
+			if( level.round_number > 10 )
+			{
+				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
+			}
+		}
+	}
+	return num_to_add;
+}
+
 
 //	Greatly elevate the chance to get it until someone has it, then make it even
 default_cymbal_monkey_weighting_func()
@@ -208,59 +284,34 @@ default_cymbal_monkey_weighting_func()
 		}
 }
 
-/*default_thundergun_weighting_func()
-{
-	num = 1.5;
-	return num;
-}*/
-
 default_zombie_black_hole_bomb_weighting_func()
 {
+	if ( level.round_number < 50 )
+	{
+		return 2;
+	}
 	if( level.round_number > 5 )
-		{
-			return 2;
-		}
-		else if( level.round_number > 10 )
-		{
-			return 3;
-		}
-		else if( level.round_number > 15 )
-		{
-			return 4;
-		}
-		else if( level.round_number > 20 )
-		{
-			return 5; //TODO
-		}
-		else
-		{
-			return 1;
-		}
+	{
+		return 2;
+	}
+	else if( level.round_number > 10 )
+	{
+		return 3;
+	}
+	else if( level.round_number > 15 )
+	{
+		return 4;
+	}
+	else if( level.round_number > 20 )
+	{
+		return 5; //TODO
+	}
+	else
+	{
+		return 1;
+	}
 }
 
-default_zombie_doll_weighting_func()
-{
-	if( level.round_number > 5 )
-		{
-			return 2;
-		}
-		else if( level.round_number > 10 )
-		{
-			return 3;
-		}
-		else if( level.round_number > 15 )
-		{
-			return 4;
-		}
-		else if( level.round_number > 20 )
-		{
-			return 5;
-		}
-		else
-		{
-			return 1;
-		}
-}
 
 //	For weapons which should only appear once the box moves
 default_1st_move_weighting_func()
@@ -2389,7 +2440,7 @@ treasure_chest_weapon_spawn( chest, player, respin )
 		acquire_weapon_toggle( rand, player );
 
 		//turn off power weapon, since player just got one
-		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm")
+		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm" || rand == "humangun_zm" || rand == "sniper_explosive_zm")
 		{
 			if( rand == "ray_gun_zm" )
 			{
@@ -2407,6 +2458,18 @@ treasure_chest_weapon_spawn( chest, player, respin )
 			{
 				level.pulls_since_last_thundergun = 0;
 				level.player_seen_thundergun = true;
+			}
+
+			if( rand == "humangun_zm" )
+			{
+				level.pulls_since_humangun = 0;
+				level.player_seen_humangun = true;
+			}
+
+			if( rand == "sniper_explosive_zm" )
+			{
+				level.pulls_since_sniper_explosive = 0;
+				level.player_seen_sniper_explosive = true;
 			}
 
 		}
@@ -2632,6 +2695,16 @@ treasure_chest_give_weapon( weapon_string )
 				if( current_weapon == "thundergun_zm" )
 				{
 					level.player_drops_thundergun = true;
+				}
+
+				if( current_weapon == "humangun_zm" )
+				{
+					level.player_drops_humangun = true;
+				}
+
+				if( current_weapon == "sniper_explosive_zm" )
+				{
+					level.player_drops_sniper_explosive = true;
 				}
 
 				// PI_CHANGE_END
@@ -3336,7 +3409,7 @@ ammo_give( weapon )
 
 init_includes()
 {
-	if(level.script == "zombie_pentagon" || level.script == "zombie_cod5_asylum" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater" || level.script == "zombie_cod5_prototype" || level.script == "zombie_temple" || level.script == "zombie_moon" || level.script == "zombie_cod5_sumpf" || level.script == "zombie_cosmodrome" )
+	if(level.script == "zombie_pentagon" || level.script == "zombie_cod5_asylum" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater" || level.script == "zombie_cod5_prototype" || level.script == "zombie_temple" || level.script == "zombie_moon" || level.script == "zombie_cod5_sumpf" || level.script == "zombie_cosmodrome" || level.script == "zombie_coast" )
  	{
  		include_weapon( "stoner63_zm" );
  		include_weapon( "ppsh_zm" );

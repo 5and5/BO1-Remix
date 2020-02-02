@@ -8,6 +8,15 @@ main()
 {
 	level thread maps\zombie_coast_ffotd::main_start();
 
+	// for weight functions
+	level.pulls_since_last_humangun = 0;
+	level.player_seen_humangun = false;
+	level.player_drops_humangun = false;
+
+	level.pulls_since_sniper_explosive = 0;
+	level.player_seen_sniper_explosive = false;
+	level.player_drops_sniper_explosive = false;
+
 	//for clientsiding the riser fx
 	level.riser_type = "snow";
 	level.use_new_riser_water = 1;
@@ -458,13 +467,13 @@ include_weapons()
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
 
 	// these are not available yet until their functionality is more complete
-	include_weapon( "humangun_zm", true, false );
+	include_weapon( "humangun_zm", true, false, maps\_zombiemode_weapons::default_humangun_weighting_func );
 	include_weapon( "humangun_upgraded_zm", false );
-	include_weapon( "sniper_explosive_zm", true );
+	include_weapon( "sniper_explosive_zm", true , false, maps\_zombiemode_weapons::default_sniper_explosive_weighting_func);
 	include_weapon( "sniper_explosive_upgraded_zm", false );
 //	include_weapon( "tesla_gun_zm" );
 	include_weapon( "tesla_gun_upgraded_zm", false );
-	include_weapon( "zombie_nesting_dolls", true, false );
+	include_weapon( "zombie_nesting_dolls", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
 	include_weapon( "knife_ballistic_zm", true );
 	include_weapon( "knife_ballistic_upgraded_zm", false );
