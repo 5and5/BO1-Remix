@@ -115,8 +115,9 @@
 * Changed the spawn zone of all four areas leading to a hut to not include the main hut
 ### Der Riese
 * Only two of the three teleporter are needed to open PaP
-* Turning on power now give you the bowie knife
 * Removed catwalk box location
+* Turning on power now give you the bowie knife
+* Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
 * Changed the spawn zones of power to only include only it self (3 windows)
 ### Kino Der Toten
@@ -154,12 +155,10 @@
 * No changes made
 
 #### TODO
-* Fix claymore killing george
+* Fix kino teleporter glitching and losing fov
 * Add PAP to SNN
 * Fix waffe lights
 * Add display for 30, 50, 100 times or at the end of every round
-* Remove COTD cutscene
-* might change kino box to mp40
 
 * Make leader board spread sheet
 

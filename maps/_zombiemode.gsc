@@ -5419,12 +5419,6 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		final_damage = int(final_damage * 2);
 	}
 
-	if(self.animname == "director_zombie")
-	{
-		self.dmg_taken += int(final_damage);
-		return self.dmg_taken;
-	}
-
 	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && (self.animname != "thief_zombie" || self.animname != "director_zombie"))
 		{
 			min_damage = 2000;
@@ -5434,7 +5428,12 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 				{
 					damage = min_damage;
 				}
-			return damage;
+			final_damage = damage;
+		}
+
+	if(self.animname == "director_zombie")
+		{
+			final_damage = int(final_damage);
 		}
 
 	if(weapon == "zombie_cymbal_zombie" )

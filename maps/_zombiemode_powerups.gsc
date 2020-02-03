@@ -11,6 +11,7 @@ init()
 	PrecacheShader( "specialty_firesale_zombies");
 	PrecacheShader( "zom_icon_bonfire");
 	PrecacheShader( "zom_icon_minigun");
+	PrecacheShader( "specialty_lightningbolt_zombies" );
 
 
 	PrecacheShader( "black" );
@@ -290,7 +291,7 @@ solo_powerup_hud_overlay()
 
 		players[p] thread solo_power_up_hud( "zom_icon_minigun", players[p].solo_powerup_hud[0], 76, "zombie_powerup_minigun_time", "zombie_powerup_minigun_on" );
 		// the weapon powerups are mutually exclusive, so we use the same screen position
-		players[p] thread solo_power_up_hud( "zom_icon_minigun", players[p].solo_powerup_hud[1], 76, "zombie_powerup_tesla_time", "zombie_powerup_tesla_on" );
+		players[p] thread solo_power_up_hud( "specialty_lightningbolt_zombies", players[p].solo_powerup_hud[1], 76, "zombie_powerup_tesla_time", "zombie_powerup_tesla_on" );
 	}
 }
 

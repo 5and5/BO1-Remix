@@ -60,9 +60,6 @@ rawfile,maps/_zombiemode_ai_director.gsc
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc
 
-//CLIENTSCRIPTS
-rawfile,clientscripts/_zombiemode_weap_tesla.csc
-
 //WEAPONS
 weapon,sp/tesla_gun_zm
 weapon,sp/tesla_gun_upgraded_zm
@@ -73,6 +70,12 @@ weapon,sp/stoner63_upgraded_zm
 weapon,sp/ak47_zm
 weapon,sp/ak47_ft_upgraded_zm
 weapon,sp/minigun_zm
+
+//CLIENTSCRIPTS
+rawfile,clientscripts/_zombiemode_weap_tesla.csc
+
+//MATERIAL
+material,specialty_lightningbolt_zombies
 
 //FX
 fx,maps/zombie/fx_zombie_tesla_bolt_secondary
