@@ -86,10 +86,10 @@ init_powerups()
 	}
 
 	// Random Drops
+	add_zombie_powerup( "double_points","zombie_x2_icon",	&"ZOMBIE_POWERUP_DOUBLE_POINTS", false, false, false );
 	add_zombie_powerup( "nuke", 		"zombie_bomb",		&"ZOMBIE_POWERUP_NUKE", false, false, false, 			"misc/fx_zombie_mini_nuke" );
 //	add_zombie_powerup( "nuke", 		"zombie_bomb",		&"ZOMBIE_POWERUP_NUKE", false, false, false, 			"misc/fx_zombie_mini_nuke_hotness" );
 	add_zombie_powerup( "insta_kill", 	"zombie_skull",		&"ZOMBIE_POWERUP_INSTA_KILL", false, false, false );
-	add_zombie_powerup( "double_points","zombie_x2_icon",	&"ZOMBIE_POWERUP_DOUBLE_POINTS", false, false, false );
 	add_zombie_powerup( "full_ammo",  	"zombie_ammocan",	&"ZOMBIE_POWERUP_MAX_AMMO", false, false, false );
 
 	if( !level.mutators["mutator_noBoards"] )
@@ -140,9 +140,9 @@ init_powerups()
 	add_zombie_powerup( "empty_clip", "zombie_ammocan", &"ZOMBIE_POWERUP_MAX_AMMO", false, false, true );
 
 	// Randomize the order
-	randomize_powerups();
+	//randomize_powerups();
 	level.zombie_powerup_index = 0;
-	randomize_powerups();
+	//randomize_powerups();
 
 	// Rare powerups
 	level.rare_powerups_active = 0;

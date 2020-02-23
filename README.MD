@@ -160,8 +160,7 @@
 * make double points, nuke, insta, max first drops of the game
 * Make leader board spread sheet
 
-* Look into weapon random error
-* See why shang crashes ^^ same reason
+* See why shang always crashes when loaded
 
 ## Huge shout out to:
 * **_SE2Dev_** - For making LinkerMod

@@ -892,12 +892,12 @@ water_burst_overwrite()
 
 spawn_packapunch_machine()
 {
-	wait_network_frame();
+	//wait_network_frame();
 	level notify("Pack_A_Punch_on");
 
 	level.zombie_packapunch_machine_origin = (10714, 719, -660);
 	level.zombie_packapunch_machine_angles = (0, 270, 0);
-	level.zombie_packapunch_machine_clip_origin = level.zombie_packapunch_machine_origin + (0, 0, 0);
+	level.zombie_packapunch_machine_clip_origin = level.zombie_packapunch_machine_origin;// + (0, 0, 0);
 	level.zombie_packapunch_machine_clip_angles = (0, 90, 0);
 
 	machine = Spawn( "script_model", level.zombie_packapunch_machine_origin );
@@ -907,13 +907,13 @@ spawn_packapunch_machine()
 	machine.targetname = "vending_packapunch";
 
 	machine_trigger = Spawn( "trigger_radius_use", level.zombie_packapunch_machine_origin + (20, 20, 30), 20, 20, 70 );
-	//machine_trigger SetHintString( &"ZOMBIE_PERK_PACKAPUNCH", self.cost );
-	//machine_trigger.targetname = "zombie_vending_upgrade";
-	//machine_trigger.target = "vending_packapunch";
+	machine_trigger SetHintString( &"ZOMBIE_PERK_PACKAPUNCH", self.cost );
+	machine_trigger.targetname = "zombie_vending_upgrade";
+	machine_trigger.target = "vending_packapunch";
 	//machine_trigger.script_noteworthy = "specialty_packapunch";
 
 	machine_clip = spawn( "script_model", level.zombie_packapunch_machine_clip_origin );
 	machine_clip.angles = level.zombie_packapunch_machine_clip_angles;
 	machine_clip setmodel( "collision_geo_64x64x256" );
-	machine_clip Hide();
+	//machine_clip Hide();
 }
