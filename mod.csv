@@ -27,7 +27,7 @@ rawfile,maps/zombie_cod5_asylum.gsc
 rawfile,maps/zombie_cod5_sumpf.gsc
 rawfile,maps/zombie_cod5_sumpf_perks.gsc
 rawfile,maps/zombie_cod5_sumpf_trap_perk_electric.gsc
-rawfile,maps/zombie_cod5_sumpf_trap_pendulum.gsc
+//rawfile,maps/zombie_cod5_sumpf_trap_pendulum.gsc
 
 //DER RIESE
 rawfile,maps/zombie_cod5_factory.gsc
@@ -107,6 +107,8 @@ xmodel,weapon_rus_ppsh_smg
 xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
 xmodel,lightning_bolt
+xmodel,zombie_vending_packapunch
+xmodel,zombie_vending_packapunch_on
 
 //XANIM
 xanim,viewmodel_tesla_d2p_in

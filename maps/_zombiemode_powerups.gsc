@@ -6,6 +6,8 @@
 //
 init()
 {
+	level.no_drops = false;
+
 	PrecacheShader( "specialty_doublepoints_zombies" );
 	PrecacheShader( "specialty_instakill_zombies" );
 	PrecacheShader( "specialty_firesale_zombies");
@@ -431,7 +433,7 @@ get_valid_powerup()
 		{
 			powerup = get_next_powerup();
 		}
-		//remove double points after round 25
+		//remove double points after round 65
 		else if ( powerup == "double_points" && level.round_number > 65 )
 		{
 			powerup = get_next_powerup();
@@ -571,9 +573,10 @@ watch_for_drop()
 
 		if (curr_total_score > score_to_drop )
 		{
-			level.zombie_vars["zombie_powerup_drop_increment"] *= 1.12;
+			level.zombie_vars["zombie_powerup_drop_increment"] *= 1.12; //1.14 org
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
+			//iprintln(score_to_drop); // testing
 		}
 
 		wait( 0.5 );
@@ -644,6 +647,11 @@ powerup_round_start()
 powerup_drop(drop_point)
 {
 	if( level.mutators["mutator_noPowerups"] )
+	{
+		return;
+	}
+
+	if( level.no_drops == true)
 	{
 		return;
 	}

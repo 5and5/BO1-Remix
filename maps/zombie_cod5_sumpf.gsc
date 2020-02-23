@@ -104,7 +104,7 @@ main()
 
 	level notify("setup_rope");
 
-	level.has_pack_a_punch = false;
+	level.has_pack_a_punch = true;
 
 	SetSavedDvar("sv_maxPhysExplosionSpheres", 15);
 
@@ -116,6 +116,8 @@ main()
 	SetSavedDvar( "r_lightGridContrast", .1 );
 
 	VisionSetNaked("zombie_sumpf", 0);
+
+	level thread spawn_packapunch_machine();
 }
 
 setup_water_physics()
@@ -272,7 +274,10 @@ include_weapons()
 	include_weapon("china_lake_zm");
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
+
+	include_weapon( "ray_gun_upgraded_zm", false);
 	include_weapon("crossbow_explosive_zm");
+	include_weapon("crossbow_explosive_upgraded_zm", false);
 	include_weapon("knife_ballistic_zm");
 
 	// Bolt Action
@@ -701,37 +706,50 @@ radio_one()
 }
 radio_two()
 {
-	if(!IsDefined (level.radio_counter))
-	{
-		level.radio_counter = 0;
-	}
-
 	radio_two_trig = getent ("radio_two", "targetname");
 	radio_two_trig UseTriggerRequireLookAt();
+    radio_two_trig sethintstring( "Hold ^3[{+activate}]^7 to upgrade wonder weapons" );
 	radio_two_trig SetCursorHint( "HINT_NOICON" );
 	radio_two = getent("radio_two_origin", "targetname");
 
 	radio_two_trig waittill( "trigger", player );
-	level.radio_counter = level.radio_counter + 1;
 
-	if(level.radio_counter >= 1)
+	if(player HasWeapon("ray_gun_zm"))
 		{
-			if(player HasWeapon("tesla_gun_zm"))
-				{
-					player TakeWeapon( "tesla_gun_zm" );
-					player GiveWeapon( "tesla_gun_upgraded_zm" );
-					player GiveStartAmmo( "tesla_gun_upgraded_zm" );
-					player SwitchToWeapon( "tesla_gun_upgraded_zm" );
-					player PlaySound( "mus_wonder_weapon_stinger" );
-					level.radio_counter = 0;
-				}
+			player TakeWeapon( "ray_gun_zm" );
+			player GiveWeapon( "ray_gun_upgraded_zm", 0 );
+			player GiveStartAmmo( "ray_gun_upgraded_zm" );
+			player SwitchToWeapon( "ray_gun_upgraded_zm" );
+			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
 
-	radio_two playloopsound ("static_loop");
+	if(player HasWeapon("crossbow_explosive_zm"))
+		{
+			player TakeWeapon( "crossbow_explosive_zm" );
+			player GiveWeapon( "crossbow_explosive_upgraded_zm" );
+			player GiveStartAmmo( "crossbow_explosive_upgraded_zm" );
+			player SwitchToWeapon( "crossbow_explosive_upgraded_zm" );
+			player PlaySound( "mus_wonder_weapon_stinger" );
+		}
+
+	if(player HasWeapon("tesla_gun_zm"))
+		{
+			player TakeWeapon( "tesla_gun_zm" );
+			player GiveWeapon( "tesla_gun_upgraded_zm", 0 );
+			player GiveStartAmmo( "tesla_gun_upgraded_zm" );
+			player SwitchToWeapon( "tesla_gun_upgraded_zm" );
+			player PlaySound( "mus_wonder_weapon_stinger" );
+		}
+
+/*		player GiveWeapon( upgrade_weapon, 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( upgrade_weapon ) );
+					player GiveStartAmmo( upgrade_weapon );
+				}
+
+				player SwitchToWeapon( upgrade_weapon );
+				player maps\_zombiemode_weapons::play_weapon_vo(upgrade_weapon);
+				return;*/
 
 	level thread radio_two();
-
-
 }
 radio_three()
 {
@@ -870,4 +888,32 @@ water_burst_overwrite()
 	level waittill("between_round_over");
 	level._effect["rise_burst_water"]		  	= LoadFX("maps/zombie/fx_zombie_body_wtr_burst_smpf");
 	level._effect["rise_billow_water"]			= LoadFX("maps/zombie/fx_zombie_body_wtr_billow_smpf");
+}
+
+spawn_packapunch_machine()
+{
+	wait_network_frame();
+	level notify("Pack_A_Punch_on");
+
+	level.zombie_packapunch_machine_origin = (10714, 719, -660);
+	level.zombie_packapunch_machine_angles = (0, 270, 0);
+	level.zombie_packapunch_machine_clip_origin = level.zombie_packapunch_machine_origin + (0, 0, 0);
+	level.zombie_packapunch_machine_clip_angles = (0, 90, 0);
+
+	machine = Spawn( "script_model", level.zombie_packapunch_machine_origin );
+	machine.angles = level.zombie_packapunch_machine_angles;
+	//machine setModel( "zombie_vending_packapunch" );
+	machine setmodel("zombie_vending_packapunch_on");
+	machine.targetname = "vending_packapunch";
+
+	machine_trigger = Spawn( "trigger_radius_use", level.zombie_packapunch_machine_origin + (20, 20, 30), 20, 20, 70 );
+	//machine_trigger SetHintString( &"ZOMBIE_PERK_PACKAPUNCH", self.cost );
+	//machine_trigger.targetname = "zombie_vending_upgrade";
+	//machine_trigger.target = "vending_packapunch";
+	//machine_trigger.script_noteworthy = "specialty_packapunch";
+
+	machine_clip = spawn( "script_model", level.zombie_packapunch_machine_clip_origin );
+	machine_clip.angles = level.zombie_packapunch_machine_clip_angles;
+	machine_clip setmodel( "collision_geo_64x64x256" );
+	machine_clip Hide();
 }

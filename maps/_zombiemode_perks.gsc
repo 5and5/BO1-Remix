@@ -1988,36 +1988,36 @@ perk_give_bottle_end( gun, perk )
 
 give_random_perk()
 {
-	if( level.round_number < 9 && level.script == "zombie_cosmodrome")
+	// allows give jug if player does not have it
+	if ( !self HasPerk( "specialty_armorvest" ) )
 	{
 		jug = "specialty_armorvest";
 		self give_perk( jug );
+		return;
 	}
-	else
+
+	vending_triggers = GetEntArray( "zombie_vending", "targetname" );
+
+	perks = [];
+	for ( i = 0; i < vending_triggers.size; i++ )
 	{
-		vending_triggers = GetEntArray( "zombie_vending", "targetname" );
+		perk = vending_triggers[i].script_noteworthy;
 
-		perks = [];
-		for ( i = 0; i < vending_triggers.size; i++ )
+		if ( isdefined( self.perk_purchased ) && self.perk_purchased == perk )
 		{
-			perk = vending_triggers[i].script_noteworthy;
-
-			if ( isdefined( self.perk_purchased ) && self.perk_purchased == perk )
-			{
-				continue;
-			}
-
-			if ( !self HasPerk( perk ) )
-			{
-				perks[ perks.size ] = perk;
-			}
+			continue;
 		}
 
-		if ( perks.size > 0 )
+		if ( !self HasPerk( perk ) )
 		{
-			perks = array_randomize( perks );
-			self give_perk( perks[0] );
+			perks[ perks.size ] = perk;
 		}
+	}
+
+	if ( perks.size > 0 )
+	{
+		perks = array_randomize( perks );
+		self give_perk( perks[0] );
 	}
 }
 

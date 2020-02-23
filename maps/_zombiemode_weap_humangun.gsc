@@ -11,6 +11,8 @@ init()
 		return;
 	}
 
+    level.insta_time = 0;
+
 	level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE = 11;
 	level._ZOMBIE_PLAYER_FLAG_HUMANGUN_UPGRADED_HIT_RESPONSE = 10;
 
@@ -353,6 +355,7 @@ humangun_fired( upgraded )
 
 humangun_player_ignored_timer_cleanup( upgraded )
 {
+
 	if ( !upgraded )
 	{
 		self clearclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE );
@@ -365,6 +368,9 @@ humangun_player_ignored_timer_cleanup( upgraded )
 	self.point_split_receiver = undefined;
 	self.point_split_keep_percent = undefined;
 	self.personal_instakill = false;
+    level.no_drops = false;
+    //self.no_powerups = false; // end no drops
+
 	self.humangun_player_ignored_timer = 0;
 	self notify( "humangun_player_ignored_timer_done" );
 }
@@ -392,19 +398,22 @@ humangun_player_ignored_timer( owner, upgraded )
 	self thread humangun_player_effects_audio();
 
 	self.ignoreme = false;
+    level.no_drops = true; // palyer cant get power ups with insta kill
 
 	self.point_split_receiver = owner;
 	if ( !upgraded )
 	{
-		self.point_split_keep_percent = 0.8;
+		self.point_split_keep_percent = 1;
 		self.personal_instakill = true;
+        //self.no_powerups = true; // give no drops
 
 		self setclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE );
 	}
 	else
 	{
-		self.point_split_keep_percent = 0.8;
+		self.point_split_keep_percent = 1;
 		self.personal_instakill = true;
+        //self.no_powerups = true;
 
 		self setclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_UPGRADED_HIT_RESPONSE );
 	}
@@ -419,14 +428,23 @@ humangun_player_ignored_timer( owner, upgraded )
 	}
 
 	self.humangun_player_ignored_timer = GetTime() + (level.zombie_vars["humangun_player_ignored_time"] * 1000);
+
 	while ( GetTime() < self.humangun_player_ignored_timer )
 	{
+        if( GetTime() + 1000 > self.humangun_player_ignored_timer)
+        {
+            self clearclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE );
+            self clearclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_UPGRADED_HIT_RESPONSE );
+            //iPrintlnBold("done");
+        }
 		wait .05;
 	}
 
 	self.ignoreme = false;
 	humangun_player_ignored_timer_cleanup( upgraded );
 }
+
+
 
 humangun_player_effects_audio_cleanup_on_disconnect( sound_ent_humangun )
 {
@@ -470,6 +488,8 @@ humangun_player_effects_audio()
 
 humangun_player_hit_response( owner, upgraded )
 {
+    //level.mutators = "mutator_noPowerups";
+
 	if ( !isdefined( self.humangun_player_ignored_timer ) )
 	{
 		self.humangun_player_ignored_timer = 0;

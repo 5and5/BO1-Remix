@@ -18,13 +18,13 @@ init()
 	level.trap_kills = 0;
 
 	traps = GetEntArray( "zombie_trap", "targetname" );
-	
+
 	if( level.mutators["mutator_noTraps"] )
 	{
 		disable_traps( traps );
 		return;
 	}
-	
+
 	array_thread( traps, ::trap_init );
 
 	level.burning_zombies = [];		//JV max number of zombies that can be on fire
@@ -118,7 +118,7 @@ trap_init()
 			self._trap_use_func = ::trap_use_think;
 		}
 	}
-	
+
 	// WW: adding function to issue which models switch based on trigger script_parameters
 	self trap_model_type_init();
 
@@ -207,7 +207,7 @@ trap_init()
 
 	self._trap_fx_structs = [];
 	components = GetStructArray( self.target, "targetname" );
-	
+
 	for ( i=0; i<components.size; i++ )
 	{
 		if ( IsDefined( components[i].script_string ) && components[i].script_string == "use_this_angle" )
@@ -226,6 +226,7 @@ trap_init()
 	{
 		self.zombie_cost = 1000;
 	}
+	//self.default_cost = self.zombie_cost;
 	self._trap_in_use = 0;
 	self._trap_cooling_down = 0;
 
@@ -270,14 +271,14 @@ trap_init()
 	}
 }
 
-
 //*****************************************************************************
 //	This controls the electric traps in the level
 //		self = use trigger associated with the trap
 //		trap = trap trigger entity
 //*****************************************************************************
 trap_use_think( trap )
-{	
+{
+
 	while(1)
 	{
 		//wait until someone uses the valve
@@ -295,19 +296,19 @@ trap_use_think( trap )
 			if ( players.size == 1 && who.score >= trap.zombie_cost )
 			{
 				// Solo buy
-				who maps\_zombiemode_score::minus_to_player_score( trap.zombie_cost ); 
+				who maps\_zombiemode_score::minus_to_player_score( trap.zombie_cost );
 			}
 			else if( level.team_pool[who.team_num].score >= trap.zombie_cost )
 			{
 				// Team buy
-				who maps\_zombiemode_score::minus_to_team_score( trap.zombie_cost ); 
+				who maps\_zombiemode_score::minus_to_team_score( trap.zombie_cost );
 			}
 			else if( level.team_pool[ who.team_num ].score + who.score >= trap.zombie_cost )
 			{
 				// team funds + player funds
 				team_points = level.team_pool[ who.team_num ].score;
-				who maps\_zombiemode_score::minus_to_player_score( trap.zombie_cost - team_points ); 
-				who maps\_zombiemode_score::minus_to_team_score( team_points ); 
+				who maps\_zombiemode_score::minus_to_player_score( trap.zombie_cost - team_points );
+				who maps\_zombiemode_score::minus_to_team_score( team_points );
 			}
 			else
 			{
@@ -321,7 +322,7 @@ trap_use_think( trap )
 
 			if ( trap._trap_switches.size )
 			{
-				trap thread trap_move_switches();
+				trap thread trap_move_switches(who);
 				//need to play a 'woosh' sound here, like a gas furnace starting up
 				trap waittill("switch_activated");
 			}
@@ -330,7 +331,7 @@ trap_use_think( trap )
 			trap trigger_on();
 
 			//start the movement
-			trap thread [[ trap._trap_activate_func ]]();
+			trap thread [[ trap._trap_activate_func ]](who);
 			//wait until done and then clean up and cool down
 			trap waittill("trap_done");
 
@@ -345,7 +346,7 @@ trap_use_think( trap )
 				trap._trap_cooldown_time = 5;
 			}
 #/
-			wait( trap._trap_cooldown_time );
+
 			trap._trap_cooling_down = 0;
 
 			//COLLIN: Play the 'alarm' sound to alert players that the traps are available again (playing on a temp ent in case the PA is already in use.
@@ -373,7 +374,7 @@ trap_lights_red()
 	for(i=0;i<self._trap_lights.size;i++)
 	{
 		light = self._trap_lights[i];
-		light setmodel( self._trap_light_model_red );	
+		light setmodel( self._trap_light_model_red );
 
 		if(isDefined(light.fx))
 		{
@@ -398,10 +399,17 @@ trap_lights_green()
 	{
 		return;
 	}
+
+
 	for(i=0;i<self._trap_lights.size;i++)
 	{
 		light = self._trap_lights[i];
-		light setmodel( self._trap_light_model_green );	
+		if(isDefined(light._switch_disabled))
+		{
+			continue;
+		}
+
+		light setmodel( self._trap_light_model_green );
 
 		if(isDefined(light.fx))
 		{
@@ -445,32 +453,43 @@ trap_set_string( string, param1, param2 )
 // It's a throw switch
 //	self should be the trap entity
 //*****************************************************************************
-trap_move_switches()
+trap_move_switches(activator)
 {
 	if( level.mutators["mutator_noTraps"] )
 	{
 		return;
 	}
+
 	self trap_lights_red();
-	for ( i=0; i<self._trap_switches.size; i++ )
+
+	/*for ( i=0; i<self._trap_switches.size; i++ )
 	{
 		// Rotate switch model "on"
 		self._trap_switches[i] rotatepitch( 180, .5 );
 		self._trap_switches[i] playsound( "amb_sparks_l_b" );
+	}*/
+	closest = GetClosest(activator.origin, self._trap_switches);
+	extra_time = closest move_trap_handle(180);
+	closest playsound( "amb_sparks_l_b" );
+
+	closest waittill( "rotatedone" );
+	if(extra_time > 0)
+	{
+		wait(extra_time);
 	}
-	self._trap_switches[0] waittill( "rotatedone" );
 
 	// When "available" notify hit, bring back the level
 	self notify( "switch_activated" );
 
 	self waittill( "available" );
-	for ( i=0; i<self._trap_switches.size; i++ )
+	/*for ( i=0; i<self._trap_switches.size; i++ )
 	{
 		// Rotate switch model "off"
 		self._trap_switches[i] rotatepitch( -180, .5 );
-	}
-	self._trap_switches[0] waittill( "rotatedone" );
+	}*/
 	self trap_lights_green();
+	closest rotatepitch( -180, .5 );
+	closest waittill( "rotatedone" );
 }
 
 
@@ -485,10 +504,10 @@ trap_move_switches()
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
-trap_activate_electric()
+trap_activate_electric(activator)
 {
 	self._trap_duration = 40;
 	self._trap_cooldown_time = 60;
@@ -514,11 +533,11 @@ trap_activate_electric()
 	for( i=0; i<fx_points.size; i++ )
 	{
 		wait_network_frame();
-		fx_points[i] thread trap_audio_fx(self);		
+		fx_points[i] thread trap_audio_fx(self);
 	}
-	
+
 	// Do the damage
-	self thread trap_damage();
+	self thread trap_damage(activator);
 	wait( self._trap_duration );
 
 	// Shut down
@@ -532,10 +551,10 @@ trap_activate_electric()
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
-trap_activate_fire()
+trap_activate_fire(activator)
 {
 	self._trap_duration = 40;
 	self._trap_cooldown_time = 60;
@@ -549,15 +568,15 @@ trap_activate_fire()
 	for( i=0; i<fx_points.size; i++ )
 	{
 		wait_network_frame();
-		fx_points[i] thread trap_audio_fx(self);		
+		fx_points[i] thread trap_audio_fx(self);
 	}
 
 	// Do the damage
-	self thread trap_damage();
+	self thread trap_damage(activator);
 	wait( self._trap_duration );
 
 	// Shut down
-	self notify ("trap_done");	
+	self notify ("trap_done");
 	clientnotify(self.script_string +"0");	// turn off FX
 	clientnotify( self.script_parameters );
 }
@@ -567,7 +586,7 @@ trap_activate_fire()
 // Any traps that spin and cause damage from colliding
 //*****************************************************************************
 
-trap_activate_rotating()
+trap_activate_rotating(activator)
 {
 	self endon( "trap_done" );	// used to end the trap early
 
@@ -582,27 +601,27 @@ trap_activate_rotating()
 // 	for( i=0; i<fx_points.size; i++ )
 // 	{
 // 		wait_network_frame();
-// 		fx_points[i] thread trap_audio_fx(self);		
+// 		fx_points[i] thread trap_audio_fx(self);
 // 	}
 
 	// Do the damage
-	self thread trap_damage();
+	self thread trap_damage(activator);
 	self thread trig_update( self._trap_movers[0] );
 	old_angles = self._trap_movers[0].angles;
-	
+
 	//Shawn J Sound - power up sound for centrifuge
 //	self playsound ("evt_centrifuge_rise");
-	
+
 	for ( i=0; i<self._trap_movers.size; i++ )
 	{
 		self._trap_movers[i] RotateYaw( 360, 5.0, 4.5 );
 	}
 	wait( 5.0 );
 	step = 1.5;
-	
+
 	//Shawn J Sound - loop sound for centrifuge
 //	self playloopsound ("evt_centrifuge_loop", .6);
-		
+
 	for (t=0; t<self._trap_duration; t=t+step )
 	{
 		for ( i=0; i<self._trap_movers.size; i++ )
@@ -611,11 +630,11 @@ trap_activate_rotating()
 		}
 		wait( step );
 	}
-	
+
 	//Shawn J Sound - power down sound for centrifuge
 //	self stoploopsound (2);
 //	self playsound ("evt_centrifuge_fall");
-	
+
 	for ( i=0; i<self._trap_movers.size; i++ )
 	{
 		self._trap_movers[i] RotateYaw( 360, 5.0, 0.0, 4.5 );
@@ -627,7 +646,7 @@ trap_activate_rotating()
 	}
 
 	// Shut down
-	self notify ("trap_done");	
+	self notify ("trap_done");
 //	clientnotify(self.script_string +"0");	// turn off FX3/16/2010 3:44:13 PM
 }
 
@@ -641,25 +660,25 @@ trap_activate_rotating()
 //*****************************************************************************
 
 trap_activate_flipper()
-{ // basics of the trap are setup 
+{ // basics of the trap are setup
 //	IPrintLnBold("trap is almost working...");
-	
+
 //	self endon( "trap_done" );	// Used to end the trap early
 
-	
-//	wait( 4 ); 
+
+//	wait( 4 );
 //	self._trap_duration = 3;
 //	self._trap_cooldown_time = 0;
-	
-	
-//	self notify ("trap_done");	
-	
+
+
+//	self notify ("trap_done");
+
 	//I need to communicate from here to the actual funcion
 }
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 trap_audio_fx( trap )
@@ -668,9 +687,9 @@ trap_audio_fx( trap )
 	{
 		return;
 	}
-	
+
 	sound_origin = undefined;
-    
+
     if( trap.script_noteworthy == "electric" )
     {
 	    sound_origin = spawn( "script_origin", self.origin );
@@ -688,19 +707,19 @@ trap_audio_fx( trap )
 	trap waittill_any_or_timeout( trap._trap_duration, "trap_done");
 
 	if(IsDefined(sound_origin))
-	{	
+	{
 		if( trap.script_noteworthy == "fire" )
 		    playsoundatposition( "zmb_firetrap_end", sound_origin.origin );
-		    
+
 		sound_origin stoploopsound();
 		wait(.05);
 		sound_origin delete();
-	}	 
+	}
 }
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 // Shawn J Sound - commenting out alias call so spark sound won't play on the rocket trap - and there are currently no electrical traps
@@ -708,7 +727,7 @@ play_electrical_sound( trap )
 {
 	trap endon ("trap_done");
 	while( 1 )
-	{	
+	{
 		wait( randomfloatrange(0.1, 0.5) );
 		playsoundatposition( "zmb_elec_arc", self.origin );
 	}
@@ -716,20 +735,23 @@ play_electrical_sound( trap )
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
-trap_damage()
-{	
+trap_damage(activator)
+{
 	self endon( "trap_done" );
 
 	while(1)
 	{
 		self waittill( "trigger", ent );
-		
+
 		// Is player standing in the electricity?
 		if( isplayer(ent) )
 		{
+			if(flag("round_restarting"))
+				continue;
+
 			switch ( self._trap_type )
 			{
 			case "electric":
@@ -799,35 +821,35 @@ trig_update( parent )
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 player_elec_damage()
-{	
+{
 	self endon("death");
 	self endon("disconnect");
-	
+
 	if( !IsDefined(level.elec_loop) )
 	{
 		level.elec_loop = 0;
-	}	
-	
-	if( !isDefined(self.is_burning) && !self maps\_laststand::player_is_in_laststand() )
+	}
+
+	if( !isDefined(self.is_burning) && !self maps\_laststand::player_is_in_laststand() && self.sessionstate != "spectator" )
 	{
-		self.is_burning = 1;		
+		self.is_burning = 1;
 		self setelectrified(1.25);
-		shocktime = 2.5;
+		shocktime = 1.5;
 
 		//Changed Shellshock to Electrocution so we can have different bus volumes.
 		self shellshock("electrocution", shocktime);
-		
+
 		if(level.elec_loop == 0)
-		{	
+		{
 			elec_loop = 1;
 			//self playloopsound ("electrocution");
 			self playsound("zmb_zombie_arc");
 		}
-		if(!self hasperk("specialty_armorvest") /*|| !self hasperk("specialty_armorvest_upgrade")*/ || self.health - 100 < 1)
+		if(!self hasperk("specialty_armorvest") || self.health - 100 < 1)
 		{
 			radiusdamage(self.origin,10,self.health + 100,self.health + 100);
 			self.is_burning = undefined;
@@ -845,17 +867,17 @@ player_elec_damage()
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 player_fire_damage()
-{	
+{
 	self endon("death");
 	self endon("disconnect");
-	
-	if( !isDefined(self.is_burning) && !self maps\_laststand::player_is_in_laststand() )
+
+	if( !isDefined(self.is_burning) && !self maps\_laststand::player_is_in_laststand() && self.sessionstate != "spectator" )
 	{
-		self.is_burning = 1;		
+		self.is_burning = 1;
 		self setburn(1.25);
 
 		if(!self hasperk("specialty_armorvest") /*|| !self hasperk("specialty_armorvest_upgrade")*/ || self.health - 100 < 1)
@@ -878,15 +900,16 @@ player_fire_damage()
 //	trap is the parent trap entity
 //	param is a multi-purpose paramater.  The exact use is described by trap type
 //*****************************************************************************
-zombie_trap_death( trap, param )
+zombie_trap_death( trap, param, activator )
 {
 	if( level.mutators["mutator_noTraps"] )
 	{
 		return;
 	}
 	self endon("death");
-	
+
 	self.marked_for_death = true;
+	//self.trap_death = true;
 
 	switch (trap._trap_type)
 	{
@@ -905,21 +928,21 @@ zombie_trap_death( trap, param )
 				self thread zombie_flame_watch();
 				self playsound("ignite");
 				self thread animscripts\zombie_death::flame_death_fx();
-				wait( randomfloat(1.25) );
+				wait( randomfloat(0.75) );
 			}
 			else
 			{
 				refs[0] = "guts";
-				refs[1] = "right_arm"; 
-				refs[2] = "left_arm"; 
-				refs[3] = "right_leg"; 
-				refs[4] = "left_leg"; 
+				refs[1] = "right_arm";
+				refs[2] = "left_arm";
+				refs[3] = "right_leg";
+				refs[4] = "left_leg";
 				refs[5] = "no_legs";
 				refs[6] = "head";
 				self.a.gib_ref = refs[randomint(refs.size)];
-                
+
 				playsoundatposition("zmb_zombie_arc", self.origin);
-				
+
 				if( trap._trap_type == "electric" )
 				{
 					if(randomint(100) > 50 )
@@ -928,8 +951,8 @@ zombie_trap_death( trap, param )
 						self thread play_elec_vocals();
 					}
 				}
-				
-				wait(randomfloat(1.25));
+
+				wait(randomfloat(0.75));
 				self playsound("zmb_zombie_arc");
 			}
 		}
@@ -941,10 +964,12 @@ zombie_trap_death( trap, param )
 		}
 		else
 		{
-			level notify( "trap_kill", self, trap );
+			//level notify( "trap_kill", self, trap );
+
+			self.no_powerups = true;
 			self dodamage(self.health + 666, self.origin, trap);
 		}
-	
+
 //		iprintlnbold("should be damaged");
 		break;
 
@@ -952,7 +977,7 @@ zombie_trap_death( trap, param )
 	case "centrifuge":
 		// Param is used as a magnitude for the physics push
 
-		// Get a vector for the force to be applied.  It needs to be perpendicular to the 
+		// Get a vector for the force to be applied.  It needs to be perpendicular to the
 		//	bar
 		ang = VectorToAngles( trap.origin - self.origin );
 		// eliminate height difference factors
@@ -965,14 +990,16 @@ zombie_trap_death( trap, param )
 			self [[ self.trap_reaction_func ]]( trap );
 		}
 
-		level notify( "trap_kill", self, trap );
+		//level notify( "trap_kill", self, trap );
 		self StartRagdoll();
 		self launchragdoll(direction_vec);
 		wait_network_frame();
 
 		// Make sure they're dead...physics launch didn't kill them.
 		self.a.gib_ref = "head";
-		self dodamage(self.health, self.origin, trap);
+
+		self.no_powerups = true;
+		self dodamage(self.health + 666, self.origin, trap);
 
 		break;
 	}
@@ -980,7 +1007,7 @@ zombie_trap_death( trap, param )
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 zombie_flame_watch()
@@ -996,7 +1023,7 @@ zombie_flame_watch()
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 play_elec_vocals()
@@ -1013,9 +1040,9 @@ play_elec_vocals()
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
-	
+
 electroctute_death_fx()
 {
 	self endon( "death" );
@@ -1026,50 +1053,50 @@ electroctute_death_fx()
 	}
 
 	self.is_electrocuted = true;
-	
+
 	self thread electrocute_timeout();
-		
+
 	// JamesS - this will darken the burning body
-	//self StartTanning(); 
+	//self StartTanning();
 	if(self.team == "axis")
 	{
 		level.bcOnFireTime = gettime();
 		level.bcOnFireOrg = self.origin;
 	}
-	
+
 	PlayFxOnTag( level._effect["elec_torso"], self, "J_SpineLower" );
 	self playsound ("zmb_elec_jib_zombie");
 	wait 1;
 
-	tagArray = []; 
-	tagArray[0] = "J_Elbow_LE"; 
-	tagArray[1] = "J_Elbow_RI"; 
-	tagArray[2] = "J_Knee_RI"; 
-	tagArray[3] = "J_Knee_LE"; 
-	tagArray = array_randomize( tagArray ); 
+	tagArray = [];
+	tagArray[0] = "J_Elbow_LE";
+	tagArray[1] = "J_Elbow_RI";
+	tagArray[2] = "J_Knee_RI";
+	tagArray[3] = "J_Knee_LE";
+	tagArray = array_randomize( tagArray );
 
-	PlayFxOnTag( level._effect["elec_md"], self, tagArray[0] ); 
+	PlayFxOnTag( level._effect["elec_md"], self, tagArray[0] );
 	self playsound ("zmb_elec_jib_zombie");
 
 	wait 1;
 	self playsound ("zmb_elec_jib_zombie");
 
-	tagArray[0] = "J_Wrist_RI"; 
-	tagArray[1] = "J_Wrist_LE"; 
+	tagArray[0] = "J_Wrist_RI";
+	tagArray[1] = "J_Wrist_LE";
 	if( !IsDefined( self.a.gib_ref ) || self.a.gib_ref != "no_legs" )
 	{
-		tagArray[2] = "J_Ankle_RI"; 
-		tagArray[3] = "J_Ankle_LE"; 
+		tagArray[2] = "J_Ankle_RI";
+		tagArray[3] = "J_Ankle_LE";
 	}
-	tagArray = array_randomize( tagArray ); 
+	tagArray = array_randomize( tagArray );
 
-	PlayFxOnTag( level._effect["elec_sm"], self, tagArray[0] ); 
+	PlayFxOnTag( level._effect["elec_sm"], self, tagArray[0] );
 	PlayFxOnTag( level._effect["elec_sm"], self, tagArray[1] );
 }
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 electrocute_timeout()
@@ -1084,12 +1111,12 @@ electrocute_timeout()
 		self.is_electrocuted = false;
 		self notify ("stop_flame_damage");
 	}
-	
+
 }
 
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 
 trap_dialog()
@@ -1103,7 +1130,7 @@ trap_dialog()
 		wait(0.5);
 		players = get_players();
 		for(i = 0; i < players.size; i++)
-		{		
+		{
 			dist = distancesquared(players[i].origin, self.origin );
 			if(dist > 70*70)
 			{
@@ -1117,11 +1144,11 @@ trap_dialog()
 			}
 			if(dist < 70*70 && timer == 3)
 			{
-				
+
 				index = maps\_zombiemode_weapons::get_player_index(players[i]);
 				plr = "plr_" + index + "_";
 				//players[i] create_and_play_dialog( plr, "vox_level_start", 0.25 );
-				wait(3);				
+				wait(3);
 				self notify ("warning_dialog");
 				//iprintlnbold("warning_given");
 			}
@@ -1149,7 +1176,7 @@ get_trap_array( trap_type )
 }
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 trap_disable()
 {
@@ -1168,7 +1195,7 @@ trap_disable()
 }
 
 //*****************************************************************************
-// 
+//
 //*****************************************************************************
 trap_enable()
 {
@@ -1184,11 +1211,11 @@ trap_model_type_init()
 {
 	// this depends on the trap trigger to have the script_parameters
 	// to chose which models to use
-	if( !IsDefined( self.script_parameters ) ) 
+	if( !IsDefined( self.script_parameters ) )
 	{
 		self.script_parameters = "default";
 	}
-	
+
 	// new models should be added here for updated trap
 	switch( self.script_parameters )
 	{
@@ -1198,15 +1225,72 @@ trap_model_type_init()
 			self._trap_light_model_red = "zombie_trap_switch_light_on_red";
 			self._trap_switch_model = "zombie_trap_switch_handle";
 			break;
-				
+
 		case "default":
 		default:
 			self._trap_light_model_off = "zombie_zapper_cagelight";
 			self._trap_light_model_green = "zombie_zapper_cagelight_green";
 			self._trap_light_model_red = "zombie_zapper_cagelight_red";
 			self._trap_switch_model = "zombie_zapper_handle";
-			break;	
+			break;
 	}
-	
+
+}
+
+// move trap handle based on its current position so it ends up at the correct spot
+move_trap_handle(end_angle, rotate_amount, negative)
+{
+	if(!IsDefined(rotate_amount))
+	{
+		rotate_amount = 180;
+	}
+
+	direction = 1;
+	if(IsDefined(negative) && negative)
+	{
+		direction = -1;
+	}
+
+	angle = int(self.angles[0]);
+
+	// round up angle, some trap handles are slightly off
+	if(self.angles[0] - angle >= .5)
+	{
+		angle += 1;
+	}
+
+	angle = angle % 360;
+
+	// bind angle between -180 and 180
+	if(angle <= -180)
+	{
+		angle += 360;
+	}
+	else if(angle > 180)
+	{
+		angle -= 360;
+	}
+
+	// make the angle positive if going in negative direction
+	angle *= direction;
+
+	// already in correct position, handle was activated right away
+	if(angle == end_angle * direction)
+	{
+		self RotateTo((end_angle, self.angles[1], self.angles[2]), .05);
+		return .45;
+	}
+
+	// subtract the start angle offset, must start at 0
+	start_angle = end_angle - rotate_amount;
+	angle -= start_angle;
+
+	percent = 1 - (angle / rotate_amount);
+	time = .5 * percent;
+	extra_time = .5 - time;
+	self RotatePitch(rotate_amount * percent * direction, time);
+
+	// return extra time so trap still activates at same time
+	return extra_time;
 }
 

@@ -106,7 +106,7 @@
 * Added Wunderwaffe to the box
 * Added mp5 wall buy in the speed cola room
 ### Shi-no-numa
-* Added trigger to first room radio that upgrades the Wunderwaffe
+* Added trigger to first room radio that upgrades the Wunderwaffe/Ray Gun/Crossbow
 * Removed fishing hut box location
 * Set double tap to always spawn in the fishing hut
 * Decreased electric traps recharge time from 90 to 25
@@ -127,14 +127,14 @@
 * Decrease time spent at PaP from 45 to 30 seconds
 * Removed alley, control room and pm63 room box locations
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
-* Set initial box to fire trap room
+* Set initial box to mp40 room
 ### Five
 * Set windows
 * Set power room telepoter to always take you up stairs
 * Set initial box to the dead guy room
 * Killing the theif before he takes a weapon now gives waffe powerup instead of a bonfire sale
 * Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
-* Removed alarm from theif round to fix audio glitch
+* Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
 * Turrets kill in 2 bullets
 * Monkeys will allows give you jug on the first Monkey round
@@ -145,24 +145,21 @@
 * VR11 un-upgraded now also gives players instakill
 * VR11 can now give yourself instakill by shooting the ground
 * VR11 no longer gives players invisibility
+* VR11 no longer allows drops from the insta kill effect
 * George now drops an upgraded waffe
 * George no longer zaps you from a distance
 * Flinger now kills zombies instead of respawning them
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
-* Increased pack-a-punch time on map from 2 minutes to 3 minutes
 * Set initial box to on top of flopper
 ### Shangri-la/Moon
 * No changes made
 
 #### TODO
-* Fix kino teleporter glitching and losing fov
-* Add PAP to SNN
+* Fix losing fov cotd zip line
 * Fix waffe lights
-* Add display for 30, 50, 100 times or at the end of every round
-
+* make double points, nuke, insta, max first drops of the game
 * Make leader board spread sheet
 
-* Add early insta kill rounds??
 * Look into weapon random error
 * See why shang crashes ^^ same reason
 
@@ -171,5 +168,5 @@
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
 * **_JBird_** - For helping me with the mod this wouldn't be possible without him
-* **_Clippy95_** - For helping with scripting
+* **_Clippy95_** - For adding the mp5 on verruckt
 

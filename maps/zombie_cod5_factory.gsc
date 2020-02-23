@@ -1345,7 +1345,7 @@ zombie_elec_death(flame_chance, who)
 		self thread zombie_flame_watch();
 		self playsound("ignite");
 		self thread animscripts\zombie_death::flame_death_fx();
-		wait(randomfloat(1.25));
+		wait(randomfloat(0.75));
 	}
 	else
 	{
@@ -2025,7 +2025,7 @@ factory_german_safe()
 
 curbs_fix()
 {
-	collision = spawn("script_model", (-65.359, -1215.74, -192.5766));
+	collision = spawn("script_model", (1593, 1032, 326));
 	collision setmodel("collision_geo_512x512x512");
 	collision.angles = (0, 0, 0);
 	collision Hide();

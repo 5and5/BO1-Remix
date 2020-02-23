@@ -62,6 +62,7 @@ main()
 
 	include_weapons();
 	include_powerups();
+	// mp5
 	spawn_mp5k_wallbuy();
 
 	if(getdvar("light_mode") != "")

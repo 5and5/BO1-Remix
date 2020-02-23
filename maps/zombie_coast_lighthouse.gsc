@@ -44,7 +44,7 @@ lighthouse_wait_for_power()
 		playsoundatposition ("zmb_pap_lightning_2", (0,0,0));
 		clientnotify("lhfd");
 		pack_a_punch_move_to_spot();
-		wait(180);//2:00 wait while pap is active
+		wait(120);//2:00 wait while pap is active
 
 		//make sure the machine is done being used before moving it!
 		while(flag("pack_machine_in_use"))

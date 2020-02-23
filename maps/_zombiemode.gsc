@@ -15,6 +15,8 @@ main()
 	// added win con
 	level.win_game = false;
 
+	//level.start_time = GetTime();
+
 	level._dontInitNotifyMessage = 1;
 	level.uses_tesla_powerup = true; // fix lights on tesla
 
@@ -246,8 +248,9 @@ post_all_players_connected()
 		level.music_override = false;
 	}
 
-	// ingame timer
+	// in game timer thread
 	level thread timer_hud();
+	//level thread timer_round_hud();
 }
 
 zombiemode_melee_miss()
@@ -1561,7 +1564,6 @@ onPlayerConnect_clientDvars()
 		"player_strafeSpeedScale", "1",
 		"player_sprintStrafeSpeedScale", "1");
 
-
 	self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
 	// Enabling the FPS counter in ship for now
@@ -1664,8 +1666,8 @@ onPlayerSpawned()
 			"player_backSpeedScale", 1,
 			"cg_hudDamageIconHeight", 150,
 			"cg_hudDamageIconInScope", 0,
-			"cg_hudDamageIconOffset", 10,
-			"cg_hudDamageIconTime", 4000,
+			"cg_hudDamageIconOffset", 8,
+			"cg_hudDamageIconTime", 3500,
 			"cg_hudDamageIconWidth", 25);
 
 		self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
@@ -1727,10 +1729,15 @@ onPlayerSpawned()
 
 				// zombies reamining hud
 				self thread zombies_remaining_hud();
-				self thread reset_timer();
 
-				// round timer hud
+				// round timer appears when round ends
 				//self thread timer_round_hud();
+
+				// time till you win the game
+				//self thread reset_timer();
+
+				// testing only
+				//self thread get_position();
 			}
 		}
 	}
@@ -3951,7 +3958,7 @@ chalk_round_over()
 
 round_think()
 {
-	//level.round_number = 40; //69
+	//level.round_number = 50; //69
 	//level.zombie_vars["zombie_spawn_delay"] = .08;
 
 	level.zombie_move_speed = 105;
@@ -5396,15 +5403,19 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
+	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && self.animname== "director_zombie")
+	{
+		return 10000;
+	}
 
-	if((weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm") && self.animname != "director_zombie")
+	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm")
 	{
 		min_damage = 10000;
-		damage = int(self.maxhealth / 2) + 10;
+		damage = int(self.maxhealth / 2) + 100;
 
-		if(damage < min_damage && damage < 20000)
+		if ( damage < min_damage && damage < 20000 )
 		{
-			damage = min_damage;
+			return min_damage;
 		}
 		return damage;
 	}
@@ -5431,10 +5442,10 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			final_damage = damage;
 		}
 
-	if(self.animname == "director_zombie")
+/*	if(self.animname == "director_zombie")
 		{
-			final_damage = int(final_damage);
-		}
+			final_damage = int(10000);
+		}*/
 
 	if(weapon == "zombie_cymbal_zombie" )
 		{
@@ -7084,11 +7095,11 @@ set_sidequest_completed(id)
 zombies_remaining_hud()
 {
 	zombs_remaining = NewClientHudElem( self );
-	zombs_remaining.horzAlign = "right";
+	zombs_remaining.horzAlign = "left";
 	zombs_remaining.vertAlign = "top";
-	zombs_remaining.alignX = "right";
+	zombs_remaining.alignX = "left";
 	zombs_remaining.alignY = "top";
-	zombs_remaining.x -= 4;
+	zombs_remaining.x += 4;
 	zombs_remaining.foreground = true;
 	zombs_remaining.fontScale = 1.4;
 	zombs_remaining.alpha = 1;
@@ -7103,30 +7114,28 @@ zombies_remaining_hud()
 
 reset_timer()
 {
-	level.total_time = 0;
-
+	total_time = 0;
 	while(1) {
 		wait 1;
-		level.total_time++;
+		total_time++;
 
-		if (level.total_time == 72002.8)
+		if (total_time == 72003) // 20h + 3s
 		{
 			level notify( "end_game" );
+			level.win_game = true;
 		}
 	}
 }
 
-
-
-timer_hud()
+/*timer_round_hud()
 {
-	timer = NewHudElem();
-	timer.horzAlign = "left";
+timer = NewHudElem();
+	timer.horzAlign = "right";
 	timer.vertAlign = "top";
-	timer.alignX = "left";
+	timer.alignX = "right";
 	timer.alignY = "top";
-	timer.y += 0;
-	timer.x += 4;
+	timer.y += 15;
+	timer.x -= 4;
 	timer.foreground = true;
 	timer.fontScale = 1.4;
 	timer.alpha = 1;
@@ -7136,14 +7145,89 @@ timer_hud()
 	{
 		timer SetTimerUp(9);
 	} else
-	timer SetTimerUp(2.8);
+	timer SetTimerUp(3);
+
+	while(1)
+	{
+		timer.alpha = 0;
+		if(level.zombie_total + get_enemy_count() == 0)
+		{
+			timer.alpha = 1;
+			wait 1;
+		}
+	}
+}*/
+timer_round_hud()
+{
+	round_timer = NewHudElem();
+	round_timer.horzAlign = "right";
+	round_timer.vertAlign = "top";
+	round_timer.alignX = "right";
+	round_timer.alignY = "top";
+	round_timer.y -= 15;
+	round_timer.x -= 4;
+	round_timer.foreground = true;
+	round_timer.fontScale = 1.4;
+	round_timer.alpha = 0;
+	round_timer.color = ( 1.0, 1.0, 1.0 );
+
+	if (level.script == "zombie_cosmodrome")
+	{
+		round_timer SetTimerUp(9);
+	} else
+	round_timer SetTimerUp(3);
+
+	while(1)
+	{
+		level waittill( "end_of_round" );
+		round_timer.alpha = 1;
+		wait(1);
+		round_timer.alpha = 0;
+	}
+}
+
+timer_hud()
+{
+	timer = NewHudElem();
+	timer.horzAlign = "right";
+	timer.vertAlign = "top";
+	timer.alignX = "right";
+	timer.alignY = "top";
+	timer.y += 0;
+	timer.x -= 4;
+	timer.foreground = true;
+	timer.fontScale = 1.4;
+	timer.alpha = 1;
+	timer.color = ( 1.0, 1.0, 1.0 );
+
+	if (level.script == "zombie_cosmodrome")
+	{
+		timer SetTimerUp(9);
+	} else
+	timer SetTimerUp(3);
 
 	level waittill ( "end_game");
 
-	if (level.win_game)
+	if (level.win_game == true)
 	{
-		timer SetText("20:00:00");
-	} else
-	timer SetText( "" );
+		timer SetText("20:00:00"); //20:00:00
+	}
+	else
+	timer fadeOverTime(1);
+	timer.alpha = 0;
+}
 
+get_position()
+{
+	flag_wait("all_players_spawned");
+	player = get_players()[0];
+
+	while(1)
+	{
+		//iprintln(level.zombie_vars["zombie_spawn_delay"]);
+
+		iprintln(player.origin);
+		//iprintln(player.angles);
+		wait .5;
+	}
 }
