@@ -5117,7 +5117,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			break;
 		case "m14_zm":
 		case "zombie_m1garand":
-			final_damage = 140; //140
+			final_damage = 150; //140
 			if(sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck")
 				final_damage *= 2.5;
 			break;
@@ -5194,22 +5194,22 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		case "zombie_springfield":
 			final_damage = 500;
 			if(sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck")
-				final_damage *= 2;
+				final_damage *= 2.5;
 			break;
 		case "zombie_m1carbine":
 			final_damage = 150;
 			if(sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck")
-				final_damage *= 2;
+				final_damage *= 2.5;
 			break;
 		case "zombie_gewehr43":
-			final_damage = 130;
+			final_damage = 150;
 			if(sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck")
-				final_damage *= 2;
+				final_damage *= 2.5;
 			break;
 		case "zombie_bar":
 			final_damage = 200;
 			if(sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck")
-				final_damage *= 2;
+				final_damage *= 2.5;
 			break;
 		case "kar98k_scoped_zombie":
 			final_damage = 1000;
