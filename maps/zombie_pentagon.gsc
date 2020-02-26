@@ -244,13 +244,13 @@ include_weapons()
   	include_weapon( "cz75dw_upgraded_zm", false );
 
 	//	Weapons - Shotguns
-	include_weapon( "ithaca_zm", false, true );						// shotgun
+	//include_weapon( "ithaca_zm", false, true );						// shotgun
 	include_weapon( "ithaca_upgraded_zm", false );
-	include_weapon( "rottweil72_zm", false, true );
+	//include_weapon( "rottweil72_zm", false, true );
 	include_weapon( "rottweil72_upgraded_zm", false );
-	include_weapon( "spas_zm" );						//
+	//include_weapon( "spas_zm" );						//
 	include_weapon( "spas_upgraded_zm", false );
-	include_weapon( "hs10_zm" );
+	//include_weapon( "hs10_zm" );
 	include_weapon( "hs10_upgraded_zm", false );
 
 	//	Weapons - Assault Rifles
@@ -264,9 +264,9 @@ include_weapons()
 	include_weapon( "fnfal_upgraded_zm", false );
 
 	//	Weapons - Sniper Rifles
-	include_weapon( "dragunov_zm" );					// ptrs41
+	//include_weapon( "dragunov_zm" );					// ptrs41
 	include_weapon( "dragunov_upgraded_zm", false );
-	include_weapon( "l96a1_zm" );
+	//include_weapon( "l96a1_zm" );
 	include_weapon( "l96a1_upgraded_zm", false );
 
 	//	Weapons - Machineguns
@@ -276,17 +276,17 @@ include_weapons()
 	include_weapon( "hk21_upgraded_zm", false );
 
 	//	Weapons - Misc
-	include_weapon( "m72_law_zm" );
+	//include_weapon( "m72_law_zm" );
 	include_weapon( "m72_law_upgraded_zm", false );
-	include_weapon( "china_lake_zm" );
+	//include_weapon( "china_lake_zm" );
 	include_weapon( "china_lake_upgraded_zm", false );
 
 	//	Weapons - Special
-	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
-	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
-	include_weapon( "ray_gun_upgraded_zm", false );
+	include_weapon( "zombie_cymbal_monkey", true, false);//, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
+	include_weapon( "ray_gun_zm", true, false);//, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
+	//include_weapon( "ray_gun_upgraded_zm", false );
 	//include_weapon( "freezegun_zm", false );
-	//include_weapon( "freezegun_upgraded_zm", false );
+	include_weapon( "freezegun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
 
@@ -298,14 +298,14 @@ include_weapons()
 
 	// Custom weapons
 	//include_weapon( "tesla_gun_zm", true );
-/*	include_weapon( "tesla_gun_upgraded_zm", false );
+	include_weapon( "tesla_gun_upgraded_zm", false );
 	include_weapon( "tesla_gun_powerup_upgraded_zm", false );
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
 	include_weapon( "stoner63_upgraded_zm", false );
 	include_weapon( "ak47_zm" );
- 	include_weapon( "ak47_ft_upgraded_zm", false);*/
+ 	include_weapon( "ak47_ft_upgraded_zm", false);
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );
@@ -337,7 +337,7 @@ include_powerups()
 	include_powerup( "bonfire_sale" );
 
 	// tesla
-	PrecacheItem( "tesla_gun_powerup_upgraded_zm" );
+	PreCacheItem( "tesla_gun_upgraded_zm" );
 	include_powerup( "tesla" );
 
 	// minigun
