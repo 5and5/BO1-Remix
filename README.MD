@@ -39,7 +39,8 @@
 
 ## Weapons
 #### Wunderwaffe
-* Added Wunderwaffe to Five and Verruckt
+* Added Wunderwaffe to Verruckt
+* Added Wunderwaffe powerup to Five
 * Upgraded version max kills increased from 10 to 12
 #### Explosive Scaling
 * Increased
@@ -56,6 +57,16 @@
 * Removed M72 Law
 * Removed China Lake
 * Removed Winters Howl
+
+#### Gewerh43
+* Buffed so that one head shot kills on round 3
+
+### Frag Grenade
+* Buffed damage from 300 to 600 (same as stielhandgranate)
+* Reduced throw time from 0.6s to 0.2s
+
+### Stielhandgranate
+* Reduced throw time from 0.4s to 0.2s
 
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 8 seconds
@@ -83,6 +94,7 @@
 * Increased random drop rate from 3% to 5%
 * Decreased point based drops from 114% to 112%
 * Added custom effect to last drop of a cycle
+* First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
 * Removed
 #### Firesales
@@ -155,6 +167,7 @@
 * No changes made
 
 #### TODO
+* Fix one window zone on der riese
 * Fix losing fov cotd zip line
 * Fix waffe lights
 * make double points, nuke, insta, max first drops of the game

@@ -63,6 +63,7 @@ rawfile,maps/zombie_moon_digger.gsc
 //WEAPONS
 weapon,sp/tesla_gun_zm
 weapon,sp/tesla_gun_upgraded_zm
+weapon,sp/tesla_gun_powerup_upgraded_zm
 weapon,sp/ppsh_zm
 weapon,sp/ppsh_upgraded_zm
 weapon,sp/stoner63_zm
@@ -70,6 +71,8 @@ weapon,sp/stoner63_upgraded_zm
 weapon,sp/ak47_zm
 weapon,sp/ak47_ft_upgraded_zm
 weapon,sp/minigun_zm
+weapon,sp/stielhandgranate
+weapon,sp/frag_grenade_zm
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc

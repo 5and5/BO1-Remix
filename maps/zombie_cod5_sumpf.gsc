@@ -117,7 +117,7 @@ main()
 
 	VisionSetNaked("zombie_sumpf", 0);
 
-	level thread spawn_packapunch_machine();
+	//level thread spawn_packapunch_machine();
 }
 
 setup_water_physics()

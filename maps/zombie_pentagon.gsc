@@ -297,14 +297,15 @@ include_weapons()
 	level._uses_retrievable_ballisitic_knives = true;
 
 	// Custom weapons
-	//include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
-	include_weapon( "tesla_gun_upgraded_zm", false );
+	//include_weapon( "tesla_gun_zm", true );
+/*	include_weapon( "tesla_gun_upgraded_zm", false );
+	include_weapon( "tesla_gun_powerup_upgraded_zm", false );
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
 	include_weapon( "stoner63_upgraded_zm", false );
 	include_weapon( "ak47_zm" );
- 	include_weapon( "ak47_ft_upgraded_zm", false);
+ 	include_weapon( "ak47_ft_upgraded_zm", false);*/
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );
@@ -336,7 +337,7 @@ include_powerups()
 	include_powerup( "bonfire_sale" );
 
 	// tesla
-	PreCacheItem( "tesla_gun_zm" );
+	PrecacheItem( "tesla_gun_powerup_upgraded_zm" );
 	include_powerup( "tesla" );
 
 	// minigun

@@ -1061,7 +1061,7 @@ monkey_round_tracker()
 	level.monkey_save_spawn_func = level.round_spawn_func;
 	level.monkey_save_wait_func = level.round_wait_func;
 
-	level.next_monkey_round = level.round_number + 2;
+	level.next_monkey_round = level.round_number + 1;
 	level.prev_monkey_round = level.next_monkey_round;
 
 	while ( 1 )
@@ -1097,7 +1097,7 @@ monkey_round_tracker()
 			{
 					level.prev_monkey_round = level.next_monkey_round;
 					level.next_monkey_round = level.round_number + 4;
-					level.prev_monkey_round_amount = undefined;		
+					level.prev_monkey_round_amount = undefined;
 			}
 
 			monkey_print( "next monkey round at " + level.next_monkey_round );
@@ -1828,7 +1828,7 @@ play_player_perk_theft_vox( perk, monkey )
         wait(.05);
     }
 
-	while( IsDefined(monkey) && IsDefined(monkey.pack) && IsDefined(monkey.pack.machine) && IsDefined(monkey.pack.machine.monkey_health) && 
+	while( IsDefined(monkey) && IsDefined(monkey.pack) && IsDefined(monkey.pack.machine) && IsDefined(monkey.pack.machine.monkey_health) &&
 		monkey.pack.machine.monkey_health != 0 )
 	{
 	    wait(1);

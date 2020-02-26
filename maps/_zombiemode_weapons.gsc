@@ -1066,8 +1066,8 @@ init_starting_chest_location()
     {
         if(level.script == "zombie_pentagon")
             {
-                if(level.chests[i].script_noteworthy == "start_chest")
-                //if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
+                //if(level.chests[i].script_noteworthy == "start_chest")
+                if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
                 {
                     level.chest_index = i;
                     level.chests[level.chest_index] hide_rubble();
