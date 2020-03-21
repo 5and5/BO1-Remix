@@ -13,6 +13,9 @@ main()
 	level.uses_tesla_powerup = true;
 	maps\zombie_cod5_asylum_fx::main();
 
+	// waffe init
+	maps\_zombiemode_weap_tesla::init();
+
 	// viewmodel arms for the level
 	PreCacheModel( "viewmodel_usa_pow_arms" ); // Dempsey
 	PreCacheModel( "viewmodel_rus_prisoner_arms" ); // Nikolai

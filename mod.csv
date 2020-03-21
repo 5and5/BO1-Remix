@@ -63,6 +63,7 @@ rawfile,maps/zombie_moon_digger.gsc
 //WEAPONS
 weapon,sp/tesla_gun_zm
 weapon,sp/tesla_gun_upgraded_zm
+weapon,sp/tesla_gun_powerup_zm
 weapon,sp/tesla_gun_powerup_upgraded_zm
 weapon,sp/ppsh_zm
 weapon,sp/ppsh_upgraded_zm
@@ -71,8 +72,6 @@ weapon,sp/stoner63_upgraded_zm
 weapon,sp/ak47_zm
 weapon,sp/ak47_ft_upgraded_zm
 weapon,sp/minigun_zm
-weapon,sp/stielhandgranate
-weapon,sp/frag_grenade_zm
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc
@@ -98,6 +97,10 @@ fx,maps/zombie/fx_zombie_tesla_tube_view2_ug
 fx,maps/zombie/fx_zombie_tesla_tube_view3
 fx,maps/zombie/fx_zombie_tesla_tube_view3_ug
 fx,maps/zombie/fx_zombie_tesla_ug_elec_bolt
+fx,maps/muzzleflashes/fx_tesla_ug_view
+fx,maps/muzzleflashes/fx_tesla_ug_world
+fx,maps/muzzleflashes/fx_tesla_view
+fx,maps/muzzleflashes/fx_tesla_world
 fx,explosions/fx_grenade_flash
 
 //XMODLES
@@ -110,8 +113,8 @@ xmodel,weapon_rus_ppsh_smg
 xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
 xmodel,lightning_bolt
-xmodel,zombie_vending_packapunch
-xmodel,zombie_vending_packapunch_on
+//xmodel,zombie_vending_packapunch
+//xmodel,zombie_vending_packapunch_on
 
 //XANIM
 xanim,viewmodel_tesla_d2p_in
@@ -129,6 +132,17 @@ xanim,ai_zombie_tesla_death_c
 xanim,ai_zombie_tesla_death_d
 xanim,ai_zombie_tesla_death_e
 xanim,viewmodel_ppsh_empty_sprint_loop
+xanim,viewmodel_tesla_fire
+xanim,viewmodel_tesla_first_raise
+xanim,viewmodel_tesla_idle
+xanim,viewmodel_tesla_pullout
+xanim,viewmodel_tesla_pullout_fast
+xanim,viewmodel_tesla_putaway
+xanim,viewmodel_tesla_putaway_fast
+xanim,viewmodel_tesla_reload
+xanim,viewmodel_tesla_ADS_down
+xanim,viewmodel_tesla_ADS_fire
+xanim,viewmodel_tesla_ADS_up
 
 //STRINGS
 localize,reimagined

@@ -210,7 +210,7 @@ include_weapons()
 	//	Weapons - Pistols
 	include_weapon( "m1911_zm", false );						// colt
 	include_weapon( "m1911_upgraded_zm", false );
-	include_weapon( "python_zm" );						// 357
+	include_weapon( "python_zm", false );						// 357
 	include_weapon( "python_upgraded_zm", false );
   	include_weapon( "cz75_zm" );
   	include_weapon( "cz75_upgraded_zm", false );
@@ -222,7 +222,7 @@ include_weapons()
 	//	Weapons - Burst Rifles
 	include_weapon( "m16_zm", false, true );
 	include_weapon( "m16_gl_upgraded_zm", false );
-	include_weapon( "g11_lps_zm" );
+	include_weapon( "g11_lps_zm", false );
 	include_weapon( "g11_lps_upgraded_zm", false );
 	include_weapon( "famas_zm" );
 	include_weapon( "famas_upgraded_zm", false );
@@ -244,13 +244,13 @@ include_weapons()
   	include_weapon( "cz75dw_upgraded_zm", false );
 
 	//	Weapons - Shotguns
-	//include_weapon( "ithaca_zm", false, true );						// shotgun
+	include_weapon( "ithaca_zm", false, true );						// shotgun
 	include_weapon( "ithaca_upgraded_zm", false );
-	//include_weapon( "rottweil72_zm", false, true );
+	include_weapon( "rottweil72_zm", false, true );
 	include_weapon( "rottweil72_upgraded_zm", false );
-	//include_weapon( "spas_zm" );						//
+	include_weapon( "spas_zm", false );						//
 	include_weapon( "spas_upgraded_zm", false );
-	//include_weapon( "hs10_zm" );
+	include_weapon( "hs10_zm", false );
 	include_weapon( "hs10_upgraded_zm", false );
 
 	//	Weapons - Assault Rifles
@@ -264,9 +264,9 @@ include_weapons()
 	include_weapon( "fnfal_upgraded_zm", false );
 
 	//	Weapons - Sniper Rifles
-	//include_weapon( "dragunov_zm" );					// ptrs41
+	include_weapon( "dragunov_zm", false );					// ptrs41
 	include_weapon( "dragunov_upgraded_zm", false );
-	//include_weapon( "l96a1_zm" );
+	include_weapon( "l96a1_zm", false );
 	include_weapon( "l96a1_upgraded_zm", false );
 
 	//	Weapons - Machineguns
@@ -276,16 +276,17 @@ include_weapons()
 	include_weapon( "hk21_upgraded_zm", false );
 
 	//	Weapons - Misc
-	//include_weapon( "m72_law_zm" );
+	include_weapon( "m72_law_zm", false );
 	include_weapon( "m72_law_upgraded_zm", false );
-	//include_weapon( "china_lake_zm" );
+	include_weapon( "china_lake_zm", false );
 	include_weapon( "china_lake_upgraded_zm", false );
 
 	//	Weapons - Special
-	include_weapon( "zombie_cymbal_monkey", true, false);//, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
-	include_weapon( "ray_gun_zm", true, false);//, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
-	//include_weapon( "ray_gun_upgraded_zm", false );
-	//include_weapon( "freezegun_zm", false );
+	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
+	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
+	include_weapon( "ray_gun_upgraded_zm", false );
+
+	include_weapon( "freezegun_zm", false );
 	include_weapon( "freezegun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
@@ -297,9 +298,9 @@ include_weapons()
 	level._uses_retrievable_ballisitic_knives = true;
 
 	// Custom weapons
-	//include_weapon( "tesla_gun_zm", true );
-	include_weapon( "tesla_gun_upgraded_zm", false );
-	include_weapon( "tesla_gun_powerup_upgraded_zm", false );
+	include_weapon( "tesla_gun_zm", false);
+	//include_weapon( "tesla_gun_upgraded_zm", false );
+	//include_weapon( "tesla_gun_powerup_upgraded_zm", false );
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );

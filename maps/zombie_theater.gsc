@@ -44,6 +44,10 @@ main()
 	precachemodel("zombie_theater_chandelier1_off");
 	precachemodel("zombie_theater_chandelier1_on");
 
+	//precacheShader( "progress_bar_bg" );
+	//precacheShader( "progress_bar_fg" );
+	//precacheShader( "progress_bar_fill" );
+
 
 
 
@@ -125,6 +129,7 @@ main()
 	maps\zombie_theater_teleporter::teleport_pad_hide_use();
 
 	level thread maps\zombie_theater_ffotd::main_end();
+
 }
 
 
@@ -728,3 +733,37 @@ barricade_glitch_fix()
 	collision.angles = (0, 0, 0);
 	collision Hide();
 }
+
+/*bar_hud()
+{
+	barElem = newClientHudElem(	self );
+	barElem.x = 0 ;
+	barElem.y = 0;
+	barElem.frac = 0;
+	barElem.color = color;
+	barElem.sort = -2;
+	barElem.shader = "progress_bar_fill";
+	barElem setShader( "progress_bar_fill", width, height );
+	barElem.hidden = false;
+}
+
+health_bar_hud()
+{
+	self endon("disconnect");
+
+	flag_wait( "initial_blackscreen_passed" );
+
+	health_bar = createprimaryprogressbar();
+	health_bar setpoint(undefined, "BOTTOM_LEFT", 65, 17.5);
+
+	health_bar_text = createprimaryprogressbartext();
+	health_bar_text setpoint(undefined, "BOTTOM_LEFT", 65, 5);
+
+	while (1)
+	{
+		//health_bar updatebar(self.health / self.maxhealth);
+		//health_bar_text settext(self.health);
+
+		wait 0.05;
+	}
+}*/

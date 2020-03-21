@@ -17,7 +17,7 @@
 * Starting points changed from 500 to 555
 * Defualt fov set to 80
 * Fixed backwards walking speed
-* Reset now happens at exactly 20 hours
+* Reset now happens at exactly 10 hours
 
 ## UI
 * Reduced hitmarker size
@@ -51,7 +51,6 @@
 * Removed Python
 * Removed Spas-12
 * Removed HS10
-* Removed Fnfal
 * Removed Dragunov
 * Removed l96a1
 * Removed M72 Law
@@ -60,13 +59,6 @@
 
 #### Gewerh43
 * Buffed so that one head shot kills on round 3
-
-### Frag Grenade
-* Buffed damage from 300 to 600 (same as stielhandgranate)
-* Reduced throw time from 0.6s to 0.2s
-
-### Stielhandgranate
-* Reduced throw time from 0.4s to 0.2s
 
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 8 seconds
@@ -144,7 +136,7 @@
 * Set windows
 * Set power room telepoter to always take you up stairs
 * Set initial box to the dead guy room
-* Killing the theif before he takes a weapon now gives waffe powerup instead of a bonfire sale
+* Killing the theif before he takes a weapon now gives a waffe powerup instead of a bonfire sale
 * Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
@@ -168,9 +160,6 @@
 
 #### TODO
 * Fix one window zone on der riese
-* Fix losing fov cotd zip line
-* Fix waffe lights
-* make double points, nuke, insta, max first drops of the game
 * Make leader board spread sheet
 
 * See why shang always crashes when loaded
@@ -179,6 +168,6 @@
 * **_SE2Dev_** - For making LinkerMod
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
-* **_JBird_** - For helping me with the mod this wouldn't be possible without him
+* **_JBird_Justin_** - For helping me with the mod this wouldn't be possible without him
 * **_Clippy95_** - For adding the mp5 on verruckt
 
