@@ -251,10 +251,6 @@ post_all_players_connected()
 	{
 		level.music_override = false;
 	}
-
-	// in game timer thread
-	level thread timer_hud();
-	//level thread timer_round_hud();
 }
 
 zombiemode_melee_miss()
@@ -1556,7 +1552,7 @@ onPlayerConnect_clientDvars()
 		"compass", "0",
 		"hud_showStance", "0",
 		"cg_thirdPerson", "0",
-		"cg_fov", "90",
+		"cg_fov", "75",
 		"cg_thirdPersonAngle", "0",
 		"ammoCounterHide", "1",
 		"miniscoreboardhide", "1",
@@ -1593,10 +1589,6 @@ onPlayerConnect_clientDvars()
 	self SetClientDvars("dtp_post_move_pause", 0,
 		"dtp_exhaustion_window", 100,
 		"dtp_startup_delay", 100);
-
-	// turn zombies remaining HUD off initially
-	//self SetClientDvar("hud_zombs_remaining_on_game", false);
-	//self SetClientDvar("zombs_remaining", "");
 
 	// no cheats
 	//self SetClientDvar("sv_cheats", 0);
@@ -1665,14 +1657,7 @@ onPlayerSpawned()
 
 		self SetClientDvars( "cg_thirdPerson", "0",
 			"cg_fov", "80",
-			"cg_thirdPersonAngle", "0",
-			"player_strafeSpeedScale", 1,
-			"player_backSpeedScale", 1,
-			"cg_hudDamageIconHeight", 150,
-			"cg_hudDamageIconInScope", 0,
-			"cg_hudDamageIconOffset", 8,
-			"cg_hudDamageIconTime", 3500,
-			"cg_hudDamageIconWidth", 25);
+			"cg_thirdPersonAngle", "0");
 
 		self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
@@ -1732,15 +1717,11 @@ onPlayerSpawned()
 				self thread player_grenade_watcher();
 
 				// custom HUD
-				self thread zombies_remaining_hud();
 				//self thread drop_tracker_hud();
+				self thread zombies_remaining_hud();
 				self thread health_bar_hud();
-
-				// round timer appears when round ends
-				//self thread timer_round_hud();
-
-				// time till you win the game
-				//self thread reset_timer();
+				self thread timer_round_hud();
+				self thread timer_hud();
 
 				// testing only
 				//self thread get_position();
@@ -3964,8 +3945,8 @@ chalk_round_over()
 
 round_think()
 {
-	//level.round_number = 1; //69
-	//level.zombie_vars["zombie_spawn_delay"] = .08;
+	//level.round_number = 29; //69
+	level.zombie_vars["zombie_spawn_delay"] = .08;
 	level.zombie_move_speed = 105;
 
 	for( ;; )
@@ -7097,53 +7078,190 @@ set_sidequest_completed(id)
 	}
 }
 
-
-reset_timer()
+format_time(seconds)
 {
-	total_time = 0;
-	while(1) {
-		wait 1;
-		total_time++;
+	hours = int(seconds / 3600);
+	minutes = int((seconds - (hours * 3600)) / 60);
+	seconds = int(seconds - (hours * 3600) - (minutes * 60));
 
-		if (total_time == 72003) // 20h + 3s
-		{
-			level notify( "end_game" );
-			level.win_game = true;
-		}
+	if( minutes < 10 && hours >= 1 )
+	{
+		minutes = "0" + minutes;
 	}
+	if( seconds < 10 )
+	{
+		seconds = "0" + seconds;
+	}
+
+	combined = "";
+	if(hours >= 1)
+	{
+		combined = "" + hours + ":" + minutes + ":" + seconds;
+	}
+	else
+	{
+		combined = "" + minutes + ":" + seconds;
+	}
+
+	return combined;
 }
 
-/*timer_round_hud()
+timer_hud()
 {
-timer = NewHudElem();
+	level endon("disconnect");
+	level endon("end_game");
+
+	hud_wait();
+
+	timer = NewClientHudElem( self );
 	timer.horzAlign = "right";
 	timer.vertAlign = "top";
 	timer.alignX = "right";
 	timer.alignY = "top";
-	timer.y += 15;
-	timer.x -= 4;
+	timer.y += 3;
+	timer.x -= 6;
 	timer.foreground = true;
 	timer.fontScale = 1.4;
-	timer.alpha = 1;
 	timer.color = ( 1.0, 1.0, 1.0 );
+	timer setText("0:00");
+	timer.alpha = 0;
+	level.hudelem_count++;
+
+	hud_fade_in(timer);
+	//self thread hud_end(timer);
 
 	if (level.script == "zombie_cosmodrome")
 	{
-		timer SetTimerUp(9);
+		wait 7.2;
 	} else
-	timer SetTimerUp(3);
+	{	
+		wait 0.8;
+	}
+
+	level.total_time = 0;
+	while(1)
+	{	
+		timer setText(format_time(level.total_time));
+
+		if (level.total_time == 36000) // 10h
+		{	
+			level.win_game = true;
+			level notify( "end_game" );
+			break;
+		}
+
+		wait 1;
+		level.total_time++;
+	}
+}
+
+timer_round_hud()
+{
+	level endon("disconnect");
+	level endon("end_game");
+
+	hud_wait();
+
+	round_timer = NewClientHudElem( self );
+	round_timer.horzAlign = "right";
+	round_timer.vertAlign = "top";
+	round_timer.alignX = "right";
+	round_timer.alignY = "top";
+	round_timer.y += 20;
+	round_timer.x -= 6;
+	round_timer.foreground = true;
+	round_timer.fontScale = 1.4;
+	round_timer.alpha = 0;
+	round_timer.color = ( 1.0, 1.0, 1.0 );
+	round_timer setText("");
+	round_timer.hudelem_count++;
+
+	hud_fade_in(round_timer);
+	self thread hud_end(round_timer);
+
+	if (level.script == "zombie_cosmodrome")
+	{
+		wait 7.2;
+	} else
+	{	
+		wait 0.8;
+	}
+
+	if(level.script == "zombie_moon")
+	{
+		level waittill( "end_of_round" );
+		level waittill( "start_of_round" );
+	}
 
 	while(1)
-	{
+	{	
+		level thread round_time();
 
+		//end round timer when last enemy of round is killed
+		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
+		{
+			level waittill( "last_dog_down" );
+		}
+		else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
+		{
+			flag_wait( "last_thief_down" );
+		}
+		else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
+		{
+			flag_wait( "last_monkey_down" );
+		}
+		else
+		{
+			level waittill( "end_of_round" );
+		}
+
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "end_of_round" ); //end no man's land
+			level waittill( "end_of_round" ); //end actual round
+		}
+
+		// total time
+		total_time = format_time(level.total_time);
+
+		// display round time
+		round_timer setText(format_time(level.round_time));
+		hud_fade_in_out(round_timer);
+		// dispaly total time
+		wait 0.2;
+		round_timer setText(total_time);
+		hud_fade_in_out(round_timer);
+
+
+		level waittill("between_round_over");
+
+		level waittill( "start_of_round" );
+
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "start_of_round" );
+		}
 	}
-}*/
+}
 
+
+round_time()
+{
+	level endon( "intermission" );
+	level endon("stop_round_time");
+
+	level.round_time = 0;
+	while(1)
+	{
+		wait 1;
+		level.round_time++;
+	}
+}
 
 zombies_remaining_hud()
 {
-	self endon("disconnect");
-	self endon("end_game");
+	level endon("disconnect");
+	level endon("end_game");
 
 	hud_wait();
 
@@ -7152,8 +7270,8 @@ zombies_remaining_hud()
 	zombs_remaining.vertAlign = "top";
 	zombs_remaining.alignX = "left";
 	zombs_remaining.alignY = "top";
-	zombs_remaining.y += 2;
-	zombs_remaining.x += 4;
+	zombs_remaining.y += 3;
+	zombs_remaining.x += 6;
 	zombs_remaining.foreground = true;
 	zombs_remaining.fontScale = 1.4;
 	zombs_remaining.alpha = 0;
@@ -7171,40 +7289,10 @@ zombies_remaining_hud()
 	}
 }
 
-timer_hud()
-{
-	self endon("disconnect");
-	self endon("end_game");
-
-	hud_wait();
-
-	timer = NewHudElem();
-	timer.horzAlign = "right";
-	timer.vertAlign = "top";
-	timer.alignX = "right";
-	timer.alignY = "top";
-	timer.y += 2;
-	timer.x -= 4;
-	timer.foreground = true;
-	timer.fontScale = 1.4;
-	timer.alpha = 0;
-	timer.color = ( 1.0, 1.0, 1.0 );
-	level.hudelem_count++;
-
-	hud_fade_in(timer);
-	self thread hud_end(timer);
-
-	if (level.script == "zombie_cosmodrome")
-	{
-		timer SetTimerUp(7);
-	} else
-	timer SetTimerUp(0.8);
-}
-
 health_bar_hud()
 {
-	self endon("disconnect");
-	self endon("end_game");
+	level endon("disconnect");
+	level endon("end_game");
 
 	hud_wait();
 
@@ -7280,8 +7368,8 @@ updateHealth( barFrac )
 
 drop_tracker_hud()
 {
-	self endon("disconnect");
-	self endon("end_game");
+	level endon("disconnect");
+	level endon("end_game");
 
 	hud_wait();
 
@@ -7330,5 +7418,14 @@ hud_fade_in( hud )
 {
 	hud fadeOverTime(0.5);
 	hud.alpha = 1;
+}
+
+hud_fade_in_out( hud )
+{	
+	hud fadeOverTime(0.2);
+	hud.alpha = 1;
+	wait 3.5;
+	hud fadeOverTime(0.15);
+	hud.alpha = 0;
 }
 
