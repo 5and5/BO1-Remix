@@ -160,9 +160,12 @@
 
 #### TODO
 * Fix one window zone on der riese
+* Fix betties blowing up
+* Add round 99 insta's then ever 4 rounds
+* Make shang pap stone never go to ak
+* Make monkey have firesales in there cycle
 * Make leader board spread sheet
 
-* See why shang always crashes when loaded
 
 ## Huge shout out to:
 * **_SE2Dev_** - For making LinkerMod

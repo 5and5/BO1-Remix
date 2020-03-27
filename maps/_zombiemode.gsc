@@ -1720,8 +1720,8 @@ onPlayerSpawned()
 				//self thread drop_tracker_hud();
 				self thread zombies_remaining_hud();
 				self thread health_bar_hud();
-				self thread timer_round_hud();
-				self thread timer_hud();
+				//self thread timer_round_hud();
+				//self thread timer_hud();
 
 				// testing only
 				//self thread get_position();
@@ -7078,81 +7078,160 @@ set_sidequest_completed(id)
 	}
 }
 
-format_time(seconds)
-{
-	hours = int(seconds / 3600);
-	minutes = int((seconds - (hours * 3600)) / 60);
-	seconds = int(seconds - (hours * 3600) - (minutes * 60));
-
-	if( minutes < 10 && hours >= 1 )
-	{
-		minutes = "0" + minutes;
-	}
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds;
-	}
-
-	combined = "";
-	if(hours >= 1)
-	{
-		combined = "" + hours + ":" + minutes + ":" + seconds;
-	}
-	else
-	{
-		combined = "" + minutes + ":" + seconds;
-	}
-
-	return combined;
-}
-
 timer_hud()
 {
 	level endon("disconnect");
 	level endon("end_game");
 
 	hud_wait();
+	wait 1.1;
 
-	timer = NewClientHudElem( self );
-	timer.horzAlign = "right";
-	timer.vertAlign = "top";
-	timer.alignX = "right";
-	timer.alignY = "top";
-	timer.y += 3;
-	timer.x -= 6;
-	timer.foreground = true;
-	timer.fontScale = 1.4;
-	timer.color = ( 1.0, 1.0, 1.0 );
-	timer setText("0:00");
-	timer.alpha = 0;
-	level.hudelem_count++;
+	timer_seconds = create_hud("right", "top");
+	timer_seconds.y += 2;
+	timer_seconds.x -= 4;
 
-	hud_fade_in(timer);
-	//self thread hud_end(timer);
+	timer_seconds_zero = create_hud("right", "top");
+	timer_seconds_zero.y += 2;
+	timer_seconds_zero.x -= 11;
+	timer_seconds_zero SetValue(0);
 
-	if (level.script == "zombie_cosmodrome")
-	{
-		wait 7.2;
-	} else
-	{	
-		wait 0.8;
-	}
+	timer_first_colon = create_hud("right", "top");
+	timer_first_colon.y += 2;
+	timer_first_colon.x -= 18;
+	timer_first_colon SetText(":");
 
+	timer_minutes = create_hud("right", "top");
+	timer_minutes.y += 2;
+	timer_minutes.x -= 22;
+
+	timer_minutes_zero = create_hud("right", "top");
+	timer_minutes_zero.y += 2;
+	timer_minutes_zero.x -= 29;
+	timer_minutes_zero SetValue(0);
+
+	timer_second_colon = create_hud("right", "top");
+	timer_second_colon.y += 2;
+	timer_second_colon.x -= 36;
+	timer_second_colon SetText(":");
+	timer_second_colon.alpha = 0;
+
+	timer_hours = create_hud("right", "top");
+	timer_hours.y += 2;
+	timer_hours.x -= 40;
+
+	timer_seconds fadeOverTime(0.1);
+	timer_seconds.alpha = 1;
+	timer_seconds_zero fadeOverTime(0.1);
+	timer_seconds_zero.alpha = 1;
+	timer_first_colon fadeOverTime(0.1);
+	timer_first_colon.alpha = 1;
+	timer_minutes fadeOverTime(0.1);
+	timer_minutes.alpha = 1;
+
+	show_hours = false;
 	level.total_time = 0;
+	level thread timer();
+
 	while(1)
-	{	
-		timer setText(format_time(level.total_time));
+	{
+		hours = int(level.total_time / 3600);
+		minutes = int((level.total_time - (hours * 3600)) / 60);
+		seconds = int(level.total_time - (hours * 3600) - (minutes * 60));
+
+		// show leading mintues zero if needed
+		if( minutes < 10 && hours >= 1 )
+		{
+			timer_minutes_zero.alpha = 1;
+		}
+		else
+		{
+			timer_minutes_zero.alpha = 0;
+		}
+
+		// show leading seconds zero if needed
+		if( seconds < 10 )
+		{
+			timer_seconds_zero.alpha = 1;
+		}
+		else
+		{
+			timer_seconds_zero.alpha = 0;
+		}
+
+		// update time
+		timer_seconds SetValue(seconds);
+		timer_minutes SetValue(minutes);
+		if( hours >= 1)
+		{
+			if( !show_hours )
+			{
+				timer_second_colon.alpha = 1;
+				timer_hours.alpha = 1;
+				show_hours = true;
+			}
+			timer_hours SetValue(hours);
+		}
 
 		if (level.total_time == 36000) // 10h
-		{	
+		{
 			level.win_game = true;
 			level notify( "end_game" );
 			break;
 		}
 
-		wait 1;
-		level.total_time++;
+		wait 0.05;
 	}
+}
+
+set_time(time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, show_hours)
+{
+	hours = int(time / 3600);
+	minutes = int((time - (hours * 3600)) / 60);
+	seconds = int(time - (hours * 3600) - (minutes * 60));
+
+	// show leading mintues zero if needed
+	if( minutes < 10 && hours >= 1 )
+	{
+		timer_minutes_zero.alpha = 1;
+	}
+	else
+	{
+		timer_minutes_zero.alpha = 0;
+	}
+
+	// show leading seconds zero if needed
+	if( seconds < 10 )
+	{
+		timer_seconds_zero.alpha = 1;
+	}
+	else
+	{
+		timer_seconds_zero.alpha = 0;
+	}
+
+	// update time
+	timer_seconds SetValue(seconds);
+	timer_minutes SetValue(minutes);
+	if( hours >= 1)
+	{
+		if( !show_hours )
+		{
+			timer_second_colon.alpha = 1;
+			timer_hours.alpha = 1;
+			show_hours = true;
+		}
+		timer_hours SetValue(hours);
+	}
+
+	return show_hours;
+}
+
+timer()
+{
+	level endon("disconnect");
+
+	wait 1;
+	level.total_time++;
 }
 
 timer_round_hud()
@@ -7161,29 +7240,46 @@ timer_round_hud()
 	level endon("end_game");
 
 	hud_wait();
+	wait 1.1;
 
-	round_timer = NewClientHudElem( self );
-	round_timer.horzAlign = "right";
-	round_timer.vertAlign = "top";
-	round_timer.alignX = "right";
-	round_timer.alignY = "top";
-	round_timer.y += 20;
-	round_timer.x -= 6;
-	round_timer.foreground = true;
-	round_timer.fontScale = 1.4;
-	round_timer.alpha = 0;
-	round_timer.color = ( 1.0, 1.0, 1.0 );
-	round_timer setText("");
-	round_timer.hudelem_count++;
+	timer_seconds = create_hud("right", "top");
+	timer_seconds.y += 2;
+	timer_seconds.x -= 4;
 
-	hud_fade_in(round_timer);
-	self thread hud_end(round_timer);
+	timer_seconds_zero = create_hud("right", "top");
+	timer_seconds_zero.y += 2;
+	timer_seconds_zero.x -= 11;
+	timer_seconds_zero SetValue(0);
+
+	timer_first_colon = create_hud("right", "top");
+	timer_first_colon.y += 2;
+	timer_first_colon.x -= 18;
+	timer_first_colon SetText(":");
+
+	timer_minutes = create_hud("right", "top");
+	timer_minutes.y += 2;
+	timer_minutes.x -= 22;
+
+	timer_minutes_zero = create_hud("right", "top");
+	timer_minutes_zero.y += 2;
+	timer_minutes_zero.x -= 29;
+	timer_minutes_zero SetValue(0);
+
+	timer_second_colon = create_hud("right", "top");
+	timer_second_colon.y += 2;
+	timer_second_colon.x -= 36;
+	timer_second_colon SetText(":");
+	timer_second_colon.alpha = 0;
+
+	timer_hours = create_hud("right", "top");
+	timer_hours.y += 2;
+	timer_hours.x -= 40;
 
 	if (level.script == "zombie_cosmodrome")
 	{
 		wait 7.2;
 	} else
-	{	
+	{
 		wait 0.8;
 	}
 
@@ -7193,8 +7289,10 @@ timer_round_hud()
 		level waittill( "start_of_round" );
 	}
 
+	show_hours = false;
+
 	while(1)
-	{	
+	{
 		level thread round_time();
 
 		//end round timer when last enemy of round is killed
@@ -7221,16 +7319,15 @@ timer_round_hud()
 			level waittill( "end_of_round" ); //end actual round
 		}
 
-		// total time
-		total_time = format_time(level.total_time);
+		// get round time
+		round_time = level.round_time;
+
+		// dispaly total time
+		show_hours = set_time(level.total_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, show_hours)
+		wait 0.2;
 
 		// display round time
-		round_timer setText(format_time(level.round_time));
-		hud_fade_in_out(round_timer);
-		// dispaly total time
-		wait 0.2;
-		round_timer setText(total_time);
-		hud_fade_in_out(round_timer);
+		show_hours = set_time(round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, show_hours)
 
 
 		level waittill("between_round_over");
@@ -7265,26 +7362,27 @@ zombies_remaining_hud()
 
 	hud_wait();
 
-	zombs_remaining = NewClientHudElem( self );
-	zombs_remaining.horzAlign = "left";
-	zombs_remaining.vertAlign = "top";
-	zombs_remaining.alignX = "left";
-	zombs_remaining.alignY = "top";
-	zombs_remaining.y += 3;
-	zombs_remaining.x += 6;
-	zombs_remaining.foreground = true;
-	zombs_remaining.fontScale = 1.4;
-	zombs_remaining.alpha = 0;
-	zombs_remaining.color = ( 1.0, 1.0, 1.0 );
-	level.hudelem_count++;
+	zombies_remaining = create_hud("left", "top");
+	zombies_remaining.y += 3;
+	zombies_remaining.x += 4;
+	zombies_remaining.label = &"Zombies: ";
 
-	hud_fade_in(zombs_remaining);
-	self thread hud_end(zombs_remaining);
+	hud_fade_in(zombies_remaining);
+	self thread hud_end(zombies_remaining);
 
 	while(1)
 	{
-		zombs = level.zombie_total + get_enemy_count();
-		zombs_remaining SetText("Zombies: " + zombs);
+		zombies = level.zombie_total + get_enemy_count();
+
+		if (zombies == 0)
+		{
+			zombies_remaining setText("");
+		}
+		else
+		{
+			zombies_remaining setValue(zombies);
+		}
+
 		wait 0.05;
 	}
 }
@@ -7296,7 +7394,7 @@ health_bar_hud()
 
 	hud_wait();
 
-	width = 112.5;
+	width = 113;
 	height = 6;
 
 	barElem = newClientHudElem(	self );
@@ -7317,19 +7415,10 @@ health_bar_hud()
 	barElem.hidewheninmenu = 1;
 	level.hudelem_count++;
 
-	text = NewClientHudElem( self );
-	text.horzAlign = "left";
-	text.vertAlign = "bottom";
-	text.alignX = "left";
-	text.alignY = "bottom";
+	text = create_hud( "left", "bottom");
 	text.y = -107;
 	text.x = 49;
-	text.foreground = true;
 	text.fontScale = 1.3;
-	text.alpha = 0;
-	text.color = ( 1.0, 1.0, 1.0 );
-	text.hidewheninmenu = 1;
-	level.hudelem_count++;
 
 	hud_fade_in(text);
 	hud_fade_in(barElem);
@@ -7340,7 +7429,7 @@ health_bar_hud()
 	while (1)
 	{
 		barElem updateHealth(self.health / self.maxhealth);
-		text setText(self.health);
+		text SetValue(self.health);
 
 		if(is_true( self.waiting_to_revive ))
 		{
@@ -7368,36 +7457,40 @@ updateHealth( barFrac )
 
 drop_tracker_hud()
 {
-	level endon("disconnect");
-	level endon("end_game");
+	self endon("disconnect");
+	self endon("end_game");
 
 	hud_wait();
 
-	num_drops = NewClientHudElem( self );
-	num_drops.horzAlign = "left";
-	num_drops.vertAlign = "top";
-	num_drops.alignX = "left";
-	num_drops.alignY = "top";
+	num_drops = create_hud("left", "top")
 	num_drops.y += 20;
 	num_drops.x += 4;
-	num_drops.foreground = true;
-	num_drops.fontScale = 1.4;
-	num_drops.alpha = 0;
-	num_drops.text = "0";
-	num_drops.color = ( 1.0, 1.0, 1.0 );
-	num_drops.hidewheninmenu = 1;
-	level.hudelem_count++;
+	num_drops.label = &"Drops: ";
 
 	hud_fade_in(num_drops);
+	self thread hud_end(num_drops);
 
 	while(1)
 	{
-		drops = level.zombie_powerup_index;
-		max_drops = level.zombie_powerup_array.size;
-
-		num_drops SetText("Drops: " + drops + "/" + max_drops);
+		drops = level.drop_tracker_index;
+		num_drops SetValue(drops);
 		wait 0.05;
 	}
+}
+
+create_hud( side, top )
+{
+	hud = NewClientHudElem( self );
+	hud.horzAlign = side;
+	hud.vertAlign = top;
+	hud.alignX = side;
+	hud.alignY = top;
+	hud.alpha = 0;
+	hud.color = ( 1.0, 1.0, 1.0 );
+	hud.hidewheninmenu = 1;
+	level.hudelem_count++;
+
+	return hud;
 }
 
 hud_wait()
@@ -7421,7 +7514,7 @@ hud_fade_in( hud )
 }
 
 hud_fade_in_out( hud )
-{	
+{
 	hud fadeOverTime(0.2);
 	hud.alpha = 1;
 	wait 3.5;
