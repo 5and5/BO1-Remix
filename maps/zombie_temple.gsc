@@ -393,6 +393,7 @@ include_weapons()
 	include_weapon( "knife_ballistic_upgraded_zm", false );
 	include_weapon( "knife_ballistic_bowie_zm", false );
 	include_weapon( "knife_ballistic_bowie_upgraded_zm", false );
+
 	level._uses_retrievable_ballisitic_knives = true;
 
 	// limited weapons

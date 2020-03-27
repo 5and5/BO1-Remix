@@ -1,5 +1,9 @@
 # Call of Duty: Black Ops Zombies - Remix
 
+## Download
+
+[Download](https://github.com/5and5/Remix/releases)
+
 ## Created by: 5and5
 
 [YouTube](https://www.youtube.com/user/Zomb0s4life)
@@ -15,14 +19,14 @@
 * Weapon limit increased from 2 to 3
 * Removed Mulekick
 * Starting points changed from 500 to 555
-* Defualt fov set to 80
 * Fixed backwards walking speed
-* Reset now happens at exactly 10 hours
+* "Reset" now happens at exactly 10 hours
 
-## UI
-* Reduced hitmarker size
+## HUD
 * In game timer
+* Round timer (shows at the end of a round)
 * Zombie remaining counter
+* Health bar
 
 ## Special Rounds
 #### Dogs
@@ -58,7 +62,7 @@
 * Removed Winters Howl
 
 #### Gewerh43
-* Buffed so that one head shot kills on round 3
+* Buffed to the same damage as m14
 
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 8 seconds
@@ -83,7 +87,7 @@
 
 ## Power Ups
 ### General
-* Increased random drop rate from 3% to 5%
+* Increased random drop rate from 2% to 4%
 * Decreased point based drops from 114% to 112%
 * Added custom effect to last drop of a cycle
 * First cycle of the game is always double points, nuke, insta kill, max ammo
@@ -93,24 +97,26 @@
 * Added to powerup cycle on round 5
 * Removed from powerup cycle after first box moves
 #### Death Machines
-* Added to powerup cycle on all maps on round 65
+* Added to powerup cycle on all maps on round 60
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
 * Death machines now stack
 #### Double Points
-* Removed from powerup cycle on round 65
+* Removed from powerup cycle on round 60
 * Double points now stack
 #### Insta kill
 * Insta kills now stack
+#### Perk Bottles
+* Always give jug if you don't already have it
 
 ## Maps
 ### Nacht Der Untoten
-* Added trigger to cabinet that upgrades the Thunder Gun
+* Cabinet upstairs now upgrades the Thunder Gun
 ### Verruckt
 * Added Wunderwaffe to the box
 * Added mp5 wall buy in the speed cola room
 ### Shi-no-numa
-* Added trigger to first room radio that upgrades the Wunderwaffe/Ray Gun/Crossbow
+* Radio in the starting room now upgrades the Wunderwaffe/Ray Gun/Crossbow
 * Removed fishing hut box location
 * Set double tap to always spawn in the fishing hut
 * Decreased electric traps recharge time from 90 to 25
@@ -125,9 +131,9 @@
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
 * Changed the spawn zones of power to only include only it self (3 windows)
 ### Kino Der Toten
+* Meteor in the starting room now turns on power
 * Removed nova crawlers
-* Meteor in the first room now turns on power
-* Turrets kill in two bullets at any round
+* Turrets now kill in 2 bullets on any round
 * Decrease time spent at PaP from 45 to 30 seconds
 * Removed alley, control room and pm63 room box locations
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
@@ -140,14 +146,13 @@
 * Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
-* Turrets kill in 2 bullets
-* Monkeys will allows give you jug on the first Monkey round
+* Turrets now kill in 2 bullets on any round
 * Monkeys health caps out at 1500
 * Monkeys taking revive doesn't count as a down
 ### Call of the Dead
 * Removed initial spawn delay on round 1
 * VR11 un-upgraded now also gives players instakill
-* VR11 can now give yourself instakill by shooting the ground
+* VR11 can now be used on yourself by shooting the ground
 * VR11 no longer gives players invisibility
 * VR11 no longer allows drops from the insta kill effect
 * George now drops an upgraded waffe

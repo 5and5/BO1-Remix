@@ -434,7 +434,7 @@ get_valid_powerup()
 			powerup = get_next_powerup();
 		}
 		//remove double points after round 65
-		else if ( powerup == "double_points" && level.round_number > 65 )
+		else if ( powerup == "double_points" && level.round_number > 60 )
 		{
 			powerup = get_next_powerup();
 		}
@@ -506,10 +506,10 @@ fire_sale_drop()
 
 minigun_no_drop()
 {
-	//mini only drops after round 65
-	if( level.round_number < 65 )
+	//mini only drops after round 60
+	if( level.round_number < 60 )
 	{
-		return true; // true means no firesale
+		return true; // true means no drop
 	}
 	else
 	{
@@ -672,7 +672,7 @@ powerup_drop(drop_point)
 	// some guys randomly drop, but most of the time they check for the drop flag
 	rand_drop = randomint(100);
 
-	// changed from 3% to 5%
+	// changed from 2% to 4%
 	if (rand_drop > 4)
 	{
 		if (!level.zombie_vars["zombie_drop_item"])
