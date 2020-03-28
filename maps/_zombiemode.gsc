@@ -56,7 +56,7 @@ main()
 	}
 
 	// progress bar
-	precacheShader( "white" );
+	//precacheShader( "white" );
 
 	precache_shaders();
 	precache_models();
@@ -976,7 +976,7 @@ init_flags()
 	flag_init( "begin_spawning" );
 	flag_init( "end_round_wait" );
 	flag_init( "wait_and_revive" );
-	flag_init("instant_revive");
+	flag_init( "instant_revive");
 }
 
 // Client flags registered here should be for global zombie systems, and should
@@ -1717,6 +1717,7 @@ onPlayerSpawned()
 
 				// custom HUD
 				self thread zombies_remaining_hud();
+				//self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread timer_round_hud();
 				self thread timer_hud();
@@ -4065,6 +4066,13 @@ award_grenades_for_survivors()
 
 ai_calculate_health( round_number )
 {
+	//insta kill rounds staring at 99 then every 4 rounds
+	if(round_number >= 3 && round_number % 2 == 1)
+	{
+		level.zombie_health = 150;
+		return;
+	}
+
 	level.zombie_health = level.zombie_vars["zombie_health_start"];
 	for ( i=2; i<=round_number; i++ )
 	{
@@ -7400,6 +7408,8 @@ zombies_remaining_hud()
 	}
 }
 
+
+
 health_bar_hud()
 {
 	level endon("disconnect");
@@ -7467,6 +7477,33 @@ updateHealth( barFrac )
 	self setShader( self.shader, barWidth, self.height );
 }
 
+drop_tracker_hud()
+{
+	self endon("disconnect");
+	self endon("end_game");
+
+	hud_wait();
+
+	drops_text = create_hud( "left", "top" );
+	drops_text.y += 19;
+	drops_text.x += 4;
+	drops_text setText("Drops: ");
+
+	drops_value = create_hud( "left", "top" );
+	drops_value.y += 20;
+	drops_value.x += 42;
+
+	hud_fade_in(drops_text);
+	hud_fade_in(drops_value);
+
+	while(1)
+	{
+		drops = level.drop_tracker_index;
+		drops_value setValue(drops);
+		wait 0.05;
+	}
+}
+
 create_hud( side, top )
 {
 	hud = NewClientHudElem( self );
@@ -7478,7 +7515,6 @@ create_hud( side, top )
 	hud.fontscale = 1.4;
 	hud.color = ( 1.0, 1.0, 1.0 );
 	hud.hidewheninmenu = 1;
-	level.hudelem_count++;
 
 	return hud;
 }

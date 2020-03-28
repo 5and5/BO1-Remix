@@ -142,6 +142,7 @@ init_powerups()
 	// Randomize the order
 	//randomize_powerups();
 	level.zombie_powerup_index = 0;
+	level.drop_tracker_index = 0;
 	//randomize_powerups();
 
 	// Rare powerups
@@ -368,10 +369,15 @@ get_next_powerup()
 
 	while(1)
 	{
+		if(is_valid_powerup(level.zombie_powerup_array[level.zombie_powerup_index]))
+		{
+			level.drop_tracker_index++;
+		}
 		level.zombie_powerup_index++;
 
 		if( level.zombie_powerup_index >= level.zombie_powerup_array.size )
 		{
+			level.drop_tracker_index = 0;
 			level.zombie_powerup_index = 0;
 			randomize_powerups();
 			level.last_powerup = true;
@@ -421,7 +427,7 @@ get_valid_powerup()
 	while( 1 )
 	{
 		// disable carps
-		if( powerup == "carpenter" && true )
+		if( powerup == "carpenter" )
 		{
 			powerup = get_next_powerup();
 		}
@@ -573,7 +579,11 @@ watch_for_drop()
 
 		if (curr_total_score > score_to_drop )
 		{
-			level.zombie_vars["zombie_powerup_drop_increment"] *= 1.12; //1.14 org
+			// max is 45149
+			if(level.zombie_vars["zombie_powerup_drop_increment"] <= 50000)
+			{
+				level.zombie_vars["zombie_powerup_drop_increment"] *= 1.14; //1.14 org
+			}
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
 			//iprintln(score_to_drop); // testing
@@ -673,7 +683,7 @@ powerup_drop(drop_point)
 	rand_drop = randomint(100);
 
 	// changed from 2% to 4%
-	if (rand_drop > 4)
+	if (rand_drop > 99)
 	{
 		if (!level.zombie_vars["zombie_drop_item"])
 		{

@@ -56,6 +56,10 @@ rawfile,maps/zombie_coast.gsc
 rawfile,maps/zombie_coast_lighthouse.gsc
 rawfile,maps/_zombiemode_ai_director.gsc
 
+//SHANG
+rawfile,maps/zombie_temple.gsc
+rawfile,maps/zombie_temple_pack_a_punch.gsc
+
 //MOON
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc

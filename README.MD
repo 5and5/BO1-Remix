@@ -29,7 +29,9 @@
 * Health bar
 
 ## Special Rounds
-#### Dogs
+### Insta Kill Rounds
+* Now start at round 99 then happen every other round
+### Dogs
 * First dogs is always round 5
 * Always 4 rounds between dog rounds
 ### Theif
@@ -62,7 +64,7 @@
 * Removed Winters Howl
 
 #### Gewerh43
-* Buffed to the same damage as m14
+* Buffed to the same damage as m14 (kill in one shot till round 3)
 
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 8 seconds
@@ -88,7 +90,7 @@
 ## Power Ups
 ### General
 * Increased random drop rate from 2% to 4%
-* Decreased point based drops from 114% to 112%
+* Added a 50000 cap to points based drops
 * Added custom effect to last drop of a cycle
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
@@ -166,7 +168,6 @@
 #### TODO
 * Fix one window zone on der riese
 * Fix betties blowing up
-* Add round 99 insta's then ever 4 rounds
 * Make shang pap stone never go to ak
 * Make monkey have firesales in there cycle
 * Make leader board spread sheet
