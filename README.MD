@@ -129,6 +129,7 @@
 * Turning on power now give you the bowie knife
 * Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
+* Fixed one window spawn above thomson
 * Changed the spawn zones of power to only include only it self (3 windows)
 ### Kino Der Toten
 * Meteor in the starting room now turns on power
@@ -164,7 +165,6 @@
 * No changes made
 
 #### TODO
-* Fix one window zone on der riese
 * Fix betties blowing up
 * Make shang pap stone never go to ak
 * Make monkey have firesales in there cycle

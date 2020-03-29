@@ -65,8 +65,8 @@ main()
 	precacheModel("lights_berlin_subway_hat_100" );
 
 	// curb fixs
-	precacheModel("lights_berlin_subway_hat_50" );
-	precacheModel("lights_berlin_subway_hat_100" );
+	PreCacheModel("collision_geo_512x512x512");
+	PreCacheModel("collision_geo_128x128x128");
 
 	// DCS: not mature settings models without blood or gore.
 	PreCacheModel( "zombie_power_lever_handle" );
@@ -153,6 +153,7 @@ main()
 	level thread factory_german_safe();
 	level thread mature_settings_changes();
 
+	level thread curbs_fix();
 
 	// Special level specific settings
 	set_zombie_var( "zombie_powerup_drop_max_per_round", 3 );	// lower this to make drop happen more often
@@ -186,7 +187,6 @@ main()
 	//DCS: get betties working.
 	maps\_zombiemode_betty::init();
 
-	level thread curbs_fix();
 
 }
 
@@ -300,7 +300,9 @@ factory_zone_init()
 
 	// Warehosue top
 	add_adjacent_zone( "warehouse_bottom_zone", "warehouse_top_zone",	"enter_warehouse_second_floor" );
-	add_adjacent_zone( "warehouse_top_zone",	"bridge_zone",			"enter_warehouse_second_floor" );
+	add_adjacent_zone( "bridge_zone",	"warehouse_bottom_zone",			"enter_warehouse_second_floor" );
+	//add_adjacent_zone( "warehouse_top_zone",	"bridge_zone",			"enter_south_zone", true );
+	//add_adjacent_zone( "warehouse_top_zone",	"wnuen_bridge_zone",			"enter_south_zone" );
 
 	// TP East
 	add_adjacent_zone( "tp_east_zone",			"wnuen_zone",			"enter_tp_east" );
@@ -316,6 +318,10 @@ factory_zone_init()
 
 	//add_adjacent_zone( "tp_west_zone",			"warehouse_bottom_zone", "enter_tp_west",		true );
 	//add_zone_flags(	"enter_tp_west",										"enter_warehouse_second_floor" );
+
+
+	//add_zone_flags(	"enter_warehouse_second_floor", "enter_south_zone" );
+	//add_adjacent_zone( "tp_south_zone", "bridge_zone", "enter_tp_south", true );
 }
 
 
@@ -495,7 +501,7 @@ bridge_init()
 	warehouse_bridge_clip delete();
 
 	maps\_zombiemode_zone_manager::connect_zones( "wnuen_bridge_zone", "bridge_zone" );
-	maps\_zombiemode_zone_manager::connect_zones( "warehouse_top_zone", "bridge_zone" );
+	maps\_zombiemode_zone_manager::connect_zones( "bridge_zone", "warehouse_top_zone" );
 }
 
 
@@ -890,7 +896,14 @@ power_electric_switch()
 		trig waittill("trigger",user);
 	}
 
-	user GiveWeapon( "bowie_knife_zm" );
+	//user GiveWeapon( "bowie_knife_zm" );
+	gun = user maps\_zombiemode_bowie::do_bowie_flourish_begin();
+	user maps\_zombiemode_audio::create_and_play_dialog( "weapon_pickup", "bowie" );
+
+	user waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
+
+	// restore player controls and movement
+	user maps\_zombiemode_bowie::do_bowie_flourish_end( gun );
 
 	// MM - turning on the power powers the entire map
 // 	if ( IsDefined(user) )	// only send a notify if we weren't originally triggered through script
@@ -2022,23 +2035,33 @@ factory_german_safe()
 
 curbs_fix()
 {
-	collision = spawn("script_model", (1593, 1032, 326));
+	collision = spawn("script_model", (-65.359, -1215.74, -192.5));
 	collision setmodel("collision_geo_512x512x512");
 	collision.angles = (0, 0, 0);
 	collision Hide();
 
-	collision2 = spawn("script_model", (361.273 + 64, -1828.36 - 271, 55.9853 - 248));
+	collision2 = spawn("script_model", (393.273, -2099.36, -192.5));
 	collision2 setmodel("collision_geo_512x512x512");
 	collision2.angles = (0, 0, 0);
 	collision2 Hide();
 
-	collision3 = spawn("script_model", (-120, -858.359 - 271, 60 - 253));
+	collision3 = spawn("script_model", (-120, -1129.359, -192.5));
 	collision3 setmodel("collision_geo_512x512x512");
 	collision3.angles = (0, 0, 0);
 	collision3 Hide();
 
-	collision4 = spawn("script_model", (172.104 - 55, -1643.19 + 55, 54.6046 - 56));
+	collision4 = spawn("script_model", (117.604, -1588.69, -1.5));
 	collision4 setmodel("collision_geo_128x128x128");
-	collision4.angles = (0, 47, 0);
+	collision4.angles = (0, 46.5, 0);
 	collision4 Hide();
+
+	collision5 = spawn("script_model", (435.5, -1502.5, -0.25));
+	collision5 setmodel("collision_geo_128x128x128");
+	collision5.angles = (0, 0, 0);
+	collision5 Hide();
+
+	collision6 = spawn("script_model", (627.5, -1184.359, -192.5));
+	collision6 setmodel("collision_geo_512x512x512");
+	collision6.angles = (0, 0, 0);
+	collision6 Hide();
 }

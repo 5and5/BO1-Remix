@@ -1724,6 +1724,7 @@ onPlayerSpawned()
 
 				// testing only
 				//self thread get_position();
+				self thread get_zone();
 			}
 		}
 	}
@@ -7390,6 +7391,7 @@ zombies_remaining_hud()
 	remaining_text = create_hud("left", "top");
 	remaining_text.y += 2;
 	remaining_text.x += 4;
+	remaining_text.textstyle = "ITEM_TEXTSTYLE_SHADOWED";
 	remaining_text SetText("Remaining: ");
 
 	zombies_remaining = create_hud("left", "top");
@@ -7559,4 +7561,17 @@ hud_fade_in_out( alpha, timer_seconds, timer_minutes, timer_hours, timer_seconds
 	timer_hours = alpha;
 }
 
+get_zone()
+{
+	flag_wait("all_players_spawned");
+	player = get_players()[0];
 
+	while(1)
+	{
+		//iprintln(level.zombie_vars["zombie_spawn_delay"]);
+		//iprintln(player.origin);
+		//iprintln(player.angles);
+		iprintln(player maps\_zombiemode_utility::get_current_zone());
+		wait .5;
+	}
+}
