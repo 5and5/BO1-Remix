@@ -367,9 +367,6 @@ include_powerups()
 	include_powerup( "insta_kill" );
 	include_powerup( "double_points" );
 	include_powerup( "full_ammo" );
-
-	PreCacheItem( "minigun_zm" );
-	include_powerup( "minigun" );
 }
 //-------------------------------------------------------------------------------
 init_zombie_sumpf()

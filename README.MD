@@ -103,7 +103,6 @@
 * Switching weapons ends powerup
 * Death machines now stack
 #### Double Points
-* Removed from powerup cycle on round 60
 * Double points now stack
 #### Insta kill
 * Insta kills now stack

@@ -564,13 +564,6 @@ include_powerups()
 	include_powerup( "insta_kill" );
 	include_powerup( "double_points" );
 	include_powerup( "full_ammo" );
-
-	PreCacheItem( "minigun_zm" );
-	include_powerup( "minigun" );
-
-	// fix waffe?
-	PreCacheItem( "tesla_gun_zm" );
-	include_powerup( "tesla" );
 }
 
 
