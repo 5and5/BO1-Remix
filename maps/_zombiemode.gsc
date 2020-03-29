@@ -1438,7 +1438,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 555; //555
+		players[p].score = 5555555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -1724,7 +1724,7 @@ onPlayerSpawned()
 
 				// testing only
 				//self thread get_position();
-				self thread get_zone();
+				//self thread get_zone();
 			}
 		}
 	}
@@ -7391,7 +7391,7 @@ zombies_remaining_hud()
 	remaining_text = create_hud("left", "top");
 	remaining_text.y += 2;
 	remaining_text.x += 4;
-	remaining_text.textstyle = "ITEM_TEXTSTYLE_SHADOWED";
+	//remaining_text.textstyle = "ITEM_TEXTSTYLE_SHADOWED";
 	remaining_text SetText("Remaining: ");
 
 	zombies_remaining = create_hud("left", "top");

@@ -144,10 +144,15 @@ sumpf_zone_init()
 	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_upstairs_buy", "center_building_combined", "unlock_hospital_downstairs");
 
 
-	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "ne_magic_box" );	//"northeast_outside",
+	/*maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "ne_magic_box" );	//"northeast_outside",
 	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "nw_magic_box" );
 	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "se_magic_box" );
-	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "sw_magic_box" );
+	maps\_zombiemode_zone_manager::add_adjacent_zone( "center_building_combined", "center_building_combined", "sw_magic_box" );*/
+
+	maps\_zombiemode_zone_manager::add_adjacent_zone( "northeast_outside", "center_building_combined", "ne_magic_box", true );
+	maps\_zombiemode_zone_manager::add_adjacent_zone( "northwest_outside", "center_building_combined", "nw_magic_box", true );
+	maps\_zombiemode_zone_manager::add_adjacent_zone( "southeast_outside", "center_building_combined", "se_magic_box", true );
+	maps\_zombiemode_zone_manager::add_adjacent_zone( "southwest_outside", "center_building_combined", "sw_magic_box", true );
 
 	maps\_zombiemode_zone_manager::add_adjacent_zone( "northeast_building", "northeast_outside", "ne_magic_box" );
 	maps\_zombiemode_zone_manager::add_adjacent_zone( "northwest_building", "northwest_outside", "nw_magic_box" );

@@ -122,7 +122,6 @@
 * Decreased electric traps recharge time from 90 to 25
 * Decreased flogger damage to 100
 * Changed the spawn zones of the main hut to only include it self
-* Changed the spawn zone of all four areas leading to a hut to not include the main hut
 ### Der Riese
 * Only two of the three teleporter are needed to open PaP
 * Removed catwalk box location
