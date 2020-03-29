@@ -5,6 +5,9 @@
 
 init()
 {
+	// custom weapons
+	init_includes();
+
 	init_weapons();
 	init_weapon_upgrade();
 	init_weapon_toggle();
@@ -3407,31 +3410,18 @@ ammo_give( weapon )
 	}
 }
 
+//include new weapons
 init_includes()
 {
-	if(level.script == "zombie_pentagon" || level.script == "zombie_cod5_asylum" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater" || level.script == "zombie_cod5_prototype" || level.script == "zombie_temple" || level.script == "zombie_moon" || level.script == "zombie_cod5_sumpf" || level.script == "zombie_cosmodrome" || level.script == "zombie_coast" )
- 	{
- 		include_weapon( "stoner63_zm" );
- 		include_weapon( "ppsh_zm" );
- 		include_weapon( "ak47_zm" );
- 		include_weapon( "ak47_ft_upgraded_zm", false);
- 		include_weapon(	"stoner63_upgraded_zm", false);
-	 	include_weapon(	"ppsh_upgraded_zm", false);
-
- 	}
-
- 	if(level.script == "zombie_pentagon" || level.script == "zombie_cod5_asylum" )
- 	{
- 		include_weapon( "tesla_gun_zm", true );
- 		include_weapon( "tesla_gun_upgraded_zm", false );
- 	}
+	include_weapon("ak47_zm");
+ 	include_weapon("stoner63_zm");
+ 	include_weapon("ppsh_zm");
 
  	vending_weapon_upgrade_trigger = GetEntArray("zombie_vending_upgrade", "targetname");
 	if(vending_weapon_upgrade_trigger.size >= 1)
 	{
+ 		include_weapon("ak47_ft_upgraded_zm", false);
 	 	include_weapon("stoner63_upgraded_zm", false);
 	 	include_weapon("ppsh_upgraded_zm", false);
-	 	include_weapon("tesla_gun_upgraded_zm", false );
-	 	include_weapon("ak47_ft_upgraded_zm", false);
  	}
 }

@@ -582,7 +582,7 @@ watch_for_drop()
 			// max is 45149
 			if(level.zombie_vars["zombie_powerup_drop_increment"] <= 50000)
 			{
-				level.zombie_vars["zombie_powerup_drop_increment"] *= 1.14; //1.14 org
+				level.zombie_vars["zombie_powerup_drop_increment"] *= 1.16; //1.14
 			}
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
@@ -683,7 +683,7 @@ powerup_drop(drop_point)
 	rand_drop = randomint(100);
 
 	// changed from 2% to 4%
-	if (rand_drop > 99)
+	if (rand_drop > 4)
 	{
 		if (!level.zombie_vars["zombie_drop_item"])
 		{

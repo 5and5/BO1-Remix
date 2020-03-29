@@ -4067,7 +4067,7 @@ award_grenades_for_survivors()
 ai_calculate_health( round_number )
 {
 	//insta kill rounds staring at 99 then every 4 rounds
-	if(round_number >= 3 && round_number % 2 == 1)
+	if(round_number >= 99 && round_number % 2 == 1)
 	{
 		level.zombie_health = 150;
 		return;
@@ -7490,7 +7490,7 @@ drop_tracker_hud()
 	drops_text setText("Drops: ");
 
 	drops_value = create_hud( "left", "top" );
-	drops_value.y += 20;
+	drops_value.y += 19;
 	drops_value.x += 42;
 
 	hud_fade_in(drops_text);
