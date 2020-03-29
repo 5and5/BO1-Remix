@@ -5439,7 +5439,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			final_damage = int(10000);
 		}*/
 
-	if(weapon == "zombie_cymbal_zombie" )
+/*	if(weapon == "zombie_cymbal_zombie" )
 		{
 			min_damage = 1500;
 			damage = int(self.maxhealth / 2) + 10;
@@ -5449,7 +5449,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 				damage = min_damage;
 			}
 			return damage;
-		}
+		}*/
 
 	if(weapon == "zombie_nesting_dolls" )
 	{
@@ -7086,7 +7086,9 @@ set_sidequest_completed(id)
 
 
 
-
+/*
+*	Custom HUD
+*/
 display_times( total_time, round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon )
 {
 	level endon( "start_of_round" );

@@ -422,73 +422,10 @@ get_valid_powerup()
 		return powerup;
 	}
 
-
 	powerup = get_next_powerup();
 	while( 1 )
 	{
-		// disable carps
-		if( powerup == "carpenter" )
-		{
-			powerup = get_next_powerup();
-		}
-
-		// Don't bring up fire_sale after the box moves
-		else if( powerup == "fire_sale" &&
-				 ( level.zombie_vars["zombie_powerup_fire_sale_on"] == true ||
-				   fire_sale_drop() ))
-		{
-			powerup = get_next_powerup();
-		}
-		//remove double points after round 65
-		else if ( powerup == "double_points" && level.round_number > 60 )
-		{
-			powerup = get_next_powerup();
-		}
-
-		else if( powerup == "all_revive" )
-		{
-			if ( !maps\_laststand::player_num_in_laststand() ) //PI ESM - at least one player have to be down for this power-up to appear
-			{
-				powerup = get_next_powerup();
-			}
-		}
-		else if ( powerup == "bonfire_sale" )	// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "minigun" && minigun_no_drop() ) // don't drop unless life bought in solo, or power has been turned on
-		{
-			powerup = get_next_powerup();
-		}
-		else if ( powerup == "free_perk" )		// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "tesla" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "random_weapon" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "bonus_points_player" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "bonus_points_team" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "lose_points_team" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "lose_perk" )					// never drops with regular powerups
-		{
-			powerup = get_next_powerup();
-		}
-		else if( powerup == "empty_clip" )					// never drops with regular powerups
+		if(!is_valid_powerup(powerup))
 		{
 			powerup = get_next_powerup();
 		}
@@ -498,6 +435,7 @@ get_valid_powerup()
 		}
 	}
 }
+
 fire_sale_drop()
 {
 	if ( level.round_number > 5 && level.chest_moves == 0 )
@@ -513,14 +451,26 @@ fire_sale_drop()
 minigun_no_drop()
 {
 	//mini only drops after round 60
-	if( level.round_number < 60 )
+	// if( level.round_number < 60 )
+	// {
+	// 	return true; // true means no drop
+	// }
+	// else
+	// {
+	// 	return false;
+	// }
+
+	players = GetPlayers();
+	for ( i=0; i<players.size; i++ )
 	{
-		return true; // true means no drop
+		if ( players[i] HasPerk( "specialty_quickrevive" ) )
+		{
+			return false;
+		}
+
 	}
-	else
-	{
-		return false;
-	}
+	return true;
+
 }
 
 
@@ -579,10 +529,13 @@ watch_for_drop()
 
 		if (curr_total_score > score_to_drop )
 		{
-			// max is 45149
-			if(level.zombie_vars["zombie_powerup_drop_increment"] <= 50000)
+			if(level.zombie_vars["zombie_powerup_drop_increment"] < 50000)
 			{
 				level.zombie_vars["zombie_powerup_drop_increment"] *= 1.16; //1.14
+			}
+			else
+			{
+				level.zombie_vars["zombie_powerup_drop_increment"] = 50000;
 			}
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
@@ -3173,7 +3126,7 @@ is_valid_powerup(powerup_name)
 		return false;
 	}
 	// Don't bring up fire_sale if the box hasn't moved
-	else if( powerup_name == "fire_sale" && fire_sale_drop() ) //level.zombie_vars["zombie_powerup_fire_sale_on"] == true ||
+	else if( powerup_name == "fire_sale" && fire_sale_drop() )
 	{
 		return false;
 	}

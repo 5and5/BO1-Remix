@@ -77,20 +77,19 @@
 
 ## Equipment
 #### Monkey Bombs
-* Now do 50% of zombies max health
-* Allows work if thrown in a playable area
+* Allows works if thrown in a playable area
 #### Claymores
-* Now do 50% of zombies max health
+* Now does 50% of zombies max health
 * Limited to 20 on the map at one time
 #### Boucing Bettys
-* Now do 50% of zombies max health
-* Now explode in 1.5 seconds instead of 2 seconds
+* Now does 50% of zombies max health
+* Now explodes in 1.5 seconds instead of 2 seconds
 * Limited to 20 on the map at one time
 
 ## Power Ups
 ### General
 * Increased random drop rate from 2% to 4%
-* Added a 50000 cap to points based drops
+* Added a 50000 point cap till next point based drop
 * Added custom effect to last drop of a cycle
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
@@ -99,7 +98,7 @@
 * Added to powerup cycle on round 5
 * Removed from powerup cycle after first box moves
 #### Death Machines
-* Added to powerup cycle on all maps on round 60
+* Added to powerup cycle once a player has bought quick revive (removed if player no longer has qr)
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
 * Death machines now stack
