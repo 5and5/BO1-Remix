@@ -6,7 +6,7 @@
 init()
 {
 	// custom weapons
-	init_includes();
+	//init_includes();
 
 	init_weapons();
 	init_weapon_upgrade();

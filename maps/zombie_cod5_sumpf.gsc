@@ -319,8 +319,6 @@ include_weapons()
 	//bouncing betties
 	include_weapon("mine_bouncing_betty", false, true );
 
-	include_weapon( "zombie_cymbal_monkey");
-
 	level._uses_retrievable_ballisitic_knives = true;
 
 	// limited weapons
@@ -710,49 +708,45 @@ radio_two()
 {
 	radio_two_trig = getent ("radio_two", "targetname");
 	radio_two_trig UseTriggerRequireLookAt();
-    radio_two_trig sethintstring( "Hold ^3[{+activate}]^7 to upgrade wonder weapons" );
+    radio_two_trig sethintstring( "Hold ^3[{+activate}]^7 to upgrade Wonder weapons" );
 	radio_two_trig SetCursorHint( "HINT_NOICON" );
 	radio_two = getent("radio_two_origin", "targetname");
 
+
+	while( 1 )
+	{
 	radio_two_trig waittill( "trigger", player );
 
-	if(player HasWeapon("ray_gun_zm"))
+		if(player HasWeapon("ray_gun_zm"))
 		{
 			player TakeWeapon( "ray_gun_zm" );
-			player GiveWeapon( "ray_gun_upgraded_zm", 0 );
+			player GiveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
+			player GiveWeapon( "ray_gun_upgraded_zm" );
 			player GiveStartAmmo( "ray_gun_upgraded_zm" );
 			player SwitchToWeapon( "ray_gun_upgraded_zm" );
 			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
 
-	if(player HasWeapon("crossbow_explosive_zm"))
+		if(player HasWeapon("crossbow_explosive_zm"))
 		{
 			player TakeWeapon( "crossbow_explosive_zm" );
-			player GiveWeapon( "crossbow_explosive_upgraded_zm" );
+			player GiveWeapon( "crossbow_explosive_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "crossbow_explosive_upgraded_zm" ) );
 			player GiveStartAmmo( "crossbow_explosive_upgraded_zm" );
 			player SwitchToWeapon( "crossbow_explosive_upgraded_zm" );
 			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
 
-	if(player HasWeapon("tesla_gun_zm"))
+		if(player HasWeapon("tesla_gun_zm"))
 		{
 			player TakeWeapon( "tesla_gun_zm" );
-			player GiveWeapon( "tesla_gun_upgraded_zm", 0 );
+			player GiveWeapon( "tesla_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "tesla_gun_upgraded_zm" ) );
 			player GiveStartAmmo( "tesla_gun_upgraded_zm" );
 			player SwitchToWeapon( "tesla_gun_upgraded_zm" );
 			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
-
-/*		player GiveWeapon( upgrade_weapon, 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( upgrade_weapon ) );
-					player GiveStartAmmo( upgrade_weapon );
-				}
-
-				player SwitchToWeapon( upgrade_weapon );
-				player maps\_zombiemode_weapons::play_weapon_vo(upgrade_weapon);
-				return;*/
-
-	level thread radio_two();
+	}
 }
+
 radio_three()
 {
 	if(!IsDefined (level.radio_counter))

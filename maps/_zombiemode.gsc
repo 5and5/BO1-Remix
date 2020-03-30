@@ -1438,7 +1438,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 5555555; //555
+		players[p].score = 555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -1719,7 +1719,6 @@ onPlayerSpawned()
 				self thread zombies_remaining_hud();
 				//self thread drop_tracker_hud();
 				self thread health_bar_hud();
-				self thread timer_round_hud();
 				self thread timer_hud();
 
 				// testing only
@@ -3946,7 +3945,7 @@ chalk_round_over()
 round_think()
 {
 	//level.round_number = 29; //69
-	level.zombie_vars["zombie_spawn_delay"] = .08;
+	//level.zombie_vars["zombie_spawn_delay"] = .08;
 	level.zombie_move_speed = 105;
 
 	for( ;; )
@@ -4941,12 +4940,6 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		{
 			return 0;
 		}
-	}
-
-	// have waffe not kill novas
-	if (weapon == "tesla_gun_zm" || "tesla_gun_upgraded_zm")
-	{
-
 	}
 
 	// Turrets - kill in 2 shots
@@ -7090,28 +7083,6 @@ set_sidequest_completed(id)
 /*
 *	Custom HUD
 */
-display_times( total_time, round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon )
-{
-	level endon( "start_of_round" );
-
-	// dispaly total time
-	hud_fade_in_out( 1, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-	set_time(total_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon);
-
-	wait 3.5;
-
-	hud_fade_in_out( 0, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-
-	wait 0.2;
-
-	// display round time
-	hud_fade_in_out( 1, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-	set_time(round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon);
-
-	wait 3.5;
-
-	hud_fade_in_out( 0, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-}
 
 set_time(time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon)
 {
@@ -7246,138 +7217,6 @@ total_timer()
 	{
 		wait 1;
 		level.total_time++;
-	}
-}
-
-timer_round_hud()
-{
-	level endon("disconnect");
-	level endon("end_game");
-
-	hud_wait();
-
-	y_axis = 18;
-
-	timer_seconds = create_hud("right", "top");
-	timer_seconds.y += y_axis;
-	timer_seconds.x -= 4;
-
-	timer_seconds_zero = create_hud("right", "top");
-	timer_seconds_zero.y += y_axis;
-	timer_seconds_zero.x -= 11;
-	timer_seconds_zero SetValue(0);
-
-	timer_first_colon = create_hud("right", "top");
-	timer_first_colon.y += y_axis;
-	timer_first_colon.x -= 18;
-	timer_first_colon SetText(":");
-
-	timer_minutes = create_hud("right", "top");
-	timer_minutes.y += y_axis;
-	timer_minutes.x -= 22;
-
-	timer_minutes_zero = create_hud("right", "top");
-	timer_minutes_zero.y += y_axis;
-	timer_minutes_zero.x -= 29;
-	timer_minutes_zero SetValue(0);
-
-	timer_second_colon = create_hud("right", "top");
-	timer_second_colon.y += y_axis;
-	timer_second_colon.x -= 36;
-	timer_second_colon SetText(":");
-	timer_second_colon.alpha = 0;
-
-	timer_hours = create_hud("right", "top");
-	timer_hours.y += y_axis;
-	timer_hours.x -= 40;
-
-	if (level.script == "zombie_cosmodrome")
-	{
-		wait 7.5;
-	} else
-	{
-		wait 1.1;
-	}
-
-	if(level.script == "zombie_moon")
-	{
-		level waittill( "end_of_round" );
-		level waittill( "start_of_round" );
-	}
-
-	while(1)
-	{
-		level thread round_time();
-
-		//end round timer when last enemy of round is killed
-		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
-		{
-			level waittill( "last_dog_down" );
-		}
-		else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
-		{
-			flag_wait( "last_thief_down" );
-		}
-		else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
-		{
-			flag_wait( "last_monkey_down" );
-		}
-		else
-		{
-			level waittill( "end_of_round" );
-		}
-
-		if(is_true(flag("enter_nml")))
-		{
-			level waittill( "end_of_round" ); //end no man's land
-			level waittill( "end_of_round" ); //end actual round
-		}
-
-		total_time = level.total_time;
-		round_time = level.round_time;
-
-		// display_times( level.total_time, level.round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-
-		// dispaly total time
-		hud_fade_in_out( 1, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-		set_time(total_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon);
-
-		wait 3.5;
-
-		hud_fade_in_out( 0, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-
-		wait 0.2;
-
-		// display round time
-		hud_fade_in_out( 1, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-		set_time(round_time, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon);
-
-		wait 3.5;
-
-		hud_fade_in_out( 0, timer_seconds, timer_minutes, timer_hours, timer_seconds_zero, timer_minutes_zero, timer_first_colon, timer_second_colon );
-
-
-		level waittill("between_round_over");
-
-		level waittill( "start_of_round" );
-
-		if(is_true(flag("enter_nml")))
-		{
-			level waittill( "start_of_round" );
-		}
-	}
-}
-
-round_time()
-{
-	level endon( "intermission" );
-	level endon("stop_round_time");
-
-	level.round_time = 0;
-	while(1)
-	{
-		wait 1;
-		level.round_time++;
 	}
 }
 

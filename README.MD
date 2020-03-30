@@ -164,7 +164,6 @@
 * No changes made
 
 #### TODO
-* Fix betties blowing up
 * Make shang pap stone never go to ak
 * Make monkey have firesales in there cycle
 * Make leader board spread sheet

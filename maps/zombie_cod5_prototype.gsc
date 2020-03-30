@@ -184,8 +184,14 @@ setup_weapon_cabinet()
 weapon_cabinet_think()
 {
 	self UseTriggerRequireLookAt();
-    self sethintstring( "Hold ^3[{+activate}]^7 to upgrade Thunder Gun" );
+    self sethintstring( "Hold ^3[{+activate}]^7 to upgrade Wonder weapons" );
     self setCursorHint( "HINT_NOICON" );
+
+    /*radio_two_trig = getent ("radio_two", "targetname");
+	radio_two_trig UseTriggerRequireLookAt();
+    radio_two_trig sethintstring( "Hold ^3[{+activate}]^7 to upgrade Wonder weapons" );
+	radio_two_trig SetCursorHint( "HINT_NOICON" );
+	radio_two = getent("radio_two_origin", "targetname");*/
 
 	weapons = getentarray( "cabinet_weapon", "targetname" );
 
@@ -203,19 +209,24 @@ weapon_cabinet_think()
 	{
 		self waittill( "trigger", player );
 
-		cnt = 1;
-		if(cnt == 1)
+		if(player HasWeapon("ray_gun_zm"))
 		{
-			if(player HasWeapon("thundergun_zm"))
-				{
-					player TakeWeapon( "thundergun_zm" );
-					player GiveWeapon( "thundergun_upgraded_zm" );
-					player GiveStartAmmo( "thundergun_upgraded_zm" );
-					player SwitchToWeapon( "thundergun_upgraded_zm" );
-					player PlaySound( "mus_wonder_weapon_stinger" );
-					cnt = 0;
-				}
+			player TakeWeapon( "ray_gun_zm" );
+			player GiveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
+			player GiveWeapon( "ray_gun_upgraded_zm" );
+			player GiveStartAmmo( "ray_gun_upgraded_zm" );
+			player SwitchToWeapon( "ray_gun_upgraded_zm" );
+			//player PlaySound( "mus_wonder_weapon_stinger" );
 		}
+
+		if(player HasWeapon("thundergun_zm"))
+		{
+			player TakeWeapon( "thundergun_zm" );
+			player GiveWeapon( "thundergun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "thundergun_upgraded_zm" ) );
+			player GiveStartAmmo( "thundergun_upgraded_zm" );
+			player SwitchToWeapon( "thundergun_upgraded_zm" );
+		}
+		level PlaySound( "mus_wonder_weapon_stinger" );
 	}
 		/*if( !player maps\_zombiemode_weapons::can_buy_weapon() )
 		{
@@ -557,27 +568,27 @@ init_sounds()
 include_weapons()
 {
 	include_weapon( "m1911_zm", false );						// colt
-	include_weapon("python_zm");
+	//include_weapon("python_zm");
 	include_weapon("cz75_zm");
 	include_weapon("g11_lps_zm");
 	include_weapon("famas_zm");
 	include_weapon("spectre_zm");
 	include_weapon("cz75dw_zm");
-	include_weapon("spas_zm");
-	include_weapon("hs10_zm");
+	//include_weapon("spas_zm");
+	//include_weapon("hs10_zm");
 	include_weapon("aug_acog_zm");
 	include_weapon("galil_zm");
 	include_weapon("commando_zm");
 	include_weapon("fnfal_zm");
-	include_weapon("dragunov_zm");
-	include_weapon("l96a1_zm");
+	//include_weapon("dragunov_zm");
+	//include_weapon("l96a1_zm");
 	include_weapon("rpk_zm");
 	include_weapon("hk21_zm");
-	include_weapon("m72_law_zm");
-	include_weapon("china_lake_zm");
-	include_weapon("zombie_cymbal_monkey");
-	include_weapon("ray_gun_zm");
-	include_weapon("crossbow_explosive_zm");
+	//include_weapon("m72_law_zm");
+	//include_weapon("china_lake_zm");
+	//include_weapon("zombie_cymbal_monkey");
+	//include_weapon("ray_gun_zm");
+	//include_weapon("crossbow_explosive_zm");
 	include_weapon("knife_ballistic_zm");
 
 	include_weapon( "zombie_m1carbine", false, true );
@@ -593,17 +604,18 @@ include_weapons()
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
+	include_weapon( "ray_gun_upgraded_zm", false);
 	include_weapon( "thundergun_zm" );
 	include_weapon( "thundergun_upgraded_zm", false );
 	include_weapon( "m1911_upgraded_zm", false );
 
 	// Custom weapons
 	include_weapon( "ppsh_zm" );
-	include_weapon( "ppsh_upgraded_zm", false );
+	//include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
-	include_weapon( "stoner63_upgraded_zm",false );
+	//include_weapon( "stoner63_upgraded_zm",false );
 	include_weapon( "ak47_zm" );
- 	include_weapon( "ak47_upgraded_zm", false);
+ 	//include_weapon( "ak47_upgraded_zm", false);
 
 	level._uses_retrievable_ballisitic_knives = true;
 
