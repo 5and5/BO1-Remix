@@ -21,6 +21,7 @@ main()
 	level.pulls_since_last_ray_gun = 0;
 	level.pulls_since_last_tesla_gun = 0;
 	level.player_drops_tesla_gun = false;
+	level.player_seen_tesla_gun = false;
 
 	level.mixed_rounds_enabled = true;	// MM added support for mixed crawlers and dogs
 	level.burning_zombies = [];		//JV max number of zombies that can be on fire
@@ -533,25 +534,24 @@ init_sounds()
 include_weapons()
 {
 	include_weapon("m1911_zm", false);
-	include_weapon("python_zm");
+	include_weapon("python_zm", false);
 	include_weapon("cz75_zm");
 	include_weapon("g11_lps_zm");
 	include_weapon("famas_zm");
 	include_weapon("spectre_zm");
 	include_weapon("cz75dw_zm");
-	include_weapon("spas_zm");
-	include_weapon("hs10_zm");
+	include_weapon("spas_zm", false);
+	include_weapon("hs10_zm", false);
 	include_weapon("aug_acog_zm");
 	include_weapon("galil_zm");
 	include_weapon("commando_zm");
 	include_weapon("fnfal_zm");
-	include_weapon("dragunov_zm");
-	include_weapon("l96a1_zm");
+	include_weapon("dragunov_zm", false);
+	include_weapon("l96a1_zm", false);
 	include_weapon("rpk_zm");
 	include_weapon("hk21_zm");
-	include_weapon("m72_law_zm");
-	include_weapon("china_lake_zm");
-	include_weapon("zombie_cymbal_monkey");
+	include_weapon("m72_law_zm", false);
+	include_weapon("china_lake_zm", false);
 	include_weapon("crossbow_explosive_zm");
 	include_weapon("knife_ballistic_zm");
 	include_weapon("knife_ballistic_bowie_zm", false);

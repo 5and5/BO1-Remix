@@ -8,14 +8,10 @@ main()
 {
 	level thread maps\zombie_coast_ffotd::main_start();
 
-	// for weight functions
+	// used to modify the percentages of pulls of ray gun and wonder weapon in magic box
+	level.pulls_since_last_ray_gun = 0;
 	level.pulls_since_last_humangun = 0;
-	level.player_seen_humangun = false;
-	level.player_drops_humangun = false;
-
-	level.pulls_since_sniper_explosive = 0;
-	level.player_seen_sniper_explosive = false;
-	level.player_drops_sniper_explosive = false;
+	level.pulls_since_last_sniper_explosive = 0;
 
 	//for clientsiding the riser fx
 	level.riser_type = "snow";
@@ -387,7 +383,7 @@ include_weapons()
 	//	Weapons - Pistols
 	include_weapon( "m1911_zm", false );						// colt
 	include_weapon( "m1911_upgraded_zm", false );
-	include_weapon( "python_zm" );						// 357
+	include_weapon( "python_zm", false );						// 357
 	include_weapon( "python_upgraded_zm", false );
   	include_weapon( "cz75_zm" );
   	include_weapon( "cz75_upgraded_zm", false );
@@ -423,13 +419,13 @@ include_weapons()
   	include_weapon( "cz75dw_upgraded_zm", false );
 
 	//	Weapons - Shotguns
-	include_weapon( "ithaca_zm", false, true );						// shotgun
+	include_weapon( "ithaca_zm", false );						// shotgun
 	include_weapon( "ithaca_upgraded_zm", false );
-	include_weapon( "rottweil72_zm", false, true );
+	include_weapon( "rottweil72_zm", false);
 	include_weapon( "rottweil72_upgraded_zm", false );
-	include_weapon( "spas_zm" );						//
+	include_weapon( "spas_zm", false );						//
 	include_weapon( "spas_upgraded_zm", false );
-	include_weapon( "hs10_zm" );
+	include_weapon( "hs10_zm", false );
 	include_weapon( "hs10_upgraded_zm", false );
 
 	//	Weapons - Assault Rifles
@@ -443,9 +439,9 @@ include_weapons()
 	include_weapon( "fnfal_upgraded_zm", false );
 
 	//	Weapons - Sniper Rifles
-	include_weapon( "dragunov_zm" );					// ptrs41
+	include_weapon( "dragunov_zm", false );					// ptrs41
 	include_weapon( "dragunov_upgraded_zm", false );
-	include_weapon( "l96a1_zm" );
+	include_weapon( "l96a1_zm", false );
 	include_weapon( "l96a1_upgraded_zm", false );
 
 	//	Weapons - Machineguns
@@ -455,13 +451,13 @@ include_weapons()
 	include_weapon( "hk21_upgraded_zm", false );
 
 	//	Weapons - Misc
-	include_weapon( "m72_law_zm" );
+	include_weapon( "m72_law_zm", false);
 	include_weapon( "m72_law_upgraded_zm", false );
-	include_weapon( "china_lake_zm" );
+	include_weapon( "china_lake_zm", false );
 	include_weapon( "china_lake_upgraded_zm", false );
 
 	//	Weapons - Special
-	include_weapon( "ray_gun_zm" );
+	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
@@ -471,8 +467,8 @@ include_weapons()
 	include_weapon( "humangun_upgraded_zm", false );
 	include_weapon( "sniper_explosive_zm", true , false, maps\_zombiemode_weapons::default_sniper_explosive_weighting_func);
 	include_weapon( "sniper_explosive_upgraded_zm", false );
-//	include_weapon( "tesla_gun_zm" );
-	include_weapon( "tesla_gun_upgraded_zm", false );
+	//include_weapon( "tesla_gun_zm", false );
+	//include_weapon( "tesla_gun_upgraded_zm", false );
 	include_weapon( "zombie_nesting_dolls", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
 	include_weapon( "knife_ballistic_zm", true );

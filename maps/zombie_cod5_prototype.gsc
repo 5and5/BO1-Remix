@@ -79,6 +79,11 @@ main()
 	level thread pistol_rank_setup();
 
 	level.has_pack_a_punch = false;
+
+	// for weight functions
+	level.pulls_since_last_thundergun = 0;
+	level.player_seen_thundergun = false;
+	level.player_drops_thundergun = false;
 }
 
 precache_player_model_override()
@@ -568,27 +573,26 @@ init_sounds()
 include_weapons()
 {
 	include_weapon( "m1911_zm", false );						// colt
-	//include_weapon("python_zm");
+	include_weapon("python_zm", false);
 	include_weapon("cz75_zm");
-	include_weapon("g11_lps_zm");
+	include_weapon("g11_lps_zm", false);
 	include_weapon("famas_zm");
 	include_weapon("spectre_zm");
 	include_weapon("cz75dw_zm");
-	//include_weapon("spas_zm");
-	//include_weapon("hs10_zm");
+	include_weapon("spas_zm", false);
+	include_weapon("hs10_zm", false);
 	include_weapon("aug_acog_zm");
 	include_weapon("galil_zm");
 	include_weapon("commando_zm");
 	include_weapon("fnfal_zm");
-	//include_weapon("dragunov_zm");
-	//include_weapon("l96a1_zm");
+	include_weapon("dragunov_zm", false);
+	include_weapon("l96a1_zm", false);
 	include_weapon("rpk_zm");
 	include_weapon("hk21_zm");
-	//include_weapon("m72_law_zm");
-	//include_weapon("china_lake_zm");
-	//include_weapon("zombie_cymbal_monkey");
-	//include_weapon("ray_gun_zm");
-	//include_weapon("crossbow_explosive_zm");
+	include_weapon("m72_law_zm", false);
+	include_weapon("china_lake_zm", false);
+
+	include_weapon("crossbow_explosive_zm", false);
 	include_weapon("knife_ballistic_zm");
 
 	include_weapon( "zombie_m1carbine", false, true );
@@ -605,7 +609,7 @@ include_weapons()
 
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false);
-	include_weapon( "thundergun_zm" );
+	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_thundergun_weighting_func );
 	include_weapon( "thundergun_upgraded_zm", false );
 	include_weapon( "m1911_upgraded_zm", false );
 
@@ -622,12 +626,11 @@ include_weapons()
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );
 	maps\_zombiemode_weapons::add_limited_weapon( "thundergun_zm", 1 );
-	maps\_zombiemode_weapons::add_limited_weapon( "crossbow_explosive_zm", 1 );
+	//maps\_zombiemode_weapons::add_limited_weapon( "crossbow_explosive_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "knife_ballistic_zm", 1 );
 
-	precacheItem( "explosive_bolt_zm" );
-	precacheItem( "explosive_bolt_upgraded_zm" );
-	//give thundergun_zm
+	//precacheItem( "explosive_bolt_zm" );
+	//precacheItem( "explosive_bolt_upgraded_zm" );
 
 
 

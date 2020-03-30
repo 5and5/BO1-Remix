@@ -83,28 +83,63 @@ default_weighting_func()
 	return 1;
 }
 
+// increase the chance of getting a wonder weapon after every 5 hits
+default_wonder_weapon_weighting_func()
+{
+	num_to_add = 1;
+
+	if( isDefined( level.pulls_since_last_wonder_weapon ) )
+	{
+		// after 25 pulls the percentage increases to 50%
+		if( level.pulls_since_last_wonder_weapon > 25 )
+		{
+			num_to_add += 0.5;
+		}
+		// after 20 pulls the percentage increases to 40%
+		else if( level.pulls_since_last_wonder_weapon > 20 )
+		{
+			num_to_add += 0.4;
+		}
+		// after 15 pulls the percentage increases to 30%
+		else if( level.pulls_since_last_wonder_weapon > 15 )
+		{
+			num_to_add += 0.3;
+		}
+		// after 15 pulls the percentage increases to 20%
+		else if( level.pulls_since_last_wonder_weapon > 10 )
+		{
+			num_to_add += 0.2;
+		}
+		// after 15 pulls the percentage increases to 10%
+		else if( level.pulls_since_last_wonder_weapon > 5 )
+		{
+			num_to_add += 998;//0.1;
+		}
+	}
+
+	return num_to_add;
+}
+
+
 default_ray_gun_weighting_func()
 {
 	num_to_add = 1;
 	if( level.round_number < 25 )
 	{
-
 		 //increase the percentage of ray gun
 		if( isDefined( level.pulls_since_last_ray_gun ) )
 		{
 			// after 12 pulls the ray gun percentage increases to 30%
 			if( level.pulls_since_last_ray_gun > 10 )
 			{
-				num_to_add += int(level.zombie_include_weapons.size * .3);
+				num_to_add += 0.3;
 			}
 			// after 8 pulls the Ray Gun percentage increases to 15%
 			else if( level.pulls_since_last_ray_gun > 5 )
 			{
-				num_to_add += int(.15 * level.zombie_include_weapons.size);
+				num_to_add += 0.15;
 			}
 		}
-
-		//num_to_add = ;
 	}
 	return num_to_add;
 }
@@ -112,36 +147,33 @@ default_ray_gun_weighting_func()
 default_tesla_weighting_func()
 {
 	num_to_add = 1;
-	if( isDefined( level.pulls_since_last_tesla_gun ) )
-	{
-		// player has dropped the tesla for another weapon
-		if( isDefined(level.player_drops_tesla_gun) && level.player_drops_tesla_gun == true )
-		{
-				// after 16 pulls the waffe percentage increases to 30%
-				if( level.pulls_since_last_tesla_gun > 16 )
-				{
-					num_to_add += int(0.3 * level.zombie_include_weapons.size);
-				}
-				// after 12 pulls the waffe percentage increases to 20%
-				else if( level.pulls_since_last_tesla_gun > 12 )
-				{
-					num_to_add += int(0.2 * level.zombie_include_weapons.size);
-				}
-				// after 6 pulls the waffe percentage increases to 10%
-				else if( level.pulls_since_last_tesla_gun > 6 )
-				{
-					num_to_add += int(level.zombie_include_weapons.size*0.1);
-				}
-		}
 
-		// player has not seen tesla gun in late rounds
-		if( !isDefined(level.player_seen_tesla_gun) || level.player_seen_tesla_gun == false )
+	if( isDefined(level.pulls_since_last_tesla_gun) )
+	{
+		// after 25 pulls the percentage increases to 50%
+		if( level.pulls_since_last_tesla_gun > 25 )
 		{
-			// after round 10 the Tesla gun percentage increases to 15%
-			if( level.round_number > 10 )
-			{
-				num_to_add += int(.15 * level.zombie_include_weapons.size);
-			}
+			num_to_add += 0.5;
+		}
+		// after 20 pulls the percentage increases to 40%
+		else if( level.pulls_since_last_tesla_gun > 20 )
+		{
+			num_to_add += 0.4;
+		}
+		// after 15 pulls the percentage increases to 30%
+		else if( level.pulls_since_last_tesla_gun > 15 )
+		{
+			num_to_add += 0.3;
+		}
+		// after 15 pulls the percentage increases to 20%
+		else if( level.pulls_since_last_tesla_gun > 10 )
+		{
+			num_to_add += 0.2;
+		}
+		// after 15 pulls the percentage increases to 10%
+		else if( level.pulls_since_last_tesla_gun > 5 )
+		{
+			num_to_add += 0.1;
 		}
 	}
 	return num_to_add;
@@ -152,34 +184,30 @@ default_thundergun_weighting_func()
 	num_to_add = 1;
 	if( isDefined( level.pulls_since_last_thundergun ) )
 	{
-		// player has dropped the tgun for another weapon
-		if( isDefined(level.player_drops_thundergun) && level.player_drops_thundergun == true )
+		// after 25 pulls the percentage increases to 50%
+		if( level.pulls_since_last_thundergun > 25 )
 		{
-				// after 16 pulls the tgun percentage increases to 30%
-				if( level.pulls_since_last_thundergun > 16 )
-				{
-					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
-				}
-				// after 12 pulls the tgun percentage increases to 20%
-				else if( level.pulls_since_last_thundergun > 12 )
-				{
-					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
-				}
-				// after 6 pulls the tgun percentage increases to 10%
-				else if( level.pulls_since_last_thundergun > 6 )
-				{
-					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
-				}
+			num_to_add += 0.5;
 		}
-
-		// player has not seen tesla gun in late rounds
-		if( !isDefined(level.player_seen_thundergun) || level.player_seen_thundergun == false )
+		// after 20 pulls the percentage increases to 40%
+		else if( level.pulls_since_last_thundergun > 20 )
 		{
-			// after round 10 the Tesla gun percentage increases to 15%
-			if( level.round_number > 10 )
-			{
-				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
-			}
+			num_to_add += 0.4;
+		}
+		// after 15 pulls the percentage increases to 30%
+		else if( level.pulls_since_last_thundergun > 15 )
+		{
+			num_to_add += 0.3;
+		}
+		// after 15 pulls the percentage increases to 20%
+		else if( level.pulls_since_last_thundergun > 10 )
+		{
+			num_to_add += 0.2;
+		}
+		// after 15 pulls the percentage increases to 10%
+		else if( level.pulls_since_last_thundergun > 5 )
+		{
+			num_to_add += 0.1;
 		}
 	}
 	return num_to_add;
@@ -190,35 +218,33 @@ default_humangun_weighting_func()
 	num_to_add = 1;
 	if( isDefined( level.pulls_since_last_humangun ) )
 	{
-		// player has dropped for another weapon
-		if( isDefined(level.player_drops_humangun) && level.player_drops_humangun == true )
+
+		// after 25 pulls the percentage increases to 50%
+		if( level.pulls_since_last_humangun > 25 )
 		{
-				// after 16 pulls the percentage increases to 30%
-				if( level.pulls_since_last_humangun > 15 )
-				{
-					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
-				}
-				// after 12 pulls the percentage increases to 20%
-				else if( level.pulls_since_last_humangun > 10 )
-				{
-					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
-				}
-				// after 6 pulls the percentage increases to 10%
-				else if( level.pulls_since_last_humangun > 5 )
-				{
-					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
-				}
+			num_to_add += 0.5;
+		}
+		// after 20 pulls the percentage increases to 40%
+		else if( level.pulls_since_last_humangun > 20 )
+		{
+			num_to_add += 0.4;
+		}
+		// after 15 pulls the percentage increases to 30%
+		else if( level.pulls_since_last_humangun > 15 )
+		{
+			num_to_add += 0.3;
+		}
+		// after 15 pulls the percentage increases to 20%
+		else if( level.pulls_since_last_humangun > 10 )
+		{
+			num_to_add += 0.2;
+		}
+		// after 15 pulls the percentage increases to 10%
+		else if( level.pulls_since_last_humangun > 5 )
+		{
+			num_to_add += 0.1;
 		}
 
-		// player has not seen gun in late rounds
-		if( !isDefined(level.player_seen_humangun) || level.player_seen_humangun == false )
-		{
-			// after round 10 the gun percentage increases to 15%
-			if( level.round_number > 10 )
-			{
-				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
-			}
-		}
 	}
 	return num_to_add;
 }
@@ -231,21 +257,31 @@ default_sniper_explosive_weighting_func()
 		// player has dropped the for another weapon
 		if( isDefined(level.player_drops_sniper_explosive) && level.player_drops_sniper_explosive == true )
 		{
-				// after 16 pulls the percentage increases to 30%
-				if( level.pulls_since_last_sniper_explosive > 15 )
-				{
-					num_to_add += int(0.3 * level.zombie_include_weapons.size); //0.3
-				}
-				// after 12 pulls the percentage increases to 20%
-				else if( level.pulls_since_last_sniper_explosive > 10 )
-				{
-					num_to_add += int(0.2 * level.zombie_include_weapons.size); //0.2
-				}
-				// after 6 pulls the percentage increases to 10%
-				else if( level.pulls_since_last_sniper_explosive > 5 )
-				{
-					num_to_add += int(0.1 * level.zombie_include_weapons.size);//0.1);
-				}
+			// after 25 pulls the percentage increases to 50%
+			if( level.pulls_since_last_sniper_explosive > 25 )
+			{
+				num_to_add += 0.5;
+			}
+			// after 20 pulls the percentage increases to 40%
+			else if( level.pulls_since_last_sniper_explosive > 20 )
+			{
+				num_to_add += 0.4;
+			}
+			// after 15 pulls the percentage increases to 30%
+			else if( level.pulls_since_last_sniper_explosive > 15 )
+			{
+				num_to_add += 0.3;
+			}
+			// after 15 pulls the percentage increases to 20%
+			else if( level.pulls_since_last_sniper_explosive > 10 )
+			{
+				num_to_add += 0.2;
+			}
+			// after 15 pulls the percentage increases to 10%
+			else if( level.pulls_since_last_sniper_explosive > 5 )
+			{
+				num_to_add += 0.1;
+			}
 		}
 
 		// player has not seen gun in late rounds
@@ -289,10 +325,7 @@ default_cymbal_monkey_weighting_func()
 
 default_zombie_black_hole_bomb_weighting_func()
 {
-	if ( level.round_number < 50 )
-	{
-		return 2;
-	}
+
 	if( level.round_number > 5 )
 	{
 		return 2;
@@ -307,7 +340,11 @@ default_zombie_black_hole_bomb_weighting_func()
 	}
 	else if( level.round_number > 20 )
 	{
-		return 5; //TODO
+		return 5;
+	}
+	else if( level.round_number > 50 )
+	{
+		return 2;
 	}
 	else
 	{
@@ -399,7 +436,7 @@ init_weapons()
 	//Z2 Weapons disabled for now
 	// Pistols
 	add_zombie_weapon( "m1911_zm",					"m1911_upgraded_zm",					&"ZOMBIE_WEAPON_M1911",					50,		"pistol",			"",		undefined );
-	/*add_zombie_weapon( "python_zm",					"python_upgraded_zm",					&"ZOMBIE_WEAPON_PYTHON",				2200,	"pistol",			"",		undefined );*/
+	add_zombie_weapon( "python_zm",					"python_upgraded_zm",					&"ZOMBIE_WEAPON_PYTHON",				2200,	"pistol",			"",		undefined );
 	add_zombie_weapon( "cz75_zm",					"cz75_upgraded_zm",						&"ZOMBIE_WEAPON_CZ75",					50,		"pistol",			"",		undefined );
 
 	//	Weapons - SMGs
@@ -414,28 +451,28 @@ init_weapons()
 	add_zombie_weapon( "cz75dw_zm",					"cz75dw_upgraded_zm",					&"ZOMBIE_WEAPON_CZ75DW",				50,		"dualwield",		"",		undefined );
 
 	//	Weapons - Shotguns
-	/*add_zombie_weapon( "ithaca_zm",					"ithaca_upgraded_zm",					&"ZOMBIE_WEAPON_ITHACA",				1500,		"shotgun",			"",		undefined );
+	add_zombie_weapon( "ithaca_zm",					"ithaca_upgraded_zm",					&"ZOMBIE_WEAPON_ITHACA",				1500,		"shotgun",			"",		undefined );
 	add_zombie_weapon( "spas_zm",					"spas_upgraded_zm",						&"ZOMBIE_WEAPON_SPAS",					2000,		"shotgun",			"",		undefined );
 	add_zombie_weapon( "rottweil72_zm",				"rottweil72_upgraded_zm",				&"ZOMBIE_WEAPON_ROTTWEIL72",			500,		"shotgun",			"",		undefined );
-	add_zombie_weapon( "hs10_zm",					"hs10_upgraded_zm",						&"ZOMBIE_WEAPON_HS10",					50,		"shotgun",			"",		undefined );*/
+	add_zombie_weapon( "hs10_zm",					"hs10_upgraded_zm",						&"ZOMBIE_WEAPON_HS10",					50,		"shotgun",			"",		undefined );
 
 	//	Weapons - Semi-Auto Rifles
 	add_zombie_weapon( "m14_zm",					"m14_upgraded_zm",						&"ZOMBIE_WEAPON_M14",					500,		"rifle",			"",		undefined );
 
 	//	Weapons - Burst Rifles
 	add_zombie_weapon( "m16_zm",					"m16_gl_upgraded_zm",					&"ZOMBIE_WEAPON_M16",					1200,		"burstrifle",		"",		undefined );
-	//add_zombie_weapon( "g11_lps_zm",				"g11_lps_upgraded_zm",					&"ZOMBIE_WEAPON_G11",					900,		"burstrifle",		"",		undefined );
+	add_zombie_weapon( "g11_lps_zm",				"g11_lps_upgraded_zm",					&"ZOMBIE_WEAPON_G11",					900,		"burstrifle",		"",		undefined );
 	add_zombie_weapon( "famas_zm",					"famas_upgraded_zm",					&"ZOMBIE_WEAPON_FAMAS",					50,		"burstrifle",		"",		undefined );
 
 	//	Weapons - Assault Rifles
 	add_zombie_weapon( "aug_acog_zm",				"aug_acog_mk_upgraded_zm",				&"ZOMBIE_WEAPON_AUG",					1200,	"assault",			"",		undefined );
 	add_zombie_weapon( "galil_zm",					"galil_upgraded_zm",					&"ZOMBIE_WEAPON_GALIL",					100,	"assault",			"",		undefined );
 	add_zombie_weapon( "commando_zm",				"commando_upgraded_zm",					&"ZOMBIE_WEAPON_COMMANDO",				100,	"assault",			"",		undefined );
-	//add_zombie_weapon( "fnfal_zm",					"fnfal_upgraded_zm",					&"ZOMBIE_WEAPON_FNFAL",					100,	"burstrifle",			"",		undefined );
+	add_zombie_weapon( "fnfal_zm",					"fnfal_upgraded_zm",					&"ZOMBIE_WEAPON_FNFAL",					100,	"burstrifle",			"",		undefined );
 
 	//	Weapons - Sniper Rifles
-	//add_zombie_weapon( "dragunov_zm",				"dragunov_upgraded_zm",					&"ZOMBIE_WEAPON_DRAGUNOV",				2500,		"sniper",			"",		undefined );
-	//add_zombie_weapon( "l96a1_zm",					"l96a1_upgraded_zm",					&"ZOMBIE_WEAPON_L96A1",					50,		"sniper",			"",		undefined );
+	add_zombie_weapon( "dragunov_zm",				"dragunov_upgraded_zm",					&"ZOMBIE_WEAPON_DRAGUNOV",				2500,		"sniper",			"",		undefined );
+	add_zombie_weapon( "l96a1_zm",					"l96a1_upgraded_zm",					&"ZOMBIE_WEAPON_L96A1",					50,		"sniper",			"",		undefined );
 
 	//	Weapons - Machineguns
 	add_zombie_weapon( "rpk_zm",					"rpk_upgraded_zm",						&"ZOMBIE_WEAPON_RPK",					4000,		"mg",				"",		undefined );
@@ -447,8 +484,8 @@ init_weapons()
 	add_zombie_weapon( "claymore_zm", 				undefined,								&"ZOMBIE_WEAPON_CLAYMORE",				1000,	"grenade",			"",		undefined );
 
 	// Rocket Launchers
-	//add_zombie_weapon( "m72_law_zm", 				"m72_law_upgraded_zm",					&"ZOMBIE_WEAPON_M72_LAW",	 			2000,	"launcher",			"",		undefined );
-	//add_zombie_weapon( "china_lake_zm", 			"china_lake_upgraded_zm",				&"ZOMBIE_WEAPON_CHINA_LAKE", 			2000,	"launcher",			"",		undefined );
+	add_zombie_weapon( "m72_law_zm", 				"m72_law_upgraded_zm",					&"ZOMBIE_WEAPON_M72_LAW",	 			2000,	"launcher",			"",		undefined );
+	add_zombie_weapon( "china_lake_zm", 			"china_lake_upgraded_zm",				&"ZOMBIE_WEAPON_CHINA_LAKE", 			2000,	"launcher",			"",		undefined );
 
 	// Special
  	add_zombie_weapon( "zombie_cymbal_monkey",		undefined,								&"ZOMBIE_WEAPON_SATCHEL_2000", 			2000,	"monkey",			"",		undefined );
@@ -1542,6 +1579,16 @@ treasure_chest_think()
 			level.pulls_since_last_thundergun += 1;
 		}
 
+		if( isDefined(level.pulls_since_last_humangun) )
+		{
+			level.pulls_since_last_humangun += 1;
+		}
+
+		if( isDefined(level.pulls_since_last_sniper_explosive) )
+		{
+			level.pulls_since_last_sniper_explosive += 1;
+		}
+
 
 		// PI_CHANGE_END
 
@@ -2447,32 +2494,27 @@ treasure_chest_weapon_spawn( chest, player, respin )
 		{
 			if( rand == "ray_gun_zm" )
 			{
-//				level.chest_moves = false;
 				level.pulls_since_last_ray_gun = 0;
 			}
 
 			if( rand == "tesla_gun_zm" )
 			{
 				level.pulls_since_last_tesla_gun = 0;
-				level.player_seen_tesla_gun = true;
 			}
 
 			if( rand == "thundergun_zm" )
 			{
 				level.pulls_since_last_thundergun = 0;
-				level.player_seen_thundergun = true;
 			}
 
 			if( rand == "humangun_zm" )
 			{
-				level.pulls_since_humangun = 0;
-				level.player_seen_humangun = true;
+				level.pulls_since_last_humangun = 0;
 			}
 
 			if( rand == "sniper_explosive_zm" )
 			{
-				level.pulls_since_sniper_explosive = 0;
-				level.player_seen_sniper_explosive = true;
+				level.pulls_since_last_sniper_explosive = 0;
 			}
 
 		}

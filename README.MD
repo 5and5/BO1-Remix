@@ -73,7 +73,7 @@
 * Decreased time after grabing weapon from 3 to 1 seconds
 * Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 * Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
-* Increased probability of getting Wonder Weapons - by 10% after 5 hits - 20 % after 10 hits - 30% after 15 hits
+* Increased probability of getting Wonder Weapons by 10% every 5 hits untill you get it
 
 ## Equipment
 #### Monkey Bombs

@@ -28,6 +28,7 @@ main()
 	// JMA - used to modify the percentages of pulls of ray gun and tesla gun in magic box
 	level.pulls_since_last_ray_gun = 0;
 	level.pulls_since_last_tesla_gun = 0;
+	level.player_seen_tesla_gun = false;
 	level.player_drops_tesla_gun = false;
 
 	// enable for dog rounds
@@ -259,24 +260,24 @@ register_offhand_weapons_for_level_defaults_override()
 include_weapons()
 {
 	include_weapon( "m1911_zm", false );						// colt
-	include_weapon("python_zm");
+	include_weapon("python_zm", false);
 	include_weapon("cz75_zm");
 	include_weapon("g11_lps_zm");
 	include_weapon("famas_zm");
 	include_weapon("spectre_zm");
 	include_weapon("cz75dw_zm");
-	include_weapon("spas_zm");
-	include_weapon("hs10_zm");
+	include_weapon("spas_zm", false);
+	include_weapon("hs10_zm", false);
 	include_weapon("aug_acog_zm");
 	include_weapon("galil_zm");
 	include_weapon("commando_zm");
 	include_weapon("fnfal_zm");
-	include_weapon("dragunov_zm");
-	include_weapon("l96a1_zm");
+	include_weapon("dragunov_zm", false);
+	include_weapon("l96a1_zm", false);
 	include_weapon("rpk_zm");
 	include_weapon("hk21_zm");
-	include_weapon("m72_law_zm");
-	include_weapon("china_lake_zm");
+	include_weapon("m72_law_zm", false);
+	include_weapon("china_lake_zm", false);
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 
@@ -309,11 +310,8 @@ include_weapons()
 	include_weapon( "tesla_gun_upgraded_zm", false );
 
 	include_weapon( "ppsh_zm" );
-	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
-	include_weapon( "stoner63_upgraded_zm",false );
 	include_weapon( "ak47_zm" );
- 	include_weapon( "ak47_upgraded_zm", false);
 	include_weapon( "m1911_upgraded_zm", false );
 
 	//bouncing betties
