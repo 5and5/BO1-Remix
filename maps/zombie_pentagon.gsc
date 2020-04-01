@@ -307,7 +307,7 @@ include_weapons()
 	include_weapon( "stoner63_zm" );
 	include_weapon( "stoner63_upgraded_zm", false );
 	include_weapon( "ak47_zm" );
- 	include_weapon( "ak47_ft_upgraded_zm", false);
+ 	include_weapon( "ak47_upgraded_zm", false);
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );

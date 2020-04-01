@@ -470,7 +470,6 @@ minigun_no_drop()
 
 	}
 	return true;
-
 }
 
 
@@ -1742,7 +1741,7 @@ nuke_powerup( drop_item )
 
  	for (i = 0; i < zombies_nuked.size; i++)
   	{
- 		wait (randomfloatrange(0.1, 0.7));
+ 		wait (randomfloatrange(0.1, 0.3));
  		if( !IsDefined( zombies_nuked[i] ) )
  		{
  			continue;

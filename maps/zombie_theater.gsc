@@ -251,11 +251,13 @@ include_weapons()
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
-
 	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_thundergun_weighting_func );
 	include_weapon( "thundergun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
+
+	//include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	//include_weapon( "tesla_gun_upgraded_zm", false );
 
 	include_weapon( "knife_ballistic_zm", true );
 	include_weapon( "knife_ballistic_upgraded_zm", false );

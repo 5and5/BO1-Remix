@@ -73,7 +73,7 @@
 * Decreased time after grabing weapon from 3 to 1 seconds
 * Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 * Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
-* Increased probability of getting Wonder Weapons by 10% every 5 hits untill you get it
+* Increased probability of getting Wonder Weapons by 10% every 5 hits until you get it
 
 ## Equipment
 #### Monkey Bombs
@@ -106,6 +106,8 @@
 * Double points now stack
 #### Insta kill
 * Insta kills now stack
+#### Nuke
+* Nukes now kill twice as fast
 #### Perk Bottles
 * Always give jug if you don't already have it
 
@@ -164,6 +166,10 @@
 * No changes made
 
 #### TODO
+* Round timer
+* Drop hud
+* Increase spawn rate quicker
+
 * Make shang pap stone never go to ak
 * Make monkey have firesales in there cycle
 * Make leader board spread sheet
