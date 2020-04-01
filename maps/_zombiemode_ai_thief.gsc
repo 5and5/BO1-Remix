@@ -428,7 +428,15 @@ thief_round_tracker()
 	level.thief_save_spawn_func = level.round_spawn_func;
 	level.thief_save_wait_func = level.round_wait_func;
 
-	level.next_thief_round = level.round_number + 1;
+	if(level.round_number % 2 == 1)
+	{
+		level.next_thief_round = level.round_number + 2;
+	}
+	else
+	{
+		level.next_thief_round = level.round_number + 1;
+	}
+
 	level.prev_thief_round = level.next_thief_round;
 
 	while ( 1 )

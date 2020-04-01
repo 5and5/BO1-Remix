@@ -709,7 +709,7 @@ init_levelvars()
 	set_zombie_var( "zombie_health_increase", 			100,	false,	column );	//	cumulatively add this to the zombies' starting health each round (up to round 10)
 	set_zombie_var( "zombie_health_increase_multiplier",0.1, 	true,	column );	//	after round 10 multiply the zombies' starting health by this amount
 	set_zombie_var( "zombie_health_start", 				150,	false,	column );	//	starting health of a zombie at round 1
-	set_zombie_var( "zombie_spawn_delay", 				2.0,	true,	column );	// Base time to wait between spawning zombies.  This is modified based on the round number.
+	set_zombie_var( "zombie_spawn_delay", 				1.0,	true,	column );	// Base time to wait between spawning zombies.  This is modified based on the round number.
 	set_zombie_var( "zombie_new_runner_interval", 		 10,	false,	column );	//	Interval between changing walkers who are too far away into runners
 	set_zombie_var( "zombie_move_speed_multiplier", 	  8,	false,	column );	//	Multiply by the round number to give the base speed value.  0-40 = walk, 41-70 = run, 71+ = sprint
 

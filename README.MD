@@ -28,17 +28,21 @@
 * Zombie remaining counter
 * Health bar
 
+## Spawn Delay
+* Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
+* Spawn delay now caps out at round 50 instead of 63
+
 ## Special Rounds
 ### Insta Kill Rounds
-* Now start at round 99 then happen every other round
+* Insta kill rounds start at round 99 then happen every other round
 ### Dogs
 * First dogs is always round 5
 * Always 4 rounds between dog rounds
 ### Theif
-* First theif round is always the round after you turn on power
+* First theif round is always the next odd round after you turn on power
 * Always 4 rounds between theif rounds
 ### Monkeys
-* First monkey round is always the round after you turn on power and have purchased a perk
+* First monkey round is always the next odd round after you turn on power and have purchased a perk
 * Always 4 rounds between theif rounds
 ### George
 * Always give a max every 4 rounds
@@ -166,9 +170,10 @@
 * No changes made
 
 #### TODO
-* Round timer
-* Drop hud
-* Increase spawn rate quicker
+* Kino teleport fix
+* Add timer to vr11
+
+* Move double tap on kino
 
 * Make shang pap stone never go to ak
 * Make monkey have firesales in there cycle
@@ -180,5 +185,5 @@
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
 * **_JBird_Justin_** - For helping me with the mod this wouldn't be possible without him
-* **_Clippy95_** - For adding the mp5 on verruckt
+* **_Clippy95_** - For adding the mp5 to verruckt
 

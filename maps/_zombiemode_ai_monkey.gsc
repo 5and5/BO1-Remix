@@ -1061,7 +1061,14 @@ monkey_round_tracker()
 	level.monkey_save_spawn_func = level.round_spawn_func;
 	level.monkey_save_wait_func = level.round_wait_func;
 
-	level.next_monkey_round = level.round_number + 1;
+	if(level.round_number % 2 == 1)
+	{
+		level.next_monkey_round = level.round_number + 2;
+	}
+	else
+	{
+		level.next_monkey_round = level.round_number + 1;
+	}
 	level.prev_monkey_round = level.next_monkey_round;
 
 	while ( 1 )
