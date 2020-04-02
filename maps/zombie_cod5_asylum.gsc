@@ -609,18 +609,12 @@ toilet_useage()
 		wait(0.5);
 
 		toilet_trig waittill( "trigger", player);
-		/*toilet_counter ++;
-		if(toilet_counter == 1)
+
+		if(player HasWeapon("zombie_stg44"))
 		{
-			if(player HasWeapon("tesla_gun_zm"))
-				{
-					player TakeWeapon( "tesla_gun_zm" );
-					player GiveWeapon( "tesla_gun_upgraded_zm" );
-					player GiveStartAmmo( "tesla_gun_upgraded_zm" );
-					player SwitchToWeapon( "tesla_gun_upgraded_zm" );
-					player PlaySound( "mus_wonder_weapon_stinger" );
-				}
-		}*/
+			player TakeWeapon( "zombie_stg44" );
+		}
+
 
 		toilet_trig playsound ("toilet_flush", "sound_done");
 		toilet_trig waittill ("sound_done");

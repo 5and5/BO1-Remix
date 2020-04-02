@@ -126,6 +126,7 @@
 ### Verruckt
 * Added Wunderwaffe to the box
 * Added mp5 wall buy in the speed cola room
+* Toilet will take an stg-44 when pressed, this allows players to only have two guns
 ### Shi-no-numa
 * Radio in the starting room now upgrades the Wunderwaffe/Ray Gun/Crossbow
 * Removed fishing hut box location
