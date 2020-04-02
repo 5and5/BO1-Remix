@@ -230,6 +230,7 @@ humangun_on_player_connect()
 	{
 		level waittill( "connecting", player );
 		player thread wait_for_humangun_fired();
+        player thread instakill_timer_hud();
 	}
 }
 
@@ -368,8 +369,6 @@ humangun_player_ignored_timer_cleanup( upgraded )
 	self.point_split_receiver = undefined;
 	self.point_split_keep_percent = undefined;
 	self.personal_instakill = false;
-    level.no_drops = false;
-    //self.no_powerups = false; // end no drops
 
 	self.humangun_player_ignored_timer = 0;
 	self notify( "humangun_player_ignored_timer_done" );
@@ -398,14 +397,12 @@ humangun_player_ignored_timer( owner, upgraded )
 	self thread humangun_player_effects_audio();
 
 	self.ignoreme = false;
-    level.no_drops = true; // palyer cant get power ups with insta kill
 
 	self.point_split_receiver = owner;
 	if ( !upgraded )
 	{
 		self.point_split_keep_percent = 1;
 		self.personal_instakill = true;
-        //self.no_powerups = true; // give no drops
 
 		self setclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE );
 	}
@@ -413,7 +410,6 @@ humangun_player_ignored_timer( owner, upgraded )
 	{
 		self.point_split_keep_percent = 1;
 		self.personal_instakill = true;
-        //self.no_powerups = true;
 
 		self setclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_UPGRADED_HIT_RESPONSE );
 	}
@@ -887,5 +883,38 @@ humangun_play_zombie_hit_vox()
     if( rand >= 20 )
     {
         self maps\_zombiemode_audio::create_and_play_dialog( "kill", "human" );
+    }
+}
+
+instakill_timer_hud()
+{
+    timer = NewClientHudElem( self );
+    timer.horzAlign = "right";
+    timer.vertAlign = "bottom";
+    timer.alignX = "right";
+    timer.alignY = "bottom";
+    timer.alpha = 1.3;
+    timer.fontscale = 1.0;
+    timer.foreground = true;
+    timer.y -= 57;
+    timer.x -= 86;
+    timer.color = ( 1.0, 1.0, 1.0 );
+    timer.hidewheninmenu = 1;
+    timer.alpha = 0;
+    //timer setTimer(3);
+
+    while(1)
+    {
+        insta_time = (self.humangun_player_ignored_timer - getTime()) / 1000;
+        //iprintln(insta_time);
+        if(self.personal_instakill)
+        {
+            timer.alpha = 1;
+        }
+        else{
+            timer.alpha = 0;
+        }
+        timer setTimer(insta_time - 0.1);
+        wait 0.1;
     }
 }

@@ -160,7 +160,7 @@
 * VR11 un-upgraded now also gives players instakill
 * VR11 can now be used on yourself by shooting the ground
 * VR11 no longer gives players invisibility
-* VR11 no longer allows drops from the insta kill effect
+* VR11 displays amount of time left next to weapon name
 * George now drops an upgraded waffe
 * George no longer zaps you from a distance
 * Flinger now kills zombies instead of respawning them
@@ -170,9 +170,8 @@
 * No changes made
 
 #### TODO
-* Kino teleport fix
 * Add timer to vr11
-
+* disable door that dont need to be opened
 * Move double tap on kino
 
 * Make shang pap stone never go to ak
