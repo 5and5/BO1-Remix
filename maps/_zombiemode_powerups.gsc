@@ -528,17 +528,18 @@ watch_for_drop()
 
 		if (curr_total_score > score_to_drop )
 		{
-			if(level.zombie_vars["zombie_powerup_drop_increment"] < 50000)
+			if(level.zombie_vars["zombie_powerup_drop_increment"] < 30000)
 			{
 				level.zombie_vars["zombie_powerup_drop_increment"] *= 1.16; //1.14
 			}
 			else
 			{
-				level.zombie_vars["zombie_powerup_drop_increment"] = 50000;
+				level.zombie_vars["zombie_powerup_drop_increment"] = 30000;
 			}
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
 			//iprintln(score_to_drop); // testing
+			iprintln("point based drop");
 		}
 
 		wait( 0.5 );

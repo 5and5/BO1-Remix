@@ -32,6 +32,7 @@
 * Round timer (shows at the end of a round)
 * Zombie remaining counter
 * Health bar
+* COTD: VR11 insta kill timer
 
 ## Spawn Delay
 * Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
@@ -76,7 +77,7 @@
 * Buffed to the same damage as m14 (kill in one shot till round 3)
 
 ## Mystery Box
-* Decreased weapon pickup time from 12 to 8 seconds
+* Decreased weapon pickup time from 12 to 10 seconds
 * Decreased box opening and closing from 0.5 to 0.3 seconds
 * Decreased weapon spining time from 4 to 2 seconds
 * Decreased time after grabing weapon from 3 to 1 seconds
@@ -98,7 +99,7 @@
 ## Power Ups
 ### General
 * Increased random drop rate from 2% to 4%
-* Added a 50000 point cap till next point based drop
+* Added a 30000 point cap till next point based drop
 * Added custom effect to last drop of a cycle
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
@@ -166,7 +167,6 @@
 * VR11 un-upgraded now also gives players instakill
 * VR11 can now be used on yourself by shooting the ground
 * VR11 no longer gives players invisibility
-* VR11 displays amount of time left next to weapon name
 * George now drops an upgraded waffe
 * George no longer zaps you from a distance
 * Flinger now kills zombies instead of respawning them
@@ -176,7 +176,12 @@
 * No changes made
 
 #### TODO
-
+* add firstrooms nades
+* fix waffe fails
+#### Would like to do
+* Add pap to SNN
+* Add chalk to mp5k on Verruckt
+* Disable doors that should not be openend
 
 
 ## Huge shout out to:

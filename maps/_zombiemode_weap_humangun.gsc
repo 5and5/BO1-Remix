@@ -484,7 +484,6 @@ humangun_player_effects_audio()
 
 humangun_player_hit_response( owner, upgraded )
 {
-    //level.mutators = "mutator_noPowerups";
 
 	if ( !isdefined( self.humangun_player_ignored_timer ) )
 	{
@@ -901,7 +900,6 @@ instakill_timer_hud()
     timer.color = ( 1.0, 1.0, 1.0 );
     timer.hidewheninmenu = 1;
     timer.alpha = 0;
-    //timer setTimer(3);
 
     while(1)
     {

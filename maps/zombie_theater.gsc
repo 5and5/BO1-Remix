@@ -131,6 +131,7 @@ main()
 
 	level thread maps\zombie_theater_ffotd::main_end();
 
+	//disable_doors();
 }
 
 
@@ -696,6 +697,7 @@ zombie_dog_pathing_hack()
 	collision setmodel("collision_wall_128x128x10");
 	collision.angles = (0, 0, 0);
 	collision Hide();
+
 }
 
 barricade_glitch_fix()
@@ -735,4 +737,34 @@ barricade_glitch_fix()
 	collision setmodel("collision_geo_64x64x128");
 	collision.angles = (0, 0, 0);
 	collision Hide();
+
+	// make sure players can't open the map wrong
+	disable_doors();
+}
+
+disable_doors()
+{
+	zombie_doors = GetEntArray( "zombie_door", "targetname" );
+	for( i = 0; i < zombie_doors.size; i++ )
+    {
+    	if(zombie_doors[i].target == "foyer_top_door")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+
+    	if(zombie_doors[i].target == "alley_door2")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+
+    	if(zombie_doors[i].target == "backstage_door")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+
+    	if(zombie_doors[i].target == "vip_top_door")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+    }
 }

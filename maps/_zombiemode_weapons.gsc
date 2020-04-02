@@ -2075,7 +2075,7 @@ treasure_chest_timeout()
 	self.chest_origin endon( "box_hacked_respin" );
 	self.chest_origin endon( "box_hacked_rerespin" );
 
-	wait( 8 );
+	wait( 10 );
 	self notify( "trigger", level );
 }
 

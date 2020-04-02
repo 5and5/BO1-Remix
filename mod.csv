@@ -76,6 +76,9 @@ weapon,sp/stoner63_upgraded_zm
 weapon,sp/ak47_zm
 weapon,sp/ak47_upgraded_zm
 weapon,sp/minigun_zm
+weapon,sp/frag_grenade_zm
+weapon,sp/sticky_grenade_zm
+weapon,sp/stielhandgranate
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc

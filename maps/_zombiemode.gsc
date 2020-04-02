@@ -1726,6 +1726,7 @@ onPlayerSpawned()
 				// testing only
 				//self thread get_position();
 				//self thread get_zone();
+				self thread get_doors_nearby();
 			}
 		}
 	}
@@ -7188,7 +7189,7 @@ round_timer(hud)
 		total_time = level.total_time - 0.1;
 
 		hud_fade(hud, 1, 0.15);
-		for(i = 0; i < 7; i += 1)
+		for(i = 0; i < 8; i++)
 		{
 			hud setTimer(total_time);
 			wait 0.5;
@@ -7198,7 +7199,7 @@ round_timer(hud)
 		wait 0.2;
 
 		hud_fade(hud, 1, 0.15);
-		for(i = 0; i < 9; i += 1)
+		for(i = 0; i < 8; i++)
 		{
 			hud setTimer(time);
 			wait 0.5;
@@ -7352,4 +7353,106 @@ hud_fade( hud, alpha, duration )
 {
 	hud fadeOverTime(duration);
 	hud.alpha = alpha;
+}
+
+
+
+zombie_unlock_all()
+{
+	flag_wait( "begin_spawning" );
+	players = GetPlayers();
+
+	flag_set( "power_on" );
+	zombie_doors = GetEntArray( "zombie_door", "targetname" );
+	for ( i = 0; i < zombie_doors.size; i++ )
+	{
+		zombie_doors[i] notify("trigger", players[0]);
+	}
+	zombie_debris = GetEntArray( "zombie_debris", "targetname" );
+	for ( i = 0; i < zombie_debris.size; i++ )
+	{
+		zombie_debris[i] notify("trigger", players[0]);
+	}
+}
+
+open_electric_doors( door_trigs )
+{
+	time = 1;
+
+	for(i=0;i<door_trigs.size;i++)
+	{
+		doors = getentarray(door_trigs[i].target,"targetname");
+
+		for ( j=0; j<doors.size; j++ )
+		{
+			doors[j] NotSolid();
+
+			time = 1;
+			if( IsDefined( doors[j].script_transition_time ) )
+			{
+				time = doors[j].script_transition_time;
+			}
+
+			doors[j] connectpaths();
+
+			if( door_trigs[i].type == "rotate" )
+			{
+				doors[j] NotSolid();
+
+				time = 1;
+				if( IsDefined( doors[j].script_transition_time ) )
+				{
+					time = doors[j].script_transition_time;
+				}
+
+				play_sound_at_pos( "door_rotate_open", doors[j].origin );
+
+				doors[j] RotateTo( doors[j].script_angles, time, 0, 0 );
+				doors[j] thread maps\_zombiemode_blockers::door_solid_thread();
+				doors[j] playsound ("door_slide_open");
+			}
+			else if( door_trigs[i].type == "move" || door_trigs[i].type == "slide_apart" )
+			{
+				doors[j] NotSolid();
+
+				time = 1;
+				if( IsDefined( doors[j].script_transition_time ) )
+				{
+					time = doors[j].script_transition_time;
+				}
+
+				play_sound_at_pos( "door_slide_open", doors[j].origin );
+
+				doors[j] MoveTo( doors[j].origin + doors[j].script_vector, time, time * 0.25, time * 0.25 );
+				doors[j] thread maps\_zombiemode_blockers::door_solid_thread();
+				doors[j] playsound ("door_slide_open");
+			}
+			wait(randomfloat(.15));
+		}
+	}
+}
+
+get_doors_nearby()
+{
+	flag_wait( "all_players_spawned" );
+
+    players = get_players();
+
+    while(1)
+    {
+        zombie_doors = GetEntArray( "zombie_door", "targetname" );
+		//targets = GetEntArray( self.target, "targetname" );
+        for( i = 0; i < zombie_doors.size; i++ )
+        {
+        	zombie_doors[i] notify("trigger", players[0]);
+            if (Distance(zombie_doors[i].origin, players[0].origin) < 128)
+            {
+               	iprintln(zombie_doors[i].target);
+               	iprintln(zombie_doors[i].origin);
+               	wait 0.5;
+            }
+            //iprintln(zombie_doors[i].target);
+        }
+        wait 0.05;
+    }
 }
