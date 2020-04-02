@@ -4,7 +4,12 @@
 
 [Download](https://github.com/5and5/Remix/releases)
 
+## Leaderboards
+[Leaderboards](docs.google.com/spreadsheets/d/14oRX3aQFWWz5VaLz3B_nt_YOe-9zHf3HTQNuCU9Xqcs)
+
 ## Created by: 5and5
+
+[Discord](https://discord.gg/Z44Vnjd)
 
 [YouTube](https://www.youtube.com/user/Zomb0s4life)
 
@@ -170,12 +175,7 @@
 * No changes made
 
 #### TODO
-* Move double tap on kino
-* Remove pap and waffe camos
-* Add red waffe coil
-* link timer to fade_in (_zombie_utility)
-* Make discord server
-* Make leader board spread sheet
+
 
 
 ## Huge shout out to:
