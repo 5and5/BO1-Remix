@@ -126,9 +126,11 @@ setup_water_physics()
 	flag_wait( "all_players_connected" );
 	players = GetPlayers();
 	for (i = 0; i < players.size; i++)
-  {
+  	{
 		players[i] SetClientDvars("phys_buoyancy",1);
 	}
+
+	disable_doors();
 }
 //-------------------------------------------------------------------------------
 // Zone Management.
@@ -911,3 +913,16 @@ spawn_packapunch_machine()
 	machine_clip setmodel( "collision_geo_64x64x256" );
 	//machine_clip Hide();
 }
+
+disable_doors()
+{
+	zombie_doors = GetEntArray( "zombie_door", "targetname" );
+	for( i = 0; i < zombie_doors.size; i++ )
+    {
+    	if(zombie_doors[i].target == "nw_hut_blocker")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+    }
+}
+

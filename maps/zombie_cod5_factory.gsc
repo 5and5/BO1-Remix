@@ -2064,4 +2064,18 @@ curbs_fix()
 	collision6 setmodel("collision_geo_512x512x512");
 	collision6.angles = (0, 0, 0);
 	collision6 Hide();
+
+	disable_doors();
+}
+
+disable_doors()
+{
+	zombie_doors = GetEntArray( "zombie_door", "targetname" );
+	for( i = 0; i < zombie_doors.size; i++ )
+    {
+    	if(zombie_doors[i].target == "south_courtyard_door")
+    	{
+    		zombie_doors[i] trigger_off();
+    	}
+    }
 }
