@@ -170,12 +170,11 @@
 * No changes made
 
 #### TODO
-* Add timer to vr11
-* disable door that dont need to be opened
 * Move double tap on kino
-
-* Make shang pap stone never go to ak
-* Make monkey have firesales in there cycle
+* Remove pap and waffe camos
+* Add red waffe coil
+* link timer to fade_in (_zombie_utility)
+* Make discord server
 * Make leader board spread sheet
 
 

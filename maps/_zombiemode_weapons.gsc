@@ -1534,6 +1534,18 @@ treasure_chest_think()
 						user.playername, user.score, level.team_pool[ user.team_num ].score, level.round_number, self.zombie_cost, self.chest_origin.weapon_string, self.origin );
 					self notify( "user_grabbed_weapon" );
 					user thread treasure_chest_give_weapon( self.chest_origin.weapon_string );
+
+					//fix grenade ammo
+					if(is_lethal_grenade(self.chest_origin.weapon_string) && user GetWeaponAmmoClip(self.chest_origin.weapon_string) > 4)
+					{
+						user SetWeaponAmmoClip(self.chest_origin.weapon_string, 4);
+					}
+
+					if(is_tactical_grenade(self.chest_origin.weapon_string) && user GetWeaponAmmoClip(self.chest_origin.weapon_string) > 3)
+					{
+						user SetWeaponAmmoClip(self.chest_origin.weapon_string, 3);
+					}
+
 					break;
 				}
 				else if( grabber == level )
@@ -1708,6 +1720,7 @@ decide_hide_show_hint( endon_notify )
 				{
 					self SetInvisibleToPlayer( players[i], true );
 				}
+
 			}
 		}
 
@@ -3314,6 +3327,17 @@ weapon_give( weapon, is_upgrade )
 	self SwitchToWeapon( weapon );
 
 	self play_weapon_vo(weapon);
+
+	//fix grenade ammo
+	if(is_lethal_grenade(weapon) && self GetWeaponAmmoClip(weapon) > 4)
+	{
+		self SetWeaponAmmoClip(weapon, 4);
+	}
+
+	if(is_tactical_grenade(weapon) && self GetWeaponAmmoClip(weapon) > 3)
+	{
+		self SetWeaponAmmoClip(weapon, 3);
+	}
 }
 
 play_weapon_vo(weapon)
@@ -3443,6 +3467,16 @@ ammo_give( weapon )
 // 		{
 // 			self GiveMaxAmmo( weapon+"_upgraded" );
 // 		}
+
+		if(is_lethal_grenade(weapon) && self GetWeaponAmmoClip(weapon) > 4)
+		{
+			self SetWeaponAmmoClip(weapon, 4);
+		}
+
+		if(is_tactical_grenade(weapon) && self GetWeaponAmmoClip(weapon) > 3)
+		{
+			self SetWeaponAmmoClip(weapon, 3);
+		}
 		return true;
 	}
 
