@@ -26,9 +26,9 @@ main()
 	// Light model cacheing for Gantry
 
 	PreCacheModel("p_rus_rb_lab_warning_light_01");
-  PreCacheModel("p_rus_rb_lab_warning_light_01_off");
-  PreCacheModel("p_rus_rb_lab_light_core_on");
-  PreCacheModel("p_rus_rb_lab_light_core_off");
+  	PreCacheModel("p_rus_rb_lab_warning_light_01_off");
+ 	PreCacheModel("p_rus_rb_lab_light_core_on");
+  	PreCacheModel("p_rus_rb_lab_light_core_off");
 
 
 	//needs to be first for create fx

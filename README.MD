@@ -51,6 +51,7 @@
 * First monkey round is always the next odd round after you turn on power and have purchased a perk
 * Always 4 rounds between theif rounds
 ### George
+* No longer zaps you from a distance
 * Always give a max every 4 rounds
 
 ## Weapons
@@ -131,6 +132,7 @@
 ### Shi-no-numa
 * Radio in the starting room now upgrades the Wunderwaffe/Ray Gun/Crossbow
 * Removed fishing hut box location
+* Disabled door to fishing hut
 * Set double tap to always spawn in the fishing hut
 * Decreased electric traps recharge time from 90 to 25
 * Decreased flogger damage to 100
@@ -138,6 +140,7 @@
 ### Der Riese
 * Only two of the three teleporter are needed to open PaP
 * Removed catwalk box location
+* Disabled door to catwalk area
 * Turning on power now give you the bowie knife
 * Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
@@ -147,8 +150,9 @@
 * Meteor in the starting room now turns on power
 * Removed nova crawlers
 * Turrets now kill in 2 bullets on any round
-* Decrease time spent at PaP from 45 to 30 seconds
+* Moved double tap machine to stage
 * Removed alley, control room and pm63 room box locations
+* Disabled doors leading to above rooms
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
 * Set initial box to mp40 room
 ### Five
@@ -167,8 +171,6 @@
 * VR11 un-upgraded now also gives players instakill
 * VR11 can now be used on yourself by shooting the ground
 * VR11 no longer gives players invisibility
-* George now drops an upgraded waffe
-* George no longer zaps you from a distance
 * Flinger now kills zombies instead of respawning them
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
 * Set initial box to on top of flopper

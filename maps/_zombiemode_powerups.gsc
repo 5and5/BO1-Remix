@@ -538,8 +538,7 @@ watch_for_drop()
 			}
 			score_to_drop = curr_total_score + level.zombie_vars["zombie_powerup_drop_increment"];
 			level.zombie_vars["zombie_drop_item"] = 1;
-			//iprintln(score_to_drop); // testing
-			iprintln("point based drop");
+			//iprintln(level.zombie_vars["zombie_powerup_drop_increment"]); // testing
 		}
 
 		wait( 0.5 );
