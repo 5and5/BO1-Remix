@@ -895,16 +895,6 @@ power_electric_switch()
 	{
 		trig waittill("trigger",user);
 	}
-
-	//user GiveWeapon( "bowie_knife_zm" );
-	gun = user maps\_zombiemode_bowie::do_bowie_flourish_begin();
-	user maps\_zombiemode_audio::create_and_play_dialog( "weapon_pickup", "bowie" );
-
-	user waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
-
-	// restore player controls and movement
-	user maps\_zombiemode_bowie::do_bowie_flourish_end( gun );
-
 	// MM - turning on the power powers the entire map
 // 	if ( IsDefined(user) )	// only send a notify if we weren't originally triggered through script
 // 	{
@@ -952,6 +942,13 @@ power_electric_switch()
 	// Don't want east or west to spawn when in south zone, but vice versa is okay
 	maps\_zombiemode_zone_manager::connect_zones( "outside_east_zone", "outside_south_zone", true );
 	maps\_zombiemode_zone_manager::connect_zones( "outside_west_zone", "outside_south_zone", true );
+
+	gun = user maps\_zombiemode_bowie::do_bowie_flourish_begin();
+	user maps\_zombiemode_audio::create_and_play_dialog( "weapon_pickup", "bowie" );
+	user waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
+
+	// restore player controls and movement
+	user maps\_zombiemode_bowie::do_bowie_flourish_end( gun );
 }
 
 

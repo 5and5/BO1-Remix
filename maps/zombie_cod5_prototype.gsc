@@ -161,21 +161,7 @@ setup_weapon_cabinet()
 {
 	// the triggers which are targeted at doors
 	weapon_cabs = getentarray( "weapon_cabinet_use", "targetname" );
-	/*cnt = 0;
 
-	weapon_cabs waittill( "trigger", player );
-	cnt = 1;
-	if(cnt == 1)
-		{
-			if(player HasWeapon("thundergun_zm"))
-				{
-					player TakeWeapon( "thundergun_zm" );
-					player GiveWeapon( "thundergun_upgraded_zm" );
-					player GiveStartAmmo( "thundergun_upgraded_zm" );
-					player SwitchToWeapon( "thundergun_upgraded_zm" );
-					cnt = 0;
-				}
-		}*/
 	for( i = 0; i < weapon_cabs.size; i++ )
 	{
 
@@ -189,14 +175,8 @@ setup_weapon_cabinet()
 weapon_cabinet_think()
 {
 	self UseTriggerRequireLookAt();
-    self sethintstring( "Hold ^3[{+activate}]^7 to upgrade Wonder weapons" );
+    self sethintstring( "Hold ^3[{+activate}]^7 to upgrade wonder weapons" );
     self setCursorHint( "HINT_NOICON" );
-
-    /*radio_two_trig = getent ("radio_two", "targetname");
-	radio_two_trig UseTriggerRequireLookAt();
-    radio_two_trig sethintstring( "Hold ^3[{+activate}]^7 to upgrade Wonder weapons" );
-	radio_two_trig SetCursorHint( "HINT_NOICON" );
-	radio_two = getent("radio_two_origin", "targetname");*/
 
 	weapons = getentarray( "cabinet_weapon", "targetname" );
 

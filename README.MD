@@ -131,12 +131,11 @@
 * Added mp5 wall buy in the speed cola room
 * Toilet will take an stg-44 when pressed, this allows players to only have two guns
 ### Shi-no-numa
-* Radio in the starting room now upgrades the Wunderwaffe/Ray Gun/Crossbow
+* Added pack-a-punch to main floor that can upgrade the Wunderwaffe, Ray Gun, m1911 and Crossbow
 * Removed fishing hut box location
 * Disabled door to fishing hut
 * Set double tap to always spawn in the fishing hut
 * Decreased electric traps recharge time from 90 to 25
-* Decreased flogger damage to 100
 * Changed the spawn zones of the main hut to only include it self
 ### Der Riese
 * Only two of the three teleporter are needed to open PaP
@@ -180,7 +179,6 @@
 * No changes made
 
 #### Would like to do
-* Add pap to SNN
 * Add chalk to mp5k on Verruckt
 
 

@@ -45,13 +45,6 @@ main()
 	precachemodel("zombie_theater_chandelier1_off");
 	precachemodel("zombie_theater_chandelier1_on");
 
-	//precacheShader( "progress_bar_bg" );
-	//precacheShader( "progress_bar_fg" );
-	//precacheShader( "progress_bar_fill" );
-
-
-
-
 	if(GetDvarInt( #"artist") > 0)
 	{
 		return;

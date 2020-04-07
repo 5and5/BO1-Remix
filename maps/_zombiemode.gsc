@@ -1711,7 +1711,7 @@ onPlayerSpawned()
 				// custom HUD
 				self thread zombies_remaining_hud();
 				//self thread drop_tracker_hud();
-				self thread health_bar_hud();
+				//self thread health_bar_hud();
 
 				// testing only
 				//self thread get_position();
