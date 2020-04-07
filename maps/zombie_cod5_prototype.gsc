@@ -221,7 +221,7 @@ weapon_cabinet_think()
 			player GiveWeapon( "ray_gun_upgraded_zm" );
 			player GiveStartAmmo( "ray_gun_upgraded_zm" );
 			player SwitchToWeapon( "ray_gun_upgraded_zm" );
-			//player PlaySound( "mus_wonder_weapon_stinger" );
+			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
 
 		if(player HasWeapon("thundergun_zm"))
@@ -230,8 +230,8 @@ weapon_cabinet_think()
 			player GiveWeapon( "thundergun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "thundergun_upgraded_zm" ) );
 			player GiveStartAmmo( "thundergun_upgraded_zm" );
 			player SwitchToWeapon( "thundergun_upgraded_zm" );
+			player PlaySound( "mus_wonder_weapon_stinger" );
 		}
-		level PlaySound( "mus_wonder_weapon_stinger" );
 	}
 		/*if( !player maps\_zombiemode_weapons::can_buy_weapon() )
 		{

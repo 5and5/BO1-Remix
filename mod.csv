@@ -120,10 +120,9 @@ xmodel,weapon_rus_ppsh_smg
 xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
 xmodel,lightning_bolt
-xmodel,zombie_vending_packapunch
+//xmodel,zombie_vending_packapunch
 //xmodel,zombie_vending_packapunch_on
-xmodel,zombie_vending_doubletap
-xmodel,zombie_perk_bottle_doubletap
+
 
 //XANIM
 xanim,viewmodel_tesla_d2p_in

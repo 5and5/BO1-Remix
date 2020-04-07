@@ -196,6 +196,8 @@ main()
 	#/
 
 	level thread maps\_zombiemode_ffotd::main_end();
+
+	thread remove_player_quotes();
 }
 
 post_all_players_connected()
@@ -1555,7 +1557,6 @@ onPlayerConnect_clientDvars()
 		"compass", "0",
 		"hud_showStance", "0",
 		"cg_thirdPerson", "0",
-		"cg_fov", "75",
 		"cg_thirdPersonAngle", "0",
 		"ammoCounterHide", "1",
 		"miniscoreboardhide", "1",
@@ -1592,18 +1593,7 @@ onPlayerConnect_clientDvars()
 	self SetClientDvars("dtp_post_move_pause", 0,
 		"dtp_exhaustion_window", 100,
 		"dtp_startup_delay", 100);
-
-	// no cheats
-	//self SetClientDvar("sv_cheats", 0);
-
-
-	if(!level.wii)
-	{
-		//self SetClientDvar("r_enablePlayerShadow", 1);
-	}
 }
-
-
 
 checkForAllDead()
 {
@@ -1727,7 +1717,7 @@ onPlayerSpawned()
 				//self thread get_position();
 				//self thread get_zone();
 				//self thread get_doors_nearby();
-				self thread get_perks_nearby();
+				//self thread get_perks_nearby();
 			}
 		}
 	}
@@ -3948,7 +3938,7 @@ chalk_round_over()
 
 round_think()
 {
-	//level.round_number = 29; //69
+	//level.round_number = 60; //69
 	//level.zombie_vars["zombie_spawn_delay"] = .08;
 	level.zombie_move_speed = 105;
 
@@ -7414,5 +7404,14 @@ get_position()
 		iprintln(players.origin);
 		//iprintln(players.angles);
 		wait .5;
+	}
+}
+
+remove_player_quotes()
+{
+	while(1)
+	{
+		level.player_is_speaking = 1;
+		wait .1;
 	}
 }

@@ -721,7 +721,6 @@ radio_two()
 		{
 			player TakeWeapon( "ray_gun_zm" );
 			player GiveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
-			player GiveWeapon( "ray_gun_upgraded_zm" );
 			player GiveStartAmmo( "ray_gun_upgraded_zm" );
 			player SwitchToWeapon( "ray_gun_upgraded_zm" );
 			player PlaySound( "mus_wonder_weapon_stinger" );

@@ -2214,6 +2214,37 @@ place_perk_machines()
 		}
 	}
 
+	/*if(level.script == "zombie_cod5_sumpf")
+	{
+		level.zombie_doubletap_machine_origin = (8329, 2706, -708);
+		level.zombie_doubletap_machine_angles = (0, 180, 0);
+		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
+		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
+
+		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
+		machine.angles = level.zombie_doubletap_machine_angles;
+		machine setModel( "zombie_vending_doubletap" );
+		machine.targetname = "vending_doubletap";
+
+		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
+		machine_trigger.targetname = "zombie_vending";
+		machine_trigger.target = "vending_doubletap";
+		machine_trigger.script_noteworthy = "specialty_rof";
+
+		machine_trigger.script_sound = "mus_perks_doubletap_jingle";
+		machine_trigger.script_label = "mus_perks_doubletap_sting";
+
+		if ( isdefined( level.zombie_doubletap_machine_clip_origin ) )
+		{
+			machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+			machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+			machine_clip setmodel( "collision_geo_64x64x256" );
+			machine_clip Hide();
+		}
+
+		maps\zombie_cod5_sumpf_perks::activate_vending_machine("zombie_vending_doubletap_on", (8329, 2706, -708), "zombie_vending_doubletap");
+	}*/
+
 	if(level.script == "zombie_cod5_factory")
 	{
 		level.zombie_doubletap_machine_origin = (1352, 367, 64);

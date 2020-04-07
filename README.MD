@@ -25,6 +25,7 @@
 * Removed Mulekick
 * Starting points changed from 500 to 555
 * Fixed backwards walking speed
+* Removed player quotes
 * "Reset" now happens at exactly 10 hours
 
 ## HUD
@@ -80,8 +81,8 @@
 ## Mystery Box
 * Decreased weapon pickup time from 12 to 10 seconds
 * Decreased box opening and closing from 0.5 to 0.3 seconds
-* Decreased weapon spining time from 4 to 2 seconds
-* Decreased time after grabing weapon from 3 to 1 seconds
+* Decreased weapon spinning time from 4 to 2 seconds
+* Decreased time after grabbing weapon from 3 to 1 seconds
 * Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 * Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
 * Increased probability of getting Wonder Weapons by 10% every 5 hits until you get it
@@ -142,6 +143,7 @@
 * Removed catwalk box location
 * Disabled door to catwalk area
 * Turning on power now give you the bowie knife
+* Moved quick revive to mp40
 * Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
 * Fixed one window spawn above thomson
@@ -152,7 +154,7 @@
 * Turrets now kill in 2 bullets on any round
 * Moved double tap machine to stage
 * Removed alley, control room and pm63 room box locations
-* Disabled doors leading to above rooms
+* Disabled doors leading to alley, control room and pm63
 * Changed the spawn zone of the spawn rooms to only include it self (4 windows)
 * Set initial box to mp40 room
 ### Five
@@ -177,13 +179,9 @@
 ### Shangri-la/Moon
 * No changes made
 
-#### TODO
-* add firstrooms nades
-* fix waffe fails
 #### Would like to do
 * Add pap to SNN
 * Add chalk to mp5k on Verruckt
-* Disable doors that should not be openend
 
 
 ## Huge shout out to:
