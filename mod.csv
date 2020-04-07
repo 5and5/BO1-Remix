@@ -66,9 +66,9 @@ rawfile,maps/zombie_moon_digger.gsc
 
 //WEAPONS
 weapon,sp/tesla_gun_zm
-weapon,sp/tesla_gun_upgraded_zm
-weapon,sp/tesla_gun_powerup_zm
-weapon,sp/tesla_gun_powerup_upgraded_zm
+//weapon,sp/tesla_gun_upgraded_zm
+//weapon,sp/tesla_gun_powerup_zm
+//weapon,sp/tesla_gun_powerup_upgraded_zm
 weapon,sp/ppsh_zm
 weapon,sp/ppsh_upgraded_zm
 weapon,sp/stoner63_zm
@@ -121,7 +121,8 @@ xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
 xmodel,lightning_bolt
 //xmodel,zombie_vending_packapunch
-//xmodel,zombie_vending_packapunch_on
+xmodel,zombie_vending_packapunch_on
+
 
 
 //XANIM

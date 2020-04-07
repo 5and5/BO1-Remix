@@ -197,7 +197,7 @@ main()
 
 	level thread maps\_zombiemode_ffotd::main_end();
 
-	thread remove_player_quotes();
+	thread disable_player_quotes();
 }
 
 post_all_players_connected()
@@ -7175,30 +7175,28 @@ round_timer(hud)
 
 		end_time = int(getTime() / 1000);
 
-		// need to set it below the number or it show the next number
+		// need to set time below the number or it will show the next number
 		time = end_time - start_time - 0.1;
-		total_time = level.total_time - 0.1;
-
-		hud_fade(hud, 1, 0.15);
-		for(i = 0; i < 8; i++)
-		{
-			hud setTimer(total_time);
-			wait 0.5;
-		}
-		hud_fade(hud, 0, 0.15);
-
-		wait 0.2;
-
-		hud_fade(hud, 1, 0.15);
-		for(i = 0; i < 8; i++)
-		{
-			hud setTimer(time);
-			wait 0.5;
-		}
-		hud_fade(hud, 0, 0.15);
+		level thread display_times(hud, time);
 
 		level waittill( "start_of_round" );
+
+		total_time = level.total_time - 0.1;
+		level thread display_times(hud, total_time);
 	}
+}
+
+display_times( hud, time )
+{
+	level endon("start_of_round");
+
+	hud_fade(hud, 1, 0.15);
+	for(i = 0; i < 10; i++)
+	{
+		hud setTimer(time);
+		wait 0.5;
+	}
+	hud_fade(hud, 0, 0.15);
 }
 
 drop_tracker_hud()
@@ -7251,6 +7249,12 @@ health_bar_hud()
 	self endon("disconnect");
 	self endon("end_game");
 
+	// if(isdefined(GetDvar( #"hud_health_bar" ) ) )
+	// {
+	if( GetDvarInt( #"hud_health_bar" ) == 0)
+		return;
+	//}
+
 	hud_wait();
 
 	width = 113;
@@ -7288,10 +7292,10 @@ health_bar_hud()
 			continue;
 		}
 
-		if (health_text.alpha != 1)
+		if (health_text.alpha != 0.8)
         {
-            barElem.alpha = 1;
-			health_text.alpha = 1;
+            barElem.alpha = 0.8;
+			health_text.alpha = 0.8;
         }
 
 		wait 0.05;
@@ -7407,8 +7411,9 @@ get_position()
 	}
 }
 
-remove_player_quotes()
+disable_player_quotes()
 {
+
 	while(1)
 	{
 		level.player_is_speaking = 1;

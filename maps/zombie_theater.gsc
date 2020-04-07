@@ -22,7 +22,6 @@ main()
 	maps\zombie_theater_fx::main();
 	maps\zombie_theater_amb::main();
 
-
 	PreCacheModel("zombie_zapper_cagelight_red");
 	precachemodel("zombie_zapper_cagelight_green");
 	precacheShader("ac130_overlay_grain");
@@ -327,6 +326,7 @@ init_zombie_theater()
 
 
 	level thread electric_switch();
+	//level thread spawn_electric_switch();
 
 	// Setup the magic box map
 	thread maps\zombie_theater_magic_box::magic_box_init();
@@ -390,12 +390,39 @@ electric_switch()
 
 	trig waittill("trigger",user);
 
-	//trig delete();
+	trig delete();
 	flag_set( "power_on" );
 	Objective_State(8,"done");
 }
 
+// spawn_electric_switch()
+// {
+// 	power_switch_origin = (-163, -826, 80);
+// 	power_switch_angles = (0, 270, 0);
 
+// 	power_switch = Spawn( "script_model", power_switch_origin );
+// 	power_switch.angles = power_switch_angles;
+// 	power_switch setmodel("p_zom_power_switch");
+// 	//power_switch.targetname = "elec_switch";
+
+// 	trig = Spawn( "trigger_radius_use", power_switch_origin + (0, 0, 40), 100, 100, 100);
+// 	trig UseTriggerRequireLookAt();
+//     //trig sethintstring( "Hold ^3[{+activate}]^7 to turn on power" );
+// 	trig SetCursorHint( "HINT_NOICON" );
+// 	trig.targetname = "use_elec_switch";
+
+// 	//trig = getent("use_elec_switch","targetname");
+// 	trig sethintstring(&"ZOMBIE_ELECTRIC_SWITCH");
+// 	//trig setcursorhint( "HINT_NOICON" );
+
+// 	//level thread wait_for_power();
+
+// 	trig waittill("trigger",user);
+
+// 	trig delete();
+// 	flag_set( "power_on" );
+// 	Objective_State(8,"done");
+// }
 
 
 //

@@ -481,11 +481,10 @@ include_weapons()
 	include_weapon("hk21_zm");
 	include_weapon("m72_law_zm", false);
 	include_weapon("china_lake_zm", false);
-	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon("crossbow_explosive_zm", false);
 	include_weapon("knife_ballistic_zm");
 
-	// Bolt Action
+	// Wall weapons
 	include_weapon( "zombie_kar98k", false, true );
 	include_weapon( "stielhandgranate", false, true );
 	include_weapon( "zombie_gewehr43", false, true );
@@ -498,6 +497,8 @@ include_weapons()
 	include_weapon( "zombie_doublebarrel", false, true );
 	include_weapon( "zombie_doublebarrel_sawed", false, true );
 
+	// Special weapons
+	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
 	// Custom weapons

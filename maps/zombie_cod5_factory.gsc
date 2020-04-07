@@ -615,7 +615,7 @@ include_weapons()
 	// Special
 	include_weapon( "ray_gun_zm", true, false, ::factory_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
-	include_weapon( "tesla_gun_zm", true, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
 	include_weapon( "tesla_gun_upgraded_zm", false );
 	include_weapon( "zombie_cymbal_monkey", true, false, ::factory_cymbal_monkey_weighting_func );
 

@@ -112,11 +112,11 @@ play_music_easter_egg( player )
 
 meteor_egg()
 {
-	if( !isdefined( self ) )
-	{
-		return;
-	}
-	level thread maps\zombie_theater::wait_for_power();
+	// if( !isdefined( self ) )
+	// {
+	// 	return;
+	// }
+	//level thread maps\zombie_theater::wait_for_power();
 
 	/*self UseTriggerRequireLookAt();
 	self SetCursorHint( "ZOMBIE_ELECTRIC_SWITCH" );
@@ -133,7 +133,7 @@ meteor_egg()
     self sethintstring( "" );
 
 	self StopLoopSound( 1 );
-	player PlaySound( "zmb_meteor_activate" );
+	//player PlaySound( "zmb_meteor_activate" );
 
 	flag_set( "power_on" );
 	Objective_State(8,"done");
