@@ -11,6 +11,7 @@ init()
 	}
 	array_thread(trigs,::buy_bouncing_betties);
 	level thread give_betties_after_rounds();
+	level thread update_betty_fires();
 }
 buy_bouncing_betties()
 {
@@ -38,6 +39,7 @@ buy_bouncing_betties()
 					who maps\_zombiemode_weapons::check_collector_achievement( "mine_bouncing_betty" );
 					who thread bouncing_betty_setup();
 					who thread show_betty_hint("betty_purchased");
+					who thread bouncing_betty_watch();
 
 					if( self.betties_triggered == false )
 					{
@@ -89,7 +91,7 @@ bouncing_betty_watch()
 		{
 			betty.owner = self;
 			betty thread betty_think();
-			self thread betty_death_think();
+			betty thread betty_death_think();
 		}
 	}
 }
@@ -104,7 +106,7 @@ betty_death_think()
 }
 bouncing_betty_setup()
 {
-	self thread bouncing_betty_watch();
+	//self thread bouncing_betty_watch();
 	self giveweapon("mine_bouncing_betty");
 	self set_player_placeable_mine("mine_bouncing_betty");
 	self setactionslot(4,"weapon","mine_bouncing_betty");
@@ -116,7 +118,7 @@ betty_think()
 		self.owner.mines = [];
 	self.owner.mines = array_add( self.owner.mines, self );
 
-	amount = level.max_mines / get_players().size;
+	amount = level.max_mines * get_players().size;
 
 	if( self.owner.mines.size > amount )
 	{
@@ -158,6 +160,13 @@ betty_think()
 		}
 
 		break;
+	}
+
+	wait_to_fire_betty();
+
+	if(is_in_array(self.owner.mines,self))
+	{
+		self.owner.mines = array_remove_nokeys(self.owner.mines,self);
 	}
 
 	//trigger = spawn("trigger_radius",self.origin,9,80,64);
@@ -261,4 +270,23 @@ show_betty_hint(string)
 	self.hintelem setText(text);
 	wait(3.5);
 	self.hintelem settext("");
+}
+
+update_betty_fires()
+{
+	while(true)
+	{
+		level.hasBettyFiredRecently = 0;
+		wait_network_frame();
+	}
+}
+
+wait_to_fire_betty()
+{
+	while(level.hasBettyFiredRecently >= 4)
+	{
+		wait_network_frame();
+	}
+
+	level.hasBettyFiredRecently++;
 }
