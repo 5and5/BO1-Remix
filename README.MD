@@ -134,7 +134,7 @@
 * Added pack-a-punch to main floor that can upgrade the Wunderwaffe, Ray Gun, m1911 and Crossbow
 * Removed fishing hut box location
 * Disabled door to fishing hut
-* Set double tap to always spawn in the fishing hut
+* Once all other huts are open, double tap will spawn infront of fishing hut
 * Decreased electric traps recharge time from 90 to 25
 * Changed the spawn zones of the main hut to only include it self
 ### Der Riese
@@ -166,6 +166,7 @@
 ### Ascension
 * Turrets now kill in 2 bullets on any round
 * Monkeys health caps out at 1500
+* Moved Stamin up to underneath power
 * Monkeys taking revive doesn't count as a down
 ### Call of the Dead
 * Removed initial spawn delay on round 1

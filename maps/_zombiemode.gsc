@@ -1717,6 +1717,7 @@ onPlayerSpawned()
 				//self thread get_position();
 				//self thread get_zone();
 				//self thread get_doors_nearby();
+				//self thread get_ent_nearby();
 				//self thread get_perks_nearby();
 			}
 		}
@@ -7375,6 +7376,23 @@ get_doors_nearby()
     }
 }
 
+get_ent_nearby()
+{
+    while(1)
+    {
+    	players = get_players();
+        ents = getEntArray( "script_model", "targetname");
+        for(i = 0; i < ents.size; i++)
+        {
+            if (Distance(ents[i].origin, players[0].origin) < 128)
+            {
+                //iprintln(ents[i]);
+                iprintln(ents[i].target);
+                wait 0.5;
+            }
+        }
+    }
+}
 get_perks_nearby()
 {
 	flag_wait( "all_players_spawned" );
@@ -7383,12 +7401,13 @@ get_perks_nearby()
 
     while(1)
     {
-        machine = getentarray("vending_revive", "targetname");
+        machine = getentarray("vending_marathon", "classname");
         for( i = 0; i < machine.size; i++ )
         {
     		if (Distance(machine[i].origin, players[0].origin) < 128)
             {
-               	iprintln(machine[i].origin);
+               	iprintln(machine[i].target);
+               	iPrintLn("testing");
                	wait 0.5;
             }
         }

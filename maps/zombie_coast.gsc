@@ -224,7 +224,7 @@ check_to_set_play_outro_movie()
 
 	if ( !level.onlineGame && !level.systemlink )
 	{
-		SetDvar("ui_playCoastOutroMovie", 1);
+		SetDvar("ui_playCoastOutroMovie", 0);
 	}
 }
 

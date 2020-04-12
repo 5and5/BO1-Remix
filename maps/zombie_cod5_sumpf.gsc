@@ -122,6 +122,7 @@ main()
 	VisionSetNaked("zombie_sumpf", 0);
 
 	level thread spawn_packapunch_machine();
+	level thread activate_doubletap();
 }
 
 setup_water_physics()
@@ -171,7 +172,7 @@ init_sounds()
 {
 	maps\_zombiemode_utility::add_sound( "wooden_door", "zmb_door_wood_open" );
 
-	iprintlnbold ("init_audio");
+	//iprintlnbold ("init_audio");
 
 	level thread toilet_useage();
 	level thread radio_one();
@@ -311,7 +312,7 @@ include_weapons()
 	include_weapon( "zombie_bar", false, true );
 
 	// Special
-	include_weapon( "tesla_gun_zm", true, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
 	include_weapon( "tesla_gun_upgraded_zm", false );
 
 	include_weapon( "ppsh_zm" );
@@ -859,9 +860,6 @@ water_burst_overwrite()
 
 spawn_packapunch_machine()
 {
-	wait_network_frame();
-	level notify("Pack_A_Punch_on");
-
 	zombie_packapunch_machine_origin = (10714, 719, -660);
 	zombie_packapunch_machine_angles = (0, 270, 0);
 	zombie_packapunch_machine_clip_origin = zombie_packapunch_machine_origin;
@@ -872,72 +870,43 @@ spawn_packapunch_machine()
 	machine setmodel("zombie_vending_packapunch_on");
 	machine.targetname = "vending_packapunch";
 
-	//machine_trigger = Spawn( "trigger_radius_use", level.zombie_packapunch_machine_origin + (20, 20, 30), 20, 20, 70 );
-	//machine_trigger SetHintString( &"ZOMBIE_PERK_PACKAPUNCH", self.cost );
-	//machine_trigger.targetname = "zombie_vending_upgrade";
-	//machine_trigger.target = "vending_packapunch";
-
 	machine_clip = spawn( "script_model", zombie_packapunch_machine_clip_origin );
 	machine_clip.angles = zombie_packapunch_machine_clip_angles;
 	machine_clip setmodel( "collision_geo_64x64x256" );
 	machine_clip Hide();
-
 
 	machine_trigger = Spawn( "trigger_radius_use", zombie_packapunch_machine_origin + (0, 0, 40), 100, 100, 100);
 	machine_trigger UseTriggerRequireLookAt();
     machine_trigger sethintstring( "Hold ^3[{+activate}]^7 to Pack A Punch [Cost: 5000]" );
 	machine_trigger SetCursorHint( "HINT_NOICON" );
 
+
 	cost = 5000;
+	weapons = array("m1911_zm", "ray_gun_zm", "crossbow_explosive_zm", "tesla_gun_zm");
+	weapons_upgraded = array("m1911_upgraded_zm", "ray_gun_upgraded_zm", "crossbow_explosive_upgraded_zm", "tesla_gun_upgraded_zm");
 	while( 1 )
 	{
 		machine_trigger waittill( "trigger", player );
 
-		if( player.score >= cost )
+		for(i=0; i < weapons.size; i++)
 		{
-			player maps\_zombiemode_score::minus_to_player_score( cost );
-
-			if(player HasWeapon("ray_gun_zm"))
+			if( player.score >= cost && player HasWeapon(weapons[i]))
 			{
-				player TakeWeapon( "ray_gun_zm" );
-				player GiveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
-				player GiveStartAmmo( "ray_gun_upgraded_zm" );
-				player SwitchToWeapon( "ray_gun_upgraded_zm" );
-				player PlaySound( "mus_wonder_weapon_stinger" );
-			}
+				player maps\_zombiemode_score::minus_to_player_score( cost );
 
-			if(player HasWeapon("crossbow_explosive_zm"))
+				if(player HasWeapon(weapons[i]))
+				{
+					player TakeWeapon( weapons[i] );
+					player GiveWeapon( weapons_upgraded[i], 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( weapons_upgraded[i] ) );
+					player GiveStartAmmo( weapons_upgraded[i] );
+					player SwitchToWeapon( weapons_upgraded[i] );
+					player PlaySound( "mus_wonder_weapon_stinger" );
+				}
+			}
+			else // not enough money
 			{
-				player TakeWeapon( "crossbow_explosive_zm" );
-				player GiveWeapon( "crossbow_explosive_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "crossbow_explosive_upgraded_zm" ) );
-				player GiveStartAmmo( "crossbow_explosive_upgraded_zm" );
-				player SwitchToWeapon( "crossbow_explosive_upgraded_zm" );
-				player PlaySound( "mus_wonder_weapon_stinger" );
+				player PlaySound( "no_purchase" );
 			}
-
-			if(player HasWeapon("tesla_gun_zm"))
-			{
-				player TakeWeapon( "tesla_gun_zm" );
-				player GiveWeapon( "tesla_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "tesla_gun_upgraded_zm" ) );
-				player GiveStartAmmo( "tesla_gun_upgraded_zm" );
-				player SwitchToWeapon( "tesla_gun_upgraded_zm" );
-				player PlaySound( "mus_wonder_weapon_stinger" );
-			}
-
-			if(player HasWeapon("m1911_zm"))
-			{
-				player TakeWeapon( "m1911_zm" );
-				player GiveWeapon( "m1911_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "m1911_upgraded_zm" ) );
-				player GiveStartAmmo( "m1911_upgraded_zm" );
-				player SwitchToWeapon( "m1911_upgraded_zm" );
-				player PlaySound( "mus_wonder_weapon_stinger" );
-			}
-
-		}
-		else // not enough money
-		{
-			self PlaySound( "no_purchase" );
-			//player maps\_zombiemode_audio::create_and_play_dialog( "general", "no_money" );
 		}
 	}
 }
@@ -953,4 +922,58 @@ disable_doors()
     	}
     }
 }
+
+activate_doubletap()
+{
+	level.open_hut_count = 0;
+	level waittill( "activate_doubletap");
+
+	level.zombie_doubletap_machine_origin = (8323, 2715, -708);
+	level.zombie_doubletap_machine_angles = (0, 43, 0);
+	level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 0, 0);
+	level.zombie_doubletap_machine_clip_angles = (0, 220, 0);
+
+	//Remove dt
+	machine_remove = getent( "vending_doubletap", "targetname");
+	machine_remove Delete();
+	trigger_remove = getEnt( "vending_doubletap", "target");
+	trigger_remove Delete();
+
+	machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
+	machine.angles = level.zombie_doubletap_machine_angles;
+	machine setModel( "zombie_vending_doubletap_on" );
+	machine.targetname = "vending_doubletap";
+
+	machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 40), 100, 100, 100);
+	machine_trigger UseTriggerRequireLookAt();
+    machine_trigger sethintstring( "Hold ^3[{+activate}]^7 to buy double tap [Cost: 2000]" );
+	machine_trigger SetCursorHint( "HINT_NOICON" );
+
+	machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+	machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+	machine_clip setmodel( "collision_geo_64x64x256" );
+	machine_clip Hide();
+
+	cost = 2000;
+	while( 1 )
+	{
+		machine_trigger waittill( "trigger", player );
+
+		if( player.score >= cost && !player HasPerk( "specialty_rof" ) )
+		{
+			player maps\_zombiemode_score::minus_to_player_score( cost );
+
+			// do the drink animation
+			perk = "specialty_rof";
+			gun = player maps\_zombiemode_perks::perk_give_bottle_begin( perk );
+			player waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
+			player maps\_zombiemode_perks::perk_give_bottle_end( gun, perk );
+
+			player maps\_zombiemode_perks::give_perk( perk, true );
+
+		}
+	}
+}
+
+
 

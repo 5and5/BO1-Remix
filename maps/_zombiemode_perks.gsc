@@ -2128,18 +2128,24 @@ quantum_bomb_give_nearest_perk_result( position )
 
 place_perk_machines()
 {
-	/*if(level.script == "zombie_cosmodrome")
+	if(level.script == "zombie_cosmodrome")
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
 		level.zombie_doubletap_machine_angles = (0, 270, 0);
-		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
+		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 5, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
-		level.zombie_doubletap_machine_monkey_angles = (0, 270, 0);
+		level.zombie_doubletap_machine_monkey_angles = (0, 0, 0);
 		level.zombie_doubletap_machine_monkey_origins = [];
-		level.zombie_doubletap_machine_monkey_origins[0] = level.zombie_doubletap_machine_origin + (37.5, 24, 5);
-		level.zombie_doubletap_machine_monkey_origins[1] = level.zombie_doubletap_machine_origin + (0, 36, 5);
-		level.zombie_doubletap_machine_monkey_origins[2] = level.zombie_doubletap_machine_origin + (-40, 24, 5);
+		level.zombie_doubletap_machine_monkey_origins[0] = level.zombie_doubletap_machine_origin + (-36, 12, 5);
+		level.zombie_doubletap_machine_monkey_origins[1] = level.zombie_doubletap_machine_origin + (-36, 0, 5);
+		level.zombie_doubletap_machine_monkey_origins[2] = level.zombie_doubletap_machine_origin + (-38, -12, 5);
+
+		//Remove stam
+		machine_remove = getent("vending_marathon", "targetname");
+		machine_remove Delete();
+		trigger_remove = getEnt( "vending_marathon", "target");
+		trigger_remove Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
@@ -2154,36 +2160,30 @@ place_perk_machines()
 		machine_trigger.script_sound = "mus_perks_marathon_jingle";
 		machine_trigger.script_label = "mus_perks_marathon_sting";
 
-		// if ( isdefined( level.zombie_doubletap_machine_clip_origin ) )
-		// {
-			machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
-			machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
-			machine_clip setmodel( "collision_geo_64x64x256" );
-			machine_clip Hide();
-		//}
+		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip Hide();
 
-		if ( isdefined( level.zombie_doubletap_machine_monkey_origins ) )
+		machine.target = "vending_marathon_monkey_structs";
+		for ( i = 0; i < level.zombie_doubletap_machine_monkey_origins.size; i++ )
 		{
-			machine.target = "vending_doubletap_monkey_structs";
-			for ( i = 0; i < level.zombie_doubletap_machine_monkey_origins.size; i++ )
+			machine_monkey_struct = SpawnStruct();
+			machine_monkey_struct.origin = level.zombie_doubletap_machine_monkey_origins[i];
+			machine_monkey_struct.angles = level.zombie_doubletap_machine_monkey_angles;
+			machine_monkey_struct.script_int = i + 1;
+			machine_monkey_struct.script_notetworthy = "cosmo_monkey_marathon";
+			machine_monkey_struct.targetname = "vending_marathon_monkey_structs";
+
+			if ( !IsDefined( level.struct_class_names["targetname"][machine_monkey_struct.targetname] ) )
 			{
-				machine_monkey_struct = SpawnStruct();
-				machine_monkey_struct.origin = level.zombie_doubletap_machine_monkey_origins[i];
-				machine_monkey_struct.angles = level.zombie_doubletap_machine_monkey_angles;
-				machine_monkey_struct.script_int = i + 1;
-				machine_monkey_struct.script_notetworthy = "cosmo_monkey_doubletap";
-				machine_monkey_struct.targetname = "vending_doubletap_monkey_structs";
-
-				if ( !IsDefined( level.struct_class_names["targetname"][machine_monkey_struct.targetname] ) )
-				{
-					level.struct_class_names["targetname"][machine_monkey_struct.targetname] = [];
-				}
-
-				size = level.struct_class_names["targetname"][machine_monkey_struct.targetname].size;
-				level.struct_class_names["targetname"][machine_monkey_struct.targetname][size] = machine_monkey_struct;
+				level.struct_class_names["targetname"][machine_monkey_struct.targetname] = [];
 			}
+
+			size = level.struct_class_names["targetname"][machine_monkey_struct.targetname].size;
+			level.struct_class_names["targetname"][machine_monkey_struct.targetname][size] = machine_monkey_struct;
 		}
-	}*/
+	}
 
 	if(level.script == "zombie_theater")
 	{
@@ -2192,6 +2192,12 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
+		//Remove dt
+		machine_remove = getent("vending_doubletap", "targetname");
+		machine_remove Delete();
+		trigger_remove = getEnt( "vending_doubletap", "target");
+		trigger_remove Delete();
+
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
 		machine setModel( "zombie_vending_doubletap" );
@@ -2205,28 +2211,32 @@ place_perk_machines()
 		machine_trigger.script_sound = "mus_perks_doubletap_jingle";
 		machine_trigger.script_label = "mus_perks_doubletap_sting";
 
-		if ( isdefined( level.zombie_doubletap_machine_clip_origin ) )
-		{
-			machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
-			machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
-			machine_clip setmodel( "collision_geo_64x64x256" );
-			machine_clip Hide();
-		}
+		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip Hide();
+
 	}
 
-	/*if(level.script == "zombie_cod5_sumpf")
+/*	if(level.script == "zombie_cod5_sumpf")
 	{
 		level.zombie_doubletap_machine_origin = (8329, 2706, -708);
 		level.zombie_doubletap_machine_angles = (0, 180, 0);
-		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
+		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 0, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
+
+		//Remove dt
+		// machine_remove = getent("vending_doubletap", "targetname");
+		// machine_remove Delete();
+		// trigger_remove = getEnt( "vending_doubletap", "target");
+		// trigger_remove Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
 		machine setModel( "zombie_vending_doubletap" );
 		machine.targetname = "vending_doubletap";
 
-		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
+		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), (50, 20, 50) );
 		machine_trigger.targetname = "zombie_vending";
 		machine_trigger.target = "vending_doubletap";
 		machine_trigger.script_noteworthy = "specialty_rof";
@@ -2234,15 +2244,17 @@ place_perk_machines()
 		machine_trigger.script_sound = "mus_perks_doubletap_jingle";
 		machine_trigger.script_label = "mus_perks_doubletap_sting";
 
-		if ( isdefined( level.zombie_doubletap_machine_clip_origin ) )
-		{
-			machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
-			machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
-			machine_clip setmodel( "collision_geo_64x64x256" );
-			machine_clip Hide();
-		}
+		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip Hide();
 
-		maps\zombie_cod5_sumpf_perks::activate_vending_machine("zombie_vending_doubletap_on", (8329, 2706, -708), "zombie_vending_doubletap");
+		//turn on double tap
+		level notify( "master_switch_activated" );
+		level notify("doubletap_sumpf_on");
+	    level notify( "specialty_rof_power_on" );
+	    clientnotify("doubletap_on");
+		machine maps\_zombiemode_perks::perk_fx("doubletap_light");
 	}*/
 
 	if(level.script == "zombie_cod5_factory")
@@ -2251,6 +2263,12 @@ place_perk_machines()
 		level.zombie_doubletap_machine_angles = (0, 180, 0);
 		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
+
+        //Remove revive
+		machine_remove = getent("vending_revive", "targetname");
+		machine_remove Delete();
+		trigger_remove = getEnt( "vending_revive", "target");
+		trigger_remove Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
@@ -2265,24 +2283,11 @@ place_perk_machines()
 		machine_trigger.script_sound = "mus_perks_revive_jingle";
 		machine_trigger.script_label = "mus_perks_revive_sting";
 
-		if ( isdefined( level.zombie_doubletap_machine_clip_origin ) )
-		{
-			machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
-			machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
-			machine_clip setmodel( "collision_geo_64x64x256" );
-			machine_clip Hide();
-		}
 
+		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip Hide();
 
-		//Remove qr
-		machine = getentarray("vending_revive", "targetname");
-        for( i = 0; i < machine.size; i++ )
-        {
-        	if(machine[i].origin == (-489, -2066.5, 155))
-        	{
-				machine[i] trigger_off();
-				machine[i] Delete();
-        	}
-        }
 	}
 }
