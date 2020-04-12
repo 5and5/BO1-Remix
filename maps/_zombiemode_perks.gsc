@@ -2128,6 +2128,8 @@ quantum_bomb_give_nearest_perk_result( position )
 
 place_perk_machines()
 {
+	flag_wait("all_players_spawned");
+
 	if(level.script == "zombie_cosmodrome")
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
@@ -2265,7 +2267,7 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
         //Remove revive
-		machine_remove = getent("vending_revive", "targetname");
+		machine_remove = getEnt( "vending_revive", "targetname" );
 		machine_remove Delete();
 		trigger_remove = getEnt( "vending_revive", "target");
 		trigger_remove Delete();

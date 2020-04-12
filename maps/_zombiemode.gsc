@@ -78,6 +78,7 @@ main()
 	level._ZOMBIE_GIB_PIECE_INDEX_HEAD = 5;
 	level._ZOMBIE_GIB_PIECE_INDEX_GUTS = 6;
 
+	init_custom_dvars();
 	init_dvars();
 	init_mutators();
 	init_strings();
@@ -1711,7 +1712,7 @@ onPlayerSpawned()
 				// custom HUD
 				self thread zombies_remaining_hud();
 				//self thread drop_tracker_hud();
-				//self thread health_bar_hud();
+				self thread health_bar_hud();
 
 				// testing only
 				//self thread get_position();
@@ -3941,6 +3942,7 @@ round_think()
 {
 	//level.round_number = 60; //69
 	//level.zombie_vars["zombie_spawn_delay"] = .08;
+	//level.first_round = false;
 	level.zombie_move_speed = 105;
 
 	for( ;; )
@@ -7092,6 +7094,7 @@ timer_hud()
 	timer.x -= 5;
 	timer.fontScale = 1.4;
 	timer.alpha = 1;
+	timer.hidewheninmenu = 0;
 	timer.color = ( 1.0, 1.0, 1.0 );
 
 	if (level.script == "zombie_cosmodrome")
@@ -7103,17 +7106,30 @@ timer_hud()
 	start_time = int(getTime() / 1000);
 	while(1)
 	{
-		current_time = int(getTime() / 1000);
-		level.total_time = current_time - start_time;
-		//iprintln(level.total_time);
-
-		if (level.total_time >= 36000) // 10h
+		if(getDvarInt( "hud_timer" ) == 0)
 		{
-			level.win_game = true;
-			level notify( "end_game" );
-			break;
+			if(timer.alpha != 0)
+			{
+				timer.alpha = 0;
+			}
 		}
+		else
+		{
+			if(timer.alpha != 1)
+			{
+				timer.alpha = 1;
+			}
 
+			current_time = int(getTime() / 1000);
+			level.total_time = current_time - start_time;
+
+			if (level.total_time >= 36000) // 10h
+			{
+				level.win_game = true;
+				level notify( "end_game" );
+				break;
+			}
+		}
 		wait 0.05;
 	}
 
@@ -7239,8 +7255,23 @@ zombies_remaining_hud()
 
 	while(1)
 	{
-		zombies = level.zombie_total + get_enemy_count();
-		remaining_hud setValue(zombies);
+		if(getDvarInt( "hud_remaining" ) == 0)
+		{
+			if(remaining_hud.alpha != 0)
+			{
+				remaining_hud.alpha = 0;
+			}
+		}
+		else
+		{
+			if(remaining_hud.alpha != 1)
+			{
+				remaining_hud.alpha = 1;
+			}
+
+			zombies = level.zombie_total + get_enemy_count();
+			remaining_hud setValue(zombies);
+		}
 		wait 0.05;
 	}
 }
@@ -7249,12 +7280,6 @@ health_bar_hud()
 {
 	self endon("disconnect");
 	self endon("end_game");
-
-	// if(isdefined(GetDvar( #"hud_health_bar" ) ) )
-	// {
-	if( GetDvarInt( #"hud_health_bar" ) == 0)
-		return;
-	//}
 
 	hud_wait();
 
@@ -7281,24 +7306,35 @@ health_bar_hud()
 
 	while (1)
 	{
-		barElem updateHealth(self.health / self.maxhealth);
-		health_text setValue(self.health);
 
-		if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
+		if( getDvarInt( "hud_health_bar" ) == 0)
 		{
-			barElem.alpha = 0;
-			health_text.alpha = 0;
-
-			wait 0.05;
-			continue;
+			if(barElem.alpha != 0 && health_text.alpha != 0)
+			{
+				barElem.alpha = 0;
+				health_text.alpha = 0;
+			}
 		}
+		else
+		{
+			barElem updateHealth(self.health / self.maxhealth);
+			health_text setValue(self.health);
 
-		if (health_text.alpha != 0.8)
-        {
-            barElem.alpha = 0.8;
-			health_text.alpha = 0.8;
-        }
+			if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
+			{
+				barElem.alpha = 0;
+				health_text.alpha = 0;
 
+				wait 0.05;
+				continue;
+			}
+
+			if (health_text.alpha != 0.8)
+	        {
+	            barElem.alpha = 0.8;
+				health_text.alpha = 0.8;
+	        }
+    	}
 		wait 0.05;
 	}
 }
@@ -7306,7 +7342,6 @@ health_bar_hud()
 updateHealth( barFrac )
 {
 	barWidth = int(self.width * barFrac);
-
 	self setShader( self.shader, barWidth, self.height );
 }
 
@@ -7349,6 +7384,15 @@ hud_fade( hud, alpha, duration )
 {
 	hud fadeOverTime(duration);
 	hud.alpha = alpha;
+}
+
+init_custom_dvars()
+{
+	setDvar( "hud_health_bar", "1" );
+	setDvar( "hud_timer", "1");
+	setDvar( "hud_round_timer", "1");
+	setDvar( "hud_remaining", "1");
+	//level.hud_health_bar = getDvarInt( "hud_health_bar");
 }
 
 get_doors_nearby()
@@ -7432,7 +7476,6 @@ get_position()
 
 disable_player_quotes()
 {
-
 	while(1)
 	{
 		level.player_is_speaking = 1;

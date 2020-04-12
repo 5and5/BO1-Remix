@@ -150,7 +150,7 @@
 ### Kino Der Toten
 * Meteor in the starting room now turns on power
 * Removed nova crawlers
-* Turrets now kill in 2 bullets on any round
+* Turrets kill at any round inkill in 2 bullets
 * Moved double tap machine to stage
 * Removed alley, control room and pm63 room box locations
 * Disabled doors leading to alley, control room and pm63
@@ -164,7 +164,7 @@
 * Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
-* Turrets now kill in 2 bullets on any round
+* Turrets kill at any round inkill in 2 bullets
 * Monkeys health caps out at 1500
 * Moved Stamin up to underneath power
 * Monkeys taking revive doesn't count as a down
@@ -179,6 +179,8 @@
 ### Shangri-la/Moon
 * No changes made
 
+#### TODO
+* set dvars for HUD
 #### Would like to do
 * Add chalk to mp5k on Verruckt
 
