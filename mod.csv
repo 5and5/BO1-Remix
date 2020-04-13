@@ -123,8 +123,6 @@ xmodel,lightning_bolt
 //xmodel,zombie_vending_packapunch
 xmodel,zombie_vending_packapunch_on
 
-
-
 //XANIM
 xanim,viewmodel_tesla_d2p_in
 xanim,viewmodel_tesla_d2p_loop
@@ -141,17 +139,7 @@ xanim,ai_zombie_tesla_death_c
 xanim,ai_zombie_tesla_death_d
 xanim,ai_zombie_tesla_death_e
 xanim,viewmodel_ppsh_empty_sprint_loop
-xanim,viewmodel_tesla_fire
-xanim,viewmodel_tesla_first_raise
-xanim,viewmodel_tesla_idle
-xanim,viewmodel_tesla_pullout
-xanim,viewmodel_tesla_pullout_fast
-xanim,viewmodel_tesla_putaway
-xanim,viewmodel_tesla_putaway_fast
-xanim,viewmodel_tesla_reload
-xanim,viewmodel_tesla_ADS_down
-xanim,viewmodel_tesla_ADS_fire
-xanim,viewmodel_tesla_ADS_up
+
 
 //STRINGS
 localize,reimagined

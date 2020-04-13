@@ -7388,11 +7388,9 @@ hud_fade( hud, alpha, duration )
 
 init_custom_dvars()
 {
-	setDvar( "hud_health_bar", "1" );
+	setDvar( "hud_health_bar", "0" );
 	setDvar( "hud_timer", "1");
-	setDvar( "hud_round_timer", "1");
 	setDvar( "hud_remaining", "1");
-	//level.hud_health_bar = getDvarInt( "hud_health_bar");
 }
 
 get_doors_nearby()

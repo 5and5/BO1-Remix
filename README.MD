@@ -59,7 +59,7 @@
 #### Wunderwaffe
 * Added Wunderwaffe to Verruckt
 * Added Wunderwaffe powerup to Five
-* Upgraded version max kills increased from 10 to 12
+* Increased upgraded version's max kills from 10 to 12
 #### Explosive Scaling
 * Increased
 #### General Weapons
@@ -103,6 +103,7 @@
 * Increased random drop rate from 2% to 4%
 * Added a 30000 point cap till next point based drop
 * Added custom effect to last drop of a cycle
+* Reduced first point based drop from 2000 to 1500 points
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
 * Removed
@@ -141,7 +142,7 @@
 * Only two of the three teleporter are needed to open PaP
 * Removed catwalk box location
 * Disabled door to catwalk area
-* Turning on power now give you the bowie knife
+* Turning on power gives all players the bowie knife
 * Moved quick revive to mp40
 * Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
