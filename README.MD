@@ -2,7 +2,7 @@
 
 ## Download
 
-[Download](https://github.com/5and5/Remix/releases)
+[Download](https://www.mediafire.com/file/5u4g0dxdnf7rsjw/BO1-Remix.zip/file)
 
 ## Leaderboards
 [Leaderboards](docs.google.com/spreadsheets/d/14oRX3aQFWWz5VaLz3B_nt_YOe-9zHf3HTQNuCU9Xqcs)

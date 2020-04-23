@@ -907,6 +907,8 @@ power_electric_switch()
 
 	master_switch rotateroll(-90,.3);
 
+	thread give_bowie_knife();
+
 	//TO DO (TUEY) - kick off a 'switch' on client script here that operates similiarly to Berlin2 subway.
 	master_switch playsound("zmb_switch_flip");
 	flag_set( "power_on" );
@@ -942,11 +944,14 @@ power_electric_switch()
 	// Don't want east or west to spawn when in south zone, but vice versa is okay
 	maps\_zombiemode_zone_manager::connect_zones( "outside_east_zone", "outside_south_zone", true );
 	maps\_zombiemode_zone_manager::connect_zones( "outside_west_zone", "outside_south_zone", true );
+}
 
+give_bowie_knife()
+{
 	players = get_players();
-	gun = user maps\_zombiemode_bowie::do_bowie_flourish_begin();
 	for(i=0; i < players.size; i++)
 	{
+		gun = players[i] maps\_zombiemode_bowie::do_bowie_flourish_begin();
 		players[i] maps\_zombiemode_audio::create_and_play_dialog( "weapon_pickup", "bowie" );
 		players[i] waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
 		players[i] maps\_zombiemode_bowie::do_bowie_flourish_end( gun );

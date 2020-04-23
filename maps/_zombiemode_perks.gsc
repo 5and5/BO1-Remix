@@ -2128,7 +2128,7 @@ quantum_bomb_give_nearest_perk_result( position )
 
 place_perk_machines()
 {
-	flag_wait("all_players_spawned");
+	//flag_wait("all_players_spawned");
 
 	if(level.script == "zombie_cosmodrome")
 	{
@@ -2290,6 +2290,5 @@ place_perk_machines()
 		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
 		machine_clip setmodel( "collision_geo_64x64x256" );
 		machine_clip Hide();
-
 	}
 }
