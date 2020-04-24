@@ -5,7 +5,7 @@
 init()
 {
 	//place_additionalprimaryweapon_machine();
-	level thread place_perk_machines();
+	place_perk_machines();
 
 	// Perks-a-cola vending machine use triggers
 	vending_triggers = GetEntArray( "zombie_vending", "targetname" );
@@ -2128,8 +2128,6 @@ quantum_bomb_give_nearest_perk_result( position )
 
 place_perk_machines()
 {
-	//flag_wait("all_players_spawned");
-
 	if(level.script == "zombie_cosmodrome")
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
@@ -2144,10 +2142,11 @@ place_perk_machines()
 		level.zombie_doubletap_machine_monkey_origins[2] = level.zombie_doubletap_machine_origin + (-38, -12, 5);
 
 		//Remove stam
-		machine_remove = getent("vending_marathon", "targetname");
+		machine_remove = getent( "vending_marathon", "targetname");
 		machine_remove Delete();
 		trigger_remove = getEnt( "vending_marathon", "target");
 		trigger_remove Delete();
+
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
@@ -2195,10 +2194,10 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
 		//Remove dt
-		machine_remove = getent("vending_doubletap", "targetname");
-		machine_remove Delete();
-		trigger_remove = getEnt( "vending_doubletap", "target");
-		trigger_remove Delete();
+		machine_remove1 = getent("vending_doubletap", "targetname");
+		machine_remove1 Delete();
+		trigger_remove1 = getEnt( "vending_doubletap", "target");
+		trigger_remove1 Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
@@ -2267,10 +2266,10 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
         //Remove revive
-		machine_remove = getEnt( "vending_revive", "targetname" );
-		machine_remove Delete();
-		trigger_remove = getEnt( "vending_revive", "target");
-		trigger_remove Delete();
+		machine_remove2 = getEnt( "vending_revive", "targetname" );
+		machine_remove2 Delete();
+		trigger_remove2 = getEnt( "vending_revive", "target");
+		trigger_remove2 Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
@@ -2284,7 +2283,6 @@ place_perk_machines()
 
 		machine_trigger.script_sound = "mus_perks_revive_jingle";
 		machine_trigger.script_label = "mus_perks_revive_sting";
-
 
 		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
 		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;

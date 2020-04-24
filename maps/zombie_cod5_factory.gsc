@@ -907,7 +907,12 @@ power_electric_switch()
 
 	master_switch rotateroll(-90,.3);
 
-	thread give_bowie_knife();
+	// give players bowie knife
+	players = get_players();
+	for(i=0; i < players.size; i++)
+	{
+		players[i] giveweapon("bowie_knife_zm");
+	}
 
 	//TO DO (TUEY) - kick off a 'switch' on client script here that operates similiarly to Berlin2 subway.
 	master_switch playsound("zmb_switch_flip");
