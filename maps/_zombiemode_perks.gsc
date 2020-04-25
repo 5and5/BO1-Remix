@@ -2132,7 +2132,7 @@ place_perk_machines()
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
 		level.zombie_doubletap_machine_angles = (0, 270, 0);
-		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 5, 0);
+		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 5, 100);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
 		level.zombie_doubletap_machine_monkey_angles = (0, 0, 0);
