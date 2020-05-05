@@ -5,7 +5,7 @@
 [Download](https://www.mediafire.com/file/5u4g0dxdnf7rsjw/BO1-Remix.zip/file)
 
 ## Leaderboards
-[Leaderboards](docs.google.com/spreadsheets/d/14oRX3aQFWWz5VaLz3B_nt_YOe-9zHf3HTQNuCU9Xqcs)
+[Leaderboards](https://docs.google.com/spreadsheets/d/14oRX3aQFWWz5VaLz3B_nt_YOe-9zHf3HTQNuCU9Xqcs/)
 
 ## Created by: 5and5
 
