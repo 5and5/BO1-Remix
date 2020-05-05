@@ -7123,7 +7123,7 @@ timer_hud()
 			current_time = int(getTime() / 1000);
 			level.total_time = current_time - start_time;
 
-			if (level.total_time >= 36000) // 10h
+			if (level.total_time >= 43200) // 12h
 			{
 				level.win_game = true;
 				level notify( "end_game" );
