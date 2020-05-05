@@ -292,8 +292,8 @@ include_powerups()
 	include_powerup( "full_ammo" );
 	include_powerup( "fire_sale" );
 
-	PreCacheItem( "minigun_zm" );
-	include_powerup( "minigun" );
+	//PreCacheItem( "minigun_zm" );
+	//include_powerup( "minigun" );
 }
 
 add_powerups_after_round_1()

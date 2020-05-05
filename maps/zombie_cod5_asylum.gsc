@@ -135,6 +135,8 @@ main()
 	maps\createart\zombie_cod5_asylum_art::main();
 
 	level.has_pack_a_punch = false;
+
+	level thread fix_zombie_pathing();
 }
 
 //*****************************************************************************
@@ -1167,6 +1169,7 @@ master_electric_switch()
 
 
 	flag_set("power_on");
+
 	//clientnotify("revive_on");
 	//clientnotify("middle_door_open");
 	//clientnotify("fast_reload_on");
@@ -1238,12 +1241,13 @@ master_electric_switch()
 	level thread north_zapper_light_green();
 	level thread south_zapper_light_green();
 
-	wait(6);
-	fx_org stoploopsound();
 	level notify ("sleight_on");
 	level notify ("revive_on");
 	level notify ("doubletap_on");
 	level notify ("juggernog_on");
+
+	wait(6);
+	fx_org stoploopsound();
 
 	exploder(101);
 	//exploder(201);
@@ -1847,6 +1851,42 @@ mature_settings_changes()
 		}
 	}
 }
+
+fix_zombie_pathing()
+{
+	speed_machine = getent("vending_sleight", "targetname");
+
+	angles_right = AnglesToForward(speed_machine.angles);
+	angles_forward = AnglesToRight(speed_machine.angles);
+	bad_spot = (-635.308, 726.692, 226.125);
+	good_spot = bad_spot - (angles_right * 32) - (angles_forward * 64);
+
+	while(1)
+	{
+		zombs = GetAiSpeciesArray( "axis", "all" );
+		for(i = 0; i < zombs.size; i++)
+		{
+			if(IsDefined(zombs[i].recalculating) && zombs[i].recalculating)
+			{
+				continue;
+			}
+			if(int(DistanceSquared(bad_spot, zombs[i].origin)) < 24*24)
+			{
+				zombs[i].recalculating = true;
+				zombs[i] thread recalculate_pathing(good_spot);
+			}
+		}
+		wait .05;
+	}
+}
+
+recalculate_pathing(good_spot)
+{
+	self SetGoalPos(good_spot);
+	wait .2;
+	self.recalculating = false;
+}
+
 
 spawn_mp5k_wallbuy()
 {

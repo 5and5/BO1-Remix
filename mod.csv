@@ -6,8 +6,9 @@ rawfile,maps/_zombiemode_powerups.gsc
 rawfile,maps/_zombiemode_zone_manager.gsc
 rawfile,maps/_zombiemode_traps.gsc
 rawfile,maps/_zombiemode_spawner.gsc
-//rawfile,maps/_weaponobjects.gsc
+rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
+rawfile,maps/_zombiemode_spawner.gsc
 
 //WEAPONS
 rawfile,maps/_zombiemode_betty.gsc
@@ -79,6 +80,7 @@ weapon,sp/minigun_zm
 weapon,sp/frag_grenade_zm
 weapon,sp/sticky_grenade_zm
 weapon,sp/stielhandgranate
+//weapon,sp/mine_bouncing_betty
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc

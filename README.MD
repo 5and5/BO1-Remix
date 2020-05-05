@@ -43,10 +43,10 @@
 ### Insta Kill Rounds
 * Insta kill rounds start at round 99 then happen every other round
 ### Dogs
-* First dogs is always round 5
+* First dog round is always on round 5
 * Always 4 rounds between dog rounds
-### Theif
-* First theif round is always the next odd round after you turn on power
+### Thief
+* First thief round is always the next odd round after you turn on power
 * Always 4 rounds between theif rounds
 ### Monkeys
 * First monkey round is always the next odd round after you turn on power and have purchased a perk
@@ -89,13 +89,13 @@
 
 ## Equipment
 #### Monkey Bombs
-* Allows works if thrown in a playable area
+* Always works if thrown in a playable area
 #### Claymores
 * Now does 50% of zombies max health
 * Limited to 20 on the map at one time
 #### Boucing Bettys
 * Now does 50% of zombies max health
-* Now explodes in 1.5 seconds instead of 2 seconds
+* Now explodes in 1 second instead of 2 seconds
 * Limited to 20 on the map at one time
 
 ## Power Ups
@@ -114,15 +114,15 @@
 * Added to powerup cycle once a player has bought quick revive (removed if player no longer has qr)
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
-* Death machines now stack
+* Powerup duration now stack
 #### Double Points
-* Double points now stack
+* Powerup duration now stack
 #### Insta kill
-* Insta kills now stack
+* Powerup duration now stack
 #### Nuke
-* Nukes now kill twice as fast
+* Nukes now kill zombies twice as fast
 #### Perk Bottles
-* Always give jug if you don't already have it
+* Always gives jug if you the players doesn't already have it
 
 ## Maps
 ### Nacht Der Untoten
@@ -181,7 +181,12 @@
 * No changes made
 
 #### TODO
-* set dvars for HUD
+* reset to 12h
+* traverse changes
+* coop pause
+
+* fix cycle on shang
+
 #### Would like to do
 * Add chalk to mp5k on Verruckt
 

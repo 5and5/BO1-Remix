@@ -301,21 +301,21 @@ default_sniper_explosive_weighting_func()
 //	Greatly elevate the chance to get it until someone has it, then make it even
 default_cymbal_monkey_weighting_func()
 {
-		if( level.round_number > 5 )
+		if( level.round_number > 20 )
 		{
-			return 2;
-		}
-		else if( level.round_number > 10 )
-		{
-			return 3;
+			return 5;
 		}
 		else if( level.round_number > 15 )
 		{
 			return 4;
 		}
-		else if( level.round_number > 20 )
+		else if( level.round_number > 10 )
 		{
-			return 5;
+			return 3;
+		}
+		else if( level.round_number > 5)
+		{
+			return 2;
 		}
 		else
 		{
@@ -325,24 +325,23 @@ default_cymbal_monkey_weighting_func()
 
 default_zombie_black_hole_bomb_weighting_func()
 {
-
-	if( level.round_number > 5 )
+	if( level.round_number > 50 )
 	{
 		return 2;
-	}
-	else if( level.round_number > 10 )
-	{
-		return 3;
-	}
-	else if( level.round_number > 15 )
-	{
-		return 4;
 	}
 	else if( level.round_number > 20 )
 	{
 		return 5;
 	}
-	else if( level.round_number > 50 )
+	else if( level.round_number > 15 )
+	{
+		return 4;
+	}
+	else if( level.round_number > 10 )
+	{
+		return 3;
+	}
+	else if( level.round_number > 5)
 	{
 		return 2;
 	}
