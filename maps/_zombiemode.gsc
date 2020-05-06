@@ -258,6 +258,8 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer_hud();
 
+	//level thread coop_pause();
+
 }
 
 zombiemode_melee_miss()
@@ -1595,6 +1597,9 @@ onPlayerConnect_clientDvars()
 	self SetClientDvars("dtp_post_move_pause", 0,
 		"dtp_exhaustion_window", 100,
 		"dtp_startup_delay", 100);
+
+	// make sure zombies are spawning
+	self SetClientDvar( "ai_disableSpawn", "0");
 }
 
 checkForAllDead()
@@ -3942,9 +3947,13 @@ chalk_round_over()
 
 round_think()
 {
-	//level.round_number = 60; //69
+	//strat tester
+	//level.round_number = 2; //69
 	//level.zombie_vars["zombie_spawn_delay"] = .08;
 	//level.first_round = false;
+	//players = get_players();
+	//players[0].score = 5555555;
+
 	level.zombie_move_speed = 105;
 
 	for( ;; )
@@ -7106,50 +7115,21 @@ timer_hud()
 	timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
-
-	// coop pause
-	paused_time = 0;
-	paused_start_time = 0;
-	paused = false;
+	level thread coop_pause(timer, start_time);
 
 	while(1)
 	{
 		current_time = int(getTime() / 1000);
-		level.total_time = current_time - paused_time - start_time;
-
-		// coop pause
-		if( getDvarInt( "ai_disablespawn" ) == 1 )
-		{
-			level waittill( "start_of_round" );
-
-			paused = true;
-			paused_start_time = int(getTime() / 1000);
-
-			while(paused)
-			{
-				timer SetTimer(level.total_time - 0.1);
-				wait 0.5;
-
-				if( getDvarInt( "ai_disablespawn" ) == 0 )
-				{
-					paused = false;
-					current_time = int(getTime() / 1000);
-					current_paused_time = current_time - paused_start_time;
-					paused_time = paused_time + current_paused_time;
-					level.total_time = current_time - paused_time - start_time;
-					total_time = 0 - level.total_time;
-					timer SetTimerUp(total_time + 0.05);
-				}
-			}
-		}
+		level.total_time = current_time - level.paused_time - start_time;
 
 		// reset
-		if (level.total_time >= 43200) // 12h
+		if (level.total_time >= 180)//43200) // 12h
 		{
 			level.win_game = true;
 			level notify( "end_game" );
 			break;
 		}
+
 		wait 0.05;
 	}
 
@@ -7157,6 +7137,64 @@ timer_hud()
 	{
 		timer setTimer(level.total_time - 0.1);
 		wait 0.5;
+	}
+}
+
+coop_pause(timer_hud, start_time)
+{
+	paused_time = 0;
+	paused_start_time = 0;
+	paused = false;
+
+	while(1)
+	{
+		// coop pause
+		if( getDvarInt( "coop_pause" ) == 1 )
+		{
+			players = GetPlayers();
+			if(level.zombie_total + get_enemy_count() != 0 )
+			{
+				iprintln("finish the round");
+			}
+
+			level waittill( "end_of_round" );
+			players[0] SetClientDvar( "ai_disableSpawn", "1" );
+
+			level waittill( "start_of_round" );
+			iprintlnbold( "game paused");
+
+			for(i = 0; players.size > i; i++)
+			{
+				players[i] freezecontrols(true);
+			}
+
+			paused = true;
+			paused_start_time = int(getTime() / 1000);
+			total_time = 0 - (paused_start_time - level.paused_time - start_time) - 0.05;
+
+			while(paused)
+			{
+				timer_hud SetTimerUp(total_time);
+				wait 0.2;
+
+				if( getDvarInt( "coop_pause" ) == 0 )
+				{
+					paused = false;
+
+					current_time = int(getTime() / 1000);
+					current_paused_time = current_time - paused_start_time;
+					level.paused_time = level.paused_time + current_paused_time;
+
+					for(i = 0; players.size > i; i++)
+					{
+						players[i] freezecontrols(false);
+					}
+
+					players[0] SetClientDvar( "ai_disableSpawn", "0");
+				}
+			}
+		}
+		wait 0.05;
 	}
 }
 
@@ -7253,7 +7291,7 @@ drop_tracker_hud()
 
 	while(1)
 	{
-		if( isdefined(getDvarInt( "hud_drops" ) == 0))
+		if( getDvarInt( "hud_drops" ) == 0)
 		{
 			if(drops_hud.alpha != 0 )
 			{
@@ -7423,9 +7461,10 @@ hud_fade( hud, alpha, duration )
 
 init_custom_dvars()
 {
-	setDvar( "hud_health_bar", "0" );
-	setDvar( "hud_drops", "0");
-	setDvar( "hud_remaining", "1");
+	setDvar( "hud_health_bar", 0 );
+	setDvar( "hud_drops", 0 );
+	setDvar( "hud_remaining", 1 );
+	setDvar( "coop_pause", 0 );
 }
 
 get_doors_nearby()

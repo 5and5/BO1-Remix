@@ -33,11 +33,13 @@
 * Round timer (shows at the end of a round)
 * Zombie remaining counter
 * Health bar
+* Drop cycle tracker
 * COTD: VR11 insta kill timer
 
-## Spawn Delay
+## Zombie Spawns
 * Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
 * Spawn delay now caps out at round 50 instead of 63
+* Zombies now jump through open windows right away
 
 ## Special Rounds
 ### Insta Kill Rounds
@@ -135,7 +137,7 @@
 * Added pack-a-punch to main floor that can upgrade the Wunderwaffe, Ray Gun, m1911 and Crossbow
 * Removed fishing hut box location
 * Disabled door to fishing hut
-* Once all other huts are open, double tap will spawn infront of fishing hut
+* Once all other huts are open, double tap will spawn in front of fishing hut
 * Decreased electric traps recharge time from 90 to 25
 * Changed the spawn zones of the main hut to only include it self
 ### Der Riese
@@ -159,10 +161,10 @@
 * Set initial box to mp40 room
 ### Five
 * Set windows
-* Set power room telepoter to always take you up stairs
+* Set power room teleporter to always take you up stairs
 * Set initial box to the dead guy room
-* Killing the theif before he takes a weapon now gives a waffe powerup instead of a bonfire sale
-* Killing the theif after he takes a weapon now gives a bonfire sale instead of a fire sale
+* Killing the thief before he takes a weapon now gives a waffe powerup instead of a bonfire sale
+* Killing the thief after he takes a weapon now gives a bonfire sale instead of a fire sale
 * Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
 * Turrets kill at any round inkill in 2 bullets
@@ -183,14 +185,22 @@
 ### Custom Dvars
 * "/hud_health_bar 1" - enables health bar
 * "/hud_remaining 0" - disables zombies counter
-* "/ai_disableSpawn" - can be used at the end of a round to pause in coop
+* "/hud_drops 1" - enables drop tracker
+* "/coop_pause" - can be used at the end of a round to pause in coop
+
+### Useful Binds
+```
+bind 1 "toggle cg_fov 75 80 90"
+bind 2 "toggle cg_blood 1 0; toggle cg_mature 1 0"
+bind 3 "toggle hud_health_bar 0 1"
+bind 4 "toggle hud_drops 0 1"
+bind 5 "toggle hud_remaining 0 1"
+bind 6 "toggle coop_pause 0 1"
+
+```
 
 #### TODO
-* reset to 12h
-* traverse changes
-* coop pause
-
-* fix cycle on shang
+* fix shang and moon
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
