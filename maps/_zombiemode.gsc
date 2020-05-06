@@ -78,7 +78,7 @@ main()
 	level._ZOMBIE_GIB_PIECE_INDEX_HEAD = 5;
 	level._ZOMBIE_GIB_PIECE_INDEX_GUTS = 6;
 
-	//init_custom_dvars();
+	init_custom_dvars();
 	init_dvars();
 	init_mutators();
 	init_strings();
