@@ -78,7 +78,7 @@ main()
 	level._ZOMBIE_GIB_PIECE_INDEX_HEAD = 5;
 	level._ZOMBIE_GIB_PIECE_INDEX_GUTS = 6;
 
-	init_custom_dvars();
+	//init_custom_dvars();
 	init_dvars();
 	init_mutators();
 	init_strings();
@@ -1712,7 +1712,7 @@ onPlayerSpawned()
 
 				// custom HUD
 				self thread zombies_remaining_hud();
-				//self thread drop_tracker_hud();
+				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 
 
@@ -7253,7 +7253,22 @@ drop_tracker_hud()
 
 	while(1)
 	{
-		drops_hud setValue(level.drop_tracker_index);
+		if( isdefined(getDvarInt( "hud_drops" ) == 0))
+		{
+			if(drops_hud.alpha != 0 )
+			{
+				drops_hud.alpha = 0;
+			}
+		}
+		else
+		{
+			if(drops_hud.alpha != 1 )
+			{
+				drops_hud.alpha = 1;
+			}
+			drops_hud setValue(level.drop_tracker_index);
+		}
+
 		wait 0.05;
 	}
 }
@@ -7409,7 +7424,7 @@ hud_fade( hud, alpha, duration )
 init_custom_dvars()
 {
 	setDvar( "hud_health_bar", "0" );
-	setDvar( "hud_drops", "1");
+	setDvar( "hud_drops", "0");
 	setDvar( "hud_remaining", "1");
 }
 
