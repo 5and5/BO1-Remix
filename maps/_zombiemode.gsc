@@ -5397,21 +5397,20 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
-	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && self.animname== "director_zombie")
+	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && self.animname == "director_zombie")
 	{
-		return 10000;
+		final_damage = 10000;
 	}
 
-	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm")
+	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && !self.animname == "director_zombie")
 	{
 		min_damage = 10000;
-		damage = int(self.maxhealth / 2) + 100;
+		final_damage = int(self.maxhealth / 2) + 100;
 
-		if ( damage < min_damage && damage < 20000 )
+		if ( final_damage < min_damage && final_damage < 20000 )
 		{
-			return min_damage;
+			final_damage = min_damage;
 		}
-		return damage;
 	}
 
 	if(attacker HasPerk("specialty_rof") && (meansofdeath == "MOD_PISTOL_BULLET" || meansofdeath == "MOD_RIFLE_BULLET"))
@@ -5425,45 +5424,35 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	}
 
 	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && (self.animname != "thief_zombie" || self.animname != "director_zombie"))
-		{
-			min_damage = 2000;
-			damage = int(self.maxhealth / 2) + 10;
+	{
+		min_damage = 2000;
+		damage = int(self.maxhealth / 2) + 10;
 
-			if(damage < min_damage)
-				{
-					damage = min_damage;
-				}
-			final_damage = damage;
-		}
+		if(damage < min_damage)
+			{
+				damage = min_damage;
+			}
+		final_damage = damage;
+	}
 
 /*	if(self.animname == "director_zombie")
 		{
 			final_damage = int(10000);
 		}*/
-
-/*	if(weapon == "zombie_cymbal_zombie" )
-		{
-			min_damage = 1500;
-			damage = int(self.maxhealth / 2) + 10;
-
-			if(damage < min_damage)
-			{
-				damage = min_damage;
-			}
-			return damage;
-		}*/
-
-	if(weapon == "zombie_nesting_dolls" )
+	if(weapon == "zombie_nesting_dolls" && self.animname == "director_zombie")
 	{
-		damage = int(self.maxhealth) + 666;
+		final_damage = 5000;
+	}
 
-		return damage;
+	if(weapon == "zombie_nesting_dolls" && !self.animname == "director_zombie")
+	{
+		final_damage = int(self.maxhealth) + 666;
 	}
 
 
 	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" || self.animname == "director_zombie")
 		{
-			return 1500;
+			final_damage = 1500;
 		}
 
 	return int( final_damage );

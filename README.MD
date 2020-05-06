@@ -185,7 +185,7 @@
 * "/hud_health_bar 1" - enables health bar
 * "/hud_remaining 0" - disables zombies counter
 * "/hud_drops 1" - enables drop tracker
-* "/coop_pause" - can be used at the end of a round to pause in coop
+* "/coop_pause" - can be used to pause in coop (pause starts at the start of the next round)
 
 ### Useful Binds
 ```
