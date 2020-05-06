@@ -26,7 +26,7 @@
 * Starting points changed from 500 to 555
 * Fixed backwards walking speed
 * Removed player quotes
-* "Reset" now happens at exactly 10 hours
+* "Reset" now happens at exactly 12 hours
 
 ## HUD
 * In game timer
@@ -179,6 +179,11 @@
 * Set initial box to on top of flopper
 ### Shangri-la/Moon
 * No changes made
+
+### Custom Dvars
+* "/hud_health_bar 1" - enables health bar
+* "/hud_remaining 0" - disables zombies counter
+* "/ai_disableSpawn" - can be used at the end of a round to pause in coop
 
 #### TODO
 * reset to 12h

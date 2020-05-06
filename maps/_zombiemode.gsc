@@ -257,6 +257,7 @@ post_all_players_connected()
 
 	level thread timer_hud();
 	level thread round_timer_hud();
+
 }
 
 zombiemode_melee_miss()
@@ -1713,6 +1714,7 @@ onPlayerSpawned()
 				self thread zombies_remaining_hud();
 				//self thread drop_tracker_hud();
 				self thread health_bar_hud();
+
 
 				// testing only
 				//self thread get_position();
@@ -7104,31 +7106,49 @@ timer_hud()
 	timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
+
+	// coop pause
+	paused_time = 0;
+	paused_start_time = 0;
+	paused = false;
+
 	while(1)
 	{
-		if(getDvarInt( "hud_timer" ) == 0)
+		current_time = int(getTime() / 1000);
+		level.total_time = current_time - paused_time - start_time;
+
+		// coop pause
+		if( getDvarInt( "ai_disablespawn" ) == 1 )
 		{
-			if(timer.alpha != 0)
+			level waittill( "start_of_round" );
+
+			paused = true;
+			paused_start_time = int(getTime() / 1000);
+
+			while(paused)
 			{
-				timer.alpha = 0;
+				timer SetTimer(level.total_time - 0.1);
+				wait 0.5;
+
+				if( getDvarInt( "ai_disablespawn" ) == 0 )
+				{
+					paused = false;
+					current_time = int(getTime() / 1000);
+					current_paused_time = current_time - paused_start_time;
+					paused_time = paused_time + current_paused_time;
+					level.total_time = current_time - paused_time - start_time;
+					total_time = 0 - level.total_time;
+					timer SetTimerUp(total_time + 0.05);
+				}
 			}
 		}
-		else
+
+		// reset
+		if (level.total_time >= 43200) // 12h
 		{
-			if(timer.alpha != 1)
-			{
-				timer.alpha = 1;
-			}
-
-			current_time = int(getTime() / 1000);
-			level.total_time = current_time - start_time;
-
-			if (level.total_time >= 43200) // 12h
-			{
-				level.win_game = true;
-				level notify( "end_game" );
-				break;
-			}
+			level.win_game = true;
+			level notify( "end_game" );
+			break;
 		}
 		wait 0.05;
 	}
@@ -7389,7 +7409,7 @@ hud_fade( hud, alpha, duration )
 init_custom_dvars()
 {
 	setDvar( "hud_health_bar", "0" );
-	setDvar( "hud_timer", "1");
+	setDvar( "hud_drops", "1");
 	setDvar( "hud_remaining", "1");
 }
 
