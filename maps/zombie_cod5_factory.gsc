@@ -302,6 +302,7 @@ factory_zone_init()
 	// Warehosue top
 	add_adjacent_zone( "warehouse_bottom_zone", "warehouse_top_zone",	"enter_warehouse_second_floor" );
 	add_adjacent_zone( "bridge_zone",	"warehouse_bottom_zone",			"enter_warehouse_second_floor" );
+	add_adjacent_zone( "warehouse_top_zone",	"bridge_zone",			"enter_warehouse_second_floor" );
 	//add_adjacent_zone( "warehouse_top_zone",	"bridge_zone",			"enter_south_zone", true );
 	//add_adjacent_zone( "warehouse_top_zone",	"wnuen_bridge_zone",			"enter_south_zone" );
 
@@ -309,10 +310,11 @@ factory_zone_init()
 	add_adjacent_zone( "tp_east_zone",			"wnuen_zone",			"enter_tp_east" );
 
 	//add_adjacent_zone( "tp_east_zone",			"outside_east_zone",	"enter_tp_east",			true );
-	//add_zone_flags(	"enter_tp_east",										"enter_wnuen_building" );
+	add_zone_flags(	"enter_tp_east",										"enter_wnuen_building" );
 
 	// TP South
 	add_adjacent_zone( "tp_south_zone",			"outside_south_zone",	"enter_tp_south" );
+	//add_adjacent_zone( "outside_south_zone",			"tp_south_zone",	"enter_tp_south" );
 
 	// TP West
 	add_adjacent_zone( "tp_west_zone",			"warehouse_top_zone",	"enter_tp_west" );
@@ -502,6 +504,7 @@ bridge_init()
 	warehouse_bridge_clip delete();
 
 	maps\_zombiemode_zone_manager::connect_zones( "wnuen_bridge_zone", "bridge_zone" );
+	//maps\_zombiemode_zone_manager::connect_zones( "warehouse_top_zone", "bridge_zone" );
 	maps\_zombiemode_zone_manager::connect_zones( "bridge_zone", "warehouse_top_zone" );
 }
 
@@ -513,7 +516,7 @@ jump_from_bridge()
 	trig = GetEnt( "trig_outside_south_zone", "targetname" );
 	trig waittill( "trigger" );
 
-	//maps\_zombiemode_zone_manager::connect_zones( "outside_south_zone", "bridge_zone", true );
+	maps\_zombiemode_zone_manager::connect_zones( "outside_south_zone", "bridge_zone", true );
 	//maps\_zombiemode_zone_manager::connect_zones( "outside_south_zone", "wnuen_bridge_zone", true );
 }
 

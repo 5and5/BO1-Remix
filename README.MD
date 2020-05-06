@@ -39,7 +39,7 @@
 ## Zombie Spawns
 * Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
 * Spawn delay now caps out at round 50 instead of 63
-* Zombies now jump through open windows right away
+* Removed limit of 3 zombies jumping over a barrier at one time
 
 ## Special Rounds
 ### Insta Kill Rounds
@@ -141,15 +141,14 @@
 * Decreased electric traps recharge time from 90 to 25
 * Changed the spawn zones of the main hut to only include it self
 ### Der Riese
-* Only two of the three teleporter are needed to open PaP
+* Pack-a-punch only requires two of the three teleporter to open
 * Removed catwalk box location
 * Disabled door to catwalk area
 * Turning on power gives all players the bowie knife
 * Moved quick revive to mp40
 * Fixed getting stuck on most curbs
 * Fixed mp40 spawn zone so that zombies no longer come from outside the trap
-* Fixed one window spawn above thomson
-* Changed the spawn zones of power to only include only it self (3 windows)
+* Changed the spawn zone of power to not include jug
 ### Kino Der Toten
 * Meteor in the starting room now turns on power
 * Removed nova crawlers
@@ -206,10 +205,14 @@ bind 6 "toggle coop_pause 0 1"
 * Add chalk to mp5k on Verruckt
 
 
-## Huge shout out to:
+## Shout out to:
 * **_SE2Dev_** - For making LinkerMod
 * **_Nukem_** - For making LinkerMod
 * **_Treyarch_** - For making the best zombie game of all time
-* **_JBird_Justin_** - For helping me with the mod this wouldn't be possible without him
 * **_Clippy95_** - For adding the mp5 to verruckt
+* **_Demonz_** - For testing and helping with some scripting
+
+## Huge shout out to:
+* **_JBird_Justin_** - For making Reimagined this wouldn't be possible without him. A large portion of the mod is ported from his mod.
+[Reimagined](https://github.com/Jbleezy/BO1-Reimagined)
 

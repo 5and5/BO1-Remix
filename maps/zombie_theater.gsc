@@ -503,7 +503,7 @@ theater_zone_init()
 	add_adjacent_zone( "foyer_zone", "foyer2_zone", "always_on" );
 
 	add_adjacent_zone( "foyer_zone", "vip_zone", "magic_box_foyer1" );
-	//add_adjacent_zone( "foyer2_zone", "crematorium_zone", "magic_box_crematorium1" );
+	add_adjacent_zone( "foyer2_zone", "crematorium_zone", "magic_box_crematorium1" );
 	add_adjacent_zone( "crematorium_zone",	"foyer_zone",  "magic_box_crematorium1", true );
 
 	// vip_zone

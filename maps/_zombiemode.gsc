@@ -3948,11 +3948,11 @@ chalk_round_over()
 round_think()
 {
 	//strat tester
-	//level.round_number = 2; //69
-	//level.zombie_vars["zombie_spawn_delay"] = .08;
-	//level.first_round = false;
-	//players = get_players();
-	//players[0].score = 5555555;
+	// level.round_number = 60; //69
+	// level.zombie_vars["zombie_spawn_delay"] = .08;
+	// level.first_round = false;
+	// players = get_players();
+	// players[0].score = 5555555;
 
 	level.zombie_move_speed = 105;
 
@@ -7106,6 +7106,7 @@ timer_hud()
 	timer.fontScale = 1.4;
 	timer.alpha = 1;
 	timer.hidewheninmenu = 0;
+	timer.foreground = 1;
 	timer.color = ( 1.0, 1.0, 1.0 );
 
 	if (level.script == "zombie_cosmodrome")
@@ -7115,6 +7116,7 @@ timer_hud()
 	timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
+	level.paused_time = 0;
 	level thread coop_pause(timer, start_time);
 
 	while(1)
@@ -7123,7 +7125,7 @@ timer_hud()
 		level.total_time = current_time - level.paused_time - start_time;
 
 		// reset
-		if (level.total_time >= 180)//43200) // 12h
+		if (level.total_time >= 43200) // 12h
 		{
 			level.win_game = true;
 			level notify( "end_game" );
@@ -7148,7 +7150,6 @@ coop_pause(timer_hud, start_time)
 
 	while(1)
 	{
-		// coop pause
 		if( getDvarInt( "coop_pause" ) == 1 )
 		{
 			players = GetPlayers();
