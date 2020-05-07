@@ -3951,8 +3951,8 @@ round_think()
 	// level.round_number = 50; //69
 	// level.zombie_vars["zombie_spawn_delay"] = .08;
 	// level.first_round = false;
-	// players = get_players();
-	// players[0].score = 5555555;
+	players = get_players();
+	players[0].score = 5555555;
 
 	level.zombie_move_speed = 105;
 
