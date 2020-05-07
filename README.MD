@@ -100,6 +100,10 @@
 * Now explodes in 1 second instead of 2 seconds
 * Limited to 20 on the map at one time
 
+## Perks
+#### Double Tap
+* Increases all bullet based weapons damage by 1.5
+
 ## Power Ups
 ### General
 * Increased random drop rate from 2% to 4%
@@ -139,7 +143,7 @@
 * Disabled door to fishing hut
 * Once all other huts are open, double tap will spawn in front of fishing hut
 * Decreased electric traps recharge time from 90 to 25
-* Changed the spawn zones of the main hut to only include it self
+* Changed the spawn zones of the main building to only include it self
 ### Der Riese
 * Pack-a-punch only requires two of the three teleporter to open
 * Removed catwalk box location
@@ -182,10 +186,10 @@
 * No changes made
 
 ### Custom Dvars
-* "/hud_health_bar 1" - enables health bar
-* "/hud_remaining 0" - disables zombies counter
-* "/hud_drops 1" - enables drop tracker
-* "/coop_pause" - can be used to pause in coop (pause starts at the start of the next round)
+* "/hud_health_bar" - enables/disable health bar
+* "/hud_remaining" - enables/disable zombies counter
+* "/hud_drops" - enables/disable drop tracker
+* "/coop_pause" - can be used to pause in coop (pause starts at the beginning of the next round)
 
 ### Useful Binds
 ```

@@ -3948,7 +3948,7 @@ chalk_round_over()
 round_think()
 {
 	//strat tester
-	// level.round_number = 60; //69
+	// level.round_number = 50; //69
 	// level.zombie_vars["zombie_spawn_delay"] = .08;
 	// level.first_round = false;
 	// players = get_players();
@@ -5399,7 +5399,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && self.animname == "director_zombie")
 	{
-		final_damage = 10000;
+		return int(10000);
 	}
 
 	if(weapon == "sniper_explosive_bolt_zm" || weapon == "sniper_explosive_bolt_upgraded_zm" && !self.animname == "director_zombie")
@@ -5439,10 +5439,10 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		{
 			final_damage = int(10000);
 		}*/
-	if(weapon == "zombie_nesting_dolls" && self.animname == "director_zombie")
-	{
-		final_damage = 5000;
-	}
+	// if(weapon == "zombie_nesting_dolls" && self.animname == "director_zombie")
+	// {
+	// 	return int(15000);
+	// }
 
 	if(weapon == "zombie_nesting_dolls" && !self.animname == "director_zombie")
 	{
@@ -7451,9 +7451,9 @@ hud_fade( hud, alpha, duration )
 
 init_custom_dvars()
 {
-	setDvar( "hud_health_bar", 0 );
-	setDvar( "hud_drops", 0 );
-	setDvar( "hud_remaining", 1 );
+	setSavedDvar( "hud_health_bar", 0 );
+	setSavedDvar( "hud_drops", 0 );
+	setSavedDvar( "hud_remaining", 1 );
 	setDvar( "coop_pause", 0 );
 }
 

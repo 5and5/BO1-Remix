@@ -2132,7 +2132,7 @@ place_perk_machines()
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
 		level.zombie_doubletap_machine_angles = (0, 270, 0);
-		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 5, 100);
+		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, 5, 30);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
 		level.zombie_doubletap_machine_monkey_angles = (0, 0, 0);
@@ -2163,7 +2163,7 @@ place_perk_machines()
 
 		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
 		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
-		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip setmodel( "collision_geo_64x64x64" );
 		machine_clip Hide();
 
 		machine.target = "vending_marathon_monkey_structs";
