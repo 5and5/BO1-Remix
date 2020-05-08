@@ -203,6 +203,9 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 #### TODO
+* add speed cola to perkbottle
+* reduce bow damage
+* demzy changes
 * fix shang and moon
 
 #### Would like to do

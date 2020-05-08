@@ -3951,8 +3951,8 @@ round_think()
 	// level.round_number = 50; //69
 	// level.zombie_vars["zombie_spawn_delay"] = .08;
 	// level.first_round = false;
-	players = get_players();
-	players[0].score = 5555555;
+	// players = get_players();
+	// players[0].score = 5555555;
 
 	level.zombie_move_speed = 105;
 
@@ -7451,9 +7451,9 @@ hud_fade( hud, alpha, duration )
 
 init_custom_dvars()
 {
-	setSavedDvar( "hud_health_bar", 0 );
-	setSavedDvar( "hud_drops", 0 );
-	setSavedDvar( "hud_remaining", 1 );
+	setDvar( "hud_health_bar", 0 );
+	setDvar( "hud_drops", 0 );
+	setDvar( "hud_remaining", 1 );
 	setDvar( "coop_pause", 0 );
 }
 
