@@ -5469,6 +5469,8 @@ actor_killed_override(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDi
 	if ( game["state"] == "postgame" )
 		return;
 
+	self SetPlayerCollision(0); // zombies lose collision right as they die
+
 	if( isai(attacker) && isDefined( attacker.script_owner ) )
 	{
 		// if the person who called the dogs in switched teams make sure they don't

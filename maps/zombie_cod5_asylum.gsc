@@ -976,7 +976,7 @@ player_elec_damage()
 	{
 		self.is_burning = 1;
 		self setelectrified(1.25);
-		shocktime = 2.5;
+		shocktime = 1.25; //2.5;
 		//Changed Shellshock to Electrocution so we can have different bus volumes.
 		self shellshock("electrocution", shocktime);
 
@@ -1018,7 +1018,7 @@ zombie_elec_death(flame_chance)
 		self thread zombie_flame_watch();
 		self playsound("zmb_ignite");
 		self thread animscripts\zombie_death::flame_death_fx();
-		wait(randomfloat(1.25));
+		wait(randomfloat(0.5)); //1.25
 	}
 	else
 	{
@@ -1038,7 +1038,7 @@ zombie_elec_death(flame_chance)
 			self thread electroctute_death_fx();
 			self thread play_elec_vocals();
 		}
-		wait(randomfloat(1.25));
+		wait(randomfloat(0.5)); //1.25
 		self playsound("zmb_zombie_arc");
 	}
 

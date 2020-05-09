@@ -559,12 +559,13 @@ thief_trap_watch( trig )
 	clip = getent( trig.target + "_clip", "targetname" );
 	clip.dis = false;
 
+	self thread thief_trap_stop_watch(trig);
+
 	while ( 1 )
 	{
 		if ( trig._trap_in_use == 1 && trig._trap_cooling_down == 0 && !clip.dis )
 		{
 			thief_print( "blocking " + trig.target );
-
 			// block path
 			clip.origin = clip.realorigin;
 			clip disconnectpaths();
@@ -573,16 +574,31 @@ thief_trap_watch( trig )
 		else if ( (trig._trap_in_use == 0 || trig._trap_cooling_down == 1) && clip.dis )
 		{
 			thief_print( "unblocking " + trig.target );
-
 			clip.origin += ( 0, 0, 10000 );
 			clip connectpaths();
 			clip.dis = false;
 		}
-
 		wait_network_frame();
 	}
 }
 
+thief_trap_stop_watch(trig)
+{
+	self endon( "death" );
+
+	clip = getent( trig.target + "_clip", "targetname" );
+
+	self waittill( "thief_trap_stop" );
+
+	if(clip.dis)
+	{
+		thief_print( "unblocking " + trig.target );
+
+		clip.origin += ( 0, 0, 10000 );
+		clip connectpaths();
+		clip.dis = false;
+	}
+}
 
 thief_zombie_pick_best_spawner()
 {

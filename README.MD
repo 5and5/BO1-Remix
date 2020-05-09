@@ -58,6 +58,8 @@
 * Always give a max every 4 rounds
 
 ## Weapons
+#### General
+* Zombies lose collision as soon as they are killed
 #### Wunderwaffe
 * Added Wunderwaffe to Verruckt
 * Added Wunderwaffe powerup to Five
@@ -99,6 +101,18 @@
 * Now does 50% of zombies max health
 * Now explodes in 1 second instead of 2 seconds
 * Limited to 20 on the map at one time
+
+## Traps
+#### General
+* Trap light no longer gets glitched by hitting the switch to early
+#### Electric Trap (Kino and Shi No Numa)
+* Reduced recharge time to 25 seconds
+* Reduced shell shock time from 2.5 to 1.25 seconds
+* Reduced zombie burn time from random 1.25 to 0.5 seconds
+#### Fire Trap (Kino)
+* Reduced cooldown from 60 to 40 seconds
+#### Turret (Kino and Ascension)
+* Kills zombies in 2 bullets at any round
 
 ## Perks
 #### Double Tap
@@ -156,7 +170,6 @@
 ### Kino Der Toten
 * Meteor in the starting room now turns on power
 * Removed nova crawlers
-* Turrets kill at any round inkill in 2 bullets
 * Moved double tap machine to stage
 * Removed alley, control room and pm63 room box locations
 * Disabled doors leading to alley, control room and pm63
@@ -168,12 +181,12 @@
 * Set initial box to the dead guy room
 * Killing the thief before he takes a weapon now gives a waffe powerup instead of a bonfire sale
 * Killing the thief after he takes a weapon now gives a bonfire sale instead of a fire sale
+* Fixed thief pathing glitch that causes zombies to avoid traps
 * Removed alarm from theif round to fix audio glitching from killing the theif too fast
 ### Ascension
-* Turrets kill at any round inkill in 2 bullets
 * Monkeys health caps out at 1500
-* Moved Stamin up to underneath power
 * Monkeys taking revive doesn't count as a down
+* Moved Stamin up to underneath power
 ### Call of the Dead
 * Removed initial spawn delay on round 1
 * VR11 un-upgraded now also gives players instakill
@@ -205,6 +218,7 @@ bind 6 "toggle coop_pause 0 1"
 #### TODO
 * add speed cola to perkbottle
 * reduce bow damage
+* change powerup on the map time to 30 seconds
 * demzy changes
 * fix shang and moon
 
