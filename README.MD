@@ -40,6 +40,7 @@
 * Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
 * Spawn delay now caps out at round 50 instead of 63
 * Removed limit of 3 zombies jumping over a barrier at one time
+* Zombies jump through barriers quicker now
 
 ## Special Rounds
 ### Insta Kill Rounds
@@ -198,7 +199,7 @@
 ### Shangri-la/Moon
 * No changes made
 
-### Custom Dvars
+#### Custom Dvars
 * "/hud_health_bar" - enables/disable health bar
 * "/hud_remaining" - enables/disable zombies counter
 * "/hud_drops" - enables/disable drop tracker
@@ -206,20 +207,20 @@
 
 ### Useful Binds
 ```
-bind 1 "toggle cg_fov 75 80 90"
 bind 2 "toggle cg_blood 1 0; toggle cg_mature 1 0"
 bind 3 "toggle hud_health_bar 0 1"
 bind 4 "toggle hud_drops 0 1"
 bind 5 "toggle hud_remaining 0 1"
 bind 6 "toggle coop_pause 0 1"
-
 ```
 
 #### TODO
-* add speed cola to perkbottle
-* reduce bow damage
+* revert dm changes
 * change powerup on the map time to 30 seconds
-* demzy changes
+* move speed on cotd
+* have box take longer to move
+* update health bar
+* way to fix cycle
 * fix shang and moon
 
 #### Would like to do

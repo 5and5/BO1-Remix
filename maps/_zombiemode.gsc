@@ -3948,6 +3948,7 @@ chalk_round_over()
 round_think()
 {
 	//strat tester
+
 	// level.round_number = 50; //69
 	// level.zombie_vars["zombie_spawn_delay"] = .08;
 	// level.first_round = false;
@@ -7147,9 +7148,10 @@ coop_pause(timer_hud, start_time)
 			if(level.zombie_total + get_enemy_count() != 0 )
 			{
 				iprintln("finish the round");
+				level waittill( "end_of_round" );
 			}
+			iprintln("wait for the round change");
 
-			level waittill( "end_of_round" );
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
 
 			level waittill( "start_of_round" );
