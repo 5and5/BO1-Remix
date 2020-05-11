@@ -35,6 +35,7 @@
 * Health bar
 * Drop cycle tracker
 * COTD: VR11 insta kill timer
+* Increased red screen thresh hold from 20% to 25%
 
 ## Zombie Spawns
 * Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
@@ -220,18 +221,23 @@ bind 5 "toggle hud_remaining 0 1"
 bind 6 "toggle coop_pause 0 1"
 ```
 
-#### TODO
+## TODO
 * change powerup on the map time to 30 seconds
-* Remove limit of on drinking a perks
+* remove one player drinking perk limit
+* increase redscreen from 25% / fix bleedout red screen
 * update health bar
-* fix moon equipment (hacker and PES)
 
-* Shang: find a way to fix cycle without carps
-* Shang: monkeys come at any round
-* Shang: make ceiling spawner faster
+#### Shang
+* find a way to fix cycle without carps
+* monkeys come at any round
+* make ceiling spawner faster
+* set box location to ak
 
-* Moon: Wavegun respawn zombie as soon as they are killed
-* Moon: remove astro
+#### Moon
+* wavegun respawn zombie as soon as they are killed
+* wavegun to act like overrun
+* remove astro
+* set box location
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
