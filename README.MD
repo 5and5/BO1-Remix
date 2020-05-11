@@ -84,10 +84,15 @@
 * Buffed to the same damage as m14 (kill in one shot till round 3)
 
 ## Mystery Box
+#### Animations
 * Decreased weapon pickup time from 12 to 10 seconds
 * Decreased box opening and closing from 0.5 to 0.3 seconds
 * Decreased weapon spinning time from 4 to 2 seconds
 * Decreased time after grabbing weapon from 3 to 1 seconds
+#### Teddy Bear
+* Increased minimum number of hit before a teddy bear from 4 to 5
+* Decreased probaility of box moving early
+#### Weighted Weapons
 * Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 * Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
 * Increased probability of getting Wonder Weapons by 10% every 5 hits until you get it
@@ -217,10 +222,8 @@ bind 6 "toggle coop_pause 0 1"
 
 #### TODO
 * change powerup on the map time to 30 seconds
-* move speed on cotd
 * have box take longer to move
 * update health bar
-* way to fix cycle
 * fix shang and moon
 
 #### Would like to do

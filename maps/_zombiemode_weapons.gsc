@@ -2394,7 +2394,8 @@ treasure_chest_weapon_spawn( chest, player, respin )
 
 			// pulls 4 thru 8, there is a 15% chance of getting the teddy bear
 			// NOTE:  this happens in all cases
-			if( level.chest_accessed >= 4 && level.chest_accessed < 8 )
+			//if( level.chest_accessed >= 4 && level.chest_accessed < 8 )
+			if( level.chest_accessed >= 5 && level.chest_accessed < 10 )
 			{
 				if( random < 15 )
 				{
@@ -2410,7 +2411,8 @@ treasure_chest_weapon_spawn( chest, player, respin )
 			if ( level.chest_moves > 0 )
 			{
 				// between pulls 8 thru 12, the teddy bear percent is 30%
-				if( level.chest_accessed >= 8 && level.chest_accessed < 13 )
+				//if( level.chest_accessed >= 8 && level.chest_accessed < 12 )
+				if( level.chest_accessed >= 10 && level.chest_accessed < 15 )
 				{
 					if( random < 30 )
 					{
@@ -2423,7 +2425,8 @@ treasure_chest_weapon_spawn( chest, player, respin )
 				}
 
 				// after 12th pull, the teddy bear percent is 50%
-				if( level.chest_accessed >= 13 )
+				//if( level.chest_accessed >= 13 )
+				if( level.chest_accessed >= 15 )
 				{
 					if( random < 50 )
 					{
