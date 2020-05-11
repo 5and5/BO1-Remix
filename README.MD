@@ -111,7 +111,7 @@
 * Reduced shell shock time from 2.5 to 1.25 seconds
 * Reduced zombie burn time from random 1.25 to 0.5 seconds
 #### Fire Trap (Kino)
-* Reduced cooldown from 60 to 40 seconds
+* Reduced cooldown from 60 to 50 seconds
 #### Turret (Kino and Ascension)
 * Kills zombies in 2 bullets at any round
 
@@ -132,14 +132,15 @@
 * Added to powerup cycle on round 5
 * Removed from powerup cycle after first box moves
 #### Death Machines
-* Added to powerup cycle once a player has bought quick revive (removed if player no longer has qr)
+* Added to powerup on round 60
 * Kills zombies in 3 body shots or 2 head shots
 * Switching weapons ends powerup
-* Powerup duration now stack
+* Powerup duration now stacks
 #### Double Points
-* Powerup duration now stack
+* Powerup duration now stacks
+* Removed from powerup cycle when death machines are added
 #### Insta kill
-* Powerup duration now stack
+* Powerup duration now stacks
 #### Nuke
 * Nukes now kill zombies twice as fast
 #### Perk Bottles
@@ -199,7 +200,7 @@
 ### Shangri-la/Moon
 * No changes made
 
-#### Custom Dvars
+## Custom Dvars
 * "/hud_health_bar" - enables/disable health bar
 * "/hud_remaining" - enables/disable zombies counter
 * "/hud_drops" - enables/disable drop tracker
@@ -215,7 +216,6 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 #### TODO
-* revert dm changes
 * change powerup on the map time to 30 seconds
 * move speed on cotd
 * have box take longer to move

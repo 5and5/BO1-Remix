@@ -451,25 +451,25 @@ fire_sale_drop()
 minigun_no_drop()
 {
 	//mini only drops after round 60
-	// if( level.round_number < 60 )
-	// {
-	// 	return true; // true means no drop
-	// }
-	// else
-	// {
-	// 	return false;
-	// }
-
-	players = GetPlayers();
-	for ( i=0; i<players.size; i++ )
+	if( level.round_number >= 60 && (level.script == "zombie_cosmodrome" || level.script == "zombie_pentagon" || level.script == "zombie_cost" || level.script == "zombie_moon"))
 	{
-		if ( players[i] HasPerk( "specialty_quickrevive" ) )
-		{
-			return false;
-		}
-
+		return false;
 	}
-	return true;
+	else
+	{
+		return true; // true means no drop
+	}
+
+	// players = GetPlayers();
+	// for ( i=0; i<players.size; i++ )
+	// {
+	// 	if ( players[i] HasPerk( "specialty_quickrevive" ) )
+	// 	{
+	// 		return false;
+	// 	}
+
+	// }
+	// return true;
 }
 
 
@@ -3141,6 +3141,11 @@ is_valid_powerup(powerup_name)
 		return false;
 	}
 	else if( powerup_name == "minigun" && minigun_no_drop() ) // don't drop unless life bought in solo, or power has been turned on
+	{
+		return false;
+	}
+	// remove double points from powerup cycle on round 60
+	else if(  powerup_name == "double_points" && level.round_number >= 60 && (level.script == "zombie_cosmodrome" || level.script == "zombie_pentagon" || level.script == "zombie_cost" || level.script == "zombie_moon"))
 	{
 		return false;
 	}

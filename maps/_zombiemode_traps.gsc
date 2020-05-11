@@ -557,7 +557,7 @@ trap_activate_electric(activator)
 trap_activate_fire(activator)
 {
 	self._trap_duration = 40;
-	self._trap_cooldown_time = 40;
+	self._trap_cooldown_time = 50;
 
 	// Kick off the client side FX structs
 	clientnotify( self.script_string+"1" );
