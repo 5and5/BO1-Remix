@@ -19,7 +19,6 @@ main()
 	//level.start_time = GetTime();
 
 	level._dontInitNotifyMessage = 1;
-	level.uses_tesla_powerup = true; // fix lights on tesla
 
 	//init_additionalprimaryweapon_machine_locatons();
 
@@ -1577,9 +1576,14 @@ onPlayerConnect_clientDvars()
 	// Enabling the FPS counter in ship for now
 	//self setclientdvar( "cg_drawfps", "1" );
 
+	// hud dvars
+	// self setClientDvar("hud_health_bar", "");
+	// self setClientDvar("hud_drops", "");
+	// self setClientDvar("hud_remaining", 1);
+
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
-	self setClientDvar( "aim_lockon_pitch_strength", 0.0 );
+	self setClientDvar("aim_lockon_pitch_strength", 0.0 );
 
 	// makes FPS area in corner smaller
 	self SetClientDvar("cg_drawFPSLabels", 0);
@@ -1588,7 +1592,7 @@ onPlayerConnect_clientDvars()
 	self SetClientDvar("g_friendlyFireDist", 0);
 
 	// disable melee lunge
-	self setClientDvar( "aim_automelee_enabled", 0 );
+	self setClientDvar("aim_automelee_enabled", 0 );
 
 	// ammo on HUD never fades away
 	self SetClientDvar("hud_fade_ammodisplay", 0);

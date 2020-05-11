@@ -222,9 +222,16 @@ bind 6 "toggle coop_pause 0 1"
 
 #### TODO
 * change powerup on the map time to 30 seconds
-* have box take longer to move
+* Remove limit of on drinking a perks
 * update health bar
-* fix shang and moon
+* fix moon equipment (hacker and PES)
+
+* Shang: find a way to fix cycle without carps
+* Shang: monkeys come at any round
+* Shang: make ceiling spawner faster
+
+* Moon: Wavegun respawn zombie as soon as they are killed
+* Moon: remove astro
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
