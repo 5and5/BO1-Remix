@@ -203,8 +203,10 @@
 * Flinger now kills zombies instead of respawning them
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
 * Set initial box to on top of flopper
-### Shangri-la/Moon
-* No changes made
+### Shangri-la
+* Set initial box to ak room
+### Moon
+* Set initial box to spawn room
 
 ## Custom Dvars
 * "/hud_health_bar" - enables/disable health bar
@@ -224,20 +226,18 @@ bind 6 "toggle coop_pause 0 1"
 ## TODO
 * change powerup on the map time to 30 seconds
 * remove one player drinking perk limit
-* increase redscreen from 25% / fix bleedout red screen
 * update health bar
 
 #### Shang
 * find a way to fix cycle without carps
 * monkeys come at any round
 * make ceiling spawner faster
-* set box location to ak
 
 #### Moon
 * wavegun respawn zombie as soon as they are killed
-* wavegun to act like overrun
+* wavegun to act like overrun wavegun
 * remove astro
-* set box location
+* hacked max ammos turn into perk bottles till you have all the perks
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt

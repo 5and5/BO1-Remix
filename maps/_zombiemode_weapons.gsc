@@ -1104,9 +1104,35 @@ init_starting_chest_location()
     for( i = 0; i < level.chests.size; i++ )
     {
         if(level.script == "zombie_pentagon")
+        {
+            if(level.chests[i].script_noteworthy == "start_chest")
+            //if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
             {
-                if(level.chests[i].script_noteworthy == "start_chest")
-                //if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
+                level.chest_index = i;
+                level.chests[level.chest_index] hide_rubble();
+                level.chests[level.chest_index].hidden = false;
+            }
+            else
+            {
+                level.chests[i] hide_chest();
+            }
+        }
+		else if(level.script == "zombie_theater")
+        {
+            if(IsSubStr(level.chests[i].script_noteworthy,  "dining_chest" ))
+            {
+                level.chest_index = i;
+                level.chests[level.chest_index] hide_rubble();
+                level.chests[level.chest_index].hidden = false;
+            }
+            else
+                {
+                level.chests[i] hide_chest();
+                }
+        }
+        else if(level.script == "zombie_coast")
+        {
+            if(IsSubStr(level.chests[i].script_noteworthy, "residence_chest" ))
                 {
                     level.chest_index = i;
                     level.chests[level.chest_index] hide_rubble();
@@ -1116,35 +1142,33 @@ init_starting_chest_location()
                 {
                     level.chests[i] hide_chest();
                 }
-            }
-
-		else if(level.script == "zombie_theater")
-		        {
-		            if(IsSubStr(level.chests[i].script_noteworthy,  "dining_chest" ))
-		            {
-		                level.chest_index = i;
-		                level.chests[level.chest_index] hide_rubble();
-		                level.chests[level.chest_index].hidden = false;
-		            }
-		            else
-		                {
-		                level.chests[i] hide_chest();
-		                }
-		        }
-
-        else if(level.script == "zombie_coast")
-            {
-                if(IsSubStr(level.chests[i].script_noteworthy, "residence_chest" ))
-                    {
-                        level.chest_index = i;
-                        level.chests[level.chest_index] hide_rubble();
-                        level.chests[level.chest_index].hidden = false;
-                    }
-                    else
-                    {
-                        level.chests[i] hide_chest();
-                    }
-            }
+        }
+        else if(level.script == "zombie_temple")
+        {
+            if(IsSubStr(level.chests[i].script_noteworthy, "caves1_chest" ))
+                {
+                    level.chest_index = i;
+                    level.chests[level.chest_index] hide_rubble();
+                    level.chests[level.chest_index].hidden = false;
+                }
+                else
+                {
+                    level.chests[i] hide_chest();
+                }
+        }
+        else if(level.script == "zombie_moon")
+        {
+            if(IsSubStr(level.chests[i].script_noteworthy, "bridge_chest" ))
+                {
+                    level.chest_index = i;
+                    level.chests[level.chest_index] hide_rubble();
+                    level.chests[level.chest_index].hidden = false;
+                }
+                else
+                {
+                    level.chests[i] hide_chest();
+                }
+        }
 
         else if( isdefined( level.random_pandora_box_start ) && level.random_pandora_box_start == true )
         {
