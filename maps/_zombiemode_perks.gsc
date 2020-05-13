@@ -1388,30 +1388,36 @@ vending_trigger_think()
 
 		// do the drink animation
 		gun = player perk_give_bottle_begin( perk );
-		player waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
-
-		// restore player controls and movement
-		player perk_give_bottle_end( gun, perk );
-
-		// TODO: race condition?
-		if ( player maps\_laststand::player_is_in_laststand() || is_true( player.intermission ) )
-		{
-			continue;
-		}
-
-		if ( isDefined( level.perk_bought_func ) )
-		{
-			player [[ level.perk_bought_func ]]( perk );
-		}
-
-		player.perk_purchased = undefined;
-
-		player give_perk( perk, true );
-
-		//player iprintln( "Bought Perk: " + perk );
-		bbPrint( "zombie_uses: playername %s playerscore %d teamscore %d round %d cost %d name %s x %f y %f z %f type perk",
-			player.playername, player.score, level.team_pool[ player.team_num ].score, level.round_number, cost, perk, self.origin );
+		//player waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
+		self thread give_perk_think(player, gun, perk, cost);
 	}
+}
+
+give_perk_think(player, gun, perk, cost)
+{
+	player waittill_any( "fake_death", "death", "player_downed", "weapon_change_complete" );
+
+	// restore player controls and movement
+	player perk_give_bottle_end( gun, perk );
+
+	// TODO: race condition?
+	if ( player maps\_laststand::player_is_in_laststand() || is_true( player.intermission ) )
+	{
+		return;
+	}
+
+	if ( isDefined( level.perk_bought_func ) )
+	{
+		player [[ level.perk_bought_func ]]( perk );
+	}
+
+	player.perk_purchased = undefined;
+
+	player give_perk( perk, true );
+
+	//player iprintln( "Bought Perk: " + perk );
+	bbPrint( "zombie_uses: playername %s playerscore %d teamscore %d round %d cost %d name %s x %f y %f z %f type perk",
+		player.playername, player.score, level.team_pool[ player.team_num ].score, level.round_number, cost, perk, self.origin );
 }
 
 // ww: tracks the player's lives in solo, once a life is used then the revive trigger is moved back in to position

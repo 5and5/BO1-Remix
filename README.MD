@@ -224,8 +224,6 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
-* change powerup on the map time to 30 seconds
-* remove one player drinking perk limit
 * update health bar
 
 #### Shang
