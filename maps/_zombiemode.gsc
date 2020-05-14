@@ -4245,10 +4245,10 @@ is_friendly_fire_on()
 
 can_revive( reviver )
 {
-	if( self has_powerup_weapon() )
-	{
-		return false;
-	}
+	// if( self has_powerup_weapon() )
+	// {
+	// 	return false;
+	// }
 
 	return true;
 }

@@ -204,6 +204,9 @@
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
 * Set initial box to on top of flopper
 ### Shangri-la
+* Monkeys will go for drops at any round
+* Ceiling spawner fall much faster now
+* Pack-a-punch stone will always be in spawn
 * Set initial box to ak room
 ### Moon
 * Set initial box to spawn room
@@ -228,8 +231,6 @@ bind 6 "toggle coop_pause 0 1"
 
 #### Shang
 * find a way to fix cycle without carps
-* monkeys come at any round
-* make ceiling spawner faster
 
 #### Moon
 * wavegun respawn zombie as soon as they are killed
