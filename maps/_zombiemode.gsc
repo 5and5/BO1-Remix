@@ -5476,6 +5476,13 @@ actor_killed_override(eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDi
 
 	self SetPlayerCollision(0); // zombies lose collision right as they die
 
+
+	// force ran over shunk zombies not to drop powerups
+	if(sMeansOfDeath == "MOD_UNKNOWN" && (sWeapon == "shrink_ray_zm" || sWeapon == "shrink_ray_upgraded_zm"))
+	{
+		self.no_powerups = true;
+	}
+
 	if( isai(attacker) && isDefined( attacker.script_owner ) )
 	{
 		// if the person who called the dogs in switched teams make sure they don't

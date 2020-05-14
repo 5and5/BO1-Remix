@@ -205,6 +205,7 @@
 * Set initial box to on top of flopper
 ### Shangri-la
 * Monkeys will go for drops at any round
+* Running over shunken zombie with the baby gun out will no longer give powerups
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
 * Set initial box to ak room
@@ -232,9 +233,10 @@ bind 6 "toggle coop_pause 0 1"
 * update health bar
 
 #### Shang
-* find a way to fix cycle without carps
 
 #### Moon
+* edit round think function
+* fix round timer to work with moon
 * remove astro
 * hacked max ammos turn into perk bottles till you have all the perks
 
