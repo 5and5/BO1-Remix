@@ -209,6 +209,8 @@
 * Pack-a-punch stone will always be in spawn
 * Set initial box to ak room
 ### Moon
+* Wave gun kills zombies immediately
+* Zap guns has a mini waffe effect that kill up to 3 zombies per shot
 * Set initial box to spawn room
 
 ## Custom Dvars
@@ -233,8 +235,6 @@ bind 6 "toggle coop_pause 0 1"
 * find a way to fix cycle without carps
 
 #### Moon
-* wavegun respawn zombie as soon as they are killed
-* wavegun to act like overrun wavegun
 * remove astro
 * hacked max ammos turn into perk bottles till you have all the perks
 

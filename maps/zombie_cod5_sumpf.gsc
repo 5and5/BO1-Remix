@@ -895,6 +895,7 @@ spawn_packapunch_machine()
 
 		for(i=0; i < weapons.size; i++)
 		{
+			//currentweapon = self GetCurrentWeapon();
 			if( player.score >= cost && player HasWeapon(weapons[i]))
 			{
 				player maps\_zombiemode_score::minus_to_player_score( cost );
