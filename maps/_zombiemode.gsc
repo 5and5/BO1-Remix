@@ -7253,6 +7253,12 @@ round_timer(hud)
 			level waittill( "end_of_round" );
 		}
 
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "end_of_round" ); //end no man's land
+			level waittill( "end_of_round" ); //end actual round
+		}
+
 		end_time = int(getTime() / 1000);
 
 		// need to set time below the number or it will show the next number
@@ -7260,6 +7266,11 @@ round_timer(hud)
 		level thread display_times(hud, time);
 
 		level waittill( "start_of_round" );
+
+		if(is_true(flag("enter_nml")))
+		{
+			level waittill( "start_of_round" );
+		}
 
 		total_time = level.total_time - 0.1;
 		level thread display_times(hud, total_time);

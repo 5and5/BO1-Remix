@@ -230,13 +230,13 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 * update health bar
+* edit moon ai_faller.gsc
 
 #### Shang
+* night mode dvar
 
 #### Moon
 * edit round think function
-* fix round timer to work with moon
-* remove astro
 * hacked max ammos turn into perk bottles till you have all the perks
 
 #### Would like to do
