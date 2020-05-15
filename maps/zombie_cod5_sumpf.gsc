@@ -889,14 +889,14 @@ spawn_packapunch_machine()
 	cost = 5000;
 	weapons = array("m1911_zm", "ray_gun_zm", "crossbow_explosive_zm", "tesla_gun_zm");
 	weapons_upgraded = array("m1911_upgraded_zm", "ray_gun_upgraded_zm", "crossbow_explosive_upgraded_zm", "tesla_gun_upgraded_zm");
+
 	while( 1 )
 	{
 		machine_trigger waittill( "trigger", player );
 
 		for(i=0; i < weapons.size; i++)
 		{
-			//currentweapon = self GetCurrentWeapon();
-			if( player.score >= cost && player HasWeapon(weapons[i]))
+			if( player.score >= cost && player GetCurrentWeapon() == weapons[i])
 			{
 				player maps\_zombiemode_score::minus_to_player_score( cost );
 

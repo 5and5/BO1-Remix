@@ -130,7 +130,6 @@
 * Increased random drop rate from 2% to 4%
 * Added a 30000 point cap till next point based drop
 * Added custom effect to last drop of a cycle
-* Reduced first point based drop from 2000 to 1500 points
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
 * Removed
@@ -205,13 +204,13 @@
 * Set initial box to on top of flopper
 ### Shangri-la
 * Monkeys will go for drops at any round
-* Running over shunken zombie with the baby gun out will no longer give powerups
+* Running over shunken zombies with the baby gun out will no longer give powerups
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
 * Set initial box to ak room
 ### Moon
 * Wave gun kills zombies immediately
-* Zap guns has a mini waffe effect that kill up to 3 zombies per shot
+* Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Set initial box to spawn room
 
 ## Custom Dvars
