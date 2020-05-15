@@ -230,14 +230,13 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 * update health bar
-* edit moon ai_faller.gsc
 
 #### Shang
 * night mode dvar
 
 #### Moon
-* edit round think function
 * hacked max ammos turn into perk bottles till you have all the perks
+* cant break windows in spawn
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt

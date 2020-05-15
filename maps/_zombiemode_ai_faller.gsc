@@ -186,10 +186,6 @@ do_zombie_fall()
 	self.no_powerups = true;
 	self.in_the_ceiling = true;
 
-	self.anchor = spawn("script_origin", self.origin);
-	self.anchor.angles = self.angles;
-	self linkto(self.anchor);
-
 	if ( !IsDefined( self.zone_name ) )
 	{
 		self.zone_name = self get_current_zone();
@@ -199,8 +195,6 @@ do_zombie_fall()
 
 	if( spots.size < 1 )
 	{
-		self unlink();
-		self.anchor delete();
 		//IPrintLnBold("deleting zombie faller - no available fall locations");
 		//can't delete if we're in the middle of spawning, so wait a frame
 		self Hide();//hide so we're not visible for one frame while waiting to delete
@@ -241,142 +235,31 @@ do_zombie_fall()
 	anim_org = spot.origin;
 	anim_ang = spot.angles;
 
-	self Hide();
-	self.anchor moveto(anim_org, .05);
-	self.anchor waittill("movedone");
+	level thread zombie_fall_death(self, spot);
+	self thread zombie_faller_death_wait();
 
+	self Hide();
+	self.anchor = spawn("script_origin", self.origin);
+	self.anchor.angles = self.angles;
+	self linkto(self.anchor);
+	self.anchor.origin = anim_org;
 	// face goal
 	target_org = maps\_zombiemode_spawner::get_desired_origin();
 	if (IsDefined(target_org))
 	{
 		anim_ang = VectorToAngles(target_org - self.origin);
-		self.anchor RotateTo((0, anim_ang[1], 0), .05);
-		self.anchor waittill("rotatedone");
+		self.anchor.angles = (0, anim_ang[1], 0);
 	}
-
+	wait_network_frame();
 	self unlink();
 	self.anchor delete();
+	self thread maps\_zombiemode_spawner::hide_pop();
 
-	self thread hide_pop();	// hack to hide the pop when the zombie gets to the start position before the anim starts
-
-	level thread zombie_fall_death(self, spot);
 	spot thread zombie_fall_fx(self);
-
-	self thread zombie_faller_death_wait();
 
 	//need to thread off the rest because we're apparently still in the middle of our init!
 	self thread zombie_faller_do_fall();
 }
-
-/*zombie_faller_do_fall()
-{
-	self endon("death");
-
-	emerge_anim = self get_fall_emerge_anim();
-	// first play the emerge, then the fall anim
-	self AnimScripted("fall_emerge", self.origin, self.zombie_faller_location.angles, emerge_anim);
-	self animscripts\zombie_shared::DoNoteTracks("fall_emerge", ::handle_fall_notetracks, undefined, self.zombie_faller_location);
-
-	//NOTE: now we don't fall until we've attacked at least once from the ceiling
-	self.zombie_faller_wait_start = GetTime();
-	self.zombie_faller_should_drop = false;
-	self thread zombie_fall_wait();
-	self thread zombie_faller_watch_all_players();
-	while ( !self.zombie_faller_should_drop )
-	{
-		if ( self zombie_fall_should_attack(self.zombie_faller_location) )
-		{
-			attack_anim = self get_attack_anim(self.zombie_faller_location);
-			self AnimScripted("attack", self.origin, self.zombie_faller_location.angles, attack_anim);
-			self animscripts\zombie_shared::DoNoteTracks("attack", ::handle_fall_notetracks, undefined, self.zombie_faller_location);
-			//50/50 chance that we'll stay up here and attack again or drop down
-			if ( !(self zombie_faller_always_drop()) && randomfloat(1) > 0.5 )
-			{
-				//NOTE: if we *can* attack, should we actually stay up here until we can't anymore?
-				self.zombie_faller_should_drop = true;
-			}
-		}
-		else
-		{
-			if ( (self zombie_faller_always_drop()) )
-			{
-				//drop as soon as we have nobody to attack!
-				self.zombie_faller_should_drop = true;
-				break;
-			}
-			//otherwise, wait to attack
-			else if ( GetTime() >= self.zombie_faller_wait_start + 20000 )
-			{
-				//we've been hanging here for 20 seconds, go ahead and drop
-				//IPrintLnBold("zombie faller waited too long, dropping");
-				self.zombie_faller_should_drop = true;
-				break;
-			}
-			else if ( self zombie_faller_drop_not_occupied() )
-			{
-				self.zombie_faller_should_drop = true;
-				break;
-			}
-			else
-			{
-				//NOTE: instead of playing a looping idle, they just flail and attack over and over
-				attack_anim = self get_attack_anim(self.zombie_faller_location);
-				self AnimScripted("attack", self.origin, self.zombie_faller_location.angles, attack_anim);
-				self animscripts\zombie_shared::DoNoteTracks("attack", ::handle_fall_notetracks, undefined, self.zombie_faller_location);
-			}
-		}
-	}
-
-	self notify("falling");
-	//now the fall location (spot) can be used by another zombie faller again
-	spot  = self.zombie_faller_location;
-	self zombie_faller_enable_location();
-
-	fall_anim = self get_fall_anim(spot);
-	self AnimScripted("fall", self.origin, spot.angles, fall_anim);
-	self animscripts\zombie_shared::DoNoteTracks("fall", ::handle_fall_notetracks, undefined, spot);
-
-	// rsh040711 - set the death func back to normal
-	self.deathFunction = maps\_zombiemode_spawner::zombie_death_animscript;
-
-	self notify("fall_anim_finished");
-	spot notify("stop_zombie_fall_fx");
-
-	//play fall loop
-	self StopAnimScripted();
-	landAnim = random(level._zombie_fall_anims["zombie"]["land"]);
-	// Get Z distance
-	landAnimDelta = 15; //GetMoveDelta( landAnim, 0, 1 )[2];//delta in the anim doesn't seem to reflect actual distance to ground correctly
-	ground_pos = groundpos_ignore_water( self.origin );
-	//draw_arrow_time( self.origin, ground_pos, (1, 1, 0), 10 );
-	physDist = self.origin[2] - ground_pos[2] + landAnimDelta;
-
-	if ( physDist > 0 )
-	{
-		//high enough above the ground to play some of the falling loop before we can play the land
-		fallAnim = level._zombie_fall_anims["zombie"]["fall_loop"];
-		if ( IsDefined( fallAnim ) )
-		{
-			self.fall_anim = fallAnim;
-			self animcustom(::zombie_fall_loop);
-			self waittill("faller_on_ground");
-		}
-		//play land
-		self.landAnim = landAnim;
-		self animcustom(::zombie_land);
-		wait( GetAnimLength( landAnim ) );
-	}
-
-	self.in_the_ceiling = false;
-	self traverseMode( "gravity" );
-	//looks like I have to start this manually?
-	self SetAnimKnobAllRestart( animscripts\zombie_run::GetRunAnim(), %body, 1, 0.2, 1 );
-
-	self.no_powerups = false;
-
-	// let the default spawn logic know we are done
-	self notify("zombie_custom_think_done", spot.script_noteworthy );
-}*/
 
 zombie_faller_do_fall()
 {
@@ -516,7 +399,7 @@ zombie_fall_loop()
 
 	while(1)
 	{
-		ground_pos = groundpos_ignore_water( self.origin );
+		ground_pos = groundpos_ignore_water_new( self.origin );
 		if( self.origin[2] - ground_pos[2] < 20)
 		{
 			self notify("faller_on_ground");
@@ -896,21 +779,8 @@ faller_death_ragdoll()
 {
 	self StartRagdoll();
 	self launchragdoll((0, 0, -1));
-	wait_network_frame();
 
-	// Make sure they're dead...physics launch didn't kill them.
-	//self dodamage(self.health + 666, self.origin);
-}
-
-
-hide_pop()
-{
-	self endon( "death" );
-	wait( 0.5 );
-	if ( IsDefined( self ) )
-	{
-		self Show();
-	}
+	return self maps\_zombiemode_spawner::zombie_death_animscript();
 }
 
 //Test if self is in player's FOV
