@@ -7176,19 +7176,20 @@ coop_pause(timer_hud, start_time)
 			paused = true;
 			paused_start_time = int(getTime() / 1000);
 			total_time = 0 - (paused_start_time - level.paused_time - start_time) - 0.05;
+			previous_paused_time = level.paused_time;
 
 			while(paused)
 			{
 				timer_hud SetTimerUp(total_time);
 				wait 0.2;
 
+				current_time = int(getTime() / 1000);
+				current_paused_time = current_time - paused_start_time;
+				level.paused_time = previous_paused_time + current_paused_time;
+
 				if( getDvarInt( "coop_pause" ) == 0 )
 				{
 					paused = false;
-
-					current_time = int(getTime() / 1000);
-					current_paused_time = current_time - paused_start_time;
-					level.paused_time = level.paused_time + current_paused_time;
 
 					for(i = 0; players.size > i; i++)
 					{

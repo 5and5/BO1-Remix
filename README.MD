@@ -210,7 +210,7 @@
 * Set initial box to ak room
 ### Moon
 * Wave gun kills zombies immediately
-* Zap guns have a mini waffe effect that kills up to 3 zombies per shot
+* Zap guns has a mini waffe effect that kills up to 3 zombies per shot
 * Set initial box to spawn room
 
 ## Custom Dvars
