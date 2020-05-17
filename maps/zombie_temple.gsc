@@ -127,7 +127,7 @@ main()
 
 	level thread maps\zombie_temple_achievement::init();
 
- 	//level thread add_powerups_after_round_1();
+ 	level thread add_powerups_after_round_1();
 	level thread maps\zombie_temple_elevators::init_elevator();
 	level thread maps\zombie_temple_minecart::minecart_main();
 	level thread maps\zombie_temple_waterslide::waterslide_main();
@@ -159,6 +159,9 @@ main()
 
 	level thread maps\zombie_temple_sq::start_temple_sidequest();
 
+
+	level thread night_mode_watcher();
+	//level thread activate_night();
 }
 
 init_client_flags()
@@ -438,6 +441,8 @@ add_powerups_after_round_1()
 	//want to precache all the stuff for these powerups, but we don't want them to be available in the first round
 	level.zombie_powerup_array = array_remove (level.zombie_powerup_array, "nuke");
 	level.zombie_powerup_array = array_remove (level.zombie_powerup_array, "fire_sale");
+	level.zombie_powerup_array = array_remove (level.zombie_powerup_array, "insta_kill");
+	level.zombie_powerup_array = array_remove (level.zombie_powerup_array, "double_points");
 
 	while (1)
 	{
@@ -445,6 +450,8 @@ add_powerups_after_round_1()
 		{
 			level.zombie_powerup_array = array_add(level.zombie_powerup_array, "nuke");
 			level.zombie_powerup_array = array_add(level.zombie_powerup_array, "fire_sale");
+			level.zombie_powerup_array = array_add(level.zombie_powerup_array, "insta_kill");
+			level.zombie_powerup_array = array_add(level.zombie_powerup_array, "double_points");
 			break;
 		}
 		wait (1);
@@ -1154,3 +1161,55 @@ temple_revive_solo_fx()
 		}
 	}
 }
+
+
+activate_night()
+{
+	flag_wait("all_players_spawned");
+    wait 1.8;
+
+    while(1)
+    {
+	    if( getDvarInt( "night_mode" ) == 1)
+		{
+			if(getDvarInt( "r_skyTransition") != 1)
+			{
+				SetSunlight( 0.5426, 0.6538, 0.7657);
+				SetSavedDvar("r_lightTweakSunLight", 11);
+				SetSavedDvar("r_skyTransition", 1);
+			}
+		}
+		else
+		{
+			if(getDvarInt( "r_skyTransition") != 0)
+			{
+				ResetSunlight();
+				SetSavedDvar("r_lightTweakSunLight", 13);
+				SetSavedDvar("r_skyTransition", 0);
+			}
+		}
+		wait 0.1;
+    }
+}
+
+night_mode_watcher()
+{
+	flag_wait("all_players_spawned");
+    wait 1.8;
+
+	while(1)
+	{
+		while(0 == GetDvarInt("night_mode"))
+		{
+			wait(0.1);
+		}
+		clientnotify("eclipse");		// Eclipse.
+
+		while(1 == GetDvarInt("night_mode"))
+		{
+			wait(0.1);
+		}
+		clientnotify("daybreak");		// Daybreak.
+	}
+}
+

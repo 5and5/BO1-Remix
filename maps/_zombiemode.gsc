@@ -7482,6 +7482,7 @@ init_custom_dvars()
 	setDvar( "hud_drops", 0 );
 	setDvar( "hud_remaining", 1 );
 	setDvar( "coop_pause", 0 );
+	setDvar( "night_mode", 1);
 }
 
 get_doors_nearby()

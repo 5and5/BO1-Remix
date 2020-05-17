@@ -32,7 +32,7 @@ init()
 	set_zombie_var( "zombie_powerup_point_doubler_on", 	false );
 	set_zombie_var( "zombie_powerup_point_doubler_time", 30 );	// length of point doubler
 //	Modify by the percentage of points that the player gets
-	set_zombie_var( "zombie_powerup_drop_increment", 	2000 );	// lower this to make drop happen more often
+	set_zombie_var( "zombie_powerup_drop_increment", 	1500 );	// lower this to make drop happen more often
 	set_zombie_var( "zombie_powerup_drop_max_per_round", 4 );	// raise this to make drop happen more often
 
 	// special vars for individual power ups

@@ -68,6 +68,8 @@ rawfile,maps/zombie_temple_pack_a_punch.gsc
 //MOON
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc
+rawfile,maps/_zombiemode_hackables_box.gsc
+rawfile,maps/_zombiemode_hackables_powerups.gsc
 
 //WEAPONS
 weapon,sp/tesla_gun_zm

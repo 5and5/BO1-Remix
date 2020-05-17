@@ -40,8 +40,6 @@ init_pack_a_punch()
 	_setup_pap_path();
 	_setup_pap_fx();
 
-	// night mode
-	level thread activate_night();
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////
@@ -342,7 +340,7 @@ _randomize_pressure_plates(triggers)
 	{
 		triggers[i].requiredPlayers = rand_nums[i];
 	}
-	
+
 }
 
 _update_stairs(triggers)
@@ -1403,15 +1401,4 @@ _pap_brush_connect_paths()
 	self ConnectPaths();
 	self disable_trigger();
 	self NotSolid();
-}
-
-activate_night()
-{
-	for(;;)
-	{
-		wait 0.1;
-		SetSunlight( 0.5426, 0.6538, 0.7657);
-		SetSavedDvar("r_lightTweakSunLight", 11);
-		SetSavedDvar("r_skyTransition", 1);
-	}
 }

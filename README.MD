@@ -100,12 +100,12 @@
 
 ## Equipment
 #### Monkey Bombs
-* Always works if thrown in a playable area
+* Always work if thrown in a playable area
 #### Claymores
-* Now does 50% of zombies max health
+* Now do 50% of zombies max health
 * Limited to 20 on the map at one time
 #### Boucing Bettys
-* Now does 50% of zombies max health
+* Now do 50% of zombies max health
 * Now explodes in 1 second instead of 2 seconds
 * Limited to 20 on the map at one time
 
@@ -203,20 +203,23 @@
 * Reduced pack-a-punch hidden time from 2 minutes to 20 seconds
 * Set initial box to on top of flopper
 ### Shangri-la
+* First drop of the game will always be a max ammo
 * Monkeys will go for drops at any round
 * Running over shunken zombies with the baby gun out will no longer give powerups
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
+* Night mode enables by default (this can be disable using the "night_mode" dvar)
 * Set initial box to ak room
 ### Moon
 * Wave gun kills zombies immediately
-* Zap guns has a mini waffe effect that kills up to 3 zombies per shot
+* Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Set initial box to spawn room
 
 ## Custom Dvars
 * "/hud_health_bar" - enables/disable health bar
 * "/hud_remaining" - enables/disable zombies counter
 * "/hud_drops" - enables/disable drop tracker
+* "/night_mode" - enables/disable Shangri-la's night mode
 * "/coop_pause" - can be used to pause in coop (pause starts at the beginning of the next round)
 
 ### Useful Binds
@@ -235,6 +238,7 @@ bind 6 "toggle coop_pause 0 1"
 #### Shang
 * gun weight funcs
 * night mode dvar
+* max first in cycle
 
 #### Moon
 * gun weight funcs
