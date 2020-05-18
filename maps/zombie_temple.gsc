@@ -384,7 +384,7 @@ include_weapons()
 	include_weapon( "china_lake_upgraded_zm", false );
 
 	//	Weapons - Special
-	include_weapon( "zombie_cymbal_monkey" );
+	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon( "ray_gun_zm" );
 	include_weapon( "ray_gun_upgraded_zm", false );
 	include_weapon( "shrink_ray_zm" );

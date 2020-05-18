@@ -1133,7 +1133,7 @@ include_weapons()
 	level._uses_retrievable_ballisitic_knives = true;
 
 	//	Weapons - Special
-	include_weapon( "zombie_black_hole_bomb" );
+	include_weapon( "zombie_black_hole_bomb", true, false, maps\_zombiemode_weapons::default_zombie_black_hole_bomb_weighting_func );
 	include_weapon( "ray_gun_zm" );
 	include_weapon( "ray_gun_upgraded_zm", false );
 	include_weapon( "zombie_quantum_bomb" );

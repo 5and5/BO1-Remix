@@ -238,12 +238,6 @@ bind 6 "toggle coop_pause 0 1"
 * update health bar
 * fix spawners script
 
-#### Shang
-* gun weight funcs
-
-#### Moon
-* gun weight funcs
-
 #### Would like to do
 * Add chalk to mp5k on Verruckt
 
