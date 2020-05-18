@@ -205,7 +205,7 @@
 ### Shangri-la
 * First drop of the game will always be a max ammo
 * Monkeys will go for drops at any round
-* Running over shunken zombies with the baby gun out will no longer give powerups
+* Running over shrunken zombies with the baby gun out will no longer give powerups
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
 * Night mode enables by default (this can be disable using the "night_mode" dvar)
@@ -213,6 +213,9 @@
 ### Moon
 * Wave gun kills zombies immediately
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
+* Glass windows can not be broken
+* Hacking a max ammos turns into a perk bottle instead of a firesale
+* Hacking a box loaction will always last 5 rounds
 * Set initial box to spawn room
 
 ## Custom Dvars
@@ -237,13 +240,9 @@ bind 6 "toggle coop_pause 0 1"
 
 #### Shang
 * gun weight funcs
-* night mode dvar
-* max first in cycle
 
 #### Moon
 * gun weight funcs
-* hacked max ammos turn into perk bottles till you have all the perks
-* cant break windows in spawn
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt

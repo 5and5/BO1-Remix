@@ -9,7 +9,7 @@ rawfile,maps/_zombiemode_spawner.gsc
 rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 rawfile,maps/_zombiemode_ai_faller.gsc
-//rawfile,maps/_zombiemode_spawner.gsc
+rawfile,maps/_zombiemode_spawner.gsc
 rawfile,maps/_gameskill.gsc
 
 //WEAPONS
@@ -68,6 +68,7 @@ rawfile,maps/zombie_temple_pack_a_punch.gsc
 //MOON
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_digger.gsc
+rawfile,maps/zombie_moon_utility.gsc
 rawfile,maps/_zombiemode_hackables_box.gsc
 rawfile,maps/_zombiemode_hackables_powerups.gsc
 
@@ -90,6 +91,7 @@ weapon,sp/frag_grenade_zm
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc
+rawfile,clientscripts/zombie_temple.csc
 
 //MATERIAL
 material,specialty_lightningbolt_zombies
