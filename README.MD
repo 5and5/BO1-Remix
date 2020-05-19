@@ -24,7 +24,6 @@
 * Weapon limit increased from 2 to 3
 * Removed Mulekick
 * Starting points changed from 500 to 555
-* Fixed backwards walking speed
 * Removed player quotes
 * "Reset" now happens at exactly 12 hours
 
@@ -35,13 +34,10 @@
 * Health bar
 * Drop cycle tracker
 * COTD: VR11 insta kill timer
-* Increased red screen thresh hold from 20% to 25%
 
-## Zombie Spawns
-* Reduced round one spawn delay from 2 to 1 seconds (round 15 spawn rate)
+## Spawn Delay
+* Reduced round 1 spawn delay from 2 to 1 seconds (round 15 spawn rate)
 * Spawn delay now caps out at round 50 instead of 63
-* Removed limit of 3 zombies jumping over a barrier at one time
-* Zombies jump through barriers quicker now
 
 ## Special Rounds
 ### Insta Kill Rounds
@@ -82,7 +78,7 @@
 * Removed Winters Howl
 
 #### Gewerh43
-* Buffed to the same damage as m14 (kill in one shot till round 3)
+* Buffed damage to be the same as the m14
 
 ## Mystery Box
 #### Animations
@@ -235,7 +231,6 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
-* fix spawners script
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt

@@ -505,7 +505,6 @@ include_weapons()
 
 	// Custom weapons
 	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
-	include_weapon( "tesla_gun_upgraded_zm", false );
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
@@ -1890,7 +1889,7 @@ recalculate_pathing(good_spot)
 
 spawn_mp5k_wallbuy()
 {
-    PreCacheModel( "weapon_upgrade_mp5" );
+    //PreCacheModel( "weapon_upgrade_mp5" );
     model = Spawn( "script_model", ( -567.0, 745.3, 285.1 ) );
     model.angles = ( 0, 0, 0 );
     model SetModel( GetWeaponModel( "mp5k_zm" ) );

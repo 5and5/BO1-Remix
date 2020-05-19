@@ -10,7 +10,6 @@ rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 rawfile,maps/_zombiemode_ai_faller.gsc
 rawfile,maps/_zombiemode_spawner.gsc
-rawfile,maps/_gameskill.gsc
 
 //WEAPONS
 rawfile,maps/_zombiemode_betty.gsc
@@ -91,6 +90,8 @@ weapon,sp/frag_grenade_zm
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc
 rawfile,clientscripts/zombie_temple.csc
+rawfile,clientscripts/zombie_pentagon.csc
+rawfile,clientscripts/zombie_cod5_asylum.csc
 
 //MATERIAL
 material,specialty_lightningbolt_zombies

@@ -9,10 +9,10 @@ init()
 		return;
 	}
 
-	/*if ( !clientscripts\_zombiemode_weapons::is_weapon_included( "tesla_gun_zm" ) && !(isdefined( level.uses_tesla_powerup ) && level.uses_tesla_powerup) )
+	if ( !clientscripts\_zombiemode_weapons::is_weapon_included( "tesla_gun_zm" ) && !(isdefined( level.uses_tesla_powerup ) && level.uses_tesla_powerup) )
 	{
 		return;
-	}*/
+	}
 
 	level._effect["tesla_viewmodel_rail"] = loadfx("maps/zombie/fx_zombie_tesla_rail_view");
 	level._effect["tesla_viewmodel_tube"] = loadfx("maps/zombie/fx_zombie_tesla_tube_view");
