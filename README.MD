@@ -235,7 +235,6 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
-* update health bar
 * fix spawners script
 
 #### Would like to do

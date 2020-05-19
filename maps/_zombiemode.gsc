@@ -1725,6 +1725,7 @@ onPlayerSpawned()
 				self thread health_bar_hud();
 
 
+
 				// testing only
 				//self thread get_position();
 				//self thread get_zone();
@@ -7106,7 +7107,7 @@ timer_hud()
 	timer.alignY = "top";
 	timer.y += 2;
 	timer.x -= 5;
-	timer.fontScale = 1.4;
+	timer.fontScale = 1.3;
 	timer.alpha = 1;
 	timer.hidewheninmenu = 0;
 	timer.foreground = 1;
@@ -7215,9 +7216,9 @@ round_timer_hud()
 	timer.vertAlign = "top";
 	timer.alignX = "right";
 	timer.alignY = "top";
-	timer.y += 19;
+	timer.y += 18;
 	timer.x -= 5;
-	timer.fontScale = 1.4;
+	timer.fontScale = 1.3;
 	timer.alpha = 0;
 	timer.color = ( 1.0, 1.0, 1.0 );
 	timer setTimer(0);
@@ -7299,7 +7300,7 @@ drop_tracker_hud()
 	hud_wait();
 
 	drops_hud = create_hud( "left", "top" );
-	drops_hud.y += 19;
+	drops_hud.y += 18;
 	drops_hud.x += 5;
 	drops_hud.label = "Drops: ";
 
@@ -7374,34 +7375,48 @@ health_bar_hud()
 	hud_wait();
 
 	width = 113;
-	height = 6;
+	height = 7;
+
+	barElemBackround = create_hud( "left", "bottom");
+	barElemBackround.x = 0;
+	barElemBackround.y = -100;
+	barElemBackround.width = width + 2;
+	barElemBackround.height = height + 2;
+	barElemBackround.foreground = 0;
+	barElemBackround.shader = "black";
+	barElemBackround setShader( "black", width + 2, height + 2 );
 
 	barElem = create_hud( "left", "bottom");
 	barElem.x = 1;
 	barElem.y = -101;
 	barElem.width = width;
 	barElem.height = height;
+	barElem.foreground = 1;
 	barElem.shader = "white";
 	barElem setShader( "white", width, height );
+	//barElem setParent(barElemBackround);
 
 	health_text = create_hud( "left", "bottom");
 	health_text.x = 49;
 	health_text.y = -107;
+	health_text.fontScale = 1.3;
 
-	hud_fade(health_text, 1, 0.3);
-	hud_fade(barElem, 1, 0.3);
+	hud_fade(health_text, 0.8, 0.3);
+	hud_fade(barElem, 0.75, 0.3);
+	hud_fade(barElemBackround, 0.75, 0.3);
 
 	self thread hud_end(health_text);
 	self thread hud_end(barElem);
+	self thread hud_end(barElemBackround);
 
 	while (1)
 	{
-
 		if( getDvarInt( "hud_health_bar" ) == 0)
 		{
 			if(barElem.alpha != 0 && health_text.alpha != 0)
 			{
 				barElem.alpha = 0;
+				barElemBackround.alpha = 0;
 				health_text.alpha = 0;
 			}
 		}
@@ -7413,6 +7428,7 @@ health_bar_hud()
 			if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
 			{
 				barElem.alpha = 0;
+				barElemBackround.alpha = 0;
 				health_text.alpha = 0;
 
 				wait 0.05;
@@ -7421,7 +7437,8 @@ health_bar_hud()
 
 			if (health_text.alpha != 0.8)
 	        {
-	            barElem.alpha = 0.8;
+	            barElem.alpha = 0.75;
+	            barElemBackround.alpha = 0.75;
 				health_text.alpha = 0.8;
 	        }
     	}
@@ -7443,7 +7460,7 @@ create_hud( side, top )
 	hud.alignX = side;
 	hud.alignY = top;
 	hud.alpha = 0;
-	hud.fontscale = 1.4;
+	hud.fontscale = 1.3;
 	hud.color = ( 1.0, 1.0, 1.0 );
 	hud.hidewheninmenu = 1;
 
