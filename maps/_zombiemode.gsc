@@ -7394,7 +7394,6 @@ health_bar_hud()
 	barElem.foreground = 1;
 	barElem.shader = "white";
 	barElem setShader( "white", width, height );
-	//barElem setParent(barElemBackround);
 
 	health_text = create_hud( "left", "bottom");
 	health_text.x = 49;

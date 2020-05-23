@@ -25,7 +25,7 @@ init()
 	maps\_zombiemode_spawner::register_zombie_death_animscript_callback( ::microwavegun_zombie_death_response );
 
 	set_zombie_var( "microwavegun_cylinder_radius",		180 );
-	set_zombie_var( "microwavegun_sizzle_range",		480 ); // 40 feet
+	set_zombie_var( "microwavegun_sizzle_range",		550); //480 ); // 40 feet
 
 	level._effect["microwavegun_zap_shock_dw"]				= loadfx( "weapon/microwavegun/fx_zap_shock_dw" );
 	level._effect["microwavegun_zap_shock_eyes_dw"]			= loadfx( "weapon/microwavegun/fx_zap_shock_eyes_dw" );

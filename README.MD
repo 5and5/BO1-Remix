@@ -77,6 +77,10 @@
 * Removed China Lake
 * Removed Winters Howl
 
+#### Grenades
+* Increased frag grenade throw speed
+* Increased semtex throw speed
+
 #### Gewerh43
 * Buffed damage to be the same as the m14
 
@@ -207,7 +211,7 @@
 * Night mode enables by default (this can be disable using the "night_mode" dvar)
 * Set initial box to ak room
 ### Moon
-* Wave gun now electrocutes zombies
+* Wave gun now electrocutes zombies and has increased range
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Glass windows can not be broken
 * Hacking a max ammos turns into a perk bottle instead of a firesale
@@ -234,6 +238,7 @@ bind 6 "toggle coop_pause 0 1"
 * remove guns from csc
 * add winters howl back to five and verruckt
 * let custom dvars be setting in the config
+* moon: EE done at the start
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
