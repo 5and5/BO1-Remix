@@ -1243,7 +1243,7 @@ _powerup_Randomize(monkey)
 	powerup_cycle[powerup_cycle.size] = "full_ammo"; //Ammo is always last
 
 	//Remove fire sale so the players can not get firesale too early.
-	if(level.chest_moves <= 1 && level.round_number <= 5)
+	if(level.chest_moves < 1 && level.round_number <= 5)
 	{
 		powerup_cycle = array_remove_nokeys(powerup_cycle, "fire_sale");
 	}

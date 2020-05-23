@@ -170,18 +170,6 @@ wait_for_microwavegun_fired()
 }
 
 
-// microwavegun_network_choke()
-// {
-// 	level.microwavegun_network_choke_count++;
-
-// 	if ( !(level.microwavegun_network_choke_count % 10) )
-// 	{
-// 		wait_network_frame();
-// 		wait_network_frame();
-// 		wait_network_frame();
-// 	}
-// }
-
 microwavegun_network_choke()
 {
 	if ( level.microwavegun_network_choke_count != 0 && !(level.microwavegun_network_choke_count % 4) )
@@ -382,9 +370,32 @@ microwavegun_sizzle_zombie( player, sizzle_vec, index )
 		player maps\_zombiemode_score::player_add_points( "thundergun_fling", points );
 
 		self.microwavegun_death = true;
-		instant_explode = true;//false;
 
 		if ( !self.isdog )
+		{
+			if ( self.has_legs )
+			{
+				self.deathanim = random( level._zombie_microwavegun_zap_death[self.animname] );
+			}
+			else
+			{
+				self.deathanim = random( level._zombie_microwavegun_zap_crawl_death[self.animname] );
+			}
+		}
+		else
+		{
+			self.a.nodeath = undefined;
+		}
+
+		if ( is_true( self.is_traversing ) )
+		{
+			self.deathanim = undefined;
+		}
+
+		self thread microwavegun_zap_death_fx( self.damageweapon );
+
+
+		/*if ( !self.isdog )
 		{
 			if ( self.has_legs )
 			{
@@ -414,6 +425,8 @@ microwavegun_sizzle_zombie( player, sizzle_vec, index )
 				self thread setup_microwavegun_vox( player );
 			}
 			self setclientflag( level._ZOMBIE_ACTOR_FLAG_MICROWAVEGUN_EXPAND_RESPONSE );
+			wait (0.1);
+			self clearclientflag( level._ZOMBIE_ACTOR_FLAG_MICROWAVEGUN_EXPAND_RESPONSE );
 			self thread microwavegun_sizzle_death_ending();
 		}
 		else
@@ -425,10 +438,9 @@ microwavegun_sizzle_zombie( player, sizzle_vec, index )
 			self setclientflag( level._ZOMBIE_ACTOR_FLAG_MICROWAVEGUN_INITIAL_HIT_RESPONSE );
 			self.nodeathragdoll = true;
 			self.handle_death_notetracks = ::microwavegun_handle_death_notetracks;
-		}
+		}*/
 	}
 }
-
 
 microwavegun_handle_death_notetracks( note )
 {
@@ -533,7 +545,7 @@ tesla_arc_damage( source_enemy, player, arc_num )
 
 	self thread tesla_do_damage( source_enemy, arc_num, player );
 
-	debug_print( "TESLA: " + enemies.size + " enemies hit during arc: " + arc_num );
+	//debug_print( "TESLA: " + enemies.size + " enemies hit during arc: " + arc_num );
 
 	for( i = 0; i < enemies.size; i++ )
 	{
@@ -646,7 +658,7 @@ tesla_do_damage( source_enemy, arc_num, player )
 		return;
 	}
 
-	player.tesla_network_death_choke++;
+	//player.tesla_network_death_choke++;
 
 	self.tesla_death = true;
 	self tesla_play_death_fx( arc_num );
@@ -764,10 +776,10 @@ tesla_play_death_fx( arc_num )
 	network_safe_play_fx_on_tag( "tesla_death_fx", 2, level._effect[fx], self, tag );
 	self playsound( "wpn_imp_tesla" );
 
-	if ( IsDefined( self.tesla_head_gib_func ) && !self.head_gibbed )
-	{
-		[[ self.tesla_head_gib_func ]]();
-	}
+	// if ( IsDefined( self.tesla_head_gib_func ) && !self.head_gibbed )
+	// {
+	// 	[[ self.tesla_head_gib_func ]]();
+	// }
 }
 
 tesla_play_arc_fx( target )

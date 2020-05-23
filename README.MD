@@ -207,7 +207,7 @@
 * Night mode enables by default (this can be disable using the "night_mode" dvar)
 * Set initial box to ak room
 ### Moon
-* Wave gun kills zombies immediately
+* Wave gun now electrocutes zombies
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Glass windows can not be broken
 * Hacking a max ammos turns into a perk bottle instead of a firesale
@@ -231,6 +231,9 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
+* remove guns from csc
+* add winters howl back to five and verruckt
+* let custom dvars be setting in the config
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
