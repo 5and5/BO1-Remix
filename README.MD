@@ -209,11 +209,13 @@
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
 * Night mode enables by default (this can be disable using the "night_mode" dvar)
+* Increased the range of the un upgraded and upgraded babygun
 * Set initial box to ak room
 ### Moon
 * Wave gun now electrocutes zombies and has increased range
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Glass windows can not be broken
+* Turning on power will launch the rockets to blow up earth (does not give perm perks)
 * Hacking a max ammos turns into a perk bottle instead of a firesale
 * Hacking a box loaction will always last 5 rounds
 * Set initial box to spawn room

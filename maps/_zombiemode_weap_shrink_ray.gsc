@@ -678,13 +678,13 @@ shrink_death(killer)
 
 shrink_ray_get_enemies_in_range( upgraded, shrinkable_objects )
 {
-	range = 480; //40 feet
-	radius = 60; //5 feet
+	range = 1000;//480; //40 feet
+	radius = 80;//60; //5 feet
 	
 	if(upgraded)
 	{
-		range = 1200; //100 feet
-		radius = 84; //7 feet	
+		range = 1300;//1200; //100 feet
+		radius = 85; //7 feet	
 	}
 	hitZombies = [];
 
