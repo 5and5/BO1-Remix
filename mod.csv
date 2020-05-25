@@ -19,6 +19,7 @@ rawfile,maps/_zombiemode_weap_humangun.gsc
 rawfile,maps/_zombiemode_weap_tesla.gsc
 rawfile,maps/_zombiemode_weap_thundergun.gsc
 rawfile,maps/_zombiemode_weap_microwavegun.gsc
+rawfile,maps/_zombiemode_weap_shrink_ray.gsc
 
 //NACHT
 rawfile,maps/zombie_cod5_prototype.gsc

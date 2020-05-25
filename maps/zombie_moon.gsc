@@ -229,6 +229,44 @@ main()
 	level.zombie_speed_up = ::moon_speed_up;
 	level.ai_astro_explode = ::moon_push_zombies_when_astro_explodes;
 
+	//level thread maps\zombie_moon_sq::rocket_test();
+	level thread launch_rockets();
+
+}
+
+launch_rockets()
+{
+	flag_wait("power_on");
+
+	wait(5);
+
+	level notify("rl");
+
+	wait(2);
+
+	level notify("rl");
+
+	wait(2);
+
+	level notify("rl");
+
+	wait(10);
+
+	level notify("rl");
+
+	wait(30);
+	wait(30);
+
+	play_sound_2d( "evt_earth_explode" );
+
+	clientnotify("dte");
+	wait_network_frame();
+	wait_network_frame();
+	exploder( 2012 );
+	wait(2);
+	level clientnotify("SDE");
+
+	play_sound_2d( "vox_xcomp_quest_laugh" );
 }
 
 moon_push_zombies_when_astro_explodes( position )
