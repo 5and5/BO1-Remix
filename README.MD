@@ -215,7 +215,7 @@
 * Wave gun now electrocutes zombies and has increased range
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 * Glass windows can not be broken
-* Turning on power will launch the rockets to blow up earth (does not give perm perks)
+* Turning on power will launch the rockets that blow up earth (does not give perm perks)
 * Hacking a max ammos turns into a perk bottle instead of a firesale
 * Hacking a box loaction will always last 5 rounds
 * Set initial box to spawn room
@@ -239,8 +239,12 @@ bind 6 "toggle coop_pause 0 1"
 ## TODO
 * remove guns from csc
 * add winters howl back to five and verruckt
+* replace wavegun anims with scav
+
 * let custom dvars be setting in the config
-* moon: EE done at the start
+* remove 30000 points drop cap
+* update greches
+* replace wavegun anims with scav
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
