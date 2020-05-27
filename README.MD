@@ -58,13 +58,44 @@
 ## Weapons
 #### General
 * Zombies lose collision as soon as they are killed
+* Increase xplosive scaling
+
+#### Grenades
+* Increased frag grenade throw speed
+* Increased semtex throw speed
+
+#### Gewerh43
+* Buffed to do the same damage as the m14
+
 #### Wunderwaffe
-* Added Wunderwaffe to Verruckt
-* Added Wunderwaffe powerup to Five
+* Added Wunderwaffe to Verruckt box
+* Added Wunderwaffe powerup to Five as thief reward
 * Increased upgraded version's max kills from 10 to 12
-#### Explosive Scaling
-* Increased
-#### General Weapons
+
+### Thunder Gun
+* Fails less
+* Changed zombie fling angle
+
+#### VR11
+* Un-upgraded can also gives players instakill
+* Can now be used on yourself by shooting the ground
+* No longer gives players invisibility
+
+#### Scavenger
+* Will always kill zombies in at least two shots
+
+#### Baby Gun
+* Un-upgraded version as increased range
+* Zombie will not give power ups if ran over with the baby gun out
+
+#### Wave Gun
+* Electrocutes zombies instead of mircowaving them
+* Increased range
+* Zap guns have a mini waffe effect that kills up to 3 zombies per shot
+
+
+## Mystery Box
+#### Boxes Weapons
 * Added PPSH
 * Added AK47
 * Added Stoner63
@@ -76,15 +107,6 @@
 * Removed M72 Law
 * Removed China Lake
 * Removed Winters Howl
-
-#### Grenades
-* Increased frag grenade throw speed
-* Increased semtex throw speed
-
-#### Gewerh43
-* Buffed damage to be the same as the m14
-
-## Mystery Box
 #### Animations
 * Decreased weapon pickup time from 12 to 10 seconds
 * Decreased box opening and closing from 0.5 to 0.3 seconds
@@ -101,6 +123,9 @@
 ## Equipment
 #### Monkey Bombs
 * Always work if thrown in a playable area
+* Zombie are attracted immediately
+#### Gersches
+* Zombie are attracted immediately
 #### Claymores
 * Now do 50% of zombies max health
 * Limited to 20 on the map at one time
@@ -125,6 +150,8 @@
 ## Perks
 #### Double Tap
 * Increases all bullet based weapons damage by 1.5
+#### Mule kick
+* Removed
 
 ## Power Ups
 ### General
@@ -243,7 +270,6 @@ bind 6 "toggle coop_pause 0 1"
 * replace wavegun anims with scav
 
 * let custom dvars be setting in the config
-* update grecshes
 
 
 #### Would like to do

@@ -3960,7 +3960,7 @@ round_think()
 	// players = get_players();
 	// players[0].score = 5555555;
 
-	// level.zombie_move_speed = 105;
+	level.zombie_move_speed = 105;
 
 	for( ;; )
 	{
