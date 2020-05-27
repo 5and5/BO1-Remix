@@ -3960,7 +3960,7 @@ round_think()
 	// players = get_players();
 	// players[0].score = 5555555;
 
-	level.zombie_move_speed = 105;
+	// level.zombie_move_speed = 105;
 
 	for( ;; )
 	{
@@ -4618,6 +4618,15 @@ player_damage_override( eInflictor, eAttacker, iDamage, iDFlags, sMeansOfDeath, 
 	if ( !iDamage )
 	{
 		return 0;
+	}
+
+	// turret doesn't damage players
+	if ( isDefined( eInflictor ) )
+	{
+		if(sMeansOfDeath == "MOD_RIFLE_BULLET" && sWeapon == "zombie_bullet_crouch")
+		{
+			return 0;
+		}
 	}
 
 	// WW (8/14/10) - If a player is hit by the crossbow bolt then set them as the holder of the monkey shot

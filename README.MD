@@ -120,6 +120,7 @@
 * Reduced cooldown from 60 to 50 seconds
 #### Turret (Kino and Ascension)
 * Kills zombies in 2 bullets at any round
+* No longer damages players
 
 ## Perks
 #### Double Tap
@@ -242,9 +243,8 @@ bind 6 "toggle coop_pause 0 1"
 * replace wavegun anims with scav
 
 * let custom dvars be setting in the config
-* remove 30000 points drop cap
-* update greches
-* replace wavegun anims with scav
+* update grecshes
+
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
