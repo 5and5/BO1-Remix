@@ -1136,7 +1136,7 @@ electric_trap_think( enable_flag )
 					self.zombie_dmg_trig trigger_on();
 
 					//play the flame FX and do the actual damage
-					self thread activate_electric_trap(who);
+					self thread activate_electric_trap();
 
 					//wait until done and then re-enable the valve for purchase again
 					self waittill("elec_done");
@@ -1214,7 +1214,7 @@ electric_trap_move_switch(parent)
 	zapper_light_green( light_name );
 }
 
-activate_electric_trap(who)
+activate_electric_trap()
 {
 	if(isDefined(self.script_string) && self.script_string == "warehouse")
 	{
@@ -1240,7 +1240,7 @@ activate_electric_trap(who)
 	}
 
 	//do the damage
-	self.zombie_dmg_trig thread elec_barrier_damage(who);
+	self.zombie_dmg_trig thread elec_barrier_damage();
 
 	// reset the zapper model
 	level waittill("arc_done");
@@ -1278,7 +1278,7 @@ play_electrical_sound()
 
 }
 
-elec_barrier_damage(who)
+elec_barrier_damage()
 {
 	while(1)
 	{
@@ -1294,7 +1294,7 @@ elec_barrier_damage(who)
 			if(!isDefined(ent.marked_for_death))
 			{
 				ent.marked_for_death = true;
-				ent thread zombie_elec_death( randomint(100),who );
+				ent thread zombie_elec_death( randomint(100) );
 			}
 		}
 	}
@@ -1355,7 +1355,7 @@ player_elec_damage()
 }
 
 
-zombie_elec_death(flame_chance, who)
+zombie_elec_death(flame_chance)
 {
 	self endon("death");
 
@@ -1393,7 +1393,7 @@ zombie_elec_death(flame_chance, who)
 
 	self.trap_death = true;
 	self.no_powerups = true;
-	self dodamage(self.health + 666, self.origin, who);
+	self dodamage(self.health + 666, self.origin);
 	//iprintlnbold("should be damaged");
 }
 
