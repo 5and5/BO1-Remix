@@ -58,7 +58,7 @@
 ## Weapons
 #### General
 * Zombies lose collision as soon as they are killed
-* Increase xplosive scaling
+* Increased explosive scaling
 
 #### Grenades
 * Increased frag grenade throw speed
@@ -72,7 +72,7 @@
 * Added Wunderwaffe powerup to Five as thief reward
 * Increased upgraded version's max kills from 10 to 12
 
-### Thunder Gun
+#### Thunder Gun
 * Fails less
 * Changed zombie fling angle
 
@@ -85,7 +85,7 @@
 * Will always kill zombies in at least two shots
 
 #### Baby Gun
-* Un-upgraded version as increased range
+* Increased range of un-upgraded version
 * Zombie will not give power ups if ran over with the baby gun out
 
 #### Wave Gun
@@ -136,7 +136,7 @@
 
 ## Traps
 #### General
-* Trap light no longer gets glitched by hitting the switch to early
+* Trap lights no longer gets glitched by hitting there switches to early
 #### Electric Trap (Kino and Shi No Numa)
 * Reduced recharge time to 25 seconds
 * Reduced shell shock time from 2.5 to 1.25 seconds
@@ -236,7 +236,7 @@
 * Running over shrunken zombies with the baby gun out will no longer give powerups
 * Ceiling spawner fall much faster now
 * Pack-a-punch stone will always be in spawn
-* Night mode enables by default (this can be disable using the "night_mode" dvar)
+* Night mode enables by default (this can be disabled by using the "night_mode" dvar)
 * Increased the range of the un upgraded and upgraded babygun
 * Set initial box to ak room
 ### Moon
@@ -270,6 +270,7 @@ bind 6 "toggle coop_pause 0 1"
 * replace wavegun anims with scav
 
 * let custom dvars be setting in the config
+* fix teleporter bug on five (teleports 3 times)
 
 
 #### Would like to do

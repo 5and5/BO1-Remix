@@ -29,7 +29,7 @@ init()
 
 	level.burning_zombies = [];		//JV max number of zombies that can be on fire
  	level.elec_trap_time = 40;
- 	level.elec_trap_cooldown_time = 25;
+	level.elec_trap_cooldown_time = 25;
 }
 
 disable_traps( traps )
@@ -510,7 +510,14 @@ trap_move_switches(activator)
 trap_activate_electric(activator)
 {
 	self._trap_duration = 40;
-	self._trap_cooldown_time = 25;
+	if(level.script == "zombie_pentagon")
+	{
+		self._trap_cooldown_time = 90;
+	}
+	else
+	{
+		self._trap_cooldown_time = 25;
+	}
 
 	self notify("trap_activate");
 

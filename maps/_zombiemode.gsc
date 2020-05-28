@@ -3954,7 +3954,7 @@ round_think()
 {
 	//strat tester
 
-	// level.round_number = 50; //69
+	// level.round_number = 55; //69
 	// level.zombie_vars["zombie_spawn_delay"] = .08;
 	// level.first_round = false;
 	// players = get_players();
