@@ -10,12 +10,11 @@
 
 main()
 {
-	// used to modify the percentages of pulls of ray gun and tesla gun in magic box
+	// for weight functions
 	level.pulls_since_last_ray_gun = 0;
-	level.pulls_since_last_tesla_gun = 0;
-	level.player_drops_tesla_gun = false;
-	level.player_seen_tesla_gun = false;
-	level.uses_tesla_powerup = true;
+	level.pulls_since_last_wonder_weapon = 0;
+
+	level.uses_tesla_powerup = true; // for waffe
 
 	maps\zombie_cod5_asylum_fx::main();
 
@@ -504,7 +503,7 @@ include_weapons()
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
 	// Custom weapons
-	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
@@ -514,7 +513,7 @@ include_weapons()
  	include_weapon( "mp5k_zm", false, true );
 
 	// Special
-	include_weapon( "freezegun_zm", false );
+	include_weapon( "freezegun_zm" );
 	include_weapon( "m1911_upgraded_zm", false );
 
 	//bouncing betties

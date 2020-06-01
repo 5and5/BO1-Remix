@@ -12,6 +12,10 @@
 
 main()
 {
+	// for weight functions
+	level.pulls_since_last_ray_gun = 0;
+	level.pulls_since_last_wonder_weapon = 0;
+
 	SetDvar("ai_alternateSightLatency", 200);
 	SetDvar("ai_useCheapSight", 1);
 	level._use_choke_weapon_hints = 1;
@@ -385,9 +389,9 @@ include_weapons()
 
 	//	Weapons - Special
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
-	include_weapon( "ray_gun_zm" );
+	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
-	include_weapon( "shrink_ray_zm" );
+	include_weapon( "shrink_ray_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "shrink_ray_upgraded_zm", false );
 
 	include_weapon( "crossbow_explosive_zm" );

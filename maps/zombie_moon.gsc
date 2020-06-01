@@ -13,6 +13,10 @@
 // ------------------------------------------------------------------------------------------------
 main()
 {
+	// for weight functions
+	level.pulls_since_last_ray_gun = 0;
+	level.pulls_since_last_wonder_weapon = 0;
+
 	// Performance optimisation control vars.
 	level._num_overriden_models = 0;
 	level._use_choke_weapon_hints = 1;
@@ -1172,11 +1176,19 @@ include_weapons()
 
 	//	Weapons - Special
 	include_weapon( "zombie_black_hole_bomb", true, false, maps\_zombiemode_weapons::default_zombie_black_hole_bomb_weighting_func );
-	include_weapon( "ray_gun_zm" );
+	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
 	include_weapon( "zombie_quantum_bomb" );
-	include_weapon( "microwavegundw_zm" );
+	include_weapon( "microwavegundw_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "microwavegundw_upgraded_zm", false );
+
+	// Custom Weapons
+	include_weapon( "stoner63_zm" );
+ 	include_weapon( "ppsh_zm" );
+ 	include_weapon("stoner63_upgraded_zm", false);
+	include_weapon("ppsh_upgraded_zm", false);
+	include_weapon( "ak47_zm" );
+ 	include_weapon( "ak47_upgraded_zm", false);
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );

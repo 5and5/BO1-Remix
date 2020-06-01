@@ -512,7 +512,7 @@ trap_activate_electric(activator)
 	self._trap_duration = 40;
 	if(level.script == "zombie_pentagon")
 	{
-		self._trap_cooldown_time = 90;
+		self._trap_cooldown_time = 60;
 	}
 	else
 	{

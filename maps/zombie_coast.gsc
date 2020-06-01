@@ -8,9 +8,9 @@ main()
 {
 	level thread maps\zombie_coast_ffotd::main_start();
 
-	// used to modify the percentages of pulls of ray gun and wonder weapon in magic box
+	// for weight functions
 	level.pulls_since_last_ray_gun = 0;
-	level.pulls_since_last_humangun = 0;
+	level.pulls_since_last_wonder_weapon = 0;
 	level.pulls_since_last_sniper_explosive = 0;
 
 	//for clientsiding the riser fx
@@ -463,9 +463,9 @@ include_weapons()
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
 
 	// these are not available yet until their functionality is more complete
-	include_weapon( "humangun_zm", true, false, maps\_zombiemode_weapons::default_humangun_weighting_func );
+	include_weapon( "humangun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "humangun_upgraded_zm", false );
-	include_weapon( "sniper_explosive_zm", true , false, maps\_zombiemode_weapons::default_sniper_explosive_weighting_func);
+	include_weapon( "sniper_explosive_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "sniper_explosive_upgraded_zm", false );
 	//include_weapon( "tesla_gun_zm", false );
 	//include_weapon( "tesla_gun_upgraded_zm", false );
@@ -477,7 +477,7 @@ include_weapons()
 	include_weapon( "knife_ballistic_sickle_upgraded_zm", false );
 	level._uses_retrievable_ballisitic_knives = true;
 
-	// new weapons
+	// Custom weapons
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
@@ -493,7 +493,7 @@ include_weapons()
 	maps\_zombiemode_weapons::add_limited_weapon( "sniper_explosive_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "crossbow_explosive_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "knife_ballistic_zm", 1 );
-	maps\_zombiemode_weapons::add_limited_weapon( "zombie_nesting_dolls", 1 );
+//	maps\_zombiemode_weapons::add_limited_weapon( "zombie_nesting_dolls", 1 );
 
 	precacheItem( "explosive_bolt_zm" );
 	precacheItem( "explosive_bolt_upgraded_zm" );

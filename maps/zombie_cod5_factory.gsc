@@ -17,11 +17,9 @@ main()
 	PreCacheModel( "viewmodel_vtn_nva_standard_arms" );// Takeo
 	PreCacheModel( "viewmodel_usa_hazmat_arms" );// Richtofen
 
-	// used to modify the percentages of pulls of ray gun and tesla gun in magic box
+	// for weight functions
 	level.pulls_since_last_ray_gun = 0;
-	level.pulls_since_last_tesla_gun = 0;
-	level.player_drops_tesla_gun = false;
-	level.player_seen_tesla_gun = false;
+	level.pulls_since_last_wonder_weapon = 0;
 
 	level.mixed_rounds_enabled = true;	// MM added support for mixed crawlers and dogs
 	level.burning_zombies = [];		//JV max number of zombies that can be on fire
@@ -618,10 +616,11 @@ include_weapons()
 	// Special
 	include_weapon( "ray_gun_zm", true, false, ::factory_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
-	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "tesla_gun_upgraded_zm", false );
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 
+	// Custom weapons
 	include_weapon( "ppsh_zm" );
 	include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );

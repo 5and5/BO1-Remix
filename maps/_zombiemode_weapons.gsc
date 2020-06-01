@@ -105,15 +105,15 @@ default_wonder_weapon_weighting_func()
 		{
 			num_to_add += 0.3;
 		}
-		// after 15 pulls the percentage increases to 20%
+		// after 10 pulls the percentage increases to 20%
 		else if( level.pulls_since_last_wonder_weapon > 10 )
 		{
 			num_to_add += 0.2;
 		}
-		// after 15 pulls the percentage increases to 10%
+		// after 5 pulls the percentage increases to 10%
 		else if( level.pulls_since_last_wonder_weapon > 5 )
 		{
-			num_to_add += 998;//0.1;
+			num_to_add += 0.1;
 		}
 	}
 
@@ -129,12 +129,12 @@ default_ray_gun_weighting_func()
 		 //increase the percentage of ray gun
 		if( isDefined( level.pulls_since_last_ray_gun ) )
 		{
-			// after 12 pulls the ray gun percentage increases to 30%
+			// after 10 pulls the ray gun percentage increases to 30%
 			if( level.pulls_since_last_ray_gun > 10 )
 			{
 				num_to_add += 0.3;
 			}
-			// after 8 pulls the Ray Gun percentage increases to 15%
+			// after 5 pulls the Ray Gun percentage increases to 15%
 			else if( level.pulls_since_last_ray_gun > 5 )
 			{
 				num_to_add += 0.15;
@@ -144,119 +144,11 @@ default_ray_gun_weighting_func()
 	return num_to_add;
 }
 
-default_tesla_weighting_func()
-{
-	num_to_add = 1;
-
-	if( isDefined(level.pulls_since_last_tesla_gun) )
-	{
-		// after 25 pulls the percentage increases to 50%
-		if( level.pulls_since_last_tesla_gun > 25 )
-		{
-			num_to_add += 0.5;
-		}
-		// after 20 pulls the percentage increases to 40%
-		else if( level.pulls_since_last_tesla_gun > 20 )
-		{
-			num_to_add += 0.4;
-		}
-		// after 15 pulls the percentage increases to 30%
-		else if( level.pulls_since_last_tesla_gun > 15 )
-		{
-			num_to_add += 0.3;
-		}
-		// after 15 pulls the percentage increases to 20%
-		else if( level.pulls_since_last_tesla_gun > 10 )
-		{
-			num_to_add += 0.2;
-		}
-		// after 15 pulls the percentage increases to 10%
-		else if( level.pulls_since_last_tesla_gun > 5 )
-		{
-			num_to_add += 0.1;
-		}
-	}
-	return num_to_add;
-}
-
-default_thundergun_weighting_func()
-{
-	num_to_add = 1;
-	if( isDefined( level.pulls_since_last_thundergun ) )
-	{
-		// after 25 pulls the percentage increases to 50%
-		if( level.pulls_since_last_thundergun > 25 )
-		{
-			num_to_add += 0.5;
-		}
-		// after 20 pulls the percentage increases to 40%
-		else if( level.pulls_since_last_thundergun > 20 )
-		{
-			num_to_add += 0.4;
-		}
-		// after 15 pulls the percentage increases to 30%
-		else if( level.pulls_since_last_thundergun > 15 )
-		{
-			num_to_add += 0.3;
-		}
-		// after 15 pulls the percentage increases to 20%
-		else if( level.pulls_since_last_thundergun > 10 )
-		{
-			num_to_add += 0.2;
-		}
-		// after 15 pulls the percentage increases to 10%
-		else if( level.pulls_since_last_thundergun > 5 )
-		{
-			num_to_add += 0.1;
-		}
-	}
-	return num_to_add;
-}
-
-default_humangun_weighting_func()
-{
-	num_to_add = 1;
-	if( isDefined( level.pulls_since_last_humangun ) )
-	{
-
-		// after 25 pulls the percentage increases to 50%
-		if( level.pulls_since_last_humangun > 25 )
-		{
-			num_to_add += 0.5;
-		}
-		// after 20 pulls the percentage increases to 40%
-		else if( level.pulls_since_last_humangun > 20 )
-		{
-			num_to_add += 0.4;
-		}
-		// after 15 pulls the percentage increases to 30%
-		else if( level.pulls_since_last_humangun > 15 )
-		{
-			num_to_add += 0.3;
-		}
-		// after 15 pulls the percentage increases to 20%
-		else if( level.pulls_since_last_humangun > 10 )
-		{
-			num_to_add += 0.2;
-		}
-		// after 15 pulls the percentage increases to 10%
-		else if( level.pulls_since_last_humangun > 5 )
-		{
-			num_to_add += 0.1;
-		}
-
-	}
-	return num_to_add;
-}
-
 default_sniper_explosive_weighting_func()
 {
 	num_to_add = 1;
 	if( isDefined( level.pulls_since_last_sniper_explosive ) )
 	{
-		// player has dropped the for another weapon
-		if( isDefined(level.player_drops_sniper_explosive) && level.player_drops_sniper_explosive == true )
-		{
 			// after 25 pulls the percentage increases to 50%
 			if( level.pulls_since_last_sniper_explosive > 25 )
 			{
@@ -272,27 +164,16 @@ default_sniper_explosive_weighting_func()
 			{
 				num_to_add += 0.3;
 			}
-			// after 15 pulls the percentage increases to 20%
+			// after 10 pulls the percentage increases to 20%
 			else if( level.pulls_since_last_sniper_explosive > 10 )
 			{
 				num_to_add += 0.2;
 			}
-			// after 15 pulls the percentage increases to 10%
+			// after 5 pulls the percentage increases to 10%
 			else if( level.pulls_since_last_sniper_explosive > 5 )
 			{
 				num_to_add += 0.1;
 			}
-		}
-
-		// player has not seen gun in late rounds
-		if( !isDefined(level.player_seen_sniper_explosive) || level.player_seen_sniper_explosive == false )
-		{
-			// after round 10 the gun percentage increases to 15%
-			if( level.round_number > 10 )
-			{
-				num_to_add += int(0.15 * level.zombie_include_weapons.size); //.15
-			}
-		}
 	}
 	return num_to_add;
 }
@@ -1604,28 +1485,10 @@ treasure_chest_think()
 			level.pulls_since_last_ray_gun += 1;
 		}
 
-		if( isDefined(level.pulls_since_last_tesla_gun) )
+		if( isDefined(level.pulls_since_last_wonder_weapon) )
 		{
-			level.pulls_since_last_tesla_gun += 1;
+			level.pulls_since_last_wonder_weapon += 1;
 		}
-
-		if( isDefined(level.pulls_since_last_thundergun) )
-		{
-			level.pulls_since_last_thundergun += 1;
-		}
-
-		if( isDefined(level.pulls_since_last_humangun) )
-		{
-			level.pulls_since_last_humangun += 1;
-		}
-
-		if( isDefined(level.pulls_since_last_sniper_explosive) )
-		{
-			level.pulls_since_last_sniper_explosive += 1;
-		}
-
-
-		// PI_CHANGE_END
 
 		self disable_trigger();
 
@@ -2529,31 +2392,15 @@ treasure_chest_weapon_spawn( chest, player, respin )
 		acquire_weapon_toggle( rand, player );
 
 		//turn off power weapon, since player just got one
-		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm" || rand == "humangun_zm" || rand == "sniper_explosive_zm")
+		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm" || rand == "humangun_zm" || rand == "sniper_explosive_zm" || rand == "microwavegundw_zm" || rand == "shrink_ray_zm")
 		{
 			if( rand == "ray_gun_zm" )
 			{
 				level.pulls_since_last_ray_gun = 0;
 			}
-
-			if( rand == "tesla_gun_zm" )
+			else
 			{
-				level.pulls_since_last_tesla_gun = 0;
-			}
-
-			if( rand == "thundergun_zm" )
-			{
-				level.pulls_since_last_thundergun = 0;
-			}
-
-			if( rand == "humangun_zm" )
-			{
-				level.pulls_since_last_humangun = 0;
-			}
-
-			if( rand == "sniper_explosive_zm" )
-			{
-				level.pulls_since_last_sniper_explosive = 0;
+				level.pulls_since_last_wonder_weapon = 0;
 			}
 
 		}

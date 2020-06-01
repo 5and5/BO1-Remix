@@ -5,6 +5,10 @@
 
 main()
 {
+	// for weight functions
+	level.pulls_since_last_ray_gun = 0;
+	level.pulls_since_last_wonder_weapon = 0;
+
 	// first for createFX (why?)
 	maps\zombie_cod5_prototype_fx::main();
 
@@ -79,11 +83,6 @@ main()
 	level thread pistol_rank_setup();
 
 	level.has_pack_a_punch = false;
-
-	// for weight functions
-	level.pulls_since_last_thundergun = 0;
-	level.player_seen_thundergun = false;
-	level.player_drops_thundergun = false;
 }
 
 precache_player_model_override()
@@ -589,17 +588,15 @@ include_weapons()
 
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false);
-	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_thundergun_weighting_func );
+	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "thundergun_upgraded_zm", false );
 	include_weapon( "m1911_upgraded_zm", false );
 
 	// Custom weapons
 	include_weapon( "ppsh_zm" );
-	//include_weapon( "ppsh_upgraded_zm", false );
 	include_weapon( "stoner63_zm" );
-	//include_weapon( "stoner63_upgraded_zm",false );
 	include_weapon( "ak47_zm" );
- 	//include_weapon( "ak47_upgraded_zm", false);
+
 
 	level._uses_retrievable_ballisitic_knives = true;
 

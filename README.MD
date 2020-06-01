@@ -106,7 +106,6 @@
 * Removed l96a1
 * Removed M72 Law
 * Removed China Lake
-* Removed Winters Howl
 #### Animations
 * Decreased weapon pickup time from 12 to 10 seconds
 * Decreased box opening and closing from 0.5 to 0.3 seconds

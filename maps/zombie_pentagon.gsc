@@ -11,7 +11,7 @@ main()
 	level thread maps\zombie_pentagon_ffotd::main_start();
 
 	level.uses_tesla_powerup = true; // for waffe
-	level.pulls_since_last_ray_gun = 0;
+	level.pulls_since_last_ray_gun = 0; // for weight functions
 
 	maps\zombie_pentagon_fx::main();
 	maps\zombie_pentagon_amb::main();
@@ -287,7 +287,7 @@ include_weapons()
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	include_weapon( "ray_gun_upgraded_zm", false );
 
-	include_weapon( "freezegun_zm", false );
+	include_weapon( "freezegun_zm" );
 	include_weapon( "freezegun_upgraded_zm", false );
 	include_weapon( "crossbow_explosive_zm" );
 	include_weapon( "crossbow_explosive_upgraded_zm", false );
@@ -311,7 +311,7 @@ include_weapons()
 
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );
-	maps\_zombiemode_weapons::add_limited_weapon( "freezegun_zm", 0 );
+	maps\_zombiemode_weapons::add_limited_weapon( "freezegun_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "crossbow_explosive_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "knife_ballistic_zm", 1 );
 	maps\_zombiemode_weapons::add_limited_weapon( "tesla_gun_zm", 1 );

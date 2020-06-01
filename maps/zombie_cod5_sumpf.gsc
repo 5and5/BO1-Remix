@@ -10,6 +10,10 @@
 
 main()
 {
+	// for weight functions
+	level.pulls_since_last_ray_gun = 0;
+	level.pulls_since_last_wonder_weapon = 0;
+
 	//Needs to be first for CreateFX
 	maps\zombie_cod5_sumpf_fx::main();
 
@@ -27,12 +31,6 @@ main()
 	// make sure we randomize things in the map once
 	level.randomize_perks = false;
 	//level.exit_level_func = ::sumpf_exit_level;
-
-	// JMA - used to modify the percentages of pulls of ray gun and tesla gun in magic box
-	level.pulls_since_last_ray_gun = 0;
-	level.pulls_since_last_tesla_gun = 0;
-	level.player_seen_tesla_gun = false;
-	level.player_drops_tesla_gun = false;
 
 	// enable for dog rounds
 	level.dogs_enabled = true;
@@ -270,7 +268,7 @@ register_offhand_weapons_for_level_defaults_override()
 //-------------------------------------------------------------------------------
 include_weapons()
 {
-	include_weapon( "m1911_zm", false );						// colt
+	include_weapon("m1911_zm", false );						// colt
 	include_weapon("python_zm", false);
 	include_weapon("cz75_zm");
 	include_weapon("g11_lps_zm");
@@ -289,10 +287,10 @@ include_weapons()
 	include_weapon("hk21_zm");
 	include_weapon("m72_law_zm", false);
 	include_weapon("china_lake_zm", false);
-	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
-	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
+	include_weapon("zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
+	include_weapon("ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 
-	include_weapon( "ray_gun_upgraded_zm", false);
+	include_weapon("ray_gun_upgraded_zm", false);
 	include_weapon("crossbow_explosive_zm");
 	include_weapon("crossbow_explosive_upgraded_zm", false);
 	include_weapon("knife_ballistic_zm");
@@ -317,9 +315,10 @@ include_weapons()
 	include_weapon( "zombie_bar", false, true );
 
 	// Special
-	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_tesla_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
 	include_weapon( "tesla_gun_upgraded_zm", false );
 
+	// Custom weapons
 	include_weapon( "ppsh_zm" );
 	include_weapon( "stoner63_zm" );
 	include_weapon( "ak47_zm" );
