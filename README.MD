@@ -127,11 +127,11 @@
 * Zombie are attracted immediately
 #### Claymores
 * Now do 50% of zombies max health
-* Limited to 20 on the map at one time
+* Limited to 10 on the map at one time
 #### Boucing Bettys
 * Now do 50% of zombies max health
 * Now explodes in 1 second instead of 2 seconds
-* Limited to 20 on the map at one time
+* Limited to 10 on the map at one time
 
 ## Traps
 #### General
@@ -155,7 +155,7 @@
 ## Power Ups
 ### General
 * Increased random drop rate from 2% to 4%
-* Added a 30000 point cap till next point based drop
+* Added a 50000 point cap till next point based drop
 * Added custom effect to last drop of a cycle
 * First cycle of the game is always double points, nuke, insta kill, max ammo
 #### Carpenters
@@ -241,7 +241,7 @@
 ### Moon
 * Wave gun now electrocutes zombies and has increased range
 * Zap guns have a mini waffe effect that kills up to 3 zombies per shot
-* Glass windows can not be broken
+* Glass windows can no longer be broken
 * Turning on power will launch the rockets that blow up earth (does not give perm perks)
 * Hacking a max ammos turns into a perk bottle instead of a firesale
 * Hacking a box loaction will always last 5 rounds
@@ -265,11 +265,16 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 * remove guns from csc
-* add winters howl back to five and verruckt
-* replace wavegun anims with scav
-
 * let custom dvars be setting in the config
 * fix teleporter bug on five (teleports 3 times)
+
+* have tgun make normal amount of points
+* reduce betty cap
+* reduce drop rate from 4 to 3
+
+
+
+
 
 
 #### Would like to do

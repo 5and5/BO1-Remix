@@ -132,7 +132,6 @@ xmodel,weapon_rus_ppsh_smg
 xmodel,t5_weapon_ak47_viewmodel
 xmodel,t5_weapon_ak47_world
 xmodel,lightning_bolt
-//xmodel,zombie_vending_packapunch
 xmodel,zombie_vending_packapunch_on
 
 //XANIM
@@ -151,7 +150,6 @@ xanim,ai_zombie_tesla_death_c
 xanim,ai_zombie_tesla_death_d
 xanim,ai_zombie_tesla_death_e
 xanim,viewmodel_ppsh_empty_sprint_loop
-
 
 //STRINGS
 localize,reimagined

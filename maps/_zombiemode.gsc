@@ -11,7 +11,7 @@
 main()
 {
 	// limited betties/claymores on the map
-	level.max_mines = 20;
+	level.max_mines = 10;
 
 	// added win con
 	level.win_game = false;

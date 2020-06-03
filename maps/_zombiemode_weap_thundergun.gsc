@@ -285,8 +285,7 @@ thundergun_fling_zombie( player, fling_vec, index )
 
     if ( self.health <= 0 )
     {
-        points = maps\_zombiemode_score::get_zombie_death_player_points();
-        /*points = 10;
+        points = 10;
         if ( !index )
         {
             points = maps\_zombiemode_score::get_zombie_death_player_points();
@@ -294,12 +293,8 @@ thundergun_fling_zombie( player, fling_vec, index )
         else if ( 1 == index )
         {
             points = 30;
-        }*/
-
-        if(!self.isdog)
-        {
-            player maps\_zombiemode_score::player_add_points( "thundergun_fling", points );
         }
+        player maps\_zombiemode_score::player_add_points( "thundergun_fling", points );
 
         self StartRagdoll();
         self LaunchRagdoll( fling_vec );
