@@ -1577,9 +1577,32 @@ onPlayerConnect_clientDvars()
 	//self setclientdvar( "cg_drawfps", "1" );
 
 	// hud dvars
-	// self setClientDvar("hud_health_bar", "");
-	// self setClientDvar("hud_drops", "");
-	// self setClientDvar("hud_remaining", 1);
+	if(getDvarInt("hud_health_bar") == 1)
+	{
+		self setClientDvar("hud_health_bar", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_health_bar", 0);
+	}
+
+	if(getDvarInt("hud_drops") == 1)
+	{
+		self setClientDvar("hud_drops", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_drops", 0);
+	}
+
+	if(getDvarInt("hud_remaining") == 1)
+	{
+		self setClientDvar("hud_remaining", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_remaining", 0);
+	}
 
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
@@ -7503,11 +7526,8 @@ hud_fade( hud, alpha, duration )
 
 init_custom_dvars()
 {
-	setDvar( "hud_health_bar", 0 );
-	setDvar( "hud_drops", 0 );
-	setDvar( "hud_remaining", 1 );
-	setDvar( "coop_pause", 0 );
-	setDvar( "night_mode", 1);
+	SetDvar( "coop_pause", 0 );
+	SetDvar( "night_mode", 1);
 }
 
 get_doors_nearby()

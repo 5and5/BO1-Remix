@@ -254,7 +254,15 @@
 * "/night_mode" - enables/disable Shangri-la's night mode
 * "/coop_pause" - can be used to pause in coop (pause starts at the beginning of the next round)
 
-### Useful Binds
+## Config
+### Enable Custom HUD
+```
+seta hud_health_bar "1"
+seta hud_drops "1"
+seta hud_remaining "1"
+```
+
+### Toggle Dvars
 ```
 bind 2 "toggle cg_blood 1 0; toggle cg_mature 1 0"
 bind 3 "toggle hud_health_bar 0 1"
@@ -265,14 +273,7 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 * remove guns from csc
-* let custom dvars be setting in the config
 * fix teleporter bug on five (teleports 3 times)
-
-* have tgun make normal amount of points
-* reduce betty cap
-* reduce drop rate from 4 to 3
-
-
 
 
 
