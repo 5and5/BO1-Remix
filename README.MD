@@ -247,12 +247,22 @@
 * Hacking a box loaction will always last 5 rounds
 * Set initial box to spawn room
 
-## Custom Dvars
-* "/hud_health_bar" - enables/disable health bar
-* "/hud_remaining" - enables/disable zombies counter
-* "/hud_drops" - enables/disable drop tracker
-* "/night_mode" - enables/disable Shangri-la's night mode
-* "/coop_pause" - can be used to pause in coop (pause starts at the beginning of the next round)
+## Console
+### Custom Dvars
+* ```/hud_health_bar``` - enables/disable health bar
+* ```/hud_remaining``` - enables/disable zombies counter
+* ```/hud_drops``` - enables/disable drop tracker
+* ```/night_mode``` - enables/disable Shangri-la's night mode
+* ```/coop_pause``` - can be used to pause in coop (pause starts at the beginning of the next round)
+
+### Enable Graphic Content
+```
+/cg_blood 1; toggle cg_mature 1
+```
+### Borderless Windowed Mode
+```
+/r_noborder 1; r_fullscreen 0; vid_xpos 0; vid_ypos 0; writeconfig config; quit
+```
 
 ## Config
 ### Enable Custom HUD
