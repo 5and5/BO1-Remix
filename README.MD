@@ -257,7 +257,7 @@
 
 ### Enable Graphic Content
 ```
-/cg_blood 1; toggle cg_mature 1
+/cg_blood 1; cg_mature 1
 ```
 ### Borderless Windowed Mode
 ```

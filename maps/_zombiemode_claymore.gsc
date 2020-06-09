@@ -67,23 +67,21 @@ buy_claymores()
 					who thread maps\_zombiemode_audio::create_and_play_dialog( "weapon_pickup", "grenade" );
 
 					who thread claymore_watch();
+					who thread claymore_setup();
 
-					/*trigs = getentarray("claymore_purchase","targetname");
+					play_sound_at_pos( "purchase", self.origin );
+
+					//set the score
+					who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
+
+					trigs = getentarray("claymore_purchase","targetname");
 					for(i = 0; i < trigs.size; i++)
 					{
 						trigs[i] SetInvisibleToPlayer(who);
-					}*/
+					}
+
+					play_sound_at_pos( "purchase", self.origin );
 				}
-				/*else
-				{
-					who thread show_claymore_hint("already_purchased");
-				}*/
-
-				play_sound_at_pos( "purchase", self.origin );
-
-				//set the score
-				who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
-				who thread claymore_setup();
 
 				// JMA - display the claymores
 				if( self.claymores_triggered == false )

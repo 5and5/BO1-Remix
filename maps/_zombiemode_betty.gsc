@@ -36,9 +36,9 @@ buy_bouncing_betties()
 	self sethintstring( &"ZOMBIE_BETTY_PURCHASE" );
 	self setCursorHint( "HINT_NOICON" );
 
-	//level thread set_betty_visible();
-	self.placeable_mine_name = "mine_bouncing_betty";
-	self thread maps\_zombiemode_weapons::decide_hide_show_hint();
+	level thread set_betty_visible();
+	//self.placeable_mine_name = "mine_bouncing_betty";
+	//self thread maps\_zombiemode_weapons::decide_hide_show_hint();
 	self.betties_triggered = false;
 
 	while(1)
@@ -60,23 +60,19 @@ buy_bouncing_betties()
 
 					who thread bouncing_betty_watch();
 
-					/*trigs = getentarray("betty_purchase","targetname");
+					//set the score
+					who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
+					who thread bouncing_betty_setup();
+					who notify( "zmb_disable_betty_prompt" );
+
+					play_sound_at_pos( "purchase", self.origin );
+
+					trigs = getentarray("betty_purchase","targetname");
 					for(i = 0; i < trigs.size; i++)
 					{
 						trigs[i] SetInvisibleToPlayer(who);
-					}*/
+					}
 				}
-				/*else
-				{
-					//who thread show_betty_hint("already_purchased");
-				}*/
-
-				play_sound_at_pos( "purchase", self.origin );
-
-				//set the score
-				who maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
-				who thread bouncing_betty_setup();
-				who notify( "zmb_disable_betty_prompt" );
 
 				// JMA - display the bouncing betties
 				if( self.betties_triggered == false )

@@ -5482,7 +5482,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	// 	return int(15000);
 	// }
 
-	if(weapon == "zombie_nesting_dolls" && !self.animname == "director_zombie")
+	if(weapon == "zombie_nesting_dolls" && self.animname != "director_zombie")
 	{
 		final_damage = int(self.maxhealth) + 666;
 	}
