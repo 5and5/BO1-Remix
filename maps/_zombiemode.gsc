@@ -5463,14 +5463,16 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && (self.animname != "thief_zombie" || self.animname != "director_zombie"))
 	{
-		min_damage = 2000;
-		damage = int(self.maxhealth / 2) + 10;
+		// fix for grenades doing 1/2 zombies health when holding mines
+		if(flags == 5)
+		{
+			final_damage = int(self.maxhealth / 2) + 10;
+		}
 
-		if(damage < min_damage)
-			{
-				damage = min_damage;
-			}
-		final_damage = damage;
+		if(damage >= final_damage)
+		{
+			final_damage = damage;
+		}
 	}
 
 /*	if(self.animname == "director_zombie")

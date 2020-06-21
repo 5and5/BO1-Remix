@@ -282,7 +282,7 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
-* remove guns from csc
+* remove guns from csc and gsc so they dont show up in the box
 * fix teleporter bug on five (teleports 3 times)
 
 
