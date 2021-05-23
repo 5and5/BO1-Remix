@@ -7141,10 +7141,6 @@ timer_hud()
 	timer.foreground = 1;
 	timer.color = ( 1.0, 1.0, 1.0 );
 
-	if (level.script == "zombie_cosmodrome")
-	{
-		timer SetTimerUp(6.4);
-	} else
 	timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);

@@ -303,11 +303,3 @@ bind 6 "toggle coop_pause 0 1"
 ## Huge shout out to:
 * **_JBird_Justin_** - For making Reimagined this wouldn't be possible without him. A large portion of the mod is ported from his mod.
 [Reimagined](https://github.com/Jbleezy/BO1-Reimagined)
-
-
--fixed 4 monkeys gltich
--fixed removed weapons showing up in the box
--added sph hud (begins after 50)
--added in game menu to hud, settings and strat tester
--enabled sprinting while drinking perks
--
