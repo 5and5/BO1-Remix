@@ -91,9 +91,17 @@ weapon,sp/sticky_grenade_zm
 
 //CLIENTSCRIPTS
 rawfile,clientscripts/_zombiemode_weap_tesla.csc
-rawfile,clientscripts/zombie_temple.csc
+rawfile,clientscripts/zombie_theater.csc
 rawfile,clientscripts/zombie_pentagon.csc
+rawfile,clientscripts/zombie_cosmodrome.csc
+rawfile,clientscripts/zombie_coast.csc
+rawfile,clientscripts/zombie_temple.csc
+rawfile,clientscripts/zombie_moon.csc
+rawfile,clientscripts/zombie_cod5_prototype.csc
 rawfile,clientscripts/zombie_cod5_asylum.csc
+rawfile,clientscripts/zombie_cod5_sumpf.csc
+rawfile,clientscripts/zombie_cod5_factory.csc
+rawfile,clientscripts/_zombiemode_ffotd.csc
 
 //MATERIAL
 material,specialty_lightningbolt_zombies
@@ -153,6 +161,10 @@ xanim,viewmodel_ppsh_empty_sprint_loop
 
 //STRINGS
 localize,reimagined
+localize,mod
+
+//MENU
+menufile,ui/options_game_pc.menu
 
 //SOUNDS
 sound,dev

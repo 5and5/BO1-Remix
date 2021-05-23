@@ -24,12 +24,14 @@
 * Weapon limit increased from 2 to 3
 * Removed Mulekick
 * Starting points changed from 500 to 555
+* Enabled sprint while drinking perks
 * Removed player quotes
 * "Reset" now happens at exactly 12 hours
 
 ## HUD
 * In game timer
 * Round timer (shows at the end of a round)
+* Seconds per horde (shows at the end of a round)
 * Zombie remaining counter
 * Health bar
 * Drop cycle tracker
@@ -207,7 +209,7 @@
 * Moved double tap machine to stage
 * Removed alley, control room and pm63 room box locations
 * Disabled doors leading to alley, control room and pm63
-* Changed the spawn zone of the spawn rooms to only include it self (4 windows)
+* Changed the spawn zone of the spawn room to only include it self (4 windows)
 * Set initial box to mp40 room
 ### Five
 * Set windows
@@ -221,6 +223,7 @@
 * Monkeys health caps out at 1500
 * Monkeys taking revive doesn't count as a down
 * Moved Stamin up to underneath power
+* Changed the spawn zone of the m16 room to only include it self (3 windows)
 ### Call of the Dead
 * Removed initial spawn delay on round 1
 * VR11 un-upgraded now also gives players instakill
@@ -254,6 +257,8 @@
 * ```/hud_drops``` - enables/disable drop tracker
 * ```/night_mode``` - enables/disable Shangri-la's night mode
 * ```/coop_pause``` - can be used to pause in coop (pause starts at the beginning of the next round)
+* ```/start_round <round number>``` - can be used to change start round for strat tester
+* ```/player_quotes 0``` - can be used to enable player quotes
 
 ### Enable Graphic Content
 ```
@@ -282,14 +287,10 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
-* remove guns from csc and gsc so they dont show up in the box
-* fix teleporter bug on five (teleports 3 times)
-
-
-
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt
+* fix teleporter bug on five (teleports 3 times)
 
 
 ## Shout out to:
@@ -303,3 +304,10 @@ bind 6 "toggle coop_pause 0 1"
 * **_JBird_Justin_** - For making Reimagined this wouldn't be possible without him. A large portion of the mod is ported from his mod.
 [Reimagined](https://github.com/Jbleezy/BO1-Reimagined)
 
+
+-fixed 4 monkeys gltich
+-fixed removed weapons showing up in the box
+-added sph hud (begins after 50)
+-added in game menu to hud, settings and strat tester
+-enabled sprinting while drinking perks
+-

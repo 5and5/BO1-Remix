@@ -1851,8 +1851,35 @@ full_ammo_powerup( drop_item )
 		{
 			// Fill the clip
 			//players[i] SetWeaponAmmoClip( primary_weapons[x], WeaponClipSize( primary_weapons[x] ) );
+			
+			//players[i] GiveMaxAmmo( primary_weapons[x] );
+			
 
+			// weapon only uses clip ammo, so GiveMaxAmmo won't work
+			if(WeaponMaxAmmo(primary_weapons[x]) == 0)
+			{
+				players[i] SetWeaponAmmoClip(primary_weapons[x], WeaponClipSize(primary_weapons[x]));
+				continue;
+			}
+
+			//players[i] maps\_zombiemode_weapons::give_max_ammo(primary_weapons[x]);
 			players[i] GiveMaxAmmo( primary_weapons[x] );
+
+			// fix for grenade ammo
+			if(is_lethal_grenade(primary_weapons[x]) || is_tactical_grenade(primary_weapons[x]))
+			{
+				ammo = 0;
+				if(is_lethal_grenade(primary_weapons[x]))
+				{
+					ammo = 4;
+				}
+				else if(is_tactical_grenade(primary_weapons[x]))
+				{
+					ammo = 3;
+				}
+
+				players[i] SetWeaponAmmoClip(primary_weapons[x], ammo);
+			}
 		}
 	}
 	//	array_thread (players, ::full_ammo_on_hud, drop_item);

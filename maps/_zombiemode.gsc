@@ -1755,6 +1755,7 @@ onPlayerSpawned()
 				//self thread get_doors_nearby();
 				//self thread get_ent_nearby();
 				//self thread get_perks_nearby();
+				//self thread set_move_speed();
 			}
 		}
 	}
@@ -3976,14 +3977,7 @@ chalk_round_over()
 round_think()
 {
 	//strat tester
-
-	// level.round_number = 55; //69
-	// level.zombie_vars["zombie_spawn_delay"] = .08;
-	// level.first_round = false;
-	// players = get_players();
-	// players[0].score = 5555555;
-
-	level.zombie_move_speed = 105;
+	gamemode_select();
 
 	for( ;; )
 	{
@@ -7167,6 +7161,11 @@ timer_hud()
 		{
 			level.win_game = true;
 			level notify( "end_game" );
+			players = get_players();
+			for(i = 0; players.size > i; i++)
+			{
+				players[i] freezecontrols(false);
+			}
 			break;
 		}
 
@@ -7272,6 +7271,9 @@ round_timer(hud)
 		//hud setTimerUp(0);
 		start_time = int(getTime() / 1000);
 
+		zombies_this_round = level.zombie_total + get_enemy_count();
+		hordes = zombies_this_round / 24;
+
 		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
 		{
 			level waittill( "last_dog_down" );
@@ -7298,7 +7300,8 @@ round_timer(hud)
 		end_time = int(getTime() / 1000);
 
 		// need to set time below the number or it will show the next number
-		time = end_time - start_time - 0.1;
+		time = end_time - start_time - 0.05;
+		hud.label = "Round Time: ";
 		level thread display_times(hud, time);
 
 		level waittill( "start_of_round" );
@@ -7308,9 +7311,39 @@ round_timer(hud)
 			level waittill( "start_of_round" );
 		}
 
-		total_time = level.total_time - 0.1;
+		total_time = level.total_time - 0.05;
+		hud.label = "Total Time: ";
 		level thread display_times(hud, total_time);
+
+		// sph
+		if(level.round_number >= 50 && getDvarInt( "hud_round_timer" ) != 2 && !flag( "dog_round" ))
+		{
+			sph = time / hordes;
+			level thread display_sph( sph );
+		}
 	}
+}
+
+display_sph( sph )
+{	
+	wait 7;
+	hud = NewHudElem();
+	hud.horzAlign = "right";
+	hud.vertAlign = "top";
+	hud.alignX = "right";
+	hud.alignY = "top";
+	hud.y += 18;
+	hud.x -= 5;
+	hud.fontScale = 1.3;
+	hud.alpha = 0;
+	hud.color = ( 1.0, 1.0, 1.0 );
+	hud.label = "SPH: ";
+	hud setValue(sph);
+	hud_fade(hud, 1, 0.15);
+	wait 6;
+	hud_fade(hud, 0, 0.15);
+	wait 1;
+	hud destroy();
 }
 
 display_times( hud, time )
@@ -7318,7 +7351,7 @@ display_times( hud, time )
 	level endon("start_of_round");
 
 	hud_fade(hud, 1, 0.15);
-	for(i = 0; i < 10; i++)
+	for(i = 0; i < 12; i++)
 	{
 		hud setTimer(time);
 		wait 0.5;
@@ -7612,10 +7645,92 @@ get_position()
 }
 
 disable_player_quotes()
-{
+{	
+	level endon("disconnect");
+	level endon("end_game");
+
+	if(getDvar("player_quotes") == "")
+		setDvar("player_quotes", 1);
+
 	while(1)
+	{	
+		if(getDvarInt("player_quotes") == 1)
+		{
+			level.player_is_speaking = 1;
+		}
+			
+		wait 0.1;
+	}
+}
+
+gamemode_select()
+{	
+	players = get_players();
+	gamemode = getDvar( "gamemode" );
+	if(gamemode == "")
+		setDvar( "gamemode", "survival" );
+	if(getDvar( "start_round" ) == "")
+		setDvar( "start_round", 50 );
+
+	switch ( getDvar( "gamemode" ) )
 	{
-		level.player_is_speaking = 1;
-		wait .1;
+		case "survival":
+			level.strattesting = false;
+			level.player_too_many_weapons_monitor = true;
+			level.zombie_move_speed = 105;
+			break;
+		case "strat_tester":
+			//strat tester
+			level.strattesting = true;
+			level.dog_health = 1600;
+			level.player_too_many_weapons_monitor = false;
+			level.round_number = getDvarInt( "start_round" );
+			level.zombie_vars["zombie_spawn_delay"] = 0.08;
+			level.zombie_move_speed = 105; // running speed
+			level.first_round = false; // force first round to have the proper amount of zombies
+
+			strat_tester_text = NewHudElem();
+			strat_tester_text.horzAlign = "left";
+			strat_tester_text.vertAlign = "top";
+			strat_tester_text.alignX = "left";
+			strat_tester_text.alignY = "top";
+			strat_tester_text.y += 365;
+			strat_tester_text.x += 2;
+			strat_tester_text.foreground = true;
+			strat_tester_text.fontScale = 1.6;
+			strat_tester_text.alpha = 1;
+			strat_tester_text.color = ( 0.423, 0.004, 0 );
+			strat_tester_text setText("Strat Tester");
+
+			for(i=0;i<players.size;i++)
+			{
+				players[i].score = 555555;
+			}
+			trig = getent("use_elec_switch","targetname");
+			trig notify( "trigger" );
+			break;
+	}
+}
+
+tab_hud()
+{	
+	self endon("disconnect");
+	level endon("end_game");
+	
+	if(getDvar( "hud_button" ) == "")
+		self setClientDvar( "hud_button", "tab" );
+
+	while(1)
+	{	
+		if(self buttonPressed( getDvar( "hud_button" ) ))
+		{	
+			self setClientDvar( "hud_tab", 1 ); // make hud visable
+			// drop hud
+			self setClientDvar( "drops_string", "Power Up Cycle: " + level.drop_tracker_index );
+		}
+		else
+			self setClientDvar( "hud_tab", 0 );
+
+		wait 0.05;
 	}
 }

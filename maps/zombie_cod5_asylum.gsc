@@ -70,8 +70,6 @@ main()
 
 	include_weapons();
 	include_powerups();
-	// mp5
-	spawn_mp5k_wallbuy();
 
 	if(getdvar("light_mode") != "")
 	{
@@ -136,6 +134,9 @@ main()
 	level.has_pack_a_punch = false;
 
 	level thread fix_zombie_pathing();
+
+	// mp5
+	spawn_mp5k_wallbuy();
 }
 
 //*****************************************************************************
@@ -1887,7 +1888,7 @@ recalculate_pathing(good_spot)
 
 
 spawn_mp5k_wallbuy()
-{
+{	
     //PreCacheModel( "weapon_upgrade_mp5" );
     model = Spawn( "script_model", ( -567.0, 745.3, 285.1 ) );
     model.angles = ( 0, 0, 0 );
@@ -1900,4 +1901,5 @@ spawn_mp5k_wallbuy()
     chalk = Spawn( "script_model", model.origin );
     chalk.angles = ( 0, 180, 0 );
     chalk SetModel( "t5_weapon_mp5_world" );
+	chalk.target = "mp5_chalk";
 }

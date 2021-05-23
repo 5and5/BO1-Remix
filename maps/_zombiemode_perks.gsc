@@ -628,7 +628,7 @@ upgrade_knuckle_crack_begin()
 
 	self AllowLean( false );
 	self AllowAds( false );
-	self AllowSprint( false );
+	self AllowSprint( true );
 	self AllowCrouch( true );
 	self AllowProne( false );
 	self AllowMelee( false );
@@ -1821,7 +1821,7 @@ perk_give_bottle_begin( perk )
 
 	self AllowLean( false );
 	self AllowAds( false );
-	self AllowSprint( false );
+	self AllowSprint( true );
 	self AllowCrouch( true );
 	self AllowProne( false );
 	self AllowMelee( false );
@@ -2133,7 +2133,7 @@ quantum_bomb_give_nearest_perk_result( position )
 }
 
 place_perk_machines()
-{
+{	
 	if(level.script == "zombie_cosmodrome")
 	{
 		level.zombie_doubletap_machine_origin = (-567, 1401.5, 29);
@@ -2272,10 +2272,10 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
         //Remove revive
-		machine_remove2 = getEnt( "vending_revive", "targetname" );
-		machine_remove2 Delete();
-		trigger_remove2 = getEnt( "vending_revive", "target");
-		trigger_remove2 Delete();
+		// machine_remove2 = getEnt( "vending_revive", "targetname" );
+		// machine_remove2 Delete();
+		// trigger_remove2 = getEnt( "vending_revive", "target");
+		// trigger_remove2 Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
