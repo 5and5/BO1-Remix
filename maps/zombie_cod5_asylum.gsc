@@ -1895,11 +1895,67 @@ spawn_mp5k_wallbuy()
     model SetModel( GetWeaponModel( "mp5k_zm" ) );
     model.targetname = "weapon_upgrade_mp5";
     trigger = Spawn( "trigger_radius_use", model.origin, 0, 20, 20 );
-    trigger.targetname = "weapon_upgrade";
-    trigger.target = "weapon_upgrade_mp5";
-    trigger.zombie_weapon_upgrade = "mp5k_zm";
-    chalk = Spawn( "script_model", model.origin );
-    chalk.angles = ( 0, 180, 0 );
-    chalk SetModel( "t5_weapon_mp5_world" );
-	chalk.target = "mp5_chalk";
+    // trigger.targetname = "weapon_upgrade";
+    // trigger.target = "weapon_upgrade_mp5";
+    // trigger.zombie_weapon_upgrade = "mp5k_zm";
+	trigger UseTriggerRequireLookAt();
+    trigger sethintstring( "Hold ^3[{+activate}]^7 to buy mp5k" );
+	trigger SetCursorHint( "HINT_NOICON" );
+    // chalk = Spawn( "script_model", model.origin );
+    // chalk.angles = ( 0, 180, 0 );
+    // chalk SetModel( "t5_weapon_mp5_world" );
+	// chalk.target = "mp5_chalk";
+
+	cost = 1000;
+	ammo_cost = 500;
+	zombie_weapon_upgrade = "mp5k_zm";
+
+	while (1)
+	{
+		wait(0.5);
+
+		trigger waittill( "trigger", player);
+
+		if( !player maps\_zombiemode_weapons::can_buy_weapon() )
+		{
+			wait( 0.1 );
+			continue;
+		}
+
+		// Allow people to get ammo off the wall for upgraded weapons
+		player_has_weapon = player maps\_zombiemode_weapons::has_weapon_or_upgrade( zombie_weapon_upgrade );
+
+		if( !player_has_weapon )
+		{
+			// else make the weapon show and give it
+			if( player.score >= cost )
+			{
+				player maps\_zombiemode_score::minus_to_player_score( cost );
+				player maps\_zombiemode_weapons::weapon_give( zombie_weapon_upgrade );
+				//playsoundatposition("mus_wonder_weapon_stinger", (0,0,0));
+			}
+			else
+			{
+				trigger play_sound_on_ent( "no_purchase" );
+				player maps\_zombiemode_audio::create_and_play_dialog( "general", "no_money", undefined, 1 );
+			}
+		}
+		else
+		{
+			// if the player does have this then give him ammo.
+			if( player.score >= ammo_cost )
+			{
+				ammo_given = player maps\_zombiemode_weapons::ammo_give( zombie_weapon_upgrade );
+				if( ammo_given )
+				{
+						player maps\_zombiemode_score::minus_to_player_score( ammo_cost ); // this give him ammo to early
+				}
+			}
+			else
+			{
+				trigger play_sound_on_ent( "no_purchase" );
+				player maps\_zombiemode_audio::create_and_play_dialog( "general", "no_money", undefined, 0 );
+			}
+		}
+	}
 }

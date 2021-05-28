@@ -287,6 +287,7 @@ bind 6 "toggle coop_pause 0 1"
 ```
 
 ## TODO
+* knife box to have anyone take weapon
 
 #### Would like to do
 * Add chalk to mp5k on Verruckt

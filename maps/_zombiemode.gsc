@@ -7666,13 +7666,13 @@ gamemode_select()
 	if(gamemode == "")
 		setDvar( "gamemode", "survival" );
 	if(getDvar( "start_round" ) == "")
-		setDvar( "start_round", 50 );
+		setDvar( "start_round", 55 );
 
 	switch ( getDvar( "gamemode" ) )
 	{
 		case "survival":
 			level.strattesting = false;
-			level.player_too_many_weapons_monitor = true;
+			//level.player_too_many_weapons_monitor = true;
 			level.zombie_move_speed = 105;
 			break;
 		case "strat_tester":
