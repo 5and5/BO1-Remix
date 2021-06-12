@@ -7252,11 +7252,6 @@ round_timer_hud()
 	timer.color = ( 1.0, 1.0, 1.0 );
 	timer setTimer(0);
 
-	if (level.script == "zombie_cosmodrome")
-	{
-		wait 6.4;
-		round_timer(timer);
-	}
 	round_timer(timer);
 }
 
@@ -7705,28 +7700,5 @@ gamemode_select()
 			trig = getent("use_elec_switch","targetname");
 			trig notify( "trigger" );
 			break;
-	}
-}
-
-tab_hud()
-{	
-	self endon("disconnect");
-	level endon("end_game");
-	
-	if(getDvar( "hud_button" ) == "")
-		self setClientDvar( "hud_button", "tab" );
-
-	while(1)
-	{	
-		if(self buttonPressed( getDvar( "hud_button" ) ))
-		{	
-			self setClientDvar( "hud_tab", 1 ); // make hud visable
-			// drop hud
-			self setClientDvar( "drops_string", "Power Up Cycle: " + level.drop_tracker_index );
-		}
-		else
-			self setClientDvar( "hud_tab", 0 );
-
-		wait 0.05;
 	}
 }

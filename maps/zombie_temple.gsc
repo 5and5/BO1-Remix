@@ -401,6 +401,14 @@ include_weapons()
 	include_weapon( "knife_ballistic_bowie_zm", false );
 	include_weapon( "knife_ballistic_bowie_upgraded_zm", false );
 
+	// Custom weapons
+	include_weapon( "ppsh_zm" );
+	include_weapon( "ppsh_upgraded_zm", false );
+	include_weapon( "stoner63_zm" );
+	include_weapon( "stoner63_upgraded_zm",false );
+	include_weapon( "ak47_zm" );
+ 	include_weapon( "ak47_upgraded_zm", false);
+
 	level._uses_retrievable_ballisitic_knives = true;
 
 	// limited weapons
