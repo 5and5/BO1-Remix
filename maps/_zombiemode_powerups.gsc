@@ -451,7 +451,7 @@ fire_sale_drop()
 minigun_no_drop()
 {
 	//mini only drops after round 60
-	if( level.round_number >= 60 && (level.script == "zombie_cosmodrome" || level.script == "zombie_pentagon" || level.script == "zombie_cost" || level.script == "zombie_moon"))
+	if( level.round_number >= 60 && (level.script == "zombie_cosmodrome" || level.script == "zombie_pentagon" || level.script == "zombie_coast" || level.script == "zombie_moon"))
 	{
 		return false;
 	}
