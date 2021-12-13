@@ -7181,12 +7181,18 @@ coop_pause(timer_hud, start_time)
 	paused_start_time = 0;
 	paused = false;
 
+	players = GetPlayers();
+	if( players.size == 1 )
+	{
+		return;
+	}
+	
 	while(1)
 	{
 		if( getDvarInt( "coop_pause" ) == 1 )
 		{
 			players = GetPlayers();
-			if(level.zombie_total + get_enemy_count() != 0 )
+			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) )
 			{
 				iprintln("finish the round");
 				level waittill( "end_of_round" );
