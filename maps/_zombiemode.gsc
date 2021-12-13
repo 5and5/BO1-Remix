@@ -1758,6 +1758,14 @@ onPlayerSpawned()
 				//self thread set_move_speed();
 			}
 		}
+
+		if( isdefined( self.initialized ) && self.initialized )
+		{
+			if( level.script == "zombie_cod5_factory" )
+			{
+				self GiveWeapon( "bowie_knife_zm" );
+			}
+		}
 	}
 }
 
@@ -7186,7 +7194,7 @@ coop_pause(timer_hud, start_time)
 	{
 		return;
 	}
-	
+
 	while(1)
 	{
 		if( getDvarInt( "coop_pause" ) == 1 )
