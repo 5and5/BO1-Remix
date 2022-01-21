@@ -168,3 +168,6 @@ menufile,ui/options_game_pc.menu
 
 //SOUNDS
 sound,dev
+
+//CAMO OPTIONS
+stringtable,weaponoptions.csv
