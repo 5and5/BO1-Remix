@@ -36,9 +36,10 @@ powershell -Command Expand-Archive -Force -LiteralPath game_mod.zip -Destination
 powershell -Command Remove-Item -Force -Recurse "game_mod.zip"
 
 :d
-powershell -Command Start-BitsTransfer -Source "https://download1494.mediafire.com/8o7pbfwkmiwg/5u4g0dxdnf7rsjw/BO1-Remix.zip"
+powershell -Command Start-BitsTransfer -Source "https://download1507.mediafire.com/hcqfyyyg8afg/5u4g0dxdnf7rsjw/BO1-Remix.zip"
 powershell -Command Expand-Archive -Force -LiteralPath BO1-Remix.zip -DestinationPath 'C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops'
 powershell -Command Remove-Item -Force -Recurse "BO1-Remix.zip"
+xcopy /i "C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops\shortcut" "%USERPROFILE%\Desktop" /y
 
 cls
 echo Black Ops 1 Remix Installer
@@ -47,7 +48,7 @@ echo.
 @echo ################ Remix Installation Complete ##################
 @echo ###############################################################
 
-:e
 timeout 5
 
+:e
 end
