@@ -209,7 +209,7 @@
 
 ### General
 
-- Increased random drop rate from 2% to 4%
+- Increased random drop rate from 3% to 5%
 - Added a 50000 point cap till next point based drop
 - Added custom effect to last drop of a cycle
 - First cycle of the game is always double points, nuke, insta kill, max ammo

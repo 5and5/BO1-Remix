@@ -105,6 +105,7 @@ rawfile,clientscripts/_zombiemode_ffotd.csc
 
 //MATERIAL
 material,specialty_lightningbolt_zombies
+material,mtl_weapon_30cal_gold
 
 //FX
 fx,maps/zombie/fx_zombie_tesla_bolt_secondary
