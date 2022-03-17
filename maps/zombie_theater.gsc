@@ -757,7 +757,7 @@ barricade_glitch_fix()
 	collision Hide();
 
 	// make sure players can't open the map wrong
-	disable_doors();
+	// disable_doors();
 }
 
 disable_doors()

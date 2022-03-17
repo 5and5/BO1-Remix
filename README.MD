@@ -331,6 +331,7 @@
 
 ### Moon
 
+- Astronaut removed
 - Wave gun now electrocutes zombies and has increased range
 - Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 - Glass windows can no longer be broken
@@ -385,9 +386,11 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 
+- speed cola on nacht
+- move 
+- trap timer
 - knife box to have anyone take weapon
 - black fade hud for coop pause
-- remove lander delay
 - buff nml
 
 #### Would like to do
