@@ -390,13 +390,12 @@ bind 6 "toggle coop_pause 0 1"
 - Added speed to nacht
 - Added pap to nacht
 - Updated coop pause
+- Drops and remaining are toggable with the scoreboard
 
 ## TODO
 
 - kino remove dt spawners
-- drop/remaining hud tabable
 - round timer
-- trap timer
 - knife box to have anyone take weapon
 - buff nml
 

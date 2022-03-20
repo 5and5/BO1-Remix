@@ -1746,8 +1746,7 @@ onPlayerSpawned()
 				self thread zombies_remaining_hud();
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
-
-
+				self thread tab_hud();
 
 				// testing only
 				//self thread get_position();
@@ -1768,7 +1767,6 @@ onPlayerSpawned()
 		}
 	}
 }
-
 
 spawn_life_brush( origin, radius, height )
 {
@@ -7395,6 +7393,31 @@ display_times( hud, time )
 	hud_fade(hud, 0, 0.15);
 }
 
+tab_hud()
+{	
+	self endon("disconnect");
+	level endon("end_game");
+	
+	if(getDvar( "hud_button" ) == "")
+		self setClientDvar( "hud_button", "tab" );
+
+	while(1)
+	{	
+		if(self buttonPressed( getDvar( "hud_button" ) ))
+		{	
+			// self setClientDvar( "hud_drops", 1 );
+			// iPrintLn("test");
+			self setClientDvar( "hud_tab", 1 );
+		}
+		else
+		{
+			self setClientDvar( "hud_tab", 0 );
+		}
+
+		wait 0.05;
+	}
+}
+
 drop_tracker_hud()
 {
 	self endon("disconnect");
@@ -7412,7 +7435,7 @@ drop_tracker_hud()
 
 	while(1)
 	{
-		if( getDvarInt( "hud_drops" ) == 0)
+		if( !getDvarInt( "hud_drops" ) )
 		{
 			if(drops_hud.alpha != 0 )
 			{
@@ -7420,6 +7443,15 @@ drop_tracker_hud()
 			}
 		}
 		else
+		{
+			if(drops_hud.alpha != 1 )
+			{
+				drops_hud.alpha = 1;
+			}
+			drops_hud setValue(level.drop_tracker_index);
+		}
+
+		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
 		{
 			if(drops_hud.alpha != 1 )
 			{
@@ -7466,6 +7498,18 @@ zombies_remaining_hud()
 			zombies = level.zombie_total + get_enemy_count();
 			remaining_hud setValue(zombies);
 		}
+
+		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
+		{
+			if(remaining_hud.alpha != 1)
+			{
+				remaining_hud.alpha = 1;
+			}
+
+			zombies = level.zombie_total + get_enemy_count();
+			remaining_hud setValue(zombies);
+		}
+		
 		wait 0.05;
 	}
 }
