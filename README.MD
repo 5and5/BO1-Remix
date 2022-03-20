@@ -384,10 +384,17 @@ bind 5 "toggle hud_remaining 0 1"
 bind 6 "toggle coop_pause 0 1"
 ```
 
+## Patch 1.6.0 Notes
+
+- Opened kino
+
 ## TODO
 
-- speed cola on nacht
-- move 
+- kino remove dt spawners
+- speed cola on nacht where mule was
+- proper pap on nacht
+- drop/remaining hud tabable
+- round timer
 - trap timer
 - knife box to have anyone take weapon
 - black fade hud for coop pause

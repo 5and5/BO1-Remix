@@ -907,24 +907,6 @@ treasure_chest_init()
 	level.chests = GetEntArray( "treasure_chest_use", "targetname" );
 	for (i=0; i<level.chests.size; i++ )
 	{
-		if(level.script == "zombie_cod5_sumpf")
-		{
-			if(level.chests[i].script_noteworthy == "nw_chest")
-			{
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-
-		}
-
-		if(level.script == "zombie_cod5_factory")
-		{
-			if(level.chests[i].script_noteworthy == "chest3")
-			{
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-
-		}
-
 		level.chests[i].box_hacks = [];
 
 		level.chests[i].orig_origin = level.chests[i].origin;
@@ -1068,6 +1050,7 @@ init_starting_chest_location()
         }
     }
 
+	// remove box loactions
   	for( i = 0; i < level.chests.size; i++ )
     {
 		if(level.script == "zombie_theater")
@@ -1090,6 +1073,28 @@ init_starting_chest_location()
 				level.chests[i] hide_rubble();
 				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
 			}
+		}
+
+		if(level.script == "zombie_cod5_sumpf")
+		{
+			if(level.chests[i].script_noteworthy == "nw_chest")
+			{
+				level.chests[i] hide_rubble();
+				level.chests[i] hide_chest();
+				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+			}
+
+		}
+
+		if(level.script == "zombie_cod5_factory")
+		{
+			if(level.chests[i].script_noteworthy == "chest3")
+			{
+				level.chests[i] hide_rubble();
+				level.chests[i] hide_chest();
+				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+			}
+
 		}
 	}
 

@@ -7321,7 +7321,7 @@ round_timer(hud)
 		level thread display_times(hud, total_time);
 
 		// sph
-		if(level.round_number >= 50 && getDvarInt( "hud_round_timer" ) != 2 && !flag( "dog_round" ))
+		if(level.round_number >= 50 && getDvarInt( "hud_round_timer" ) != 2 && !flag( "dog_round" ) && !flag( "thief_round" ) && !flag( "monkey_round" ))
 		{
 			sph = time / hordes;
 			level thread display_sph( sph );
