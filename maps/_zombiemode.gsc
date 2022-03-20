@@ -1446,7 +1446,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 555555; //555
+		players[p].score = 555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
@@ -1761,7 +1761,7 @@ onPlayerSpawned()
 
 		if( isdefined( self.initialized ) && self.initialized )
 		{
-			if( level.script == "zombie_cod5_factory" )
+			if( level.script == "zombie_cod5_factory" && flag( "power_on" ) )
 			{
 				self GiveWeapon( "bowie_knife_zm" );
 			}
@@ -7197,10 +7197,10 @@ coop_pause(timer_hud, start_time)
 
 	while(1)
 	{
-		if( getDvarInt( "coop_pause" ) == 1 )
+		if( getDvarInt( "coop_pause" ) )
 		{
 			players = GetPlayers();
-			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) )
+			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
 			{
 				iprintln("finish the round");
 				level waittill( "end_of_round" );
@@ -7210,7 +7210,30 @@ coop_pause(timer_hud, start_time)
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
 
 			level waittill( "start_of_round" );
-			iprintlnbold( "game paused");
+
+			black_hud = newhudelem();
+			black_hud.horzAlign = "fullscreen";
+			black_hud.vertAlign = "fullscreen";
+			//black_hud.foreground = true;
+			black_hud SetShader( "black", 640, 480 );
+			black_hud.alpha = 0;
+
+			black_hud FadeOverTime( 1.0 );
+			black_hud.alpha = 0.65;
+
+			paused_hud = newhudelem();
+			paused_hud.horzAlign = "center";
+			paused_hud.vertAlign = "middle";
+			paused_hud setText("GAME PAUSED");
+			paused_hud.foreground = true;
+			paused_hud.fontScale = 2.3;
+			paused_hud.x -= 63;
+			paused_hud.y -= 20;
+			paused_hud.alpha = 0;
+			paused_hud.color = ( 1.0, 1.0, 1.0 );
+
+			paused_hud FadeOverTime( 1.0 );
+			paused_hud.alpha = 0.8;
 
 			for(i = 0; players.size > i; i++)
 			{
@@ -7231,7 +7254,7 @@ coop_pause(timer_hud, start_time)
 				current_paused_time = current_time - paused_start_time;
 				level.paused_time = previous_paused_time + current_paused_time;
 
-				if( getDvarInt( "coop_pause" ) == 0 )
+				if( !getDvarInt( "coop_pause" ) )
 				{
 					paused = false;
 
@@ -7241,6 +7264,14 @@ coop_pause(timer_hud, start_time)
 					}
 
 					players[0] SetClientDvar( "ai_disableSpawn", "0");
+
+					paused_hud FadeOverTime( 0.5 );
+					paused_hud.alpha = 0;
+					black_hud FadeOverTime( 0.5 );
+					black_hud.alpha = 0;
+					wait 0.5;
+					black_hud destroy();
+					paused_hud destroy();
 				}
 			}
 		}

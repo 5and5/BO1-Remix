@@ -389,16 +389,15 @@ bind 6 "toggle coop_pause 0 1"
 - Opened kino
 - Added speed to nacht
 - Added pap to nacht
+- Updated coop pause
 
 ## TODO
 
 - kino remove dt spawners
-- add bettys on nacht
 - drop/remaining hud tabable
 - round timer
 - trap timer
 - knife box to have anyone take weapon
-- black fade hud for coop pause
 - buff nml
 
 #### Would like to do
