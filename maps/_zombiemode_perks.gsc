@@ -2271,12 +2271,6 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
-        //Remove revive
-		// machine_remove2 = getEnt( "vending_revive", "targetname" );
-		// machine_remove2 Delete();
-		// trigger_remove2 = getEnt( "vending_revive", "target");
-		// trigger_remove2 Delete();
-
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
 		machine setModel( "zombie_vending_revive" );
@@ -2285,7 +2279,7 @@ place_perk_machines()
 		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
 		machine_trigger.targetname = "zombie_vending";
 		machine_trigger.target = "vending_revive";
-		machine_trigger.script_noteworthy = "specialty_quickrevive";
+		machine_trigger.script_noteworthy = "specialty_fastreload";
 
 		machine_trigger.script_sound = "mus_perks_revive_jingle";
 		machine_trigger.script_label = "mus_perks_revive_sting";
@@ -2294,5 +2288,52 @@ place_perk_machines()
 		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
 		machine_clip setmodel( "collision_geo_64x64x256" );
 		machine_clip Hide();
+	}
+
+	if(level.script == "zombie_cod5_prototype")
+	{
+		level.zombie_doubletap_machine_origin = (-160, -528, 1);
+		level.zombie_doubletap_machine_angles = (0, 0, 0);
+		level.zombie_doubletap_machine_clip_origin = (-162, -517, 17);
+		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
+
+		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
+		machine.angles = level.zombie_doubletap_machine_angles;
+		machine setModel( "zombie_vending_sleight" );
+		machine.targetname = "vending_sleight";
+
+		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
+		machine_trigger.targetname = "zombie_vending";
+		machine_trigger.target = "vending_sleight";
+		machine_trigger.script_noteworthy = "specialty_fastreload";
+
+		machine_trigger.script_sound = "mus_perks_sleight_jingle";
+		machine_trigger.script_label = "mus_perks_sleight_sting";
+
+		machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		machine_clip setmodel( "collision_geo_64x64x256" );
+		machine_clip Hide();
+
+		level thread turn_sleight_on();
+		level notify("sleight_on");
+
+		// machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
+		// machine.angles = level.zombie_doubletap_machine_angles;
+		// machine setModel( "zombie_vending_three_gun" );
+		// machine.targetname = "vending_additionalprimaryweapon";
+
+		// machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
+		// machine_trigger.targetname = "zombie_vending";
+		// machine_trigger.target = "vending_additionalprimaryweapon";
+		// machine_trigger.script_noteworthy = "specialty_additionalprimaryweapon";
+
+		// machine_trigger.script_sound = "mus_perks_sleight_jingle";
+		// machine_trigger.script_label = "mus_perks_sleight_sting";
+
+		// machine_clip = spawn( "script_model", level.zombie_doubletap_machine_clip_origin );
+		// machine_clip.angles = level.zombie_doubletap_machine_clip_angles;
+		// machine_clip setmodel( "collision_geo_64x64x256" );
+		// machine_clip Hide();
 	}
 }

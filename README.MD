@@ -387,6 +387,7 @@ bind 6 "toggle coop_pause 0 1"
 ## Patch 1.6.0 Notes
 
 - Opened kino
+- Added speed to nacht
 
 ## TODO
 
