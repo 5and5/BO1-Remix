@@ -81,8 +81,9 @@ main()
 	level thread time_to_play();
 
 	level thread pistol_rank_setup();
+	level thread spawn_pap_machine();
 
-	level.has_pack_a_punch = false;
+	// level.has_pack_a_punch = false;
 }
 
 precache_player_model_override()
@@ -159,25 +160,21 @@ register_offhand_weapons_for_level_defaults_override()
 setup_weapon_cabinet()
 {
 	// the triggers which are targeted at doors
-	weapon_cabs = getentarray( "weapon_cabinet_use", "targetname" );
+	weapon_cabs = GetEntArray( "weapon_cabinet_use", "targetname" ); 
 
 	for( i = 0; i < weapon_cabs.size; i++ )
 	{
 
-		//weapon_cabs[i] SetHintString( &"ZOMBIE_CABINET_OPEN_1500" );
-		weapon_cabs[i] setCursorHint( "HINT_NOICON" );
+		weapon_cabs[i] SetHintString( &"ZOMBIE_CABINET_OPEN_1500" ); 
+		weapon_cabs[i] setCursorHint( "HINT_NOICON" ); 
 		weapon_cabs[i] UseTriggerRequireLookAt();
 	}
 
-	array_thread( weapon_cabs, ::weapon_cabinet_think );
+	array_thread( weapon_cabs, ::weapon_cabinet_think ); 
 }
 weapon_cabinet_think()
 {
-	self UseTriggerRequireLookAt();
-    self sethintstring( "Hold ^3[{+activate}]^7 to upgrade wonder weapons" );
-    self setCursorHint( "HINT_NOICON" );
-
-	weapons = getentarray( "cabinet_weapon", "targetname" );
+	weapons = getentarray( "cabinet_weapon", "targetname" ); 
 
 	doors = getentarray( self.target, "targetname" );
 	for( i = 0; i < doors.size; i++ )
@@ -185,7 +182,7 @@ weapon_cabinet_think()
 		doors[i] NotSolid();
 	}
 
-	self.has_been_used_once = false;
+	self.has_been_used_once = false; 
 
 	self thread maps\_zombiemode_weapons::decide_hide_show_hint();
 
@@ -193,26 +190,7 @@ weapon_cabinet_think()
 	{
 		self waittill( "trigger", player );
 
-		if(player HasWeapon("ray_gun_zm"))
-		{
-			player TakeWeapon( "ray_gun_zm" );
-			player GiveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
-			player GiveWeapon( "ray_gun_upgraded_zm" );
-			player GiveStartAmmo( "ray_gun_upgraded_zm" );
-			player SwitchToWeapon( "ray_gun_upgraded_zm" );
-			player PlaySound( "mus_wonder_weapon_stinger" );
-		}
-
-		if(player HasWeapon("thundergun_zm"))
-		{
-			player TakeWeapon( "thundergun_zm" );
-			player GiveWeapon( "thundergun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "thundergun_upgraded_zm" ) );
-			player GiveStartAmmo( "thundergun_upgraded_zm" );
-			player SwitchToWeapon( "thundergun_upgraded_zm" );
-			player PlaySound( "mus_wonder_weapon_stinger" );
-		}
-	}
-		/*if( !player maps\_zombiemode_weapons::can_buy_weapon() )
+		if( !player maps\_zombiemode_weapons::can_buy_weapon() )
 		{
 			wait( 0.1 );
 			continue;
@@ -248,19 +226,19 @@ weapon_cabinet_think()
 				if( player.score >= cost )
 				{
 					self play_sound_on_ent( "purchase" );
-					player maps\_zombiemode_score::minus_to_player_score( cost );
-					player maps\_zombiemode_weapons::weapon_give( self.zombie_weapon_upgrade );
+					player maps\_zombiemode_score::minus_to_player_score( cost ); 
+					player maps\_zombiemode_weapons::weapon_give( self.zombie_weapon_upgrade ); 
 					player maps\_zombiemode_weapons::check_collector_achievement( self.zombie_weapon_upgrade );
 				}
 				else // not enough money
 				{
 					play_sound_on_ent( "no_purchase" );
 					player maps\_zombiemode_audio::create_and_play_dialog( "general", "no_money" );
-				}
+				}			
 			}
 			else if ( player.score >= ammo_cost )
 			{
-				ammo_given = player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade );
+				ammo_given = player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade ); 
 				if( ammo_given )
 				{
 					self play_sound_on_ent( "purchase" );
@@ -277,63 +255,63 @@ weapon_cabinet_think()
 		{
 			self.has_been_used_once = true;
 
-			self play_sound_on_ent( "purchase" );
+			self play_sound_on_ent( "purchase" ); 
 
-			self SetHintString( &"WAW_ZOMBIE_WEAPONCOSTAMMO", cost, ammo_cost );
-			self setCursorHint( "HINT_NOICON" );
-			player maps\_zombiemode_score::minus_to_player_score( self.zombie_cost );
+			self SetHintString( &"WAW_ZOMBIE_WEAPONCOSTAMMO", cost, ammo_cost ); 
+			self setCursorHint( "HINT_NOICON" ); 
+			player maps\_zombiemode_score::minus_to_player_score( self.zombie_cost ); 
 
-			doors = getentarray( self.target, "targetname" );
+			doors = getentarray( self.target, "targetname" ); 
 
 			for( i = 0; i < doors.size; i++ )
 			{
 				if( doors[i].model == "dest_test_cabinet_ldoor_dmg0" )
 				{
-					doors[i] thread weapon_cabinet_door_open( "left" );
+					doors[i] thread weapon_cabinet_door_open( "left" ); 
 				}
 				else if( doors[i].model == "dest_test_cabinet_rdoor_dmg0" )
 				{
-					doors[i] thread weapon_cabinet_door_open( "right" );
+					doors[i] thread weapon_cabinet_door_open( "right" ); 
 				}
 			}
 
-			player_has_weapon = player maps\_zombiemode_weapons::has_weapon_or_upgrade( self.zombie_weapon_upgrade );
+			player_has_weapon = player maps\_zombiemode_weapons::has_weapon_or_upgrade( self.zombie_weapon_upgrade ); 
 
 			if( !player_has_weapon )
 			{
-				player maps\_zombiemode_weapons::weapon_give( self.zombie_weapon_upgrade );
+				player maps\_zombiemode_weapons::weapon_give( self.zombie_weapon_upgrade ); 
 				player maps\_zombiemode_weapons::check_collector_achievement( self.zombie_weapon_upgrade );
 			}
 			else
 			{
 				if( player maps\_zombiemode_weapons::has_upgrade( self.zombie_weapon_upgrade ) )
 				{
-					player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade+"_upgraded" );
+					player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade+"_upgraded" ); 
 				}
 				else
 				{
-					player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade );
+					player maps\_zombiemode_weapons::ammo_give( self.zombie_weapon_upgrade ); 
 				}
-			}
+			}	
 		}
 		else // not enough money
 		{
 			play_sound_on_ent( "no_purchase" );
 			player maps\_zombiemode_audio::create_and_play_dialog( "general", "no_money" );
-		}
-	}*/
+		}		
+	}
 }
-/*weapon_cabinet_door_open( left_or_right )
+weapon_cabinet_door_open( left_or_right )
 {
 	if( left_or_right == "left" )
 	{
-		self rotateyaw( 120, 0.3, 0.2, 0.1 );
+		self rotateyaw( 120, 0.3, 0.2, 0.1 ); 	
 	}
 	else if( left_or_right == "right" )
 	{
-		self rotateyaw( -120, 0.3, 0.2, 0.1 );
-	}
-}*/
+		self rotateyaw( -120, 0.3, 0.2, 0.1 ); 	
+	}	
+}
 //-------------------------------------------------------------------------------
 
 bad_area_fixes()
@@ -859,4 +837,57 @@ zombie_collision_patch()
 	collision setmodel("collision_geo_32x32x128");
 	collision.angles = (0, 0, 0);
 	collision Hide();
+}
+
+spawn_pap_machine()
+{
+	zombie_packapunch_machine_origin = (-146, 906, 0);
+	zombie_packapunch_machine_angles = (0, 90, 0);
+	zombie_packapunch_machine_clip_origin = zombie_packapunch_machine_origin;
+	zombie_packapunch_machine_clip_angles = (0, 90, 0);
+
+	machine = Spawn( "script_model", zombie_packapunch_machine_origin );
+	machine.angles = zombie_packapunch_machine_angles;
+	machine setmodel("zombie_vending_packapunch_on");
+	machine.targetname = "vending_packapunch";
+
+	machine_clip = spawn( "script_model", zombie_packapunch_machine_clip_origin );
+	machine_clip.angles = zombie_packapunch_machine_clip_angles;
+	machine_clip setmodel( "collision_geo_64x64x256" );
+	machine_clip Hide();
+
+	machine_trigger = Spawn( "trigger_radius_use", zombie_packapunch_machine_origin + (0, 0, 40), 100, 100, 100);
+	machine_trigger UseTriggerRequireLookAt();
+	machine_trigger sethintstring( "Hold ^3[{+activate}]^7 to Pack A Punch [Cost: 5000]" );
+	machine_trigger SetCursorHint( "HINT_NOICON" );
+
+	cost = 5000;
+	weapons = array("m1911_zm", "ray_gun_zm", "crossbow_explosive_zm", "thundergun_zm");
+	weapons_upgraded = array("m1911_upgraded_zm", "ray_gun_upgraded_zm", "crossbow_explosive_upgraded_zm", "thundergun_upgraded_zm");
+
+	while( 1 )
+	{
+		machine_trigger waittill( "trigger", player );
+
+		for(i=0; i < weapons.size; i++)
+		{
+			if( player.score >= cost && player GetCurrentWeapon() == weapons[i])
+			{
+				player maps\_zombiemode_score::minus_to_player_score( cost );
+
+				if(player HasWeapon(weapons[i]))
+				{
+					player TakeWeapon( weapons[i] );
+					player GiveWeapon( weapons_upgraded[i], 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( weapons_upgraded[i] ) );
+					player GiveStartAmmo( weapons_upgraded[i] );
+					player SwitchToWeapon( weapons_upgraded[i] );
+					player PlaySound( "mus_wonder_weapon_stinger" );
+				}
+			}
+			else // not enough money
+			{
+				player PlaySound( "no_purchase" );
+			}
+		}
+	}
 }

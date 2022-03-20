@@ -388,12 +388,12 @@ bind 6 "toggle coop_pause 0 1"
 
 - Opened kino
 - Added speed to nacht
+- Added pap to nacht
 
 ## TODO
 
 - kino remove dt spawners
-- speed cola on nacht where mule was
-- proper pap on nacht
+- add bettys on nacht
 - drop/remaining hud tabable
 - round timer
 - trap timer

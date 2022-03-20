@@ -1446,7 +1446,7 @@ difficulty_init()
 #/
 	for ( p=0; p<players.size; p++ )
 	{
-		players[p].score = 555; //555
+		players[p].score = 555555; //555
 		players[p].score_total = players[p].score;
 		players[p].old_score = players[p].score;
 	}
