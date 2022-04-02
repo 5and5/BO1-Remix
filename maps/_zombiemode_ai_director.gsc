@@ -68,6 +68,7 @@ init()
 
 	// Number of current active boss zombies
 	level.num_director_zombies = 0;
+	flag_init( "director_alive" );
 
 	level.director_zombie_spawners = GetEntArray( "boss_zombie_spawner", "targetname" );
 	array_thread( level.director_zombie_spawners, ::add_spawn_function, maps\_zombiemode_ai_director::director_prespawn );
@@ -495,6 +496,7 @@ director_zombie_spawn()
 		level.num_director_zombies = 0;
 	}
 	level.num_director_zombies++;
+	flag_set( "director_alive" );
 
 	director_zombie = self maps\_zombiemode_net::network_safe_stalingrad_spawn( "boss_zombie_spawn", 1 );
 	director_zombie Hide();
@@ -675,6 +677,8 @@ director_watch_damage()
 	self endon( "humangun_leave" );
 
 	self.dmg_taken = 0;
+	level.director_damage = 0;
+	flag_set( "director_alive" );
 
 	/#
 	self thread director_display_damage();
@@ -701,6 +705,7 @@ director_watch_damage()
 		}
 
 		self.dmg_taken += amount;
+		level.director_damage += amount;		// Send to level var
 
 		if ( self.health_state == "pristine" )
 		{
@@ -766,6 +771,7 @@ director_watch_damage()
 	}
 
 	self notify( "director_exit" );
+	flag_clear( "director_alive" );
 
 	self.defeated = true;
 	self.solo_last_stand = false;
