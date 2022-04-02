@@ -230,6 +230,9 @@ post_all_players_connected()
 		level thread crawler_round_tracker();
 	}
 
+	// Flag signaling start of round, for director hud
+	level thread just_spawned_exception();
+
 	//chrisp - adding spawning vo
 	//level thread spawn_vo();
 
@@ -984,7 +987,9 @@ init_flags()
 	flag_init( "begin_spawning" );
 	flag_init( "end_round_wait" );
 	flag_init( "wait_and_revive" );
-	flag_init( "instant_revive");
+	flag_init( "instant_revive" );
+	flag_init( "director_alive" );
+	flag_init( "spawn_init" );
 }
 
 // Client flags registered here should be for global zombie systems, and should
@@ -1604,6 +1609,15 @@ onPlayerConnect_clientDvars()
 		self setClientDvar("hud_remaining", 0);
 	}
 
+	if(getDvarInt("hud_george_bar") == 1)
+	{
+		self setClientDvar("hud_george_bar", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_george_bar", 0);
+	}
+
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
 	self setClientDvar("aim_lockon_pitch_strength", 0.0 );
@@ -1747,6 +1761,10 @@ onPlayerSpawned()
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread tab_hud();
+				if (level.script == "zombie_coast")
+				{
+					self thread george_health_bar();
+				}
 
 				// testing only
 				//self thread get_position();
@@ -7614,6 +7632,135 @@ updateHealth( barFrac )
 {
 	barWidth = int(self.width * barFrac);
 	self setShader( self.shader, barWidth, self.height );
+}
+
+george_health_bar()
+{
+	self endon("disconnect");
+	self endon("end_game");
+
+	hud_wait();
+	level waittill("start_of_round");
+
+	george_max_health = level.director_max_damage_taken * level.players_playing;
+
+	width = 250;
+	height = 8;
+
+	george_bar_background = create_hud( "left", "bottom");
+	george_bar_background.x = 300;
+	george_bar_background.y = -3;
+	george_bar_background.width = width + 2;
+	george_bar_background.height = height + 1;
+	george_bar_background.foreground = 0;
+	george_bar_background.shader = "black";
+	george_bar_background setShader( "black", width + 2, height + 2 );
+
+	george_bar = create_hud( "left", "bottom");
+	george_bar.x = 301;
+	george_bar.y = -4;
+	george_bar.width = width;
+	george_bar.height = height;
+	george_bar.foreground = 1;
+	george_bar.shader = "white";
+	george_bar setShader( "white", width, height );
+
+	george_health = create_hud( "left", "bottom");
+	george_health.x = 410;
+	george_health.y = -11;
+	george_health.fontScale = 1.3;
+
+	hud_fade(george_health, 0.8, 0.3);
+	hud_fade(george_bar, 0.5, 0.3);
+	hud_fade(george_bar_background, 0.5, 0.3);
+
+	self thread hud_end(george_health);
+	self thread hud_end(george_bar);
+	self thread hud_end(george_bar_background);
+
+	while (1)
+	{
+		// iPrintLn(flag("director_alive"));	// debug
+		// iPrintLn(flag("spawn_init"));		// debug
+
+		if( getDvarInt( "hud_george_bar" ) == 0)
+		{
+			if(george_bar.alpha != 0 && george_health.alpha != 0)
+			{
+				hud_fade(george_health, 0, 0.3);
+				hud_fade(george_bar, 0, 0.3);
+				hud_fade(george_bar_background, 0, 0.3);
+			}
+		}
+		else
+		{
+			current_george_hp = (george_max_health - level.director_damage);
+			// Lock on 1 as it calculates bar size by dividing
+			if (current_george_hp <= 1)
+			{
+				current_george_hp = 1;
+				// Display full health bar on round start
+				if (flag( "spawn_init" ))
+				{
+					current_george_hp = george_max_health;
+				}
+			}
+
+			if (flag( "director_alive" ))
+			{
+				george_bar updateHealth(current_george_hp / george_max_health);
+				george_health setValue(current_george_hp);
+
+				george_health.color = (0.2, 0.6, 1);				// Blue
+				if (current_george_hp < george_max_health * .66)
+				{
+					george_health.color = (1, 1, 0.2);				// Yellow
+					if (current_george_hp < george_max_health * .33)
+					{
+						george_health.color = (1, 0.6, 0.2);		// Orange
+						if (current_george_hp <= 1)
+						{
+							george_health.color = (1, 0.2, 0.2);	// Red
+						}
+					}
+				}
+				if (george_health.alpha != 0.8)
+				{
+					hud_fade(george_health, 0.8, 0.3);
+					hud_fade(george_bar, 0.5, 0.3);
+					hud_fade(george_bar_background, 0.5, 0.3);
+				}
+			}
+
+			else
+			{
+				george_bar updateHealth(1 / george_max_health);
+				george_health setValue(0);
+				george_health.color = (1, 0.2, 0.2);				// Red
+
+				if (george_health.alpha != 0)
+				{
+					wait 5;
+					hud_fade(george_health, 0, 0.3);
+					hud_fade(george_bar, 0, 0.3);
+					hud_fade(george_bar_background, 0, 0.3);
+				}	
+			}
+
+    	}
+		wait 0.05;
+	}
+}
+
+just_spawned_exception()
+{
+	while (1)
+	{
+		level waittill ("start_of_round");
+		flag_set ( "spawn_init" );
+		wait 15;
+		flag_clear ( "spawn_init" );
+	}
 }
 
 create_hud( side, top )
