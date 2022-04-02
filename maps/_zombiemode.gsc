@@ -4103,11 +4103,29 @@ award_grenades_for_survivors()
 
 ai_calculate_health( round_number )
 {
-	//insta kill rounds staring at 99 then every 4 rounds
-	if(round_number >= 99 && round_number % 2 == 1)
+	// Insta rounds starting between 99-69 depends lobby size and occur on odd rounds
+	if (round_number % 2 == 1)
 	{
-		level.zombie_health = 150;
-		return;
+		if (level.players_playing == 1 && round_number >= 99)			// Solo
+		{
+			level.zombie_health = 150;
+			return;
+		}
+		else if (level.players_playing == 2 && round_number >= 89)		// 2p
+		{
+			level.zombie_health = 150;
+			return;
+		}
+		else if (level.players_playing == 3 && round_number >= 79)		// 3p
+		{
+			level.zombie_health = 150;
+			return;
+		}
+		else if (level.players_playing == 4 && round_number >= 69)		// 4p
+		{
+			level.zombie_health = 150;
+			return;
+		}
 	}
 
 	level.zombie_health = level.zombie_vars["zombie_health_start"];
