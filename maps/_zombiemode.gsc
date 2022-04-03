@@ -258,7 +258,8 @@ post_all_players_connected()
 	}
 
 	level thread timer_hud();
-	level thread round_timer_hud();
+	level thread round_timer();
+	level thread display_sph();
 
 	//level thread coop_pause();
 
@@ -990,6 +991,7 @@ init_flags()
 	flag_init( "instant_revive" );
 	flag_init( "director_alive" );
 	flag_init( "spawn_init" );
+	flag_init( "game_paused" );
 }
 
 // Client flags registered here should be for global zombie systems, and should
@@ -7223,6 +7225,7 @@ coop_pause(timer_hud, start_time)
 	paused_start_time = 0;
 	paused = false;
 
+	flag_clear( "game_paused" );
 	players = GetPlayers();
 	if( players.size == 1 )
 	{
@@ -7242,6 +7245,7 @@ coop_pause(timer_hud, start_time)
 			iprintln("wait for the round change");
 
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
+			flag_set( "game_paused" );
 
 			level waittill( "start_of_round" );
 
@@ -7298,6 +7302,7 @@ coop_pause(timer_hud, start_time)
 					}
 
 					players[0] SetClientDvar( "ai_disableSpawn", "0");
+					flag_clear( "game_paused" );
 
 					paused_hud FadeOverTime( 0.5 );
 					paused_hud.alpha = 0;
@@ -7313,37 +7318,72 @@ coop_pause(timer_hud, start_time)
 	}
 }
 
-round_timer_hud()
+round_timer()
 {
 	level endon("end_game");
 
 	hud_level_wait();
 
-	timer = NewHudElem();
-	timer.horzAlign = "right";
-	timer.vertAlign = "top";
-	timer.alignX = "right";
-	timer.alignY = "top";
-	timer.y += 18;
-	timer.x -= 5;
-	timer.fontScale = 1.3;
-	timer.alpha = 0;
-	timer.color = ( 1.0, 1.0, 1.0 );
-	timer setTimer(0);
+	// timer = NewHudElem();
+	// timer.horzAlign = "right";
+	// timer.vertAlign = "top";
+	// timer.alignX = "right";
+	// timer.alignY = "top";
+	// timer.y += 18;
+	// timer.x -= 5;
+	// timer.fontScale = 1.3;
+	// timer.alpha = 0;
+	// timer.color = ( 1.0, 1.0, 1.0 );
 
-	round_timer(timer);
-}
+	timestamp_game = int(getTime() / 1000);
 
-round_timer(hud)
-{
 	while(1)
 	{
-		//hud setTimerUp(0);
-		start_time = int(getTime() / 1000);
+		level waittill ( "start_of_round" );
+		// Don't want to start the round if ppl ain't on the moon
+		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+		{
+			wait 0.05;
+			continue;
+		}
 
-		zombies_this_round = level.zombie_total + get_enemy_count();
-		hordes = zombies_this_round / 24;
+		// Print total time
+		timestamp_current = int(getTime() / 1000);
+		total_time = timestamp_current - timestamp_game;
+		if (level.round_number > 1)
+		{
+			level thread display_times( "Total time", total_time, 5, 0.5 );
+		}
 
+		// Exclude time spent in pause
+		if (isdefined(flag( "game_paused" )))
+		{
+			if (!flag( "game_paused" ))
+			{		
+				timestamp_start = int(getTime() / 1000);
+			}
+			else
+			{
+				while ( 1 )
+				{
+					if (!flag( "game_paused" ))
+					{
+						break;
+					}
+					wait 0.05;
+				}
+				timestamp_start = int(getTime() / 1000);
+			}
+		}
+		else
+		{
+			wait 0.05;
+			continue;
+		}
+
+		// timer setTimer(0);				
+
+		// Exceptions for special round cases
 		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
 		{
 			level waittill( "last_dog_down" );
@@ -7361,72 +7401,137 @@ round_timer(hud)
 			level waittill( "end_of_round" );
 		}
 
-		if(is_true(flag("enter_nml")))
+		if(flag( "enter_nml" ))
 		{
 			level waittill( "end_of_round" ); //end no man's land
 			level waittill( "end_of_round" ); //end actual round
 		}
 
-		end_time = int(getTime() / 1000);
+		// Print round time
+		timestamp_end = int(getTime() / 1000);
+		round_time = timestamp_end - timestamp_start;
+		level thread display_times( "Round time", round_time, 5, 0.5 );
+	}
+}
 
-		// need to set time below the number or it will show the next number
-		time = end_time - start_time - 0.05;
-		hud.label = "Round Time: ";
-		level thread display_times(hud, time);
+display_sph()
+{	
+	level endon("end_game");
 
+	hud_level_wait();
+
+	sph_hud = NewHudElem();
+	sph_hud.horzAlign = "right";
+	sph_hud.vertAlign = "top";
+	sph_hud.alignX = "right";
+	sph_hud.alignY = "top";
+	sph_hud.y += 18;
+	sph_hud.x -= 5;
+	sph_hud.fontScale = 1.3;
+	sph_hud.alpha = 0;
+	sph_hud.color = ( 1.0, 1.0, 1.0 );
+	sph_hud.label = "SPH: ";
+	sph_hud setValue(0);
+	sph_round_display = 50;		// Start displaying on r50
+
+	// Initialize variables
+	round_time = 0;			
+	zc_last = 0;
+
+	while ( 1 )
+	{
 		level waittill( "start_of_round" );
 
-		if(is_true(flag("enter_nml")))
+		// Don't want to start the round if ppl ain't on the moon
+		if (isdefined(level.on_the_moon) && !level.on_the_moon)
 		{
-			level waittill( "start_of_round" );
+			wait 0.05;
+			continue;
 		}
 
-		total_time = level.total_time - 0.05;
-		hud.label = "Total Time: ";
-		level thread display_times(hud, total_time);
-
-		// sph
-		if(level.round_number >= 50 && getDvarInt( "hud_round_timer" ) != 2 && !flag( "dog_round" ) && !flag( "thief_round" ) && !flag( "monkey_round" ))
+		if (level.round_number >= sph_round_display && !flag( "dog_round" ) && !flag( "thief_round" ) && !flag( "monkey_round" ))
 		{
-			sph = time / hordes;
-			level thread display_sph( sph );
+			// Don't count pause time
+			if (isdefined(flag( "game_paused" )))
+			{
+				if (!flag( "game_paused" ))
+				{		
+					rt_start = int(getTime() / 1000);
+				}
+				else
+				{
+					while ( 1 )
+					{
+						if (!flag( "game_paused" ))
+						{
+							break;
+						}
+						wait 0.05;
+					}
+					rt_start = int(getTime() / 1000);
+				}
+			}
+			else
+			{
+				wait 0.05;
+				// iPrintLn("waiting");
+				continue;
+			}
+			// Get zombie count from current round
+			zc_current = level.zombie_total + get_enemy_count();
+
+			// Calculate and display SPH
+			wait 7;
+			if (level.round_number > sph_round_display && isdefined(round_time))
+			{
+				sph = round_time / (zc_last / 24);
+				sph_hud setValue(sph);
+				hud_fade(sph_hud, 1, 0.15);
+				wait 6;
+				hud_fade(sph_hud, 0, 0.15);
+			}
+
+			level waittill( "end_of_round" );
+			if(flag( "enter_nml" ))
+			{
+				level waittill( "end_of_round" ); //end no man's land
+				level waittill( "end_of_round" ); //end actual round
+			}			
+			
+			zc_last = zc_current;	// Save zc from this round to separate var
+			rt_end = int(getTime() / 1000);
+			round_time = rt_end - rt_start;
+			// iPrintLn("debug_rt: ^5" + round_time);
 		}
+		wait 0.05;
 	}
 }
 
-display_sph( sph )
-{	
-	wait 7;
-	hud = NewHudElem();
-	hud.horzAlign = "right";
-	hud.vertAlign = "top";
-	hud.alignX = "right";
-	hud.alignY = "top";
-	hud.y += 18;
-	hud.x -= 5;
-	hud.fontScale = 1.3;
-	hud.alpha = 0;
-	hud.color = ( 1.0, 1.0, 1.0 );
-	hud.label = "SPH: ";
-	hud setValue(sph);
-	hud_fade(hud, 1, 0.15);
-	wait 6;
-	hud_fade(hud, 0, 0.15);
-	wait 1;
-	hud destroy();
-}
-
-display_times( hud, time )
+display_times( label, time, duration, delay )
 {
-	level endon("start_of_round");
+	level endon("end_game");
 
-	hud_fade(hud, 1, 0.15);
-	for(i = 0; i < 12; i++)
-	{
-		hud setTimer(time);
-		wait 0.5;
-	}
-	hud_fade(hud, 0, 0.15);
+	wait delay;
+	print_hud = NewHudElem();
+	print_hud.horzAlign = "right";
+	print_hud.vertAlign = "top";
+	print_hud.alignX = "right";
+	print_hud.alignY = "top";
+	print_hud.y += 18;
+	print_hud.x -= 5;
+	print_hud.fontScale = 1.3;
+	print_hud.alpha = 0;
+	print_hud.color = ( 1.0, 1.0, 1.0 );
+	print_hud.label = (label + ": ");
+
+	time_in_mins = print_time_friendly( time );	
+	print_hud setText( time_in_mins );
+
+	hud_fade( print_hud, 1, 0.25 );
+	wait duration;
+	hud_fade( print_hud, 0, 0.25 );
+	wait 2;
+	print_hud destroy_hud();
 }
 
 tab_hud()
@@ -7955,4 +8060,53 @@ gamemode_select()
 			trig notify( "trigger" );
 			break;
 	}
+}
+
+// copy of to_mins() with modified output
+print_time_friendly( seconds )
+{
+	hours = 0; 
+	minutes = 0; 
+	
+	if( seconds > 59 )
+	{
+		minutes = int( seconds / 60 );
+
+		seconds = int( seconds * 1000 ) % ( 60 * 1000 );
+		seconds = seconds * 0.001; 
+
+		if( minutes > 59 )
+		{
+			hours = int( minutes / 60 );
+			minutes = int( minutes * 1000 ) % ( 60 * 1000 );
+			minutes = minutes * 0.001; 		
+		}
+	}
+
+	if( hours < 10 )
+	{
+		hours = "0" + hours; 
+	}
+
+	if( minutes < 10 )
+	{
+		minutes = "0" + minutes; 
+	}
+
+	seconds = Int( seconds ); 
+	if( seconds < 10 )
+	{
+		seconds = "0" + seconds; 
+	}
+
+	if (hours == 0)
+	{
+		combined = "" + minutes  + ":" + seconds; 
+	}
+	else
+	{
+		combined = "" + hours  + ":" + minutes  + ":" + seconds; 
+	}
+
+	return combined; 
 }
