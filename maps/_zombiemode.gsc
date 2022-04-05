@@ -260,6 +260,7 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
+	// level thread maps\_zombiemode_zone_manager::zios_spawn_printer();
 
 	//level thread coop_pause();
 
