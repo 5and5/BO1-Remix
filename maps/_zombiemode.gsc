@@ -1621,6 +1621,15 @@ onPlayerConnect_clientDvars()
 		self setClientDvar("hud_george_bar", 0);
 	}
 
+	if(getDvarInt("hud_always_round_timer") == 1)
+	{
+		self setClientDvar("hud_always_round_timer", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_always_round_timer", 0);
+	}
+
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
 	self setClientDvar("aim_lockon_pitch_strength", 0.0 );
@@ -7325,35 +7334,29 @@ round_timer()
 
 	hud_level_wait();
 
-	// timer = NewHudElem();
-	// timer.horzAlign = "right";
-	// timer.vertAlign = "top";
-	// timer.alignX = "right";
-	// timer.alignY = "top";
-	// timer.y += 18;
-	// timer.x -= 5;
-	// timer.fontScale = 1.3;
-	// timer.alpha = 0;
-	// timer.color = ( 1.0, 1.0, 1.0 );
+	round_timer = NewHudElem();
+	round_timer.horzAlign = "right";
+	round_timer.vertAlign = "top";
+	round_timer.alignX = "right";
+	round_timer.alignY = "top";
+	round_timer.y += 18;
+	round_timer.x -= 5;
+	round_timer.fontScale = 1.3;
+	round_timer.alpha = 0;
+	round_timer.color = ( 1.0, 1.0, 1.0 );
 
 	timestamp_game = int(getTime() / 1000);
+	rt_dvar_choice = 0;
 
 	while(1)
 	{
 		level waittill ( "start_of_round" );
+
 		// Don't want to start the round if ppl ain't on the moon
 		if (isdefined(level.on_the_moon) && !level.on_the_moon)
 		{
 			wait 0.05;
 			continue;
-		}
-
-		// Print total time
-		timestamp_current = int(getTime() / 1000);
-		total_time = timestamp_current - timestamp_game;
-		if (level.round_number > 1)
-		{
-			level thread display_times( "Total time", total_time, 5, 0.5 );
 		}
 
 		// Exclude time spent in pause
@@ -7382,7 +7385,34 @@ round_timer()
 			continue;
 		}
 
-		// timer setTimer(0);				
+		// Setup round timer if always show rt dvar is true
+		rt_dvar_choice = getDvarInt("hud_always_round_timer");
+		iPrintLn(rt_dvar_choice);	// debug
+
+		if (rt_dvar_choice == 0)
+		{
+			hud_fade(round_timer, 0, 0.25);
+		}
+		else
+		{
+			current_round = level.round_number;
+			round_timer setTimerUp(0);
+			hud_fade(round_timer, 1, 0.25);
+		}
+
+		// Print total time
+		timestamp_current = int(getTime() / 1000);
+		total_time = timestamp_current - timestamp_game;
+
+		rows = 2;
+		if (rt_dvar_choice > 0)
+		{
+			rows++;
+		}
+		if (level.round_number > 1)
+		{
+			level thread display_times( "Total time", total_time, 5, 0.5, rows );
+		}
 
 		// Exceptions for special round cases
 		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
@@ -7409,9 +7439,13 @@ round_timer()
 		}
 
 		// Print round time
+		if ((rt_dvar_choice != 0) && (round_timer.alpha != 0))
+		{
+			hud_fade(round_timer, 0, 0.25);
+		}
 		timestamp_end = int(getTime() / 1000);
 		round_time = timestamp_end - timestamp_start;
-		level thread display_times( "Round time", round_time, 5, 0.5 );
+		level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
 	}
 }
 
@@ -7426,8 +7460,8 @@ display_sph()
 	sph_hud.vertAlign = "top";
 	sph_hud.alignX = "right";
 	sph_hud.alignY = "top";
-	sph_hud.y += 18;
-	sph_hud.x -= 5;
+	sph_hud.y = 18;
+	sph_hud.x = -5;
 	sph_hud.fontScale = 1.3;
 	sph_hud.alpha = 0;
 	sph_hud.color = ( 1.0, 1.0, 1.0 );
@@ -7483,6 +7517,13 @@ display_sph()
 
 			// Calculate and display SPH
 			wait 7;
+			y_offset = 0;
+			if(getDvarInt("hud_always_round_timer") > 0)
+			{
+				y_offset = 15;
+			}
+			sph_hud.y = (18 + y_offset);
+
 			if (level.round_number > sph_round_display && isdefined(round_time))
 			{
 				sph = round_time / (zc_last / 24);
@@ -7508,9 +7549,19 @@ display_sph()
 	}
 }
 
-display_times( label, time, duration, delay )
+display_times( label, time, duration, delay, row )
 {
 	level endon("end_game");
+
+	y_offset = 0;
+	if (isdefined(row))
+	{
+		while (row > 1)
+		{
+			y_offset += 15;
+			row--;
+		}
+	}
 
 	wait delay;
 	print_hud = NewHudElem();
@@ -7518,8 +7569,8 @@ display_times( label, time, duration, delay )
 	print_hud.vertAlign = "top";
 	print_hud.alignX = "right";
 	print_hud.alignY = "top";
-	print_hud.y += 18;
-	print_hud.x -= 5;
+	print_hud.y = (2 + y_offset);
+	print_hud.x = -5;
 	print_hud.fontScale = 1.3;
 	print_hud.alpha = 0;
 	print_hud.color = ( 1.0, 1.0, 1.0 );
