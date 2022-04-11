@@ -993,6 +993,7 @@ init_flags()
 	flag_init( "director_alive" );
 	flag_init( "spawn_init" );
 	flag_init( "game_paused" );
+	flag_init( "hud_pressed" );
 }
 
 // Client flags registered here should be for global zombie systems, and should
@@ -7387,7 +7388,7 @@ round_timer()
 
 		// Setup round timer if always show rt dvar is true
 		rt_dvar_choice = getDvarInt("hud_always_round_timer");
-		iPrintLn(rt_dvar_choice);	// debug
+		// iPrintLn(rt_dvar_choice);	// debug
 
 		if (rt_dvar_choice == 0)
 		{
@@ -7598,12 +7599,12 @@ tab_hud()
 	{	
 		if(self buttonPressed( getDvar( "hud_button" ) ))
 		{	
-			// self setClientDvar( "hud_drops", 1 );
-			// iPrintLn("test");
+			flag_set( "hud_pressed" );
 			self setClientDvar( "hud_tab", 1 );
 		}
 		else
 		{
+			flag_clear( "hud_pressed" );
 			self setClientDvar( "hud_tab", 0 );
 		}
 
@@ -7644,7 +7645,7 @@ drop_tracker_hud()
 			drops_hud setValue(level.drop_tracker_index);
 		}
 
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
+		if( getDvarInt( "hud_tab " ) && !getDvarInt( "hud_drops" ) )
 		{
 			if(drops_hud.alpha != 1 )
 			{
@@ -7835,14 +7836,60 @@ george_health_bar()
 	self thread hud_end(george_bar);
 	self thread hud_end(george_bar_background);
 
+	current_george_hp = 0;
+	temp_director = true;
+
 	while (1)
 	{
 		// iPrintLn(flag("director_alive"));	// debug
 		// iPrintLn(flag("spawn_init"));		// debug
 
-		if( getDvarInt( "hud_george_bar" ) == 0)
+		current_george_hp = (george_max_health - level.director_damage);
+
+		// Lock on 1 as it calculates bar size by dividing
+		if (current_george_hp <= 1)
 		{
-			if(george_bar.alpha != 0 && george_health.alpha != 0)
+			current_george_hp = 1;
+			// Display full health bar on round start
+			if (flag( "spawn_init" ))
+			{
+				current_george_hp = george_max_health;
+			}
+		}
+
+		if (flag( "director_alive" ))
+		{
+			if (!temp_director)
+			{
+				temp_director = true;
+			}
+			george_bar updateHealth(current_george_hp / george_max_health);
+			george_health setValue(current_george_hp);
+
+			george_health.color = (0.2, 0.6, 1);				// Blue
+			if (current_george_hp < george_max_health * .66)
+			{
+				george_health.color = (1, 1, 0.2);				// Yellow
+				if (current_george_hp < george_max_health * .33)
+				{
+					george_health.color = (1, 0.6, 0.2);		// Orange
+					if (current_george_hp <= 1)
+					{
+						george_health.color = (1, 0.2, 0.2);	// Red
+					}
+				}
+			}
+		}
+		else
+		{
+			hud_fade(george_bar, 0, 0.3);
+			george_health setValue(0);
+			george_health.color = (1, 0.2, 0.2);				// Red
+		}
+
+		if(!getDvarInt("hud_george_bar"))
+		{
+			if(george_health.alpha != 0)
 			{
 				hud_fade(george_health, 0, 0.3);
 				hud_fade(george_bar, 0, 0.3);
@@ -7851,60 +7898,28 @@ george_health_bar()
 		}
 		else
 		{
-			current_george_hp = (george_max_health - level.director_damage);
-			// Lock on 1 as it calculates bar size by dividing
-			if (current_george_hp <= 1)
+			if (george_health.alpha != 0.8 && temp_director)
 			{
-				current_george_hp = 1;
-				// Display full health bar on round start
-				if (flag( "spawn_init" ))
-				{
-					current_george_hp = george_max_health;
-				}
+				hud_fade(george_health, 0.8, 0.3);
+				hud_fade(george_bar, 0.5, 0.3);
+				hud_fade(george_bar_background, 0.5, 0.3);
 			}
-
-			if (flag( "director_alive" ))
+			else if (george_health.alpha != 0 && !flag("director_alive") && temp_director)
 			{
-				george_bar updateHealth(current_george_hp / george_max_health);
-				george_health setValue(current_george_hp);
-
-				george_health.color = (0.2, 0.6, 1);				// Blue
-				if (current_george_hp < george_max_health * .66)
-				{
-					george_health.color = (1, 1, 0.2);				// Yellow
-					if (current_george_hp < george_max_health * .33)
-					{
-						george_health.color = (1, 0.6, 0.2);		// Orange
-						if (current_george_hp <= 1)
-						{
-							george_health.color = (1, 0.2, 0.2);	// Red
-						}
-					}
-				}
-				if (george_health.alpha != 0.8)
-				{
-					hud_fade(george_health, 0.8, 0.3);
-					hud_fade(george_bar, 0.5, 0.3);
-					hud_fade(george_bar_background, 0.5, 0.3);
-				}
+				wait 5;
+				hud_fade(george_health, 0, 0.3);
+				hud_fade(george_bar, 0, 0.3);
+				hud_fade(george_bar_background, 0, 0.3);
+				temp_director = false;
 			}
-
-			else
-			{
-				george_bar updateHealth(1 / george_max_health);
-				george_health setValue(0);
-				george_health.color = (1, 0.2, 0.2);				// Red
-
-				if (george_health.alpha != 0)
-				{
-					wait 5;
-					hud_fade(george_health, 0, 0.3);
-					hud_fade(george_bar, 0, 0.3);
-					hud_fade(george_bar_background, 0, 0.3);
-				}	
-			}
-
     	}
+
+		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
+		{
+			hud_fade(george_health, 0.8, 0.3);
+			hud_fade(george_bar, 0.5, 0.3);
+			hud_fade(george_bar_background, 0.5, 0.3);			
+		}
 		wait 0.05;
 	}
 }
