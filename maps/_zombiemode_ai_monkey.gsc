@@ -1095,7 +1095,7 @@ monkey_round_tracker()
 
 			if(!IsDefined(level.prev_monkey_round_amount))
 			{
-				if(level.next_monkey_round % 2 == 1)
+				if(level.next_monkey_round % 2 != 1)
 				{
 					level.next_monkey_round++;
 				}
@@ -1105,7 +1105,7 @@ monkey_round_tracker()
 			}
 			else
 			{
-				if(level.next_monkey_round % 2 == 1)
+				if(level.next_monkey_round % 2 != 1)
 				{
 					level.next_monkey_round++;
 				}
