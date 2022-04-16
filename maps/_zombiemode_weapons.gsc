@@ -927,6 +927,52 @@ treasure_chest_init()
 
 	if (level.chests.size > 1)
 	{
+		// Always remove boxes here, using for loop above will cause inability to remove box model placeholders, and doing it in init_starting_chest_location() will cause conflicts, it'll try to reffer to keys that's already been removed (kino)
+		for (i=0; i<level.chests.size; i++ )
+		{
+			if(level.script == "zombie_theater")
+			{
+				if(level.chests[i].script_noteworthy == "alleyway_chest")
+				{
+					level.chests[i] hide_rubble();
+					level.chests[i] hide_chest();
+					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+				}
+				else if(level.chests[i].script_noteworthy == "control_chest")
+				{
+					level.chests[i] hide_chest();
+					level.chests[i] hide_rubble();
+					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+				}
+				else if(level.chests[i].script_noteworthy == "start_chest")
+				{
+					level.chests[i] hide_chest();
+					level.chests[i] hide_rubble();
+					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+				}
+			}
+
+			else if(level.script == "zombie_cod5_sumpf")
+			{
+				if(level.chests[i].script_noteworthy == "nw_chest")
+				{
+					level.chests[i] hide_rubble();
+					level.chests[i] hide_chest();
+					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+				}
+			}
+
+			else if(level.script == "zombie_cod5_factory")
+			{
+				if(level.chests[i].script_noteworthy == "chest3")
+				{
+					level.chests[i] hide_rubble();
+					level.chests[i] hide_chest();
+					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+				}
+			}
+		}
+		
 		flag_set("moving_chest_enabled");
 
 		level.chests = array_randomize(level.chests);
@@ -1050,54 +1096,6 @@ init_starting_chest_location()
         }
     }
 
-	// remove box loactions
-  	for( i = 0; i < level.chests.size; i++ )
-    {
-		if(level.script == "zombie_theater")
-		{
-			if(level.chests[i].script_noteworthy == "alleyway_chest")
-			{
-				level.chests[i] hide_rubble();
-				level.chests[i] hide_chest();
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-			if(level.chests[i].script_noteworthy == "control_chest")
-			{
-				level.chests[i] hide_chest();
-				level.chests[i] hide_rubble();
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-			if(level.chests[i].script_noteworthy == "start_chest")
-			{
-				level.chests[i] hide_chest();
-				level.chests[i] hide_rubble();
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-		}
-
-		if(level.script == "zombie_cod5_sumpf")
-		{
-			if(level.chests[i].script_noteworthy == "nw_chest")
-			{
-				level.chests[i] hide_rubble();
-				level.chests[i] hide_chest();
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-
-		}
-
-		if(level.script == "zombie_cod5_factory")
-		{
-			if(level.chests[i].script_noteworthy == "chest3")
-			{
-				level.chests[i] hide_rubble();
-				level.chests[i] hide_chest();
-				level.chests = array_remove_nokeys(level.chests, level.chests[i]);
-			}
-
-		}
-	}
-
     //make first chest the first index
     if(level.chest_index != 0)
     {
@@ -1111,9 +1109,11 @@ init_starting_chest_location()
         level.pandora_show_func = ::default_pandora_show_func;
     }
 
-    level.chests[level.chest_index] thread [[ level.pandora_show_func ]]();
+	// if (isdefined(level.chests[level.chest_index]))
+	// {
+	level.chests[level.chest_index] thread [[ level.pandora_show_func ]]();
+	// }
 }
-
 
 //
 //	Rubble is the object that is visible when the box isn't

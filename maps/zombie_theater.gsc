@@ -99,6 +99,10 @@ main()
 	init_zones[1] = "foyer2_zone";
 	level thread maps\_zombiemode_zone_manager::manage_zones( init_zones );
 
+	level.shrink_zones = ::shrink_zone;
+	level.spawners_to_remove = remove_spawners();
+	level.random_spawners = true;
+
 	level thread maps\_zombiemode_auto_turret::init();
     level thread set_rope_collision();
 
@@ -321,7 +325,6 @@ init_zombie_theater()
 	flag_init( "lobby_occupied" );
 	flag_init( "dining_occupied" );
 	flag_init( "special_quad_round" );
-
 
 	level thread electric_switch();
 	//level thread spawn_electric_switch();
@@ -785,4 +788,33 @@ disable_doors()
     		zombie_doors[i] trigger_off();
     	}
     }
+}
+
+shrink_zone( zone_name )
+{
+	// zone = level.zones[zone_name];
+	// iPrintLn(zone_name);
+
+	// Disable double tap window while in hell room
+	if (isdefined(zone_name) && zone_name == "alleyway_zone")
+	{
+		if (level.zones["crematorium_zone"].is_occupied || level.zones["alleyway_zone"].is_occupied)
+		{
+			// iPrintLn("OCCUPIED");
+			return level.zones[zone_name].num_spawners;
+		}
+		// iPrintLn("2");
+		return 2;
+	}
+	else
+	{
+		// iPrintLn("PASS");
+		return level.zones[zone_name].num_spawners;
+	}
+}
+
+remove_spawners()
+{
+	// Double tap window
+	return array(1);
 }
