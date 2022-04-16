@@ -1080,8 +1080,7 @@ monkey_round_tracker()
 			// only allow round change if someone has a perk
 			if ( !monkey_player_has_perk() )
 			{
-				level.next_monkey_round++;
-				monkey_print( "next monkey round at " + level.next_monkey_round );
+				level.next_monkey_round = level.next_monkey_round + 2;
 				continue;
 			}
 
@@ -1096,18 +1095,24 @@ monkey_round_tracker()
 
 			if(!IsDefined(level.prev_monkey_round_amount))
 			{
+				if(level.next_monkey_round % 2 == 1)
+				{
+					level.next_monkey_round++;
+				}
 				level.prev_monkey_round = level.next_monkey_round;
 				level.prev_monkey_round_amount = 4;
 				level.next_monkey_round = level.round_number + level.prev_monkey_round_amount;
 			}
 			else
 			{
-					level.prev_monkey_round = level.next_monkey_round;
-					level.next_monkey_round = level.round_number + 4;
-					level.prev_monkey_round_amount = undefined;
+				if(level.next_monkey_round % 2 == 1)
+				{
+					level.next_monkey_round++;
+				}
+				level.prev_monkey_round = level.next_monkey_round;
+				level.next_monkey_round = level.round_number + 4;
+				level.prev_monkey_round_amount = undefined;
 			}
-
-			monkey_print( "next monkey round at " + level.next_monkey_round );
 		}
 		else if ( flag( "monkey_round" ) )
 		{
