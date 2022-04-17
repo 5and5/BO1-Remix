@@ -7633,7 +7633,7 @@ drop_tracker_hud()
 
 	while(1)
 	{
-		if( !getDvarInt( "hud_drops" ) )
+		if(getDvarInt( "hud_drops" ) == 0)
 		{
 			if(drops_hud.alpha != 0 )
 			{
@@ -7649,7 +7649,7 @@ drop_tracker_hud()
 			drops_hud setValue(level.drop_tracker_index);
 		}
 
-		if( getDvarInt( "hud_tab " ) && !getDvarInt( "hud_drops" ) )
+		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
 		{
 			if(drops_hud.alpha != 1 )
 			{
