@@ -423,15 +423,14 @@ humangun_player_ignored_timer( owner, upgraded )
 		}
 	}
 
-	self.humangun_player_ignored_timer = GetTime() + (level.zombie_vars["humangun_player_ignored_time"] * 1000);
+	self.humangun_player_ignored_timer = level.total_time + (level.zombie_vars["humangun_player_ignored_time"]);
 
-	while ( GetTime() < self.humangun_player_ignored_timer )
+	while ( level.total_time < self.humangun_player_ignored_timer )
 	{
-        if( GetTime() + 1000 > self.humangun_player_ignored_timer)
+        if( level.total_time + 1 > self.humangun_player_ignored_timer)
         {
             self clearclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_HIT_RESPONSE );
             self clearclientflag( level._ZOMBIE_PLAYER_FLAG_HUMANGUN_UPGRADED_HIT_RESPONSE );
-            //iPrintlnBold("done");
         }
 		wait .05;
 	}
@@ -492,7 +491,7 @@ humangun_player_hit_response( owner, upgraded )
 
 	if ( self.humangun_player_ignored_timer )
 	{
-		self.humangun_player_ignored_timer += (level.zombie_vars["humangun_player_ignored_time"] * 1000);
+		self.humangun_player_ignored_timer += (level.zombie_vars["humangun_player_ignored_time"]);
 	}
 	else
 	{
@@ -903,7 +902,7 @@ instakill_timer_hud()
 
     while(1)
     {
-        insta_time = (self.humangun_player_ignored_timer - getTime()) / 1000;
+        insta_time = self.humangun_player_ignored_timer - level.total_time;
         //iprintln(insta_time);
         if(self.personal_instakill)
         {
@@ -913,6 +912,6 @@ instakill_timer_hud()
             timer.alpha = 0;
         }
         timer setTimer(insta_time - 0.1);
-        wait 0.1;
+        wait 0.05;
     }
 }
