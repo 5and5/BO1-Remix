@@ -2271,6 +2271,12 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_origin = level.zombie_doubletap_machine_origin + (0, -10, 0);
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
+        //Remove revive
+		machine_remove2 = getEnt( "vending_revive", "targetname" );
+		machine_remove2 Delete();
+		trigger_remove2 = getEnt( "vending_revive", "target");
+		trigger_remove2 Delete();
+
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;
 		machine setModel( "zombie_vending_revive" );
@@ -2279,7 +2285,7 @@ place_perk_machines()
 		machine_trigger = Spawn( "trigger_radius_use", level.zombie_doubletap_machine_origin + (0, 0, 30), 0, 20, 70 );
 		machine_trigger.targetname = "zombie_vending";
 		machine_trigger.target = "vending_revive";
-		machine_trigger.script_noteworthy = "specialty_fastreload";
+		machine_trigger.script_noteworthy = "specialty_quickrevive";
 
 		machine_trigger.script_sound = "mus_perks_revive_jingle";
 		machine_trigger.script_label = "mus_perks_revive_sting";

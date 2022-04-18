@@ -394,10 +394,14 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 
-- kino remove dt spawners
-- round timer
+- character select
+- hud color
+- add round timer to menu
 - knife box to have anyone take weapon
 - buff nml
+  - remove no spawn
+  - make the initial kills more constant
+  - make dogs spawn near more constant
 
 #### Would like to do
 
@@ -411,6 +415,7 @@ bind 6 "toggle coop_pause 0 1"
 - **_Treyarch_** - For making the best zombie game of all time
 - **_Clippy95_** - For adding the mp5 to verruckt
 - **_Demonz_** - For testing and helping with some scripting
+- **_Ziomix_** - For testing and helping with some scripting
 
 ## Huge shout out to:
 
