@@ -925,6 +925,7 @@ treasure_chest_init()
 
 	level.chest_accessed = 0;
 
+	level.box_set = randomInt(3);	// Level var for hud
 	if (level.chests.size > 1)
 	{
 		// Always remove boxes here, using for loop above will cause inability to remove box model placeholders, and doing it in init_starting_chest_location() will cause conflicts, it'll try to reffer to keys that's already been removed (kino)
@@ -932,23 +933,59 @@ treasure_chest_init()
 		{
 			if(level.script == "zombie_theater")
 			{
-				if(level.chests[i].script_noteworthy == "alleyway_chest")
+				// Set for dining
+				if (level.box_set == 0)
 				{
-					level.chests[i] hide_rubble();
-					level.chests[i] hide_chest();
-					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					if(level.chests[i].script_noteworthy == "alleyway_chest")
+					{
+						level.chests[i] hide_rubble();
+						level.chests[i] hide_chest();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
+					else if(level.chests[i].script_noteworthy == "control_chest")
+					{
+						level.chests[i] hide_chest();
+						level.chests[i] hide_rubble();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
+					else if(level.chests[i].script_noteworthy == "start_chest")
+					{
+						level.chests[i] hide_chest();
+						level.chests[i] hide_rubble();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
 				}
-				else if(level.chests[i].script_noteworthy == "control_chest")
+				// Set for hellroom
+				else if (level.box_set == 1)
 				{
-					level.chests[i] hide_chest();
-					level.chests[i] hide_rubble();
-					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					if(level.chests[i].script_noteworthy == "dressing_chest")
+					{
+						level.chests[i] hide_rubble();
+						level.chests[i] hide_chest();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
+					else if(level.chests[i].script_noteworthy == "dining_chest")
+					{
+						level.chests[i] hide_chest();
+						level.chests[i] hide_rubble();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
+					else if(level.chests[i].script_noteworthy == "stage_chest")
+					{
+						level.chests[i] hide_chest();
+						level.chests[i] hide_rubble();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
 				}
-				else if(level.chests[i].script_noteworthy == "start_chest")
+				// Set for no power
+				else if (level.box_set == 2)
 				{
-					level.chests[i] hide_chest();
-					level.chests[i] hide_rubble();
-					level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					if (level.chests[i].script_noteworthy == "theater_chest")
+					{
+						level.chests[i] hide_rubble();
+						level.chests[i] hide_chest();
+						level.chests = array_remove_nokeys(level.chests, level.chests[i]);
+					}
 				}
 			}
 
@@ -997,29 +1034,46 @@ init_starting_chest_location()
     {
         if(level.script == "zombie_pentagon")
         {
-            if(level.chests[i].script_noteworthy == "start_chest")
-            //if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
-            {
-                level.chest_index = i;
-                level.chests[level.chest_index] hide_rubble();
-                level.chests[level.chest_index].hidden = false;
-            }
-            else
-            {
-                level.chests[i] hide_chest();
-            }
+			if(level.chests[i].script_noteworthy == "start_chest")
+			//if(IsSubStr(level.chests[i].script_noteworthy,  "start_chest" ))
+			{
+				level.chest_index = i;
+				level.chests[level.chest_index] hide_rubble();
+				level.chests[level.chest_index].hidden = false;
+			}
+			else
+			{
+				level.chests[i] hide_chest();
+			}
         }
 		else if(level.script == "zombie_theater")
         {
-            if(IsSubStr(level.chests[i].script_noteworthy,  "dining_chest" ))
-            {
-                level.chest_index = i;
-                level.chests[level.chest_index] hide_rubble();
-                level.chests[level.chest_index].hidden = false;
-            }
-            else
+			if (level.box_set == 0)
 			{
-				level.chests[i] hide_chest();
+				if(IsSubStr(level.chests[i].script_noteworthy,  "dining_chest" ))
+				{
+					level.chest_index = i;
+					level.chests[level.chest_index] hide_rubble();
+					level.chests[level.chest_index].hidden = false;
+				}
+				else
+				{
+					level.chests[i] hide_chest();
+				}
+			}
+			// Same starting box for hellroom and no power
+			else
+			{
+				if(IsSubStr(level.chests[i].script_noteworthy,  "crematorium_chest" ))
+				{
+					level.chest_index = i;
+					level.chests[level.chest_index] hide_rubble();
+					level.chests[level.chest_index].hidden = false;
+				}
+				else
+				{
+					level.chests[i] hide_chest();
+				}
 			}
         }
         else if(level.script == "zombie_coast")
