@@ -393,12 +393,12 @@ bind 6 "toggle coop_pause 0 1"
 - Drops and remaining are toggable with the scoreboard
 - VR time pauses with coop pause
 - shang spike traps
+- round timer hud
+- hud color using white player color as a default
 
 ## TODO
 
 - character select
-- hud color
-- add round timer to menu
 - knife box to have anyone take weapon
 - add winter wunderland
   - fix dolls

@@ -1778,6 +1778,7 @@ onPlayerSpawned()
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread tab_hud();
+				self thread color_hud();
 				if (level.script == "zombie_coast")
 				{
 					self thread george_health_bar();
@@ -7187,24 +7188,25 @@ timer_hud()
 {
 	hud_level_wait();
 
-	timer = NewHudElem();
-	timer.horzAlign = "right";
-	timer.vertAlign = "top";
-	timer.alignX = "right";
-	timer.alignY = "top";
-	timer.y += 2;
-	timer.x -= 5;
-	timer.fontScale = 1.3;
-	timer.alpha = 1;
-	timer.hidewheninmenu = 0;
-	timer.foreground = 1;
-	timer.color = ( 1.0, 1.0, 1.0 );
+	level.timer = NewHudElem();
+	level.timer.horzAlign = "right";
+	level.timer.vertAlign = "top";
+	level.timer.alignX = "right";
+	level.timer.alignY = "top";
+	level.timer.y += 2;
+	level.timer.x -= 5;
+	level.timer.fontScale = 1.3;
+	level.timer.alpha = 1;
+	level.timer.hidewheninmenu = 0;
+	level.timer.foreground = 1;
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	timer SetTimerUp(0);
+	level.timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
 	level.paused_time = 0;
-	level thread coop_pause(timer, start_time);
+	level thread coop_pause(level.timer, start_time);
 
 	while(1)
 	{
@@ -7229,7 +7231,7 @@ timer_hud()
 
 	while (1)
 	{
-		timer setTimer(level.total_time - 0.1);
+		level.timer setTimer(level.total_time - 0.1);
 		wait 0.5;
 	}
 }
@@ -7339,19 +7341,20 @@ round_timer()
 
 	hud_level_wait();
 
-	round_timer = NewHudElem();
-	round_timer.horzAlign = "right";
-	round_timer.vertAlign = "top";
-	round_timer.alignX = "right";
-	round_timer.alignY = "top";
-	round_timer.y += 18;
-	round_timer.x -= 5;
-	round_timer.fontScale = 1.3;
-	round_timer.alpha = 0;
-	round_timer.color = ( 1.0, 1.0, 1.0 );
+	level.round_timer = NewHudElem();
+	level.round_timer.horzAlign = "right";
+	level.round_timer.vertAlign = "top";
+	level.round_timer.alignX = "right";
+	level.round_timer.alignY = "top";
+	level.round_timer.y += 18;
+	level.round_timer.x -= 5;
+	level.round_timer.fontScale = 1.3;
+	level.round_timer.alpha = 0;
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
 	timestamp_game = int(getTime() / 1000);
-	level thread round_timer_watcher( round_timer );
+	level thread round_timer_watcher( level.round_timer );
 
 	while(1)
 	{
@@ -7393,14 +7396,14 @@ round_timer()
 		// Setup round timer if always show rt dvar is true
 		if (!getDvarInt("hud_round_timer"))
 		{
-			hud_fade(round_timer, 0, 0.25);
+			hud_fade(level.round_timer, 0, 0.25);
 		}
 		else
 		{
-			hud_fade(round_timer, 1, 0.25);
+			hud_fade(level.round_timer, 1, 0.25);
 		}
 		current_round = level.round_number;
-		round_timer setTimerUp(0);
+		level.round_timer setTimerUp(0);
 
 		// Print total time
 		timestamp_current = int(getTime() / 1000);
@@ -7446,9 +7449,9 @@ round_timer()
 		}
 
 		// Print round time
-		if (getDvarInt("hud_round_timer") && (round_timer.alpha != 0))
+		if (getDvarInt("hud_round_timer") && (level.round_timer.alpha != 0))
 		{
-			hud_fade(round_timer, 0, 0.25);
+			hud_fade(level.round_timer, 0, 0.25);
 		}
 		level.displaying_time = 1;
 		timestamp_end = int(getTime() / 1000);
@@ -7496,18 +7499,20 @@ display_sph()
 
 	hud_level_wait();
 
-	sph_hud = NewHudElem();
-	sph_hud.horzAlign = "right";
-	sph_hud.vertAlign = "top";
-	sph_hud.alignX = "right";
-	sph_hud.alignY = "top";
-	sph_hud.y = 18;
-	sph_hud.x = -5;
-	sph_hud.fontScale = 1.3;
-	sph_hud.alpha = 0;
-	sph_hud.color = ( 1.0, 1.0, 1.0 );
-	sph_hud.label = "SPH: ";
-	sph_hud setValue(0);
+	level.sph_hud = NewHudElem();
+	level.sph_hud.horzAlign = "right";
+	level.sph_hud.vertAlign = "top";
+	level.sph_hud.alignX = "right";
+	level.sph_hud.alignY = "top";
+	level.sph_hud.y = 18;
+	level.sph_hud.x = -5;
+	level.sph_hud.fontScale = 1.3;
+	level.sph_hud.alpha = 0;
+	level.sph_hud.label = "SPH: ";
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+
+	level.sph_hud setValue(0);
 	sph_round_display = 50;		// Start displaying on r50
 
 	// Initialize variables
@@ -7563,15 +7568,15 @@ display_sph()
 			{
 				y_offset = 15;
 			}
-			sph_hud.y = (18 + y_offset);
+			level.sph_hud.y = (18 + y_offset);
 
 			if (level.round_number > sph_round_display && isdefined(round_time))
 			{
 				sph = round_time / (zc_last / 24);
-				sph_hud setValue(sph);
-				hud_fade(sph_hud, 1, 0.15);
+				level.sph_hud setValue(sph);
+				hud_fade(level.sph_hud, 1, 0.15);
 				wait 6;
-				hud_fade(sph_hud, 0, 0.15);
+				hud_fade(level.sph_hud, 0, 0.15);
 			}
 
 			level waittill( "end_of_round" );
@@ -7605,26 +7610,27 @@ display_times( label, time, duration, delay, col )
 	}
 
 	wait delay;
-	print_hud = NewHudElem();
-	print_hud.horzAlign = "right";
-	print_hud.vertAlign = "top";
-	print_hud.alignX = "right";
-	print_hud.alignY = "top";
-	print_hud.y = (2 + y_offset);
-	print_hud.x = -5;
-	print_hud.fontScale = 1.3;
-	print_hud.alpha = 0;
-	print_hud.color = ( 1.0, 1.0, 1.0 );
-	print_hud.label = (label + ": ");
+	level.print_hud = NewHudElem();
+	level.print_hud.horzAlign = "right";
+	level.print_hud.vertAlign = "top";
+	level.print_hud.alignX = "right";
+	level.print_hud.alignY = "top";
+	level.print_hud.y = (2 + y_offset);
+	level.print_hud.x = -5;
+	level.print_hud.fontScale = 1.3;
+	level.print_hud.alpha = 0;
+	level.print_hud.label = (label + ": ");
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
 	time_in_mins = print_time_friendly( time );	
-	print_hud setText( time_in_mins );
+	level.print_hud setText( time_in_mins );
 
-	hud_fade( print_hud, 1, 0.25 );
+	hud_fade( level.print_hud, 1, 0.25 );
 	wait duration;
-	hud_fade( print_hud, 0, 0.25 );
+	hud_fade( level.print_hud, 0, 0.25 );
 	wait 2;
-	print_hud destroy_hud();
+	level.print_hud destroy_hud();
 }
 
 tab_hud()
@@ -7659,39 +7665,41 @@ drop_tracker_hud()
 
 	hud_wait();
 
-	drops_hud = create_hud( "left", "top" );
-	drops_hud.y += 18;
-	drops_hud.x += 5;
-	drops_hud.label = "Drops: ";
+	self.drops_hud = create_hud( "left", "top" );
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	self.drops_hud.y += 18;
+	self.drops_hud.x += 5;
+	self.drops_hud.label = "Drops: ";
 
-	hud_fade(drops_hud, 1 , 0.3);
-	self thread hud_end(drops_hud);
+	hud_fade(self.drops_hud, 1 , 0.3);
+	self thread hud_end(self.drops_hud);
 
 	while(1)
 	{
 		if(getDvarInt( "hud_drops" ) == 0)
 		{
-			if(drops_hud.alpha != 0 )
+			if(self.drops_hud.alpha != 0 )
 			{
-				drops_hud.alpha = 0;
+				self.drops_hud.alpha = 0;
 			}
 		}
 		else
 		{
-			if(drops_hud.alpha != 1 )
+			if(self.drops_hud.alpha != 1 )
 			{
-				drops_hud.alpha = 1;
+				self.drops_hud.alpha = 1;
 			}
-			drops_hud setValue(level.drop_tracker_index);
+			self.drops_hud setValue(level.drop_tracker_index);
 		}
 
 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
 		{
-			if(drops_hud.alpha != 1 )
+			if(self.drops_hud.alpha != 1 )
 			{
-				drops_hud.alpha = 1;
+				self.drops_hud.alpha = 1;
 			}
-			drops_hud setValue(level.drop_tracker_index);
+			self.drops_hud setValue(level.drop_tracker_index);
 		}
 
 		wait 0.05;
@@ -7705,43 +7713,45 @@ zombies_remaining_hud()
 
 	hud_wait();
 
-	remaining_hud = create_hud("left", "top");
-	remaining_hud.y += 2;
-	remaining_hud.x += 5;
-	remaining_hud.label = "Remaining: ";
+	self.remaining_hud = create_hud("left", "top");
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	self.remaining_hud.y += 2;
+	self.remaining_hud.x += 5;
+	self.remaining_hud.label = "Remaining: ";
 
-	hud_fade(remaining_hud, 1, 0.3);
-	self thread hud_end(remaining_hud);
+	hud_fade(self.remaining_hud, 1, 0.3);
+	self thread hud_end(self.remaining_hud);
 
 	while(1)
 	{
 		if(getDvarInt( "hud_remaining" ) == 0)
 		{
-			if(remaining_hud.alpha != 0)
+			if(self.remaining_hud.alpha != 0)
 			{
-				remaining_hud.alpha = 0;
+				self.remaining_hud.alpha = 0;
 			}
 		}
 		else
 		{
-			if(remaining_hud.alpha != 1)
+			if(self.remaining_hud.alpha != 1)
 			{
-				remaining_hud.alpha = 1;
+				self.remaining_hud.alpha = 1;
 			}
 
 			zombies = level.zombie_total + get_enemy_count();
-			remaining_hud setValue(zombies);
+			self.remaining_hud setValue(zombies);
 		}
 
 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
 		{
-			if(remaining_hud.alpha != 1)
+			if(self.remaining_hud.alpha != 1)
 			{
-				remaining_hud.alpha = 1;
+				self.remaining_hud.alpha = 1;
 			}
 
 			zombies = level.zombie_total + get_enemy_count();
-			remaining_hud setValue(zombies);
+			self.remaining_hud setValue(zombies);
 		}
 		
 		wait 0.05;
@@ -7758,68 +7768,70 @@ health_bar_hud()
 	width = 113;
 	height = 7;
 
-	barElemBackround = create_hud( "left", "bottom");
-	barElemBackround.x = 0;
-	barElemBackround.y = -100;
-	barElemBackround.width = width + 2;
-	barElemBackround.height = height + 2;
-	barElemBackround.foreground = 0;
-	barElemBackround.shader = "black";
-	barElemBackround setShader( "black", width + 2, height + 2 );
+	self.barElemBackround = create_hud( "left", "bottom");
+	self.barElemBackround.x = 0;
+	self.barElemBackround.y = -100;
+	self.barElemBackround.width = width + 2;
+	self.barElemBackround.height = height + 2;
+	self.barElemBackround.foreground = 0;
+	self.barElemBackround.shader = "black";
+	self.barElemBackround setShader( "black", width + 2, height + 2 );
 
-	barElem = create_hud( "left", "bottom");
-	barElem.x = 1;
-	barElem.y = -101;
-	barElem.width = width;
-	barElem.height = height;
-	barElem.foreground = 1;
-	barElem.shader = "white";
-	barElem setShader( "white", width, height );
+	self.barElem = create_hud( "left", "bottom");
+	self.barElem.x = 1;
+	self.barElem.y = -101;
+	self.barElem.width = width;
+	self.barElem.height = height;
+	self.barElem.foreground = 1;
+	self.barElem.shader = "white";
+	self.barElem setShader( "white", width, height );
 
-	health_text = create_hud( "left", "bottom");
-	health_text.x = 49;
-	health_text.y = -107;
-	health_text.fontScale = 1.3;
+	self.health_text = create_hud( "left", "bottom");
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	self.health_text.x = 49;
+	self.health_text.y = -107;
+	self.health_text.fontScale = 1.3;
 
-	hud_fade(health_text, 0.8, 0.3);
-	hud_fade(barElem, 0.75, 0.3);
-	hud_fade(barElemBackround, 0.75, 0.3);
+	hud_fade(self.health_text, 0.8, 0.3);
+	hud_fade(self.barElem, 0.75, 0.3);
+	hud_fade(self.barElemBackround, 0.75, 0.3);
 
-	self thread hud_end(health_text);
-	self thread hud_end(barElem);
-	self thread hud_end(barElemBackround);
+	self thread hud_end(self.health_text);
+	self thread hud_end(self.barElem);
+	self thread hud_end(self.barElemBackround);
 
 	while (1)
 	{
 		if( getDvarInt( "hud_health_bar" ) == 0)
 		{
-			if(barElem.alpha != 0 && health_text.alpha != 0)
+			if(self.barElem.alpha != 0 && self.health_text.alpha != 0)
 			{
-				barElem.alpha = 0;
-				barElemBackround.alpha = 0;
-				health_text.alpha = 0;
+				self.barElem.alpha = 0;
+				self.barElemBackround.alpha = 0;
+				self.health_text.alpha = 0;
 			}
 		}
 		else
 		{
-			barElem updateHealth(self.health / self.maxhealth);
-			health_text setValue(self.health);
+			self.barElem updateHealth(self.health / self.maxhealth);
+			self.health_text setValue(self.health);
 
 			if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
 			{
-				barElem.alpha = 0;
-				barElemBackround.alpha = 0;
-				health_text.alpha = 0;
+				self.barElem.alpha = 0;
+				self.barElemBackround.alpha = 0;
+				self.health_text.alpha = 0;
 
 				wait 0.05;
 				continue;
 			}
 
-			if (health_text.alpha != 0.8)
+			if (self.health_text.alpha != 0.8)
 	        {
-	            barElem.alpha = 0.75;
-	            barElemBackround.alpha = 0.75;
-				health_text.alpha = 0.8;
+	            self.barElem.alpha = 0.75;
+	            self.barElemBackround.alpha = 0.75;
+				self.health_text.alpha = 0.8;
 	        }
     	}
 		wait 0.05;
@@ -7972,6 +7984,76 @@ just_spawned_exception()
 		flag_set ( "spawn_init" );
 		wait 15;
 		flag_clear ( "spawn_init" );
+	}
+}
+
+color_hud()
+{
+	self thread color_hud_watcher();
+	self thread color_health_bar_watcher();
+}
+
+color_hud_watcher()
+{
+	hud_level_wait();
+	wait 0.05;
+	self endon("disconnect");
+
+	if(getDvar("hud_color") == "")
+		setDvar("hud_color", "1 1 1");
+
+	color = getDvar("hud_color");
+	prev_color = "1 1 1";
+
+	while( 1 )
+	{
+		while( color == prev_color )
+		{
+			color = getDvar( "hud_color" );
+			wait 0.1;
+		}
+
+		colors = strTok( color, " ");
+		if( colors.size != 3 )
+			continue;
+
+		prev_color = color;
+
+		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	}
+}
+
+color_health_bar_watcher()
+{
+	self endon("disconnect");
+
+	if(getDvar("hud_color_health") == "")
+		setDvar("hud_color_health", "1 1 1");
+
+	color = getDvar( "hud_color_health" );
+	prev_color = "1 1 1";
+
+	while( 1 )
+	{
+		while( color == prev_color )
+		{
+			color = getDvar( "hud_color_health" );
+			wait 0.1;
+		}
+
+		colors = strTok( color, " ");
+		if( colors.size != 3 )
+			continue;
+
+		prev_color = color;
+
+		self.barElem.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 	}
 }
 
