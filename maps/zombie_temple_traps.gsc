@@ -69,21 +69,32 @@ spear_trap_think()
 		self waittill("trigger", who);
 		
 		//Only player can trigger trap
-		if(!IsDefined( who ) || !IsPlayer( who ) || who.sessionstate == "spectator" )
+		if(!IsDefined( who ) || !IsPlayer( who ) || who maps\_laststand::player_is_in_laststand() || who.sessionstate == "spectator" )
 		{
 			continue;
 		}
-		
+
+		if(!who IsOnGround())
+		{
+			continue;
+		}
+
+		if(who GetStance() != "stand")
+		{
+			continue;
+		}
+
+		wait .3;
+
 		for(i=0;i<3;i++)
 		{
-			wait .4;//Delay allows players to sprint across
-			self thread sprear_trap_activate_spears( i, who );	//Collin A. - Added i as a value so I could tell whether or not it was the first raise
-			wait 2.0; //Allow time for spears to reset
+			self thread spear_trap_activate_spears( i, who );	//Collin A. - Added i as a value so I could tell whether or not it was the first raise
+			wait 2.4; //Allow time for spears to reset
 		}
 	}
 }
 
-sprear_trap_activate_spears( audio_counter, player )
+spear_trap_activate_spears( audio_counter, player )
 {
 	self spear_trap_damage_all_characters( audio_counter, player );
 	
@@ -93,7 +104,7 @@ sprear_trap_activate_spears( audio_counter, player )
 spear_trap_damage_all_characters( audio_counter, player )
 {
 	wait .1; //allow some time for spears to extend
-	
+
 	characters = array_combine(get_players(), GetAiSpeciesArray( "axis" ));
 
 	for(i=0; i<characters.size; i++)
@@ -101,14 +112,14 @@ spear_trap_damage_all_characters( audio_counter, player )
 		char	= characters[i];
 		if( self spear_trap_is_character_touching(char) )
 		{
-			self thread spear_damage_character(char);
+			self thread spear_damage_character(char, player);
 		}
 		else if( isPlayer(char) && (audio_counter==0) && (randomintrange(0,101) <=10) )	//Collin A. - play vox on the player if he avoids the spikes on their first raise, 25% chance
 		{
 			if( isdefined( player ) && player == char )
 				char thread delayed_spikes_close_vox();
 		}
-	}	
+	}
 }
 
 delayed_spikes_close_vox()
@@ -125,39 +136,47 @@ delayed_spikes_close_vox()
 	}
 }
 
-spear_damage_character(char)
+spear_damage_character(char, activator)
 {
-	char thread spear_trap_slow();
+	char thread spear_trap_slow(activator, self);
 }
 
 #using_animtree( "generic_human" );
-spear_trap_slow()
+spear_trap_slow(activator, trap)
 {
 	self endon("death");
-	
+
 	//Already SLow
 	if(is_true(self.spear_trap_slow))
 	{
 		return;
 	}
-	
+
 	self.spear_trap_slow = true;
 	if(isPlayer(self))
 	{
 		if(is_player_valid(self))
 		{
 			self thread maps\_zombiemode_audio::create_and_play_dialog( "general", "spikes_damage" );
-			self thread _fake_red();
-			self doDamage(5, self.origin);
+			//self thread _fake_red();
+			RadiusDamage(self.origin + (0, 0, 5), 10, 50, 50, undefined, "MOD_UNKNOWN");
+			//iprintln(self.health);
 		}
 		self setvelocity((0,0,0));
-		self SetMoveSpeedScale(.2);
+		self.move_speed = .2;
+		self SetMoveSpeedScale(self.move_speed);
 		wait 1.0;
-		self SetMoveSpeedScale(1);
+		self.move_speed = 1;
+		if(!is_true(self.slowdown_wait))
+		{
+			self SetMoveSpeedScale(self.move_speed);
+		}
 		wait 0.5;
 	}
-	else
+	else if(self.animname == "zombie")
 	{
+		self thread spear_kill(undefined, activator);
+
 		painAnims = [];
 		painAnims[0] = %ai_zombie_taunts_5b;
 		painAnims[1] = %ai_zombie_taunts_5c;
@@ -170,6 +189,7 @@ spear_trap_slow()
 			self animscripted("spear_pain_anim", self.origin, self.angles, painAnim);
 			self _zombie_spear_trap_damage_wait();
 		}
+
 	}
 	self.spear_trap_slow = false;
 }
@@ -268,7 +288,7 @@ spear_activate(delay)
 	wait .2;
 }
 
-spear_kill(magnitude)
+spear_kill(magnitude, activator)
 {
 	self StartRagdoll();
 	self launchragdoll((0, 0, 50));
@@ -276,7 +296,10 @@ spear_kill(magnitude)
 
 	// Make sure they're dead...physics launch didn't kill them.
 	self.a.gib_ref = "head";
-	self dodamage(self.health + 666, self.origin);
+
+	self.trap_death = true;
+	self.no_powerups = true;
+	self dodamage(self.health + 666, self.origin, activator);
 }
 
 /*

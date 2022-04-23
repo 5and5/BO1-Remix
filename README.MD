@@ -392,10 +392,10 @@ bind 6 "toggle coop_pause 0 1"
 - Updated coop pause
 - Drops and remaining are toggable with the scoreboard
 - VR time pauses with coop pause
+- shang spike traps
 
 ## TODO
 
-- shang spike traps
 - character select
 - hud color
 - add round timer to menu
