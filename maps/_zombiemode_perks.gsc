@@ -2272,10 +2272,10 @@ place_perk_machines()
 		level.zombie_doubletap_machine_clip_angles = (0, 0, 0);
 
         //Remove revive
-		machine_remove2 = getEnt( "vending_revive", "targetname" );
-		machine_remove2 Delete();
-		trigger_remove2 = getEnt( "vending_revive", "target");
-		trigger_remove2 Delete();
+		// machine_remove2 = getEnt( "vending_revive", "targetname" );
+		// machine_remove2 Delete();
+		// trigger_remove2 = getEnt( "vending_revive", "target");
+		// trigger_remove2 Delete();
 
 		machine = Spawn( "script_model", level.zombie_doubletap_machine_origin );
 		machine.angles = level.zombie_doubletap_machine_angles;

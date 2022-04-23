@@ -1626,13 +1626,13 @@ onPlayerConnect_clientDvars()
 		self setClientDvar("hud_george_bar", 0);
 	}
 
-	if(getDvarInt("hud_always_round_timer") == 1)
+	if(getDvarInt("hud_round_timer") == 1)
 	{
-		self setClientDvar("hud_always_round_timer", 1);
+		self setClientDvar("hud_round_timer", 1);
 	}
 	else
 	{
-		self setClientDvar("hud_always_round_timer", 0);
+		self setClientDvar("hud_round_timer", 0);
 	}
 
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
@@ -7351,7 +7351,7 @@ round_timer()
 	round_timer.color = ( 1.0, 1.0, 1.0 );
 
 	timestamp_game = int(getTime() / 1000);
-	rt_dvar_choice = 0;
+	level thread round_timer_watcher( round_timer );
 
 	while(1)
 	{
@@ -7391,33 +7391,35 @@ round_timer()
 		}
 
 		// Setup round timer if always show rt dvar is true
-		rt_dvar_choice = getDvarInt("hud_always_round_timer");
-		// iPrintLn(rt_dvar_choice);	// debug
-
-		if (rt_dvar_choice == 0)
+		if (!getDvarInt("hud_round_timer"))
 		{
 			hud_fade(round_timer, 0, 0.25);
 		}
 		else
 		{
-			current_round = level.round_number;
-			round_timer setTimerUp(0);
 			hud_fade(round_timer, 1, 0.25);
 		}
+		current_round = level.round_number;
+		round_timer setTimerUp(0);
 
 		// Print total time
 		timestamp_current = int(getTime() / 1000);
 		total_time = timestamp_current - timestamp_game;
 
-		rows = 2;
-		if (rt_dvar_choice > 0)
-		{
-			rows++;
-		}
 		if (level.round_number > 1)
-		{
-			level thread display_times( "Total time", total_time, 5, 0.5, rows );
+		{		
+			col = 2;
+			if (getDvarInt("hud_round_timer"))
+			{
+				col++;
+			}
+			level thread display_times( "Total time", total_time, 5, 0.5, col );
 		}
+		if (!getDvarInt("hud_round_timer"))
+		{
+			wait 6;
+		}
+		level.displaying_time = 0;
 
 		// Exceptions for special round cases
 		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
@@ -7444,13 +7446,47 @@ round_timer()
 		}
 
 		// Print round time
-		if ((rt_dvar_choice != 0) && (round_timer.alpha != 0))
+		if (getDvarInt("hud_round_timer") && (round_timer.alpha != 0))
 		{
 			hud_fade(round_timer, 0, 0.25);
 		}
+		level.displaying_time = 1;
 		timestamp_end = int(getTime() / 1000);
 		round_time = timestamp_end - timestamp_start;
 		level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
+	}
+}
+
+round_timer_watcher( hud )
+{
+	level.displaying_time = 0;
+
+	while(1)
+	{
+		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
+		{
+			if(hud.alpha != 1)
+			{
+				hud.alpha = 1;
+			}
+		}
+		else
+		{
+			if(hud.alpha != 0)
+			{
+				hud.alpha = 0;
+			}
+		}
+
+		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
+		{
+			if(hud.alpha != 1)
+			{
+				hud.alpha = 1;
+			}
+		}
+		
+		wait 0.05;
 	}
 }
 
@@ -7523,7 +7559,7 @@ display_sph()
 			// Calculate and display SPH
 			wait 7;
 			y_offset = 0;
-			if(getDvarInt("hud_always_round_timer") > 0)
+			if(getDvarInt("hud_round_timer"))
 			{
 				y_offset = 15;
 			}
@@ -7554,17 +7590,17 @@ display_sph()
 	}
 }
 
-display_times( label, time, duration, delay, row )
+display_times( label, time, duration, delay, col )
 {
 	level endon("end_game");
 
 	y_offset = 0;
-	if (isdefined(row))
+	if (isdefined(col))
 	{
-		while (row > 1)
+		while (col > 1)
 		{
 			y_offset += 15;
-			row--;
+			col--;
 		}
 	}
 

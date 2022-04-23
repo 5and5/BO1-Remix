@@ -32,6 +32,11 @@
 				setDvar hud_timer 0;
 			}
 
+			if(dvarString(hud_timer) == "")
+			{
+				setDvar hud_round_timer 0;
+			}
+
 			if(dvarString(cg_fov_enable) == "")
 			{
 				setDvar cg_fov_enable 0;
@@ -140,16 +145,17 @@
 
 		FRAME_CHOICE_SECTION_TITLE( 26, "@MOD_HUD" )
 
-		FRAME_CHOICE_DVARYESNO_VIS( 28, "@MOD_HUD_REMAINING", hud_remaining, ;, 1)
-		FRAME_CHOICE_DVARYESNO_VIS( 27, "@MOD_HUD_DROPS", hud_drops, ;, 1)
-		FRAME_CHOICE_DVARYESNO_VIS( 29, "@MOD_HUD_HEALTH_BAR", hud_health_bar, ;, 1)
+		FRAME_CHOICE_DVARYESNO_VIS( 27, "@MOD_HUD_ROUND_TIMER", hud_round_timer, ;, 1)
+		FRAME_CHOICE_DVARYESNO_VIS( 28, "@MOD_HUD_DROPS", hud_drops, ;, 1)
+		FRAME_CHOICE_DVARYESNO_VIS( 29, "@MOD_HUD_REMAINING", hud_remaining, ;, 1)
+		FRAME_CHOICE_DVARYESNO_VIS( 30, "@MOD_HUD_HEALTH_BAR", hud_health_bar, ;, 1)
 
-		FRAME_CHOICE_SECTION_TITLE( 30, "@MOD_HOST_ONLY" )
+		FRAME_CHOICE_SECTION_TITLE( 31, "@MOD_HOST_ONLY" )
 
-		FRAME_CHOICE_DVARSTRINGLIST_VIS( 31, "@MOD_GAMEMODE", gamemode, { "SURVIVAL"; "survival"; "STRAT TESTER"; "strat_tester"; }, ;, 1 )
-		FRAME_CHOICE_DVARFLOATLIST_VIS( 32, "@MENU_MATURE_CAPS", cg_mature, { "@MENU_MATURE_UNRESTRICTED_CAPS" 1 "@MENU_MATURE_REDUCED_CAPS" 0 }, setdvar cg_blood "0", ( dvarString( "cg_mature" ) == "1" ) )
-   		FRAME_CHOICE_DVARFLOATLIST_VIS( 32, "@MENU_MATURE_CAPS", cg_mature, { "@MENU_MATURE_UNRESTRICTED_CAPS" 1 "@MENU_MATURE_REDUCED_CAPS" 0 }, setdvar cg_blood "1", ( dvarString( "cg_mature" ) == "0" ) )	
-		FRAME_CHOICE_DVARFLOATLIST_VIS(	33, "@MOD_COOP_PAUSE",	coop_pause, { "ACTIVE" 1 "OFF" 0 }, ;, 1 )
+		FRAME_CHOICE_DVARSTRINGLIST_VIS( 32, "@MOD_GAMEMODE", gamemode, { "SURVIVAL"; "survival"; "STRAT TESTER"; "strat_tester"; }, ;, 1 )
+		FRAME_CHOICE_DVARFLOATLIST_VIS( 33, "@MENU_MATURE_CAPS", cg_mature, { "@MENU_MATURE_UNRESTRICTED_CAPS" 1 "@MENU_MATURE_REDUCED_CAPS" 0 }, setdvar cg_blood "0", ( dvarString( "cg_mature" ) == "1" ) )
+   		FRAME_CHOICE_DVARFLOATLIST_VIS( 34, "@MENU_MATURE_CAPS", cg_mature, { "@MENU_MATURE_UNRESTRICTED_CAPS" 1 "@MENU_MATURE_REDUCED_CAPS" 0 }, setdvar cg_blood "1", ( dvarString( "cg_mature" ) == "0" ) )	
+		FRAME_CHOICE_DVARFLOATLIST_VIS(	35, "@MOD_COOP_PAUSE",	coop_pause, { "ACTIVE" 1 "OFF" 0 }, ;, 1 )
 
 		//FRAME_CHOICE_BUTTON_VIS( 29, "@MOD_ROUND_SETTINGS", setdvar ui_options_game_popup "round_settings"; open mature_content_pc_disable_warning, 1 == 1 )
 		
