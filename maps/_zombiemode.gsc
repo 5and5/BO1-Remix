@@ -42,6 +42,8 @@ main()
 	level.zombie_trap_killed_count = 0;
 	level.zombie_pathing_failed = 0;
 	level.zombie_breadcrumb_failed = 0;
+	level.nml_kills_array = array();
+	level.total_nml_kills = 0;
 
 	level.zombie_visionset = "zombie_neutral";
 
@@ -263,6 +265,10 @@ post_all_players_connected()
 	if (level.script == "zombie_theater")
 	{
 		level thread box_notifier();
+	}
+	if (level.script == "zombie_moon")
+	{
+		level thread get_nml_kills();
 	}
 	// level thread maps\_zombiemode_zone_manager::zios_spawn_printer();
 
@@ -1530,6 +1536,7 @@ watchTakenDamage()
 
 onPlayerConnect()
 {
+	id = 0;
 	for( ;; )
 	{
 		level waittill( "connecting", player );
@@ -1560,6 +1567,14 @@ onPlayerConnect()
 
 		// DCS 090910: now that player can destroy some barricades before set.
 		player thread maps\_zombiemode_blockers::rebuild_barrier_reward_reset();
+
+		if (level.script == "zombie_moon")
+		{
+			// self thread print_stats();
+			player thread get_kills_plus(id);
+		}
+
+		id++;
 	}
 }
 
@@ -7730,33 +7745,59 @@ zombies_remaining_hud()
 
 	while(1)
 	{
-		if(getDvarInt( "hud_remaining" ) == 0)
+		// Kill tracker for NML only
+		if (isdefined(flag("nml_init")) && flag("nml_init"))
+		{
+			self.remaining_hud.label = "Kills: ";
+
+			if(self.remaining_hud.alpha != 1)
+			{
+				hud_fade(self.remaining_hud, 1, 0.25);			
+			}
+
+			self.remaining_hud setValue(level.total_nml_kills);
+		}
+		// Else use normal remaining tracker
+		else if ((isdefined(flag("enter_nml")) && !flag("enter_nml")) && (isdefined(flag("nml_init")) && !flag("nml_init")))
+		{
+			self.remaining_hud.label = "Remaining: ";
+
+			if(getDvarInt( "hud_remaining" ) == 0)
+			{
+				if(self.remaining_hud.alpha != 0)
+				{
+				hud_fade(self.remaining_hud, 0, 0.25);			
+				}
+			}
+			else
+			{
+				if(self.remaining_hud.alpha != 1)
+				{
+					hud_fade(self.remaining_hud, 1, 0.25);			
+				}
+
+				zombies = level.zombie_total + get_enemy_count();
+				self.remaining_hud setValue(zombies);
+			}
+
+			if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
+			{
+				if(self.remaining_hud.alpha != 1)
+				{
+					hud_fade(self.remaining_hud, 1, 0.25);			
+				}
+
+				zombies = level.zombie_total + get_enemy_count();
+				self.remaining_hud setValue(zombies);
+			}
+		}
+		// Hide on mid game NML
+		else
 		{
 			if(self.remaining_hud.alpha != 0)
 			{
-				self.remaining_hud.alpha = 0;
+				hud_fade(self.remaining_hud, 0, 0.25);			
 			}
-		}
-		else
-		{
-			if(self.remaining_hud.alpha != 1)
-			{
-				self.remaining_hud.alpha = 1;
-			}
-
-			zombies = level.zombie_total + get_enemy_count();
-			self.remaining_hud setValue(zombies);
-		}
-
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
-		{
-			if(self.remaining_hud.alpha != 1)
-			{
-				self.remaining_hud.alpha = 1;
-			}
-
-			zombies = level.zombie_total + get_enemy_count();
-			self.remaining_hud setValue(zombies);
 		}
 		
 		wait 0.05;
@@ -8361,5 +8402,49 @@ debug_print_boxes()
 		iPrintLn(level.chests[i].script_noteworthy);
 		iPrintLn(level.chests[i].targetname);
 		wait 1;
+	}
+}
+
+get_nml_kills()
+{
+	wait 5;
+	while (1)
+	{
+		// iPrintLn("array_size: " + level.nml_kills_array.size);	// debug
+		if (level.nml_kills_array.size > 0)
+		{
+			j = 0;
+			for (i = 0; i < level.nml_kills_array.size; i++)
+			{
+				k = level.nml_kills_array[i];
+				j += k;
+			}
+
+			// iPrintLn(j);	// Debug
+			level.total_nml_kills = j;
+		}
+		else
+		{
+			level.total_nml_kills = 0;
+		}
+
+		if (level.round_number > 1)
+		{
+			level.total_nml_kills = 0;
+			break;
+		}
+		wait 0.05;
+	}
+}
+
+get_kills_plus(self_id)
+{
+	self waittill("spawned_player");
+	wait 3;
+
+	while (1)
+	{
+		level.nml_kills_array[self_id] = self.kills;
+		wait 0.05;
 	}
 }

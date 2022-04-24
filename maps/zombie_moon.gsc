@@ -2281,4 +2281,3 @@ moon_speed_up()
 		self.run_combatanim = level.scr_anim[self.animname]["sprint" + var];
 	}
 }
-
