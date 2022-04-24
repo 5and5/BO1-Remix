@@ -1465,6 +1465,7 @@ treasure_chest_think()
 		// Limit its visibility to the player who bought the box
 		self enable_trigger();
 		self thread treasure_chest_timeout();
+		self thread knife_for_shared_box( user );
 
 		// make sure the guy that spent the money gets the item
 		// SRS 9/3/2008: ...or item goes back into the box if we time out
@@ -2053,7 +2054,6 @@ verify_chest_is_open()
 
 
 }
-
 
 treasure_chest_timeout()
 {
@@ -3474,4 +3474,137 @@ init_includes()
 	 	include_weapon("stoner63_upgraded_zm", false);
 	 	include_weapon("ppsh_upgraded_zm", false);
  	}
+}
+
+// sharedbox
+knife_for_shared_box( user )
+{
+	self endon( "user_grabbed_weapon" );
+
+	while(1)
+	{
+		if(user meleeButtonPressed() && isplayer( user ) && distance(self.origin, user.origin) <= 100)
+		{
+			self SetVisibleToAll();
+			self thread respin_respin_box();
+
+			wait 10;
+			break;
+		}
+		wait 0.05;
+	}
+	
+	self notify( "trigger", level );
+}
+
+respin_respin_box()
+{
+	org = self.chest_origin.origin;
+	
+	if(IsDefined(self.chest_origin.weapon_model))
+	{
+		self.chest_origin.weapon_model notify("kill_weapon_movement");
+		self.chest_origin.weapon_model moveto(org + (0,0,40), 0.5);
+	}
+	
+	if(IsDefined(self.chest_origin.weapon_model_dw))
+	{
+		self.chest_origin.weapon_model_dw notify("kill_weapon_movement");
+		self.chest_origin.weapon_model_dw moveto(org + (0,0,40) - (3,3,3), 0.5);
+	}
+	
+	self.chest_origin notify("box_hacked_rerespin");
+	
+	self.box_rerespun = true;
+	
+	self thread fake_weapon_powerup_thread(self.chest_origin.weapon_model, self.chest_origin.weapon_model_dw);
+	
+}
+
+fake_weapon_powerup_thread(weapon1, weapon2)
+{
+	weapon1 endon ("death");
+
+	playfxontag (level._effect["powerup_on_solo"], weapon1, "tag_origin");
+	
+	playsoundatposition("zmb_spawn_powerup", weapon1.origin);
+	weapon1 PlayLoopSound("zmb_spawn_powerup_loop");
+	
+	self thread fake_weapon_powerup_timeout(weapon1, weapon2);
+	
+	while (isdefined(weapon1))
+	{
+		waittime = randomfloatrange(2.5, 5);
+		yaw = RandomInt( 360 );
+		if( yaw > 300 )
+		{
+			yaw = 300;
+		}
+		else if( yaw < 60 )
+		{
+			yaw = 60;
+		}
+		yaw = weapon1.angles[1] + yaw;
+		weapon1 rotateto ((-60 + randomint(120), yaw, -45 + randomint(90)), waittime, waittime * 0.5, waittime * 0.5);
+		
+		if(IsDefined(weapon2))
+		{
+			weapon2 rotateto ((-60 + randomint(120), yaw, -45 + randomint(90)), waittime, waittime * 0.5, waittime * 0.5);
+		}
+		wait randomfloat (waittime - 0.1);
+	}
+}
+
+fake_weapon_powerup_timeout(weapon1, weapon2)
+{
+	weapon1 endon ("death");
+
+	wait 10;
+
+	// for (i = 0; i < 40; i++)
+	// {
+	// 	// hide and show
+	// 	if (i % 2)
+	// 	{
+	// 		weapon1 hide();
+	// 		if(IsDefined(weapon2))
+	// 		{
+	// 			weapon2 Hide();
+	// 		}
+	// 	}
+	// 	else
+	// 	{
+	// 		weapon1 show();
+	// 		if(IsDefined(weapon2))
+	// 		{
+	// 			weapon2 Hide();
+	// 		}
+	// 	}
+
+	// 	if (i < 15)
+	// 	{
+	// 		wait 0.5;
+	// 	}
+	// 	else if (i < 25)
+	// 	{
+	// 		wait 0.25;
+	// 	}
+	// 	else
+	// 	{
+	// 		wait 0.1;
+	// 	}
+	// }
+	
+	//self.chest.chest_origin notify("weapon_grabbed");
+	self notify( "trigger", level ); 
+	
+	if(IsDefined(weapon1))
+	{
+		weapon1 Delete();
+	}
+	
+	if(IsDefined(weapon2))
+	{
+		weapon2 Delete();
+	}
 }

@@ -395,11 +395,11 @@ bind 6 "toggle coop_pause 0 1"
 - shang spike traps
 - round timer hud
 - hud color using white player color as a default
+- shared box
 
 ## TODO
 
 - character select
-- knife box to have anyone take weapon
 - add winter wunderland
   - fix dolls
   - add blunder gat
