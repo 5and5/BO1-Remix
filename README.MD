@@ -398,17 +398,20 @@ bind 6 "toggle coop_pause 0 1"
 - shared box
 
 - buff nml
+
   - always jug
   - remove no spawn
   - increased initial spawn
+
+- winter wunderland
+  - removed dolls
+  - added blunder gat
+  - mule give fast swap
 
 ## TODO
 
 - kills counter on nml
 - move strat tester
-- add winter wunderland
-  - fix dolls
-  - add blunder gat
 
 #### Would like to do
 

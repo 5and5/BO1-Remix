@@ -8233,19 +8233,6 @@ gamemode_select()
 			level.zombie_move_speed = 105; // running speed
 			level.first_round = false; // force first round to have the proper amount of zombies
 
-			strat_tester_text = NewHudElem();
-			strat_tester_text.horzAlign = "left";
-			strat_tester_text.vertAlign = "top";
-			strat_tester_text.alignX = "left";
-			strat_tester_text.alignY = "top";
-			strat_tester_text.y += 365;
-			strat_tester_text.x += 2;
-			strat_tester_text.foreground = true;
-			strat_tester_text.fontScale = 1.6;
-			strat_tester_text.alpha = 1;
-			strat_tester_text.color = ( 0.423, 0.004, 0 );
-			strat_tester_text setText("Strat Tester");
-
 			for(i=0;i<players.size;i++)
 			{
 				players[i].score = 555555;
