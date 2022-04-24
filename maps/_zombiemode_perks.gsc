@@ -564,11 +564,11 @@ if ( "none" == current_weapon )
 				player notify( "pap_taken" );
 				player.pap_used = true;
 
-				weapon_limit = 2;
-				if ( player HasPerk( "specialty_additionalprimaryweapon" ) )
-				{
-					weapon_limit = 3;
-				}
+				weapon_limit = 3;
+				// if ( player HasPerk( "specialty_additionalprimaryweapon" ) )
+				// {
+				// 	weapon_limit = 3;
+				// }
 
 				primaries = player GetWeaponsListPrimaries();
 				if( isDefined( primaries ) && primaries.size >= weapon_limit )
@@ -1477,6 +1477,13 @@ give_perk( perk, bought )
 		self notify( "perk_bought", perk );
 	}
 
+	if( perk == "specialty_additionalprimaryweapon" )
+	{
+		self SetPerk("specialty_fastswitch");
+		self SetPerk("specialty_fastads");
+		self SetPerk("specialty_fastoffhand");
+	}
+
 	if(perk == "specialty_armorvest")
 	{
 		self.preMaxHealth = self.maxhealth;
@@ -1497,6 +1504,8 @@ give_perk( perk, bought )
 	{
 		self SetClientFlag(level._ZOMBIE_PLAYER_FLAG_DEADSHOT_PERK);
 	}
+
+
 
 	// quick revive in solo gives an extra life
 	players = getplayers();
@@ -1607,10 +1616,14 @@ perk_think( perk )
 			break;
 
 		case "specialty_additionalprimaryweapon":
-			if ( result == perk_str )
-			{
-				self maps\_zombiemode::take_additionalprimaryweapon();
-			}
+			self UnsetPerk("specialty_fastswitch");
+			self UnsetPerk("specialty_fastads");
+			self UnsetPerk("specialty_fastoffhand");
+
+			// if ( result == perk_str )
+			// {
+			// 	self maps\_zombiemode::take_additionalprimaryweapon();
+			// }
 			break;
 
 		case "specialty_deadshot":
