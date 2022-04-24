@@ -404,7 +404,7 @@ bind 6 "toggle coop_pause 0 1"
 
 ## TODO
 
-- character select
+- move strat tester
 - add winter wunderland
   - fix dolls
   - add blunder gat

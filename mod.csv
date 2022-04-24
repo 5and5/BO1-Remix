@@ -173,3 +173,15 @@ sound,dev
 
 //CAMO OPTIONS
 stringtable,weaponoptions.csv
+
+//BLUNDER GAT
+weapon,sp/blundergat_zm
+weapon,sp/blundergat_upgraded_zm
+weapon,sp/acidgat_zm
+weapon,sp/acidgat_upgraded_zm
+xmodel,t6_wpn_zmb_projectile_blundergat
+fx,acidgat/fx_acidgat_explode
+fx,acidgat/fx_acidgat_explode_ug
+fx,acidgat/fx_acidgat_marker
+fx,acidgat/fx_acidgat_view
+fx,acidgat/fx_acidgat_zombiesplash

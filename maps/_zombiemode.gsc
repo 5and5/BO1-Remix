@@ -5545,9 +5545,14 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 
 
 	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" || self.animname == "director_zombie")
-		{
-			final_damage = 1500;
-		}
+	{
+		final_damage = 1500;
+	}
+
+	if((weapon == "blundergat_zm" || weapon == "blundergat_upgraded_zm") && meansofdeath == "MOD_RIFLE_BULLET")
+	{
+		final_damage = int(self.maxhealth) + 666;
+	}
 
 	return int( final_damage );
 
