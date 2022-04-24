@@ -7746,7 +7746,7 @@ zombies_remaining_hud()
 	while(1)
 	{
 		// Kill tracker for NML only
-		if (!isDefined(level.left_nomans_land))
+		if (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
 		{
 			self.remaining_hud.label = "Kills: ";
 
