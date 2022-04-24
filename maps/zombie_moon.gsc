@@ -53,6 +53,10 @@ main()
 	init_strings();
 	init_clientflags();
 
+	// For sprinting func	
+	flag_init("nml_init");	
+	flag_set("nml_init");
+
 	level.player_out_of_playable_area_monitor = true;
 	level.player_out_of_playable_area_monitor_callback = ::zombie_moon_player_out_of_playable_area_monitor_callback;
 	level thread moon_create_life_trigs();
@@ -890,6 +894,16 @@ moon_round_think_func()
 {
 	for( ;; )
 	{
+		if (flag("nml_init") && flag("teleporter_used"))
+		{
+			flag_clear("nml_init");
+		}
+
+		if (!flag("nml_init"))
+		{
+			level.zombie_move_speed = 105;
+		}
+
 		maxreward = 50 * level.round_number;
 		if ( maxreward > 500 )
 		maxreward = 500;
@@ -898,16 +912,16 @@ moon_round_think_func()
 		level.pro_tips_start_time = GetTime();
 		level.zombie_last_run_time = GetTime();	// Resets the last time a zombie ran
 
-    level thread maps\_zombiemode_audio::change_zombie_music( "round_start" );
+		level thread maps\_zombiemode_audio::change_zombie_music( "round_start" );
 
-    if(level.moon_startmap == true)
-    {
-    	level.moon_startmap = false;
+		if(level.moon_startmap == true)
+		{
+			level.moon_startmap = false;
 			level thread maps\_zombiemode::play_level_start_vox_delayed();
 			wait(3); // time that would have been for round text and init spawning.
-    }
-    else
-    {
+		}
+		else
+		{
 			maps\_zombiemode::chalk_one_up();
 		}
 
@@ -970,7 +984,7 @@ moon_round_think_func()
 			level.zombie_vars["zombie_spawn_delay"] = 0.08;
 		}
 
-		level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
+		// level.zombie_move_speed = level.round_number * level.zombie_vars["zombie_move_speed_multiplier"];
 
 		// DCS 062811: if used teleporter to advance round stay at old round number.
 		if(flag("teleporter_used"))
