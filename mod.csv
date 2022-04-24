@@ -166,6 +166,7 @@ localize,mod
 
 //MENU
 menufile,ui/options_game_pc.menu
+menufile,ui/options_shoot_pc.menu
 menufile,ui/hud_zombie.menu
 
 //SOUNDS
