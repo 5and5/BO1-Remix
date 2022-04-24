@@ -7746,7 +7746,7 @@ zombies_remaining_hud()
 	while(1)
 	{
 		// Kill tracker for NML only
-		if (isdefined(flag("nml_init")) && flag("nml_init"))
+		if (!isDefined(level.left_nomans_land))
 		{
 			self.remaining_hud.label = "Kills: ";
 
@@ -7758,7 +7758,7 @@ zombies_remaining_hud()
 			self.remaining_hud setValue(level.total_nml_kills);
 		}
 		// Else use normal remaining tracker
-		else if ((isdefined(flag("enter_nml")) && !flag("enter_nml")) && (isdefined(flag("nml_init")) && !flag("nml_init")))
+		else
 		{
 			self.remaining_hud.label = "Remaining: ";
 
@@ -7789,14 +7789,6 @@ zombies_remaining_hud()
 
 				zombies = level.zombie_total + get_enemy_count();
 				self.remaining_hud setValue(zombies);
-			}
-		}
-		// Hide on mid game NML
-		else
-		{
-			if(self.remaining_hud.alpha != 0)
-			{
-				hud_fade(self.remaining_hud, 0, 0.25);			
 			}
 		}
 		

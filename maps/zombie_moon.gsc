@@ -53,10 +53,6 @@ main()
 	init_strings();
 	init_clientflags();
 
-	// For sprinting func	
-	flag_init("nml_init");	
-	flag_set("nml_init");
-
 	level.player_out_of_playable_area_monitor = true;
 	level.player_out_of_playable_area_monitor_callback = ::zombie_moon_player_out_of_playable_area_monitor_callback;
 	level thread moon_create_life_trigs();
@@ -894,12 +890,7 @@ moon_round_think_func()
 {
 	for( ;; )
 	{
-		if (flag("nml_init") && flag("teleporter_used"))
-		{
-			flag_clear("nml_init");
-		}
-
-		if (!flag("nml_init"))
+		if (isdefined(level.left_nomans_land))
 		{
 			level.zombie_move_speed = 105;
 		}
