@@ -373,11 +373,11 @@ nml_round_manager()
 	dog_difficulty_max_time = 9500;
 	
 	// Attack Waves setup
-	wave_1st_attack_time = (1000 * 25);//(1000 * 40);
+	wave_1st_attack_time = (1000 * 25);
 	prepare_attack_time = (1000 * 2.1);
-	wave_attack_time = (1000 * 35);		// 40
-	cooldown_time = (1000 * 16);		// 25
-	next_attack_time = (1000 * 26);		// 32
+	wave_attack_time = (1000 * 35);		// 35
+	cooldown_time = (1000 * 1);//(1000 * 16);
+	next_attack_time = (1000 * 25);		// 25
 
 	max_zombies = 20;
 	
@@ -420,7 +420,7 @@ nml_round_manager()
 				
 				if(level.initial_spawn == true)
 				{
-					spawn_a_zombie( 10, "nml_zone_spawners", 0.01 );
+					spawn_a_zombie( 15, "nml_zone_spawners", 0.01 );
 				}
 				else
 				{	
@@ -508,7 +508,7 @@ nml_round_manager()
 
 					}
 				}
-				
+				 
 				if( current_time > next_round_time )
 				{
 					level notify( "nml_attack_wave" );
@@ -516,14 +516,14 @@ nml_round_manager()
 					
 					if( area == 1 )
 					{
-						area = 2;
+						// area = 2;
 						level thread nml_wave_attack( max_zombies, "nml_area2_spawners" );
 					}
-					else
-					{
-						area = 1;
-						level thread nml_wave_attack( max_zombies, "nml_area1_spawners" );
-					}
+					// else
+					// {
+					// 	area = 1;
+					// 	level thread nml_wave_attack( max_zombies, "nml_area1_spawners" );
+					// }
 									
 					next_round_time = current_time + wave_attack_time;
 				}
@@ -1005,13 +1005,13 @@ perk_machine_arrival_update()
 	fall_time = 4;
 	num_model_swaps = 20;
 
-	perk_index = randomintrange( 0, 2 );
+	perk_index = 1; // always jug
 
 	// Flash an effect to the perk machines destination
 	ent = level.speed_cola_ents[0];
 	level thread perk_arrive_fx( ent.origin );
 
-	//while( 1 )
+	// while( 1 )
 	{
 		// Move the perk machines high in the sky
 		move_perk( top_height, 0.01, 0.001 );

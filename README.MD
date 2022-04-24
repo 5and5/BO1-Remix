@@ -397,16 +397,17 @@ bind 6 "toggle coop_pause 0 1"
 - hud color using white player color as a default
 - shared box
 
+- buff nml
+  - always jug
+  - remove no spawn
+  - increased initial spawn
+
 ## TODO
 
 - character select
 - add winter wunderland
   - fix dolls
   - add blunder gat
-- buff nml
-  - remove no spawn
-  - make the initial kills more constant
-  - make dogs spawn near more constant
 
 #### Would like to do
 
