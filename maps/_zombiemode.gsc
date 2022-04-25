@@ -5763,11 +5763,12 @@ end_game()
 				if( !isdefined(level.left_nomans_land) )
 				{
 					nomanslandtime = level.nml_best_time;
+					nomanslandkills = level.total_nml_kills;
 					player_survival_time = int( nomanslandtime/1000 );
 					player_survival_time_in_mins = maps\_zombiemode::to_mins( player_survival_time );
-					survived[i] SetText( &"ZOMBIE_SURVIVED_NOMANS", player_survival_time_in_mins );
+					survived[i] SetText("Kills: ", nomanslandkills, " / Time: ", player_survival_time_in_mins);
 				}
-				else if( level.left_nomans_land==2 )
+				else if( level.left_nomans_land == 2 )
 				{
 					survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
 				}
