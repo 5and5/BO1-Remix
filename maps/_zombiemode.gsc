@@ -260,11 +260,6 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
-	if (level.script == "zombie_theater")
-	{
-		level thread box_notifier();
-	}
-
 }
 
 zombiemode_melee_miss()
@@ -8279,63 +8274,4 @@ print_time_friendly( seconds )
 	}
 
 	return combined; 
-}
-
-box_notifier()
-{
-	hud_level_wait();
-	
-	box_notifier_hud = NewHudElem();
-	box_notifier_hud.horzAlign = "center";
-	box_notifier_hud.vertAlign = "middle";
-	box_notifier_hud.alignX = "center";
-	box_notifier_hud.alignY = "middle";
-	box_notifier_hud.x = 0;
-	box_notifier_hud.y = -150;
-	box_notifier_hud.fontScale = 1.6;
-	box_notifier_hud.alpha = 0;
-	box_notifier_hud.label = "^7BOX SET: ";
-	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
-
-	i = 0;
-	while(i < 5)
-	{
-		if (isdefined(level.box_set))
-		{
-			box_notifier_hud setText("^0UNDEFINED");
-			// iPrintLn(level.box_set); // debug
-			if (level.box_set == 0)
-			{
-				box_notifier_hud setText("^2DINING");
-			}
-			else if (level.box_set == 1)
-			{
-				box_notifier_hud setText("^3HELLROOM");
-			}
-			else if (level.box_set == 2)
-			{
-				box_notifier_hud setText("^5NO POWER");
-			}
-			hud_fade(box_notifier_hud, 1, 0.25);
-			wait 4;
-			hud_fade(box_notifier_hud, 0, 0.25);
-			break;
-		}
-		else
-		{
-			// iPrintLn("undefined"); // debug
-			wait 0.5;
-			i++;
-		}
-	}
-}
-
-debug_print_boxes()
-{
-	for (i=0; i<level.chests.size; i++)
-	{
-		iPrintLn(level.chests[i].script_noteworthy);
-		iPrintLn(level.chests[i].targetname);
-		wait 1;
-	}
 }
