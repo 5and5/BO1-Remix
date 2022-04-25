@@ -7706,7 +7706,14 @@ zombies_remaining_hud()
 				hud_fade(self.remaining_hud, 1, 0.25);			
 			}
 
-			self.remaining_hud setValue(self.kills);
+			tracked_kills = 0;
+			players = get_players();
+			for (i = 0; i < players.size; i++)
+			{
+				tracked_kills = players[i].kills;
+			}
+
+			self.remaining_hud setValue(tracked_kills);
 		}
 		// Else use normal remaining tracker
 		else
