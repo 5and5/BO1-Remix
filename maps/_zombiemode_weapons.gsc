@@ -1116,6 +1116,19 @@ init_starting_chest_location()
                     level.chests[i] hide_chest();
                 }
         }
+        else if(level.script == "zombie_ww")
+        {
+            if(level.chests[i].script_noteworthy == "start_chest")
+            {
+                level.chest_index = i;
+                level.chests[level.chest_index] hide_rubble();
+                level.chests[level.chest_index].hidden = false;
+            }
+            else
+            {
+                level.chests[i] hide_chest();
+            }
+        }
 
         else if( isdefined( level.random_pandora_box_start ) && level.random_pandora_box_start == true )
         {
