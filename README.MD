@@ -20,6 +20,10 @@
 
 [Twitter](https://twitter.com/5and55)
 
+## Official Release
+
+- Version 1.6.9
+
 ## Change Notes
 
 ## General
@@ -411,7 +415,12 @@ bind 6 "toggle coop_pause 0 1"
 ## TODO
 
 - kills counter on nml
-- move strat tester
+
+- winter wunderland
+  - remove perk limit
+  - remove guns from box
+  - set box location
+  - replace nades
 
 #### Would like to do
 

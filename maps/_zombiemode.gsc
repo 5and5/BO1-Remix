@@ -42,8 +42,6 @@ main()
 	level.zombie_trap_killed_count = 0;
 	level.zombie_pathing_failed = 0;
 	level.zombie_breadcrumb_failed = 0;
-	level.nml_kills_array = array();
-	level.total_nml_kills = 0;
 
 	level.zombie_visionset = "zombie_neutral";
 
@@ -7755,7 +7753,7 @@ zombies_remaining_hud()
 				hud_fade(self.remaining_hud, 1, 0.25);			
 			}
 
-			self.remaining_hud setValue(level.total_nml_kills);
+			self.remaining_hud setValue(self.kills);
 		}
 		// Else use normal remaining tracker
 		else
@@ -8381,49 +8379,5 @@ debug_print_boxes()
 		iPrintLn(level.chests[i].script_noteworthy);
 		iPrintLn(level.chests[i].targetname);
 		wait 1;
-	}
-}
-
-get_nml_kills()
-{
-	wait 5;
-	while (1)
-	{
-		// iPrintLn("array_size: " + level.nml_kills_array.size);	// debug
-		if (level.nml_kills_array.size > 0)
-		{
-			j = 0;
-			for (i = 0; i < level.nml_kills_array.size; i++)
-			{
-				k = level.nml_kills_array[i];
-				j += k;
-			}
-
-			// iPrintLn(j);	// Debug
-			level.total_nml_kills = j;
-		}
-		else
-		{
-			level.total_nml_kills = 0;
-		}
-
-		if (level.round_number > 1)
-		{
-			level.total_nml_kills = 0;
-			break;
-		}
-		wait 0.05;
-	}
-}
-
-get_kills_plus(self_id)
-{
-	self waittill("spawned_player");
-	wait 3;
-
-	while (1)
-	{
-		level.nml_kills_array[self_id] = self.kills;
-		wait 0.05;
 	}
 }
