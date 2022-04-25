@@ -44,6 +44,7 @@ main()
 	level.zombie_breadcrumb_failed = 0;
 
 	level.zombie_visionset = "zombie_neutral";
+	level.global_print_hud_color = (1, 1, 1);
 
 	if(GetDvar("anim_intro") == "1")
 	{
@@ -7581,27 +7582,27 @@ display_times( label, time, duration, delay, col )
 	}
 
 	wait delay;
-	level.print_hud = NewHudElem();
-	level.print_hud.horzAlign = "right";
-	level.print_hud.vertAlign = "top";
-	level.print_hud.alignX = "right";
-	level.print_hud.alignY = "top";
-	level.print_hud.y = (2 + y_offset);
-	level.print_hud.x = -5;
-	level.print_hud.fontScale = 1.3;
-	level.print_hud.alpha = 0;
-	level.print_hud.label = (label + ": ");
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	print_hud = NewHudElem();
+	print_hud.horzAlign = "right";
+	print_hud.vertAlign = "top";
+	print_hud.alignX = "right";
+	print_hud.alignY = "top";
+	print_hud.y = (2 + y_offset);
+	print_hud.x = -5;
+	print_hud.fontScale = 1.3;
+	print_hud.alpha = 0;
+	print_hud.label = (label + ": ");
+	// Reading it directly will cause it to bug up, middle-man level var required
+	print_hud.color = level.global_print_hud_color;
 
 	time_in_mins = print_time_friendly( time );	
-	level.print_hud setText( time_in_mins );
+	print_hud setText( time_in_mins );
 
-	hud_fade( level.print_hud, 1, 0.25 );
+	hud_fade( print_hud, 1, 0.25 );
 	wait duration;
-	hud_fade( level.print_hud, 0, 0.25 );
+	hud_fade( print_hud, 0, 0.25 );
 	wait 2;
-	level.print_hud destroy_hud();
+	print_hud destroy_hud();
 }
 
 tab_hud()
@@ -8017,7 +8018,7 @@ color_hud_watcher()
 
 		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.global_print_hud_color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
