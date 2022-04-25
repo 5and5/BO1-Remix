@@ -132,8 +132,9 @@ theater_playanim( animname )
 // Copy all include_weapon lines over to the level.csc file too - removing the weighting funcs...
 //*****************************************************************************
 include_weapons()
-{
+{	
 	include_weapon( "frag_grenade_zm", false, true );
+	// include_weapon( "stielhandgranate", false, true );
 	include_weapon( "claymore_zm", false, true );
 	//	Weapons - Pistols
 	include_weapon( "m1911_zm", false );						// colt
@@ -229,6 +230,9 @@ include_weapons()
 	include_weapon( "knife_ballistic_bowie_zm", false );
 	include_weapon( "knife_ballistic_bowie_upgraded_zm", false );
 	level._uses_retrievable_ballisitic_knives = true;
+
+	// register weapons 
+	// maps\_zombiemode_weapons::add_zombie_weapon( "stielhandgranate", "", 						&"WAW_ZOMBIE_WEAPON_STIELHANDGRANATE_250", 		250,	"grenade", "", 250 );
 	// limited weapons
 	maps\_zombiemode_weapons::add_limited_weapon( "m1911_zm", 0 );
 	maps\_zombiemode_weapons::add_limited_weapon( "thundergun_zm", 1 );
@@ -569,19 +573,20 @@ player_set_viewmodel_override( entity_num )
 }
 register_offhand_weapons_for_level_defaults_override()
 {
+	// register_lethal_grenade_for_level( "stielhandgranate" );
 	register_lethal_grenade_for_level( "frag_grenade_zm" );
 	level.zombie_lethal_grenade_player_init = "frag_grenade_zm";
 
 	register_tactical_grenade_for_level( "zombie_cymbal_monkey" );
-	register_tactical_grenade_for_level( "zombie_nesting_dolls" );
+	// register_tactical_grenade_for_level( "zombie_nesting_dolls" );
 	level.zombie_tactical_grenade_player_init = undefined;
 
-	register_placeable_mine_for_level( "mine_bouncing_betty" );
+	// register_placeable_mine_for_level( "mine_bouncing_betty" );
 	register_placeable_mine_for_level( "claymore_zm" );
 	level.zombie_placeable_mine_player_init = undefined;
 
 	register_melee_weapon_for_level( "knife_zm" );
-	register_melee_weapon_for_level( "sickle_knife_zm" );
+	register_melee_weapon_for_level( "bowie_knife_zm" );
 	level.zombie_melee_weapon_player_init = "knife_zm";
 }
 

@@ -264,13 +264,6 @@ post_all_players_connected()
 	{
 		level thread box_notifier();
 	}
-	if (level.script == "zombie_moon")
-	{
-		level thread get_nml_kills();
-	}
-	// level thread maps\_zombiemode_zone_manager::zios_spawn_printer();
-
-	//level thread coop_pause();
 
 }
 
@@ -1565,13 +1558,6 @@ onPlayerConnect()
 
 		// DCS 090910: now that player can destroy some barricades before set.
 		player thread maps\_zombiemode_blockers::rebuild_barrier_reward_reset();
-
-		if (level.script == "zombie_moon")
-		{
-			// self thread print_stats();
-			player thread get_kills_plus(id);
-		}
-
 		id++;
 	}
 }
