@@ -1313,7 +1313,13 @@ vending_trigger_think()
 			continue;
 		}
 
-		if ( player.num_perks >= 4 )
+		perk_max = 4;
+		if (level.script == "zombie_ww")
+		{
+			perk_max = 7;
+		}
+
+		if ( player.num_perks >= perk_max )
 		{
 			//player iprintln( "Too many perks already to buy Perk: " + perk );
 			self playsound("evt_perk_deny");

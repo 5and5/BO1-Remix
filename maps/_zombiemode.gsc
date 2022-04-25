@@ -2225,35 +2225,6 @@ remove_deadshot_bottle()
 
 take_additionalprimaryweapon()
 {
-	weapon_to_take = undefined;
-
-	if ( is_true( self._retain_perks ) )
-	{
-		return weapon_to_take;
-	}
-
-	primary_weapons_that_can_be_taken = [];
-
-	primaryWeapons = self GetWeaponsListPrimaries();
-	for ( i = 0; i < primaryWeapons.size; i++ )
-	{
-		if ( maps\_zombiemode_weapons::is_weapon_included( primaryWeapons[i] ) || maps\_zombiemode_weapons::is_weapon_upgraded( primaryWeapons[i] ) )
-		{
-			primary_weapons_that_can_be_taken[primary_weapons_that_can_be_taken.size] = primaryWeapons[i];
-		}
-	}
-
-	if ( primary_weapons_that_can_be_taken.size >= 3 )
-	{
-		weapon_to_take = primary_weapons_that_can_be_taken[primary_weapons_that_can_be_taken.size - 1];
-		if ( weapon_to_take == self GetCurrentWeapon() )
-		{
-			self SwitchToWeapon( primary_weapons_that_can_be_taken[0] );
-		}
-		self TakeWeapon( weapon_to_take );
-	}
-
-	return weapon_to_take;
 }
 
 player_laststand( eInflictor, attacker, iDamage, sMeansOfDeath, sWeapon, vDir, sHitLoc, psOffsetTime, deathAnimDuration )
@@ -5747,11 +5718,12 @@ end_game()
 				if( !isdefined(level.left_nomans_land) )
 				{
 					nomanslandtime = level.nml_best_time;
+					nomanslandkills = level.total_nml_kills;
 					player_survival_time = int( nomanslandtime/1000 );
 					player_survival_time_in_mins = maps\_zombiemode::to_mins( player_survival_time );
-					survived[i] SetText( &"ZOMBIE_SURVIVED_NOMANS", player_survival_time_in_mins );
+					survived[i] SetText("Kills: ", nomanslandkills, " / Time: ", player_survival_time_in_mins);
 				}
-				else if( level.left_nomans_land==2 )
+				else if( level.left_nomans_land == 2 )
 				{
 					survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
 				}
