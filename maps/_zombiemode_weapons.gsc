@@ -2711,10 +2711,10 @@ treasure_chest_give_weapon( weapon_string )
 		return;
 	}
 
- 	if ( self HasPerk( "specialty_additionalprimaryweapon" ) )
- 	{
- 		weapon_limit = 4;
- 	}
+ 	// if ( self HasPerk( "specialty_additionalprimaryweapon" ) )
+ 	// {
+ 	// 	weapon_limit = 4;
+ 	// }
 
 	// This should never be true for the first time.
 	if( primaryWeapons.size >= weapon_limit )
@@ -3250,10 +3250,10 @@ weapon_give( weapon, is_upgrade )
 		is_upgrade = false;
 	}
 
- 	if ( self HasPerk( "specialty_additionalprimaryweapon" ) )
- 	{
- 		weapon_limit = 4;
- 	}
+ 	// if ( self HasPerk( "specialty_additionalprimaryweapon" ) )
+ 	// {
+ 	// 	weapon_limit = 4;
+ 	// }
 
 	// This should never be true for the first time.
 	if( primaryWeapons.size >= weapon_limit )
