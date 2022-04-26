@@ -20,10 +20,6 @@
 
 [Twitter](https://twitter.com/5and55)
 
-## Official Release
-
-- Version 1.6.9
-
 ## Change Notes
 
 ## General
@@ -45,6 +41,7 @@
 - Health bar
 - Drop cycle tracker
 - COTD: VR11 insta kill timer
+- COTD: George health bar
 
 ## Spawn Delay
 
@@ -126,6 +123,10 @@
 - Zap guns have a mini waffe effect that kills up to 3 zombies per shot
 
 ## Mystery Box
+
+#### Shared box
+
+- knifing the box will allow any player to take the weapon
 
 #### Boxes Weapons
 
@@ -257,7 +258,8 @@
 
 ### Nacht Der Untoten
 
-- Cabinet upstairs now upgrades the Thunder Gun
+- Added pack-a-punch to main floor that can upgrade the Wunderwaffe, Ray Gun, m1911 and Crossbow
+- Replaced Mulekick with Speedcola
 
 ### Verruckt
 
@@ -290,10 +292,9 @@
 - Meteor in the starting room now turns on power
 - Removed nova crawlers
 - Moved double tap machine to stage
-- Removed alley, control room and pm63 room box locations
-- Disabled doors leading to alley, control room and pm63
 - Changed the spawn zone of the spawn room to only include it self (4 windows)
-- Set initial box to mp40 room
+- Removed double tap spawn when inside hell room
+- Initial box presets
 
 ### Five
 
@@ -331,6 +332,7 @@
 - Pack-a-punch stone will always be in spawn
 - Night mode enables by default (this can be disabled by using the "night_mode" dvar)
 - Increased the range of the un upgraded and upgraded babygun
+- Spike traps kill zombies
 - Set initial box to ak room
 
 ### Moon
@@ -344,23 +346,32 @@
 - Hacking a box loaction will always last 5 rounds
 - Set initial box to spawn room
 
+#### No Mans Land
+
+- Always jug start
+- increased initial spawn
+- Removed periods of no zombie spawns
+
+### Winter Wunderland
+
+- Thundergun, Wonder Waffe and Blundergat are in the box
+- Blundergat is not limited
+- Mulekick increases weapon swap speed
+
 ## Console
 
 ### Custom Dvars
 
+- `/hud_round_timer` - enables/disable round timer
 - `/hud_health_bar` - enables/disable health bar
 - `/hud_remaining` - enables/disable zombies counter
 - `/hud_drops` - enables/disable drop tracker
+- `/hud_color 1 1 1` - changes the color of the custom hud
+- `/hud_color_health 1 1 1` - changes the color of the health bar
 - `/night_mode` - enables/disable Shangri-la's night mode
 - `/coop_pause` - can be used to pause in coop (pause starts at the beginning of the next round)
 - `/start_round <round number>` - can be used to change start round for strat tester
 - `/player_quotes 0` - can be used to enable player quotes
-
-### Enable Graphic Content
-
-```
-/cg_blood 1; cg_mature 1
-```
 
 ### Borderless Windowed Mode
 
@@ -376,51 +387,10 @@
 seta hud_health_bar "1"
 seta hud_drops "1"
 seta hud_remaining "1"
+seta hud_round_timer "1"
 ```
-
-### Toggle Dvars
-
-```
-bind 2 "toggle cg_blood 1 0; toggle cg_mature 1 0"
-bind 3 "toggle hud_health_bar 0 1"
-bind 4 "toggle hud_drops 0 1"
-bind 5 "toggle hud_remaining 0 1"
-bind 6 "toggle coop_pause 0 1"
-```
-
-## Patch 1.6.0 Notes
-
-- Opened kino
-- Added speed to nacht
-- Added pap to nacht
-- Updated coop pause
-- Drops and remaining are toggable with the scoreboard
-- VR time pauses with coop pause
-- shang spike traps
-- round timer hud
-- hud color using white player color as a default
-- shared box
-
-- buff nml
-
-  - always jug
-  - remove no spawn
-  - increased initial spawn
-
-- winter wunderland
-  - removed dolls
-  - added blunder gat
-  - mule give fast swap
 
 ## TODO
-
-- kills counter on nml
-
-- winter wunderland
-  - remove perk limit
-  - remove guns from box
-  - set box location
-  - replace nades
 
 #### Would like to do
 
