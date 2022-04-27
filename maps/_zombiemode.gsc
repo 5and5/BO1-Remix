@@ -7917,7 +7917,6 @@ george_health_bar()
 	self thread hud_end(george_bar_background);
 
 	current_george_hp = 0;
-	temp_director = true;
 
 	while (1)
 	{
@@ -7933,9 +7932,6 @@ george_health_bar()
 
 		if (flag( "director_alive" ))
 		{
-			if (!temp_director)
-				temp_director = true;
-
 			george_health setValue(current_george_hp);
 			// Prevent visual glitches with bar while george has 0 health
 			if (current_george_hp == 0)
@@ -7979,19 +7975,18 @@ george_health_bar()
 		else
 		{
 			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
-			if (george_bar.alpha != 0.5 && temp_director)
+			if (george_bar.alpha != 0.5 && current_george_hp > 0)
 			{
 				hud_fade(george_health, 0.8, 0.3);
 				hud_fade(george_bar, 0.5, 0.3);
 				hud_fade(george_bar_background, 0.5, 0.3);
 			}
-			else if (george_health.alpha != 0 && !flag("director_alive") && temp_director)
+			else if (george_health.alpha != 0 && !flag("director_alive")) //temp_director
 			{
-				hud_fade(george_bar, 0, 0.3);
 				wait 5;
+				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
 				hud_fade(george_health, 0, 0.3);
 				hud_fade(george_bar_background, 0, 0.3);
-				temp_director = false;
 			}
     	}
 
