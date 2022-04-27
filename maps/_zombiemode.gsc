@@ -987,7 +987,6 @@ init_flags()
 	flag_init( "end_round_wait" );
 	flag_init( "wait_and_revive" );
 	flag_init( "instant_revive" );
-	flag_init( "director_alive" );
 	flag_init( "spawn_init" );
 	flag_init( "game_paused" );
 	flag_init( "hud_pressed" );
@@ -7218,7 +7217,7 @@ coop_pause(timer_hud, start_time)
 	players = GetPlayers();
 	if( players.size == 1 )
 	{
-		return;
+		// return;
 	}
 
 	while(1)
@@ -7231,7 +7230,36 @@ coop_pause(timer_hud, start_time)
 				iprintln("finish the round");
 				level waittill( "end_of_round" );
 			}
-			iprintln("wait for the round change");
+			if (!flag("director_alive"))
+				iprintln("wait for the round change");
+
+			wait 1; 	// To make sure the round changes
+			// Don't allow breaks while George is alive or is possible to spawn
+
+			// debug
+			iPrintLn("director_alive", flag("director_alive"));
+			iPrintLn("potential_director", flag("potential_director"));
+
+			flagged = false;
+			director_exception = false;
+			if (flag("director_alive") || flag("potential_director"))
+			{
+				while (true)
+				{
+					if (!flag("director_alive") && !flag("potential_director"))
+						break;
+
+					if (!flagged)
+					{
+						iPrintLn("Kill George first");
+						flagged = true;
+					}
+
+					wait 0.1;
+				}
+			}
+			if (flagged)
+				continue;
 
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
 			flag_set( "game_paused" );
@@ -7849,7 +7877,7 @@ george_health_bar()
 	hud_wait();
 	level waittill("start_of_round");
 
-	george_max_health = level.director_max_damage_taken * level.players_playing;
+	george_max_health = 250000 * level.players_playing;
 
 	width = 250;
 	height = 8;
@@ -7861,6 +7889,7 @@ george_health_bar()
 	george_bar_background.height = height + 1;
 	george_bar_background.foreground = 0;
 	george_bar_background.shader = "black";
+	george_bar_background.alpha = 0;
 	george_bar_background setShader( "black", width + 2, height + 2 );
 
 	george_bar = create_hud( "left", "bottom");
@@ -7870,16 +7899,14 @@ george_health_bar()
 	george_bar.height = height;
 	george_bar.foreground = 1;
 	george_bar.shader = "white";
+	george_bar.alpha = 0;
 	george_bar setShader( "white", width, height );
 
 	george_health = create_hud( "left", "bottom");
 	george_health.x = 410;
 	george_health.y = -11;
 	george_health.fontScale = 1.3;
-
-	hud_fade(george_health, 0.8, 0.3);
-	hud_fade(george_bar, 0.5, 0.3);
-	hud_fade(george_bar_background, 0.5, 0.3);
+	george_health.alpha = 0;
 
 	self thread hud_end(george_health);
 	self thread hud_end(george_bar);
@@ -7893,28 +7920,28 @@ george_health_bar()
 		// iPrintLn(flag("director_alive"));	// debug
 		// iPrintLn(flag("spawn_init"));		// debug
 
-		current_george_hp = (george_max_health - level.director_damage);
+		// Amount of damage dealt to director, prevent going beyond the scale
+		local_director_damage = level.director_damage;
+		if (local_director_damage > george_max_health)
+			local_director_damage = george_max_health;
 
-		// Lock on 1 as it calculates bar size by dividing
-		if (current_george_hp <= 1)
-		{
-			current_george_hp = 1;
-			// Display full health bar on round start
-			if (flag( "spawn_init" ))
-			{
-				current_george_hp = george_max_health;
-			}
-		}
+		current_george_hp = (george_max_health - local_director_damage);
 
 		if (flag( "director_alive" ))
 		{
 			if (!temp_director)
-			{
 				temp_director = true;
-			}
-			george_bar updateHealth(current_george_hp / george_max_health);
-			george_health setValue(current_george_hp);
 
+			george_health setValue(current_george_hp);
+			// Prevent visual glitches with bar while george has 0 health
+			if (current_george_hp == 0)
+			{
+				george_bar updateHealth(width);	// Smallest possible size
+				george_bar.alpha = 0;
+			}
+			else
+				george_bar updateHealth(current_george_hp / george_max_health);	
+					
 			george_health.color = (0.2, 0.6, 1);				// Blue
 			if (current_george_hp < george_max_health * .66)
 			{
@@ -7947,7 +7974,8 @@ george_health_bar()
 		}
 		else
 		{
-			if (george_health.alpha != 0.8 && temp_director)
+			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
+			if (george_bar.alpha != 0.5 && temp_director)
 			{
 				hud_fade(george_health, 0.8, 0.3);
 				hud_fade(george_bar, 0.5, 0.3);
@@ -7955,9 +7983,9 @@ george_health_bar()
 			}
 			else if (george_health.alpha != 0 && !flag("director_alive") && temp_director)
 			{
+				hud_fade(george_bar, 0, 0.3);
 				wait 5;
 				hud_fade(george_health, 0, 0.3);
-				hud_fade(george_bar, 0, 0.3);
 				hud_fade(george_bar_background, 0, 0.3);
 				temp_director = false;
 			}
@@ -7966,8 +7994,9 @@ george_health_bar()
 		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
 		{
 			hud_fade(george_health, 0.8, 0.3);
-			hud_fade(george_bar, 0.5, 0.3);
-			hud_fade(george_bar_background, 0.5, 0.3);			
+			hud_fade(george_bar_background, 0.5, 0.3);	
+			if (current_george_hp > 0)
+				hud_fade(george_bar, 0.5, 0.3);
 		}
 		wait 0.05;
 	}
@@ -7977,7 +8006,7 @@ just_spawned_exception()
 {
 	while (1)
 	{
-		level waittill ("start_of_round");
+		level waittill ("all_players_connected");
 		flag_set ( "spawn_init" );
 		wait 15;
 		flag_clear ( "spawn_init" );
