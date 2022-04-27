@@ -131,7 +131,7 @@ init()
 	if( !isDefined( level.director_max_damage_taken ) )
 	{
 		level.director_max_damage_taken = 250000;
-		level.director_max_damage_taken_easy = 1000;
+		level.director_max_damage_taken_easy = 2500;
 
 		//if ( is_true( level.debug_director ) )
 		//{
@@ -2316,6 +2316,7 @@ director_full_damage( inflictor, attacker, damage, flags, meansofdeath, weapon, 
 		return damage;
 	}
 
+	// Note for the future, adding weapons here won't work as they're being overrwritten in _zombiemode func anyways
 	switch ( weapon )
 	{
 	case "aug_acog_mk_upgraded_zm":

@@ -5494,22 +5494,13 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
-/*	if(self.animname == "director_zombie")
-		{
-			final_damage = int(10000);
-		}*/
-	// if(weapon == "zombie_nesting_dolls" && self.animname == "director_zombie")
-	// {
-	// 	return int(15000);
-	// }
-
 	if(weapon == "zombie_nesting_dolls" && self.animname != "director_zombie")
 	{
 		final_damage = int(self.maxhealth) + 666;
 	}
 
 
-	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" || self.animname == "director_zombie")
+	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && (self.animname == "thief_zombie" || self.animname == "director_zombie"))
 	{
 		final_damage = 1500;
 	}
@@ -5517,6 +5508,28 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	if((weapon == "blundergat_zm" || weapon == "blundergat_upgraded_zm") && meansofdeath == "MOD_RIFLE_BULLET")
 	{
 		final_damage = int(self.maxhealth) + 666;
+	}
+
+	// This approach is bypassing water damage debuff
+	if (self.animname == "director_zombie")
+	{
+		switch(weapon)
+		{
+		case "m14_zm":
+		case "m14_upgraded_zm":
+		case "rottweil72_zm":
+		case "rottweil72_upgraded_zm":
+			final_damage = int(final_damage * 8);
+			break;
+
+		case "ray_gun_zm":
+			final_damage = int(final_damage * 1.15);
+			break;
+
+		case "ray_gun_upgraded_zm":
+			final_damage = int(final_damage * 1.25);
+			break;
+		}
 	}
 
 	return int( final_damage );
