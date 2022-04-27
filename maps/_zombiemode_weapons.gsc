@@ -3681,3 +3681,10 @@ debug_print_boxes()
 		wait 1;
 	}
 }
+
+remove_melee()
+{
+	melee = self get_player_melee_weapon();
+	self TakeWeapon(melee);
+	return melee;
+}

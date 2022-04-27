@@ -2769,16 +2769,39 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
     ent_player endon( str_gun_return_notify );
     ent_player endon( "replace_weapon_powerup" );
 
+	removed_melee = "";
+	melee_removed = false;
+
     while(ent_player GetCurrentWeapon() != "tesla_gun_zm")
     {
         ent_player waittill("weapon_change_complete");
     }
-    ent_player EnableWeaponCycling();
 
-    while(!ent_player IsSwitchingWeapons())
-    {
-        wait_network_frame();
-    }
+    ent_player EnableWeaponCycling();
+	
+	while(ent_player GetAmmoCount("tesla_gun_zm") > 0)
+	{
+		if (ent_player IsSwitchingWeapons())
+			break;
+
+		while (ent_player getWeaponAmmoClip("tesla_gun_zm") == 0)
+		{
+			if (isDefined(level.fix_wunderwaffe) && level.fix_wunderwaffe && !melee_removed)
+			{
+				removed_melee = ent_player maps\_zombiemode_weapons::remove_melee();
+				melee_removed = true;
+			}
+			wait_network_frame();
+		}
+
+		if (melee_removed)
+		{
+			ent_player GiveWeapon(removed_melee, 0);
+			melee_removed = false;
+		}
+
+		wait_network_frame();
+	}
 
     level thread tesla_weapon_powerup_remove( ent_player, str_gun_return_notify, false );
 }

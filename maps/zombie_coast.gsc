@@ -121,6 +121,8 @@ main()
 	level.zombiemode_using_marathon_perk = true;
 	level.zombiemode_using_divetonuke_perk = true;
 	level.zombiemode_using_deadshot_perk = true;
+	// Change to disable or enable knifing while having waffe
+	level.fix_wunderwaffe = true;
 
 	// used for the water hazard
 	level.use_freezegun_features = true;
