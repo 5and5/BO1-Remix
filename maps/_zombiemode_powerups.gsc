@@ -60,6 +60,7 @@ init()
 
 	init_powerups();
 	level.last_powerup = false;
+	flag_init("tesla_init");
 
 	thread watch_for_drop();
 	thread setup_firesale_audio();
@@ -1317,7 +1318,7 @@ powerup_grab()
 
 					case "tesla":
 						level thread tesla_weapon_powerup( players[i] );
-						level thread maps\zombie_coast::tesla_melee_watcher(players[i]);
+						level thread tesla_melee_watcher(players[i]);
 						players[i] thread powerup_vo( "tesla" ); // TODO: Audio should uncomment this once the sounds have been set up
 						break;
 
@@ -3239,4 +3240,22 @@ is_valid_powerup(powerup_name)
 	}
 
 	return true;
+}
+
+tesla_melee_watcher(ent_player)
+{
+	ent_player endon( "disconnect" );
+	ent_player endon( "death" );
+
+	while (true)
+	{
+		if (flag("tesla_init") && ent_player getCurrentWeapon() != "tesla_gun_zm")
+		{
+			flag_clear("tesla_init");
+			ent_player allowMelee(true);
+			break;
+		}
+
+		wait_network_frame();
+	}
 }

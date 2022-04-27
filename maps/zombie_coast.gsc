@@ -123,7 +123,6 @@ main()
 	level.zombiemode_using_deadshot_perk = true;
 	// Change to disable or enable knifing while having waffe
 	level.fix_wunderwaffe = true;
-	flag_init("tesla_init");
 
 	// used for the water hazard
 	level.use_freezegun_features = true;
@@ -1338,22 +1337,4 @@ init_fx_anims()
 zombie_coast_poi_positioning_func(origin, forward)
 {
 	return maps\_zombiemode_server_throttle::server_safe_ground_trace_ignore_water( "poi_trace", 10, self.origin + forward + ( 0, 0, 10 ) );
-}
-
-tesla_melee_watcher(ent_player)
-{
-	ent_player endon( "disconnect" );
-	ent_player endon( "death" );
-
-	while (true)
-	{
-		if (flag("tesla_init") && ent_player getCurrentWeapon() != "tesla_gun_zm")
-		{
-			flag_clear("tesla_init");
-			ent_player allowMelee(true);
-			break;
-		}
-
-		wait_network_frame();
-	}
 }
