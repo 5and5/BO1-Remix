@@ -7881,10 +7881,14 @@ george_health_bar()
 
 	width = 250;
 	height = 8;
+	hudx = "center";
+	hudy = "bottom";
+	posx = 0;
+	posy = -3;
 
-	george_bar_background = create_hud( "left", "bottom");
-	george_bar_background.x = 300;
-	george_bar_background.y = -3;
+	george_bar_background = create_hud(hudx, hudy);
+	george_bar_background.x = posx;
+	george_bar_background.y = posy;
 	george_bar_background.width = width + 2;
 	george_bar_background.height = height + 1;
 	george_bar_background.foreground = 0;
@@ -7892,9 +7896,9 @@ george_health_bar()
 	george_bar_background.alpha = 0;
 	george_bar_background setShader( "black", width + 2, height + 2 );
 
-	george_bar = create_hud( "left", "bottom");
-	george_bar.x = 301;
-	george_bar.y = -4;
+	george_bar = create_hud(hudx, hudy);
+	george_bar.x = posx;
+	george_bar.y = posy - 1;
 	george_bar.width = width;
 	george_bar.height = height;
 	george_bar.foreground = 1;
@@ -7902,9 +7906,9 @@ george_health_bar()
 	george_bar.alpha = 0;
 	george_bar setShader( "white", width, height );
 
-	george_health = create_hud( "left", "bottom");
-	george_health.x = 410;
-	george_health.y = -11;
+	george_health = create_hud(hudx, hudy);
+	george_health.x = posx;
+	george_health.y = posy - 8;
 	george_health.fontScale = 1.3;
 	george_health.alpha = 0;
 
