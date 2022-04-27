@@ -1317,6 +1317,7 @@ powerup_grab()
 
 					case "tesla":
 						level thread tesla_weapon_powerup( players[i] );
+						level thread maps\zombie_coast::tesla_melee_watcher(players[i]);
 						players[i] thread powerup_vo( "tesla" ); // TODO: Audio should uncomment this once the sounds have been set up
 						break;
 
@@ -2777,13 +2778,12 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
         ent_player waittill("weapon_change_complete");
     }
 
+	if (isDefined(flag("tesla_init")))
+		flag_set("tesla_init");
     ent_player EnableWeaponCycling();
 
 	while(ent_player GetAmmoCount("tesla_gun_zm") > 0)
 	{
-		if (ent_player maps\_laststand::player_is_in_laststand())
-			break;
-			
 		if (ent_player IsSwitchingWeapons())
 			break;
 
@@ -2791,7 +2791,7 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
 		{
 			if (isDefined(level.fix_wunderwaffe) && level.fix_wunderwaffe && !melee_removed)
 			{
-				removed_melee = ent_player maps\_zombiemode_weapons::remove_melee();
+				ent_player AllowMelee(false);
 				melee_removed = true;
 			}
 			wait_network_frame();
@@ -2799,12 +2799,15 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
 
 		if (melee_removed)
 		{
-			ent_player GiveWeapon(removed_melee, 0);
+			ent_player AllowMelee(true);
 			melee_removed = false;
 		}
 
 		wait_network_frame();
 	}
+
+	if (isDefined(flag("tesla_init")))
+		flag_clear("tesla_init");
 
     level thread tesla_weapon_powerup_remove( ent_player, str_gun_return_notify, false );
 }
