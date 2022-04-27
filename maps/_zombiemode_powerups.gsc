@@ -2778,9 +2778,12 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
     }
 
     ent_player EnableWeaponCycling();
-	
+
 	while(ent_player GetAmmoCount("tesla_gun_zm") > 0)
 	{
+		if (ent_player maps\_laststand::player_is_in_laststand())
+			break;
+			
 		if (ent_player IsSwitchingWeapons())
 			break;
 
