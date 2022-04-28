@@ -182,7 +182,6 @@ stringtable,weaponoptions.csv
 //WEAPON SCRIPTS
 rawfile,maps/_zombiemode_weap_thundergun.gsc
 rawfile,maps/_zombiemode_weap_tesla.gsc
-rawfile,maps/_zombiemode_weap_nesting_dolls.gsc
 rawfile,maps/_zombiemode_weap_cymbal_monkey.gsc
 //BLUNDER GAT
 weapon,sp/blundergat_zm
@@ -231,23 +230,6 @@ rawfile,animscripts/traverse/zombie_jump_down_127.gsc
 rawfile,animscripts/traverse/zombie_jump_up_222.gsc
 
 //XMODELS
-xmodel,t5_nesting_bomb_viewmodel
-xmodel,t5_nesting_bomb_world_doll1_dempsey
-xmodel,t5_nesting_bomb_world_doll1_nikolai
-xmodel,t5_nesting_bomb_world_doll1_takeo
-xmodel,t5_nesting_bomb_world_doll1_richtofen
-xmodel,t5_nesting_bomb_world_doll2_dempsey
-xmodel,t5_nesting_bomb_world_doll2_nikolai
-xmodel,t5_nesting_bomb_world_doll2_takeo
-xmodel,t5_nesting_bomb_world_doll2_richtofen
-xmodel,t5_nesting_bomb_world_doll3_dempsey
-xmodel,t5_nesting_bomb_world_doll3_nikolai
-xmodel,t5_nesting_bomb_world_doll3_takeo
-xmodel,t5_nesting_bomb_world_doll3_richtofen
-xmodel,t5_nesting_bomb_world_doll4_dempsey
-xmodel,t5_nesting_bomb_world_doll4_nikolai
-xmodel,t5_nesting_bomb_world_doll4_takeo
-xmodel,t5_nesting_bomb_world_doll4_richtofen
 xmodel,zombie_vending_jugg
 xmodel,zombie_vending_jugg_on
 xmodel,zombie_vending_revive
