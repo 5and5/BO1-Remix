@@ -7,6 +7,7 @@ main()
 {
 	maps\zombie_ww_fx::main();
 	maps\zombie_ww_amb::main();
+	maps\_zombiemode_weap_blundergat::init();
 
 	//setExpFog(100, 1000, 0.4, 0.425, 0.44, 0.0);
 	setVolFog( 110, 2016, 621, 674, 0.572, 0.672, 0.678, 0 );
