@@ -2,6 +2,7 @@
 #include maps\_utility;
 #include maps\_zombiemode_utility;
 #include maps\_zombiemode_zone_manager;
+// #include maps\_zombiemode_weapons;
 //#include maps\_zombiemode_protips;
 
 #include maps\zombie_theater_magic_box;
@@ -89,6 +90,8 @@ main()
 	maps\_zombiemode_ai_dogs::enable_dog_rounds();
 
 	init_zombie_theater();
+
+	level thread maps\_zombiemode_weapons::box_notifier();
 
 	// Setup the levels Zombie Zone Volumes
 	maps\_compass::setupMiniMap("menu_map_zombie_theater");

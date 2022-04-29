@@ -44,6 +44,7 @@ main()
 	level.zombie_breadcrumb_failed = 0;
 
 	level.zombie_visionset = "zombie_neutral";
+	level.global_print_hud_color = (1, 1, 1);
 
 	if(GetDvar("anim_intro") == "1")
 	{
@@ -260,11 +261,6 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
-	if (level.script == "zombie_theater")
-	{
-		level thread box_notifier();
-	}
-
 }
 
 zombiemode_melee_miss()
@@ -991,7 +987,6 @@ init_flags()
 	flag_init( "end_round_wait" );
 	flag_init( "wait_and_revive" );
 	flag_init( "instant_revive" );
-	flag_init( "director_alive" );
 	flag_init( "spawn_init" );
 	flag_init( "game_paused" );
 	flag_init( "hud_pressed" );
@@ -5499,22 +5494,13 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
-/*	if(self.animname == "director_zombie")
-		{
-			final_damage = int(10000);
-		}*/
-	// if(weapon == "zombie_nesting_dolls" && self.animname == "director_zombie")
-	// {
-	// 	return int(15000);
-	// }
-
 	if(weapon == "zombie_nesting_dolls" && self.animname != "director_zombie")
 	{
 		final_damage = int(self.maxhealth) + 666;
 	}
 
 
-	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" || self.animname == "director_zombie")
+	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && (self.animname == "thief_zombie" || self.animname == "director_zombie"))
 	{
 		final_damage = 1500;
 	}
@@ -5522,6 +5508,28 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	if((weapon == "blundergat_zm" || weapon == "blundergat_upgraded_zm") && meansofdeath == "MOD_RIFLE_BULLET")
 	{
 		final_damage = int(self.maxhealth) + 666;
+	}
+
+	// This approach is bypassing water damage debuff
+	if (self.animname == "director_zombie")
+	{
+		switch(weapon)
+		{
+		case "m14_zm":
+		case "m14_upgraded_zm":
+		case "rottweil72_zm":
+		case "rottweil72_upgraded_zm":
+			final_damage = int(final_damage * 8);
+			break;
+
+		case "ray_gun_zm":
+			final_damage = int(final_damage * 1.15);
+			break;
+
+		case "ray_gun_upgraded_zm":
+			final_damage = int(final_damage * 1.25);
+			break;
+		}
 	}
 
 	return int( final_damage );
@@ -7222,7 +7230,7 @@ coop_pause(timer_hud, start_time)
 	players = GetPlayers();
 	if( players.size == 1 )
 	{
-		return;
+		// return;
 	}
 
 	while(1)
@@ -7235,7 +7243,36 @@ coop_pause(timer_hud, start_time)
 				iprintln("finish the round");
 				level waittill( "end_of_round" );
 			}
-			iprintln("wait for the round change");
+			if (!flag("director_alive"))
+				iprintln("wait for the round change");
+
+			wait 1; 	// To make sure the round changes
+			// Don't allow breaks while George is alive or is possible to spawn
+
+			// debug
+			iPrintLn("director_alive", flag("director_alive"));
+			iPrintLn("potential_director", flag("potential_director"));
+
+			flagged = false;
+			director_exception = false;
+			if (flag("director_alive") || flag("potential_director"))
+			{
+				while (true)
+				{
+					if (!flag("director_alive") && !flag("potential_director"))
+						break;
+
+					if (!flagged)
+					{
+						iPrintLn("Kill George first");
+						flagged = true;
+					}
+
+					wait 0.1;
+				}
+			}
+			if (flagged)
+				continue;
 
 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
 			flag_set( "game_paused" );
@@ -7586,27 +7623,27 @@ display_times( label, time, duration, delay, col )
 	}
 
 	wait delay;
-	level.print_hud = NewHudElem();
-	level.print_hud.horzAlign = "right";
-	level.print_hud.vertAlign = "top";
-	level.print_hud.alignX = "right";
-	level.print_hud.alignY = "top";
-	level.print_hud.y = (2 + y_offset);
-	level.print_hud.x = -5;
-	level.print_hud.fontScale = 1.3;
-	level.print_hud.alpha = 0;
-	level.print_hud.label = (label + ": ");
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	print_hud = NewHudElem();
+	print_hud.horzAlign = "right";
+	print_hud.vertAlign = "top";
+	print_hud.alignX = "right";
+	print_hud.alignY = "top";
+	print_hud.y = (2 + y_offset);
+	print_hud.x = -5;
+	print_hud.fontScale = 1.3;
+	print_hud.alpha = 0;
+	print_hud.label = (label + ": ");
+	// Reading it directly will cause it to bug up, middle-man level var required
+	print_hud.color = level.global_print_hud_color;
 
 	time_in_mins = print_time_friendly( time );	
-	level.print_hud setText( time_in_mins );
+	print_hud setText( time_in_mins );
 
-	hud_fade( level.print_hud, 1, 0.25 );
+	hud_fade( print_hud, 1, 0.25 );
 	wait duration;
-	hud_fade( level.print_hud, 0, 0.25 );
+	hud_fade( print_hud, 0, 0.25 );
 	wait 2;
-	level.print_hud destroy_hud();
+	print_hud destroy_hud();
 }
 
 tab_hud()
@@ -7711,7 +7748,14 @@ zombies_remaining_hud()
 				hud_fade(self.remaining_hud, 1, 0.25);			
 			}
 
-			self.remaining_hud setValue(self.kills);
+			tracked_kills = 0;
+			players = get_players();
+			for (i = 0; i < players.size; i++)
+			{
+				tracked_kills = players[i].kills;
+			}
+
+			self.remaining_hud setValue(tracked_kills);
 		}
 		// Else use normal remaining tracker
 		else
@@ -7846,72 +7890,71 @@ george_health_bar()
 	hud_wait();
 	level waittill("start_of_round");
 
-	george_max_health = level.director_max_damage_taken * level.players_playing;
+	george_max_health = 250000 * level.players_playing;
 
 	width = 250;
 	height = 8;
+	hudx = "center";
+	hudy = "bottom";
+	posx = 0;
+	posy = -3;
 
-	george_bar_background = create_hud( "left", "bottom");
-	george_bar_background.x = 300;
-	george_bar_background.y = -3;
+	george_bar_background = create_hud(hudx, hudy);
+	george_bar_background.x = posx;
+	george_bar_background.y = posy;
 	george_bar_background.width = width + 2;
 	george_bar_background.height = height + 1;
 	george_bar_background.foreground = 0;
 	george_bar_background.shader = "black";
+	george_bar_background.alpha = 0;
 	george_bar_background setShader( "black", width + 2, height + 2 );
 
-	george_bar = create_hud( "left", "bottom");
-	george_bar.x = 301;
-	george_bar.y = -4;
+	george_bar = create_hud(hudx, hudy);
+	george_bar.x = posx;
+	george_bar.y = posy - 1;
 	george_bar.width = width;
 	george_bar.height = height;
 	george_bar.foreground = 1;
 	george_bar.shader = "white";
+	george_bar.alpha = 0;
 	george_bar setShader( "white", width, height );
 
-	george_health = create_hud( "left", "bottom");
-	george_health.x = 410;
-	george_health.y = -11;
+	george_health = create_hud(hudx, hudy);
+	george_health.x = posx;
+	george_health.y = posy - 8;
 	george_health.fontScale = 1.3;
-
-	hud_fade(george_health, 0.8, 0.3);
-	hud_fade(george_bar, 0.5, 0.3);
-	hud_fade(george_bar_background, 0.5, 0.3);
+	george_health.alpha = 0;
 
 	self thread hud_end(george_health);
 	self thread hud_end(george_bar);
 	self thread hud_end(george_bar_background);
 
 	current_george_hp = 0;
-	temp_director = true;
 
 	while (1)
 	{
 		// iPrintLn(flag("director_alive"));	// debug
 		// iPrintLn(flag("spawn_init"));		// debug
 
-		current_george_hp = (george_max_health - level.director_damage);
+		// Amount of damage dealt to director, prevent going beyond the scale
+		local_director_damage = level.director_damage;
+		if (local_director_damage > george_max_health)
+			local_director_damage = george_max_health;
 
-		// Lock on 1 as it calculates bar size by dividing
-		if (current_george_hp <= 1)
-		{
-			current_george_hp = 1;
-			// Display full health bar on round start
-			if (flag( "spawn_init" ))
-			{
-				current_george_hp = george_max_health;
-			}
-		}
+		current_george_hp = (george_max_health - local_director_damage);
 
 		if (flag( "director_alive" ))
 		{
-			if (!temp_director)
-			{
-				temp_director = true;
-			}
-			george_bar updateHealth(current_george_hp / george_max_health);
 			george_health setValue(current_george_hp);
-
+			// Prevent visual glitches with bar while george has 0 health
+			if (current_george_hp == 0)
+			{
+				george_bar updateHealth(width);	// Smallest possible size
+				george_bar.alpha = 0;
+			}
+			else
+				george_bar updateHealth(current_george_hp / george_max_health);	
+					
 			george_health.color = (0.2, 0.6, 1);				// Blue
 			if (current_george_hp < george_max_health * .66)
 			{
@@ -7944,27 +7987,28 @@ george_health_bar()
 		}
 		else
 		{
-			if (george_health.alpha != 0.8 && temp_director)
+			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
+			if (george_bar.alpha != 0.5 && current_george_hp > 0)
 			{
 				hud_fade(george_health, 0.8, 0.3);
 				hud_fade(george_bar, 0.5, 0.3);
 				hud_fade(george_bar_background, 0.5, 0.3);
 			}
-			else if (george_health.alpha != 0 && !flag("director_alive") && temp_director)
+			else if (george_health.alpha != 0 && !flag("director_alive")) //temp_director
 			{
 				wait 5;
+				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
 				hud_fade(george_health, 0, 0.3);
-				hud_fade(george_bar, 0, 0.3);
 				hud_fade(george_bar_background, 0, 0.3);
-				temp_director = false;
 			}
     	}
 
 		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
 		{
 			hud_fade(george_health, 0.8, 0.3);
-			hud_fade(george_bar, 0.5, 0.3);
-			hud_fade(george_bar_background, 0.5, 0.3);			
+			hud_fade(george_bar_background, 0.5, 0.3);	
+			if (current_george_hp > 0)
+				hud_fade(george_bar, 0.5, 0.3);
 		}
 		wait 0.05;
 	}
@@ -7974,7 +8018,7 @@ just_spawned_exception()
 {
 	while (1)
 	{
-		level waittill ("start_of_round");
+		level waittill ("all_players_connected");
 		flag_set ( "spawn_init" );
 		wait 15;
 		flag_clear ( "spawn_init" );
@@ -8015,7 +8059,7 @@ color_hud_watcher()
 
 		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.global_print_hud_color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
@@ -8279,63 +8323,4 @@ print_time_friendly( seconds )
 	}
 
 	return combined; 
-}
-
-box_notifier()
-{
-	hud_level_wait();
-	
-	box_notifier_hud = NewHudElem();
-	box_notifier_hud.horzAlign = "center";
-	box_notifier_hud.vertAlign = "middle";
-	box_notifier_hud.alignX = "center";
-	box_notifier_hud.alignY = "middle";
-	box_notifier_hud.x = 0;
-	box_notifier_hud.y = -150;
-	box_notifier_hud.fontScale = 1.6;
-	box_notifier_hud.alpha = 0;
-	box_notifier_hud.label = "^7BOX SET: ";
-	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
-
-	i = 0;
-	while(i < 5)
-	{
-		if (isdefined(level.box_set))
-		{
-			box_notifier_hud setText("^0UNDEFINED");
-			// iPrintLn(level.box_set); // debug
-			if (level.box_set == 0)
-			{
-				box_notifier_hud setText("^2DINING");
-			}
-			else if (level.box_set == 1)
-			{
-				box_notifier_hud setText("^3HELLROOM");
-			}
-			else if (level.box_set == 2)
-			{
-				box_notifier_hud setText("^5NO POWER");
-			}
-			hud_fade(box_notifier_hud, 1, 0.25);
-			wait 4;
-			hud_fade(box_notifier_hud, 0, 0.25);
-			break;
-		}
-		else
-		{
-			// iPrintLn("undefined"); // debug
-			wait 0.5;
-			i++;
-		}
-	}
-}
-
-debug_print_boxes()
-{
-	for (i=0; i<level.chests.size; i++)
-	{
-		iPrintLn(level.chests[i].script_noteworthy);
-		iPrintLn(level.chests[i].targetname);
-		wait 1;
-	}
 }

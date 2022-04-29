@@ -68,7 +68,9 @@ init()
 
 	// Number of current active boss zombies
 	level.num_director_zombies = 0;
-	flag_init( "director_alive" );
+	level.last_director_round = 0;
+	flag_init("director_alive");
+	flag_init("potential_director");
 
 	level.director_zombie_spawners = GetEntArray( "boss_zombie_spawner", "targetname" );
 	array_thread( level.director_zombie_spawners, ::add_spawn_function, maps\_zombiemode_ai_director::director_prespawn );
@@ -129,7 +131,7 @@ init()
 	if( !isDefined( level.director_max_damage_taken ) )
 	{
 		level.director_max_damage_taken = 250000;
-		level.director_max_damage_taken_easy = 1000;
+		level.director_max_damage_taken_easy = 2500;
 
 		//if ( is_true( level.debug_director ) )
 		//{
@@ -161,6 +163,8 @@ init()
 
 	level thread setup_player_damage_watchers();
 	level thread director_max_ammo_watcher();
+
+	level thread possible_director_watcher();
 }
 
 director_precache_models()
@@ -496,7 +500,6 @@ director_zombie_spawn()
 		level.num_director_zombies = 0;
 	}
 	level.num_director_zombies++;
-	flag_set( "director_alive" );
 
 	director_zombie = self maps\_zombiemode_net::network_safe_stalingrad_spawn( "boss_zombie_spawn", 1 );
 	director_zombie Hide();
@@ -518,6 +521,7 @@ director_zombie_spawn()
 		director_zombie.animname = "director_zombie";
 
 		director_zombie thread director_zombie_think();
+		flag_set("director_alive");	// Runs only for 1st spawn
 	}
 	else
 	{
@@ -771,7 +775,6 @@ director_watch_damage()
 	}
 
 	self notify( "director_exit" );
-	flag_clear( "director_alive" );
 
 	self.defeated = true;
 	self.solo_last_stand = false;
@@ -2313,6 +2316,7 @@ director_full_damage( inflictor, attacker, damage, flags, meansofdeath, weapon, 
 		return damage;
 	}
 
+	// Note for the future, adding weapons here won't work as they're being overrwritten in _zombiemode func anyways
 	switch ( weapon )
 	{
 	case "aug_acog_mk_upgraded_zm":
@@ -2634,6 +2638,10 @@ director_leave_map( exit, calm )
 	self endon( "death" );
 
 	self.leaving_level = true;
+	flag_clear("director_alive");
+	if (flag("potential_director"))
+		flag_clear("potential_director");
+	level.last_director_round = level.round_number;
 	self [[ level.director_exit_level ]]( exit, calm );
 	self.leaving_level = undefined;
 
@@ -2956,4 +2964,22 @@ director_print( str )
 		iprintln( str + "\n" );
 	}
 #/
+}
+
+possible_director_watcher()
+{
+	while (true)
+	{
+		level waittill("end_of_round");
+
+		if (isDefined(level.last_director_round) && level.last_director_round > 0)
+		{
+			if (level.round_number > (level.last_director_round + 1))
+				flag_set("potential_director");
+
+			wait 15;
+			flag_clear("potential_director");
+		}
+		wait 0.1;
+	}
 }
