@@ -197,6 +197,7 @@ fx,acidgat/fx_acidgat_view
 fx,acidgat/fx_acidgat_zombiesplash
 
 //SCRIPTS
+rawfile,maps/_zombiemode_weap_blundergat.gsc
 rawfile,maps/_custom_zapper_system.gsc
 rawfile,maps/zombie_ww.gsc
 rawfile,maps/zombie_ww_amb.gsc
