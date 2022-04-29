@@ -91,7 +91,7 @@ main()
 
 	init_zombie_theater();
 
-	level thread maps\_zombiemode_weapons::box_notifier();
+	level thread maps\_custom_hud::box_notifier();
 
 	// Setup the levels Zombie Zone Volumes
 	maps\_compass::setupMiniMap("menu_map_zombie_theater");

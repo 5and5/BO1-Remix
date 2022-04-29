@@ -409,8 +409,9 @@ seta hud_george_bar "1"
 
 - points like reimagined
 - tab hud fade
-- tab hud change button
+- tab hud change button option
 - adopted reset sound
+- update strat tester
 
 #### Would like to do
 

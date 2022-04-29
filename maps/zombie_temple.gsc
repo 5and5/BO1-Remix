@@ -1178,6 +1178,8 @@ temple_revive_solo_fx()
 activate_night()
 {
 	flag_wait("all_players_spawned");
+	SetDvar( "night_mode", 1);
+
     wait 1.8;
 
     while(1)

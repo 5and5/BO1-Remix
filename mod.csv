@@ -11,6 +11,9 @@ rawfile,maps/_zombiemode_ai_dogs.gsc
 rawfile,maps/_zombiemode_ai_faller.gsc
 rawfile,maps/_zombiemode_spawner.gsc
 
+//CUSTOM
+rawfile,maps/_custom_hud.gsc
+
 //WEAPONS
 rawfile,maps/_zombiemode_betty.gsc
 rawfile,maps/_zombiemode_claymore.gsc
