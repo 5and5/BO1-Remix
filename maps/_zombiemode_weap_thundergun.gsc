@@ -28,10 +28,18 @@ init()
     level._effect["thundergun_smoke_cloud"]         = loadfx( "weapon/thunder_gun/fx_thundergun_smoke_cloud" );
 
     set_zombie_var( "thundergun_cylinder_radius",       180 );
-    set_zombie_var( "thundergun_fling_range",           450 ); // 40 feet
-    set_zombie_var( "thundergun_gib_range",             900 ); // 75 feet
+
+    set_zombie_var( "thundergun_fling_range",           650 ); // 40 feet
+    set_zombie_var( "thundergun_gib_range",             1200 ); // 75 feet
+    set_zombie_var( "thundergun_knockdown_range",       1500 ); // 100 feet
+    if(level.script == "zombie_ww")
+    {
+        set_zombie_var( "thundergun_fling_range",           2000);//450 ); // 40 feet
+        set_zombie_var( "thundergun_gib_range",             3000);//900 ); // 75 feet
+        set_zombie_var( "thundergun_knockdown_range",       3200 ); // 100 feet
+    }
+
     set_zombie_var( "thundergun_gib_damage",            0 );
-    set_zombie_var( "thundergun_knockdown_range",       1200 ); // 100 feet
     set_zombie_var( "thundergun_knockdown_damage",      0 );
 
     level.thundergun_gib_refs = [];

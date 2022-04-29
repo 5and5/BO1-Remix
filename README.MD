@@ -392,6 +392,11 @@ seta hud_round_timer "1"
 
 ## TODO
 
+- points like reimagined
+- tab hud fade
+- tab hud change button
+- adopted reset sound
+
 #### Would like to do
 
 - Add chalk to mp5k on Verruckt
