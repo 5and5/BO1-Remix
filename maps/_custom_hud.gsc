@@ -689,7 +689,7 @@ health_bar_hud()
 	hud_wait();
 
 	width = 113;
-	height = 7;
+	height = 6;
 
 	self.barElemBackround = create_hud( "left", "bottom");
 	self.barElemBackround.x = 0;
@@ -784,35 +784,35 @@ george_health_bar()
 	posx = 0;
 	posy = -3;
 
-	george_bar_background = create_hud(hudx, hudy);
-	george_bar_background.x = posx;
-	george_bar_background.y = posy;
-	george_bar_background.width = width + 2;
-	george_bar_background.height = height + 1;
-	george_bar_background.foreground = 0;
-	george_bar_background.shader = "black";
-	george_bar_background.alpha = 0;
-	george_bar_background setShader( "black", width + 2, height + 2 );
+	self.george_bar_background = create_hud(hudx, hudy);
+	self.george_bar_background.x = posx;
+	self.george_bar_background.y = posy;
+	self.george_bar_background.width = width + 2;
+	self.george_bar_background.height = height + 1;
+	self.george_bar_background.foreground = 0;
+	self.george_bar_background.shader = "black";
+	self.george_bar_background.alpha = 0;
+	self.george_bar_background setShader( "black", width + 2, height + 2 );
 
-	george_bar = create_hud(hudx, hudy);
-	george_bar.x = posx;
-	george_bar.y = posy - 1;
-	george_bar.width = width;
-	george_bar.height = height;
-	george_bar.foreground = 1;
-	george_bar.shader = "white";
-	george_bar.alpha = 0;
-	george_bar setShader( "white", width, height );
+	self.george_bar = create_hud(hudx, hudy);
+	self.george_bar.x = posx;
+	self.george_bar.y = posy - 1;
+	self.george_bar.width = width;
+	self.george_bar.height = height;
+	self.george_bar.foreground = 1;
+	self.george_bar.shader = "white";
+	self.george_bar.alpha = 0;
+	self.george_bar setShader( "white", width, height );
 
-	george_health = create_hud(hudx, hudy);
-	george_health.x = posx;
-	george_health.y = posy - 8;
-	george_health.fontScale = 1.3;
-	george_health.alpha = 0;
+	self.george_health = create_hud(hudx, hudy);
+	self.george_health.x = posx;
+	self.george_health.y = posy - 8;
+	self.george_health.fontScale = 1.3;
+	self.george_health.alpha = 0;
 
-	self thread hud_end(george_health);
-	self thread hud_end(george_bar);
-	self thread hud_end(george_bar_background);
+	self thread hud_end(self.george_health);
+	self thread hud_end(self.george_bar);
+	self thread hud_end(self.george_bar_background);
 
 	current_george_hp = 0;
 
@@ -826,76 +826,74 @@ george_health_bar()
 		if (local_director_damage > george_max_health)
 			local_director_damage = george_max_health;
 
-
 		current_george_hp = (george_max_health - local_director_damage);
 
 		if (flag( "director_alive" ))
 		{
-			george_health setValue(current_george_hp);
+			self.george_health setValue(current_george_hp);
 			// Prevent visual glitches with bar while george has 0 health
 			if (current_george_hp == 0)
 			{
-                iPrintLn(level.director_damage);
-				george_bar updateHealth(width);	// Smallest possible size
-				george_bar.alpha = 1;
+				self.george_bar updateHealth(width);	// Smallest possible size
+				self.george_bar.alpha = 1;
 			}
 			else
-				george_bar updateHealth(current_george_hp / george_max_health);	
+				self.george_bar updateHealth(current_george_hp / george_max_health);	
 					
-			george_health.color = (0.2, 0.6, 1);				// Blue
+			self.george_health.color = (0.2, 0.6, 1);				// Blue
 			if (current_george_hp < george_max_health * .66)
 			{
-				george_health.color = (1, 1, 0.2);				// Yellow
+				self.george_health.color = (1, 1, 0.2);				// Yellow
 				if (current_george_hp < george_max_health * .33)
 				{
-					george_health.color = (1, 0.6, 0.2);		// Orange
+					self.george_health.color = (1, 0.6, 0.2);		// Orange
 					if (current_george_hp <= 1)
 					{
-						george_health.color = (1, 0.2, 0.2);	// Red
+						self.george_health.color = (1, 0.2, 0.2);	// Red
 					}
 				}
 			}
 		}
 		else
 		{
-			hud_fade(george_bar, 0, 0.3);
-			george_health setValue(0);
-			george_health.color = (1, 0.2, 0.2);				// Red
+			hud_fade(self.george_bar, 0, 0.3);
+			self.george_health setValue(0);
+			self.george_health.color = (1, 0.2, 0.2);				// Red
 		}
 
 		if(!getDvarInt("hud_george_bar"))
 		{
-			if(george_health.alpha != 0)
+			if(self.george_health.alpha != 0)
 			{
-				hud_fade(george_health, 0, 0.3);
-				hud_fade(george_bar, 0, 0.3);
-				hud_fade(george_bar_background, 0, 0.3);
+				hud_fade(self.george_health, 0, 0.3);
+				hud_fade(self.george_bar, 0, 0.3);
+				hud_fade(self.george_bar_background, 0, 0.3);
 			}
 		}
 		else
 		{
 			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
-			if (george_bar.alpha != 0.5 && current_george_hp > 0)
+			if (self.george_bar.alpha != 0.5 && current_george_hp > 0)
 			{
-				hud_fade(george_health, 0.8, 0.3);
-				hud_fade(george_bar, 0.55, 0.3);
-				hud_fade(george_bar_background, 0.55, 0.3);
+				hud_fade(self.george_health, 0.8, 0.3);
+				hud_fade(self.george_bar, 0.55, 0.3);
+				hud_fade(self.george_bar_background, 0.55, 0.3);
 			}
-			else if (george_health.alpha != 0 && !flag("director_alive")) //temp_director
+			else if (self.george_health.alpha != 0 && !flag("director_alive")) //temp_director
 			{
 				wait 5;
 				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
-				hud_fade(george_health, 0, 0.3);
-				hud_fade(george_bar_background, 0, 0.3);
+				hud_fade(self.george_health, 0, 0.3);
+				hud_fade(self.george_bar_background, 0, 0.3);
 			}
     	}
 
 		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
 		{
-			hud_fade(george_health, 0.8, 0.3);
-			hud_fade(george_bar_background, 0.55, 0.3);	
+			hud_fade(self.george_health, 0.8, 0.3);
+			hud_fade(self.george_bar_background, 0.55, 0.3);	
 			if (current_george_hp > 0)
-				hud_fade(george_bar, 0.55, 0.3);
+				hud_fade(self.george_bar, 0.55, 0.3);
 		}
 		wait 0.05;
 	}
@@ -979,6 +977,7 @@ color_health_bar_watcher()
 		prev_color = color;
 
 		self.barElem.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.george_bar.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 	}
 }
 
