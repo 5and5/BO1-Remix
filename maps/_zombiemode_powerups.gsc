@@ -60,6 +60,7 @@ init()
 
 	init_powerups();
 	level.last_powerup = false;
+	flag_init("tesla_init");
 
 	thread watch_for_drop();
 	thread setup_firesale_audio();
@@ -1317,6 +1318,7 @@ powerup_grab()
 
 					case "tesla":
 						level thread tesla_weapon_powerup( players[i] );
+						level thread tesla_melee_watcher(players[i]);
 						players[i] thread powerup_vo( "tesla" ); // TODO: Audio should uncomment this once the sounds have been set up
 						break;
 
@@ -2769,16 +2771,44 @@ tesla_weapon_powerup_weapon_change( ent_player, str_gun_return_notify )
     ent_player endon( str_gun_return_notify );
     ent_player endon( "replace_weapon_powerup" );
 
+	removed_melee = "";
+	melee_removed = false;
+
     while(ent_player GetCurrentWeapon() != "tesla_gun_zm")
     {
         ent_player waittill("weapon_change_complete");
     }
+
+	if (isDefined(flag("tesla_init")))
+		flag_set("tesla_init");
     ent_player EnableWeaponCycling();
 
-    while(!ent_player IsSwitchingWeapons())
-    {
-        wait_network_frame();
-    }
+	while(ent_player GetAmmoCount("tesla_gun_zm") > 0)
+	{
+		if (ent_player IsSwitchingWeapons())
+			break;
+
+		while (ent_player getWeaponAmmoClip("tesla_gun_zm") == 0)
+		{
+			if (isDefined(level.fix_wunderwaffe) && level.fix_wunderwaffe && !melee_removed)
+			{
+				ent_player AllowMelee(false);
+				melee_removed = true;
+			}
+			wait_network_frame();
+		}
+
+		if (melee_removed)
+		{
+			ent_player AllowMelee(true);
+			melee_removed = false;
+		}
+
+		wait_network_frame();
+	}
+
+	if (isDefined(flag("tesla_init")))
+		flag_clear("tesla_init");
 
     level thread tesla_weapon_powerup_remove( ent_player, str_gun_return_notify, false );
 }
@@ -3210,4 +3240,22 @@ is_valid_powerup(powerup_name)
 	}
 
 	return true;
+}
+
+tesla_melee_watcher(ent_player)
+{
+	ent_player endon( "disconnect" );
+	ent_player endon( "death" );
+
+	while (true)
+	{
+		if (flag("tesla_init") && ent_player getCurrentWeapon() != "tesla_gun_zm")
+		{
+			flag_clear("tesla_init");
+			ent_player allowMelee(true);
+			break;
+		}
+
+		wait_network_frame();
+	}
 }

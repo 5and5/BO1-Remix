@@ -602,12 +602,11 @@ offhand_weapon_give_override( str_weapon )
 		self TakeWeapon( self get_player_tactical_grenade() );
 	}
 	
-	if( str_weapon == "zombie_nesting_dolls" )
-	{
-		self maps\_zombiemode_weap_nesting_dolls::player_give_nesting_dolls();
-		//self maps\_zombiemode_weapons::play_weapon_vo( str_weapon ); // ww: need to figure out how we will get the sound here
-		return true;
-	}
+	// if( str_weapon == "zombie_nesting_dolls" )
+	// {
+	// 	self maps\_zombiemode_weap_nesting_dolls::player_give_nesting_dolls();
+	// 	return true;
+	// }
 	
 	if( str_weapon == "zombie_cymbal_monkey" )
 	{

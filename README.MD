@@ -52,7 +52,11 @@
 
 ### Insta Kill Rounds
 
-- Insta kill rounds start at round 99 then happen every other round
+- Insta kill rounds happen every other round after:
+- Solo: 99
+- Coop: 89
+- 3p: 79
+- 4p: 69
 
 ### Dogs
 
@@ -158,6 +162,15 @@
 - Increased probability of getting Monkeys/Gershes/Dolls - by 100% every 5 rounds till 20
 - Increased probability of getting Raygun until round 25 - by 15% after 5 hits - 30% after 10 hits (except on Der Riese)
 - Increased probability of getting Wonder Weapons by 10% every 5 hits until you get it
+
+#### Kino box locations presets
+
+- Dining first box in Speed Cola
+- Dining removed boxes: PM63, Alley, Control Room
+- Hellroom first box set in MPL
+- Hellroom removed boxes: Speed Cola, Dressing Room, Stage
+- No Power first box set in MPL
+- No Power removed boxes: Theater (middle)
 
 ## Equipment
 
@@ -294,7 +307,7 @@
 - Moved double tap machine to stage
 - Changed the spawn zone of the spawn room to only include it self (4 windows)
 - Removed double tap spawn when inside hell room
-- Initial box presets
+- Initial box and active box locations presets
 
 ### Five
 
@@ -366,6 +379,7 @@
 - `/hud_health_bar` - enables/disable health bar
 - `/hud_remaining` - enables/disable zombies counter
 - `/hud_drops` - enables/disable drop tracker
+- `/hud_george_bar` - enables/disable George health bar
 - `/hud_color 1 1 1` - changes the color of the custom hud
 - `/hud_color_health 1 1 1` - changes the color of the health bar
 - `/night_mode` - enables/disable Shangri-la's night mode
@@ -388,6 +402,7 @@ seta hud_health_bar "1"
 seta hud_drops "1"
 seta hud_remaining "1"
 seta hud_round_timer "1"
+seta hud_george_bar "1"
 ```
 
 ## TODO
