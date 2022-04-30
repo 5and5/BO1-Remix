@@ -319,14 +319,14 @@ round_timer_watcher( hud )
 		{
 			if(hud.alpha != 1)
 			{
-				hud.alpha = 1;
+                toggled_hud_fade(hud, 1);
 			}
 		}
 		else
 		{
 			if(hud.alpha != 0)
 			{
-				hud.alpha = 0;
+                toggled_hud_fade(hud, 0);
 			}
 		}
 
@@ -334,7 +334,7 @@ round_timer_watcher( hud )
 		{
 			if(hud.alpha != 1)
 			{
-				hud.alpha = 1;
+                toggled_hud_fade(hud, 1);
 			}
 		}
 		
@@ -530,14 +530,14 @@ drop_tracker_hud()
 		{
 			if(self.drops_hud.alpha != 0 )
 			{
-				self.drops_hud.alpha = 0;
+				toggled_hud_fade(self.drops_hud, 0);
 			}
 		}
 		else
 		{
 			if(self.drops_hud.alpha != 1 )
 			{
-				self.drops_hud.alpha = 1;
+				toggled_hud_fade(self.drops_hud, 1);
 			}
 			self.drops_hud setValue(level.drop_tracker_index);
 		}
@@ -546,7 +546,7 @@ drop_tracker_hud()
 		{
 			if(self.drops_hud.alpha != 1 )
 			{
-				self.drops_hud.alpha = 1;
+                toggled_hud_fade(self.drops_hud, 1);
 			}
 			self.drops_hud setValue(level.drop_tracker_index);
 		}
@@ -598,18 +598,18 @@ zombies_remaining_hud()
 		{
 			self.remaining_hud.label = "Remaining: ";
 
-			if(getDvarInt( "hud_remaining" ) == 0)
+			if( !getDvarInt( "hud_remaining" ) )
 			{
 				if(self.remaining_hud.alpha != 0)
 				{
-				hud_fade(self.remaining_hud, 0, 0.25);			
+				    toggled_hud_fade(self.remaining_hud, 0);
 				}
 			}
 			else
 			{
 				if(self.remaining_hud.alpha != 1)
 				{
-					hud_fade(self.remaining_hud, 1, 0.25);			
+					toggled_hud_fade(self.remaining_hud, 1);			
 				}
 
 				zombies = level.zombie_total + get_enemy_count();
@@ -620,7 +620,7 @@ zombies_remaining_hud()
 			{
 				if(self.remaining_hud.alpha != 1)
 				{
-					hud_fade(self.remaining_hud, 1, 0.25);			
+                    toggled_hud_fade(self.remaining_hud, 1);
 				}
 
 				zombies = level.zombie_total + get_enemy_count();
@@ -1018,6 +1018,13 @@ hud_end( hud )
 
 hud_fade( hud, alpha, duration )
 {
+	hud fadeOverTime(duration);
+	hud.alpha = alpha;
+}
+
+toggled_hud_fade(hud, alpha)
+{
+    duration = 0.1;
 	hud fadeOverTime(duration);
 	hud.alpha = alpha;
 }
