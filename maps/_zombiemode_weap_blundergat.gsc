@@ -7,10 +7,10 @@
 
 init()
 {
-    if ( !clientscripts\_zombiemode_weapons::is_weapon_included( "blundergat_zm" ) )
-	{
-		return;
-	}
+    // if ( !clientscripts\_zombiemode_weapons::is_weapon_included( "blundergat_zm" ) )
+	// {
+	// 	return;
+	// }
 
     level.blundergat_range = 900;
     level.blundergat_cylinder = 35;
