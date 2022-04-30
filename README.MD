@@ -409,6 +409,7 @@ seta hud_george_bar "1"
 
 - points like reimagined
 - adopted reset sound
+- wwl nades
 
 #### Would like to do
 

@@ -11,27 +11,8 @@ main()
 
 	//setExpFog(100, 1000, 0.4, 0.425, 0.44, 0.0);
 	setVolFog( 110, 2016, 621, 674, 0.572, 0.672, 0.678, 0 );
-	// for weight functions
-	level.total_chest_hits = 0;
-	
-	level.pulls_since_tesla = 0;
-	level.pulls_since_tgun = 0;
-	level.pulls_since_dolls = 0;
-	level.pulls_since_ray_gun = 0;
 
-	level.total_tesla_hits = 0;
-	level.total_tgun_hits = 0;
-	level.total_dolls_hits = 0;
-
-	level.total_tesla_trades = 0;
-	level.total_tgun_trades = 0;
-	level.total_dolls_trades = 0;
-	level.total_ray_gun_trades = 0;
-
-	level.player_drops_tesla_gun = false;
-	level.player_drops_thundergun = false;
-	level.player_drops_dolls = false;
-	level.player_drops_ray_gun = false;
+	level.player_drops_wonder_weapon = false;
 
 	//remove fog
 	//setExpFog(0, 0, 0, 0, 0, 0);
@@ -150,7 +131,7 @@ include_weapons()
 	//	Weapons - Burst Rifles
 	include_weapon( "m16_zm", false, true );						
 	include_weapon( "m16_gl_upgraded_zm", false );
-	include_weapon( "g11_lps_zm" );
+	include_weapon( "g11_lps_zm", false );
 	include_weapon( "g11_lps_upgraded_zm", false );
 	include_weapon( "famas_zm" );
 	include_weapon( "famas_upgraded_zm", false );
@@ -207,11 +188,11 @@ include_weapons()
 	include_weapon( "zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon( "ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
 	// include_weapon( "ray_gun_upgraded_zm", false );
-	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
+	include_weapon( "thundergun_zm", true, false, maps\_zombiemode_weapons::wonder_weapon_weighting_func );
 	// include_weapon( "thundergun_upgraded_zm", false );
-	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
+	include_weapon( "tesla_gun_zm", true, false, maps\_zombiemode_weapons::wonder_weapon_weighting_func );
 	// include_weapon( "tesla_gun_upgraded_zm", false );
-	include_weapon( "blundergat_zm", true, false, maps\_zombiemode_weapons::default_wonder_weapon_weighting_func );
+	include_weapon( "blundergat_zm", true, false, maps\_zombiemode_weapons::wonder_weapon_weighting_func );
 
 	// Custom weapons
 	include_weapon( "ppsh_zm" );

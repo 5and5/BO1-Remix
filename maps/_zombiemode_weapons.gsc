@@ -83,61 +83,35 @@ default_weighting_func()
 	return 1;
 }
 
+wonder_weapon_weighting_func()
+{	
+	return get_percentage_increase( level.pulls_since_last_wonder_weapon, level.player_drops_wonder_weapon );
+}
+
 // increase the chance of getting a wonder weapon after every 5 hits
 default_wonder_weapon_weighting_func()
 {
 	num_to_add = 1;
-
-	if( isDefined( level.pulls_since_last_wonder_weapon ) )
-	{
-		// after 25 pulls the percentage increases to 50%
-		if( level.pulls_since_last_wonder_weapon > 25 )
-		{
-			num_to_add += 0.5;
-		}
-		// after 20 pulls the percentage increases to 40%
-		else if( level.pulls_since_last_wonder_weapon > 20 )
-		{
-			num_to_add += 0.4;
-		}
-		// after 15 pulls the percentage increases to 30%
-		else if( level.pulls_since_last_wonder_weapon > 15 )
-		{
-			num_to_add += 0.3;
-		}
-		// after 10 pulls the percentage increases to 20%
-		else if( level.pulls_since_last_wonder_weapon > 10 )
-		{
-			num_to_add += 0.2;
-		}
-		// after 5 pulls the percentage increases to 10%
-		else if( level.pulls_since_last_wonder_weapon > 5 )
-		{
-			num_to_add += 0.1;
-		}
-	}
+	amount_to_add = (level.pulls_since_last_wonder_weapon / 5) / 10; //+10% every 5 pulls 
+	num_to_add += amount_to_add;
 
 	return num_to_add;
 }
-
 
 default_ray_gun_weighting_func()
 {
 	num_to_add = 1;
 	if( level.round_number < 25 )
 	{
-		 //increase the percentage of ray gun
 		if( isDefined( level.pulls_since_last_ray_gun ) )
 		{
-			// after 10 pulls the ray gun percentage increases to 30%
 			if( level.pulls_since_last_ray_gun > 10 )
 			{
-				num_to_add += 0.3;
+				num_to_add += 0.5;
 			}
-			// after 5 pulls the Ray Gun percentage increases to 15%
 			else if( level.pulls_since_last_ray_gun > 5 )
 			{
-				num_to_add += 0.15;
+				num_to_add += 0.25;
 			}
 		}
 	}
@@ -147,34 +121,9 @@ default_ray_gun_weighting_func()
 default_sniper_explosive_weighting_func()
 {
 	num_to_add = 1;
-	if( isDefined( level.pulls_since_last_sniper_explosive ) )
-	{
-			// after 25 pulls the percentage increases to 50%
-			if( level.pulls_since_last_sniper_explosive > 25 )
-			{
-				num_to_add += 0.5;
-			}
-			// after 20 pulls the percentage increases to 40%
-			else if( level.pulls_since_last_sniper_explosive > 20 )
-			{
-				num_to_add += 0.4;
-			}
-			// after 15 pulls the percentage increases to 30%
-			else if( level.pulls_since_last_sniper_explosive > 15 )
-			{
-				num_to_add += 0.3;
-			}
-			// after 10 pulls the percentage increases to 20%
-			else if( level.pulls_since_last_sniper_explosive > 10 )
-			{
-				num_to_add += 0.2;
-			}
-			// after 5 pulls the percentage increases to 10%
-			else if( level.pulls_since_last_sniper_explosive > 5 )
-			{
-				num_to_add += 0.1;
-			}
-	}
+	amount_to_add = (level.pulls_since_last_sniper_explosive / 5) / 10; //+10% every 5 pulls 
+	num_to_add += amount_to_add;
+	
 	return num_to_add;
 }
 
@@ -232,6 +181,22 @@ default_zombie_black_hole_bomb_weighting_func()
 	}
 }
 
+get_percentage_increase( pulls_since_weapon, player_dropped )
+{	
+	num_to_add = 1;
+
+	if(!player_dropped)
+	{
+		num_to_add += 0.5; //150% for settup
+	}
+	else
+	{
+		amount_to_add = int(pulls_since_weapon / 5) / 10; //+10% every 5 pulls 
+		num_to_add += amount_to_add;
+	}
+
+	return num_to_add;
+}
 
 //	For weapons which should only appear once the box moves
 default_1st_move_weighting_func()
@@ -1570,6 +1535,7 @@ treasure_chest_think()
 		if( isDefined(level.pulls_since_last_wonder_weapon) )
 		{
 			level.pulls_since_last_wonder_weapon += 1;
+			// iPrintLn(level.pulls_since_last_wonder_weapon);
 		}
 
 		self disable_trigger();
@@ -2506,17 +2472,14 @@ treasure_chest_weapon_spawn( chest, player, respin )
 		acquire_weapon_toggle( rand, player );
 
 		//turn off power weapon, since player just got one
-		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm" || rand == "humangun_zm" || rand == "sniper_explosive_zm" || rand == "microwavegundw_zm" || rand == "shrink_ray_zm")
+		if( rand == "tesla_gun_zm" || rand == "ray_gun_zm" || rand == "thundergun_zm" || rand == "humangun_zm" || rand == "sniper_explosive_zm" || rand == "microwavegundw_zm" || rand == "shrink_ray_zm" || rand == "blundergat_zm" )
 		{
-			if( rand == "ray_gun_zm" )
-			{
-				level.pulls_since_last_ray_gun = 0;
-			}
-			else
-			{
-				level.pulls_since_last_wonder_weapon = 0;
-			}
+			level.pulls_since_last_wonder_weapon = 0;
+		}
 
+		if( rand == "ray_gun_zm" )
+		{
+			level.pulls_since_last_ray_gun = 0;
 		}
 
 		if(!IsDefined(respin))
@@ -2730,16 +2693,14 @@ treasure_chest_give_weapon( weapon_string )
 		{
 			if( !is_offhand_weapon( weapon_string ) )
 			{
-				// PI_CHANGE_BEGIN
-				// JMA - player dropped the tesla gun
 				if( current_weapon == "tesla_gun_zm" )
 				{
 					level.player_drops_tesla_gun = true;
 				}
-				// added thundergun
-				if( current_weapon == "thundergun_zm" )
+
+				if( current_weapon == "blundergat_zm" )
 				{
-					level.player_drops_thundergun = true;
+					level.player_drops_wonder_weapon = true;
 				}
 
 				if( current_weapon == "humangun_zm" )
@@ -2751,6 +2712,7 @@ treasure_chest_give_weapon( weapon_string )
 				{
 					level.player_drops_sniper_explosive = true;
 				}
+
 
 				// PI_CHANGE_END
 
