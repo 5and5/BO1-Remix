@@ -466,8 +466,8 @@ display_times( label, time, duration, delay, col )
 	level.print_hud.fontScale = 1.3;
 	level.print_hud.alpha = 0;
 	level.print_hud.label = (label + ": ");
-    colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-    level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	// Reading it directly will cause it to bug up, middle-man level var required
+	level.print_hud.color = level.global_print_hud_color;
 
 	time_in_mins = print_time_friendly( time );	
 	level.print_hud setText( time_in_mins );
@@ -941,7 +941,7 @@ color_hud_watcher()
 
 		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.global_print_hud_color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
