@@ -425,6 +425,7 @@ display_sph()
 display_times( label, time, duration, delay, col )
 {
 	level endon("end_game");
+	self endon("disconnect");
 
 	y_offset = 0;
 	if (isdefined(col))
