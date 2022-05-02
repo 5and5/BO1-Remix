@@ -1047,10 +1047,7 @@ print_time_friendly( seconds )
 		}
 	}
 
-	if( hours < 10 )
-	{
-		hours = "0" + hours; 
-	}
+	hours = "" + hours; 
 
 	if( minutes < 10 )
 	{
@@ -1063,14 +1060,9 @@ print_time_friendly( seconds )
 		seconds = "0" + seconds; 
 	}
 
-	if (hours == 0)
+	if (hours == "0")
 	{
-		combined = "" + minutes  + ":" + seconds; 
+		return "" + minutes  + ":" + seconds; 
 	}
-	else
-	{
-		combined = "" + hours  + ":" + minutes  + ":" + seconds; 
-	}
-
-	return combined; 
+	return "" + hours  + ":" + minutes  + ":" + seconds; 
 }
