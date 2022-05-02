@@ -271,7 +271,7 @@
 
 ### Nacht Der Untoten
 
-- Added pack-a-punch to main floor that can upgrade the Wunderwaffe, Ray Gun, m1911 and Crossbow
+- Added pack-a-punch to main floor that can upgrade the Thunder Gun, Ray Gun, m1911 and Crossbow
 - Replaced Mulekick with Speedcola
 
 ### Verruckt
