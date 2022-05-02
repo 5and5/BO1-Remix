@@ -47,6 +47,8 @@ main()
 	level.zombie_visionset = "zombie_neutral";
 	level.global_print_hud_color = (1, 1, 1);
 
+	level.last_special_round = 0;
+
 	if(GetDvar("anim_intro") == "1")
 	{
 		level.zombie_anim_intro = 1;

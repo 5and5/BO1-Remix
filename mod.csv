@@ -10,6 +10,7 @@ rawfile,maps/_weaponobjects.gsc
 rawfile,maps/_zombiemode_ai_dogs.gsc
 rawfile,maps/_zombiemode_ai_faller.gsc
 rawfile,maps/_zombiemode_spawner.gsc
+rawfile,maps/_zombiemode_utility.gsc
 
 //CUSTOM
 rawfile,maps/_custom_hud.gsc

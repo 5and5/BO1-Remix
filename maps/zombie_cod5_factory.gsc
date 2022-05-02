@@ -95,6 +95,8 @@ main()
 
 	maps\_zombiemode::main();
 
+	level thread special_round_watcher();
+
 	init_sounds();
 	init_achievement();
 	level thread power_electric_switch();

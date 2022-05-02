@@ -86,8 +86,8 @@ coop_pause(timer_hud, start_time)
 			// Don't allow breaks while George is alive or is possible to spawn
 
 			// debug
-			iPrintLn("director_alive", flag("director_alive"));
-			iPrintLn("potential_director", flag("potential_director"));
+			// iPrintLn("director_alive", flag("director_alive"));
+			// iPrintLn("potential_director", flag("potential_director"));
 
 			flagged = false;
 			director_exception = false;
@@ -379,67 +379,64 @@ display_sph()
 			continue;
 		}
 
-		if (level.round_number >= sph_round_display && !flag( "dog_round" ) && !flag( "thief_round" ) && !flag( "monkey_round" ))
+		// Don't count pause time
+		if (isdefined(flag( "game_paused" )))
 		{
-			// Don't count pause time
-			if (isdefined(flag( "game_paused" )))
-			{
-				if (!flag( "game_paused" ))
-				{		
-					rt_start = int(getTime() / 1000);
-				}
-				else
-				{
-					while ( 1 )
-					{
-						if (!flag( "game_paused" ))
-						{
-							break;
-						}
-						wait 0.05;
-					}
-					rt_start = int(getTime() / 1000);
-				}
+			if (!flag( "game_paused" ))
+			{		
+				rt_start = int(getTime() / 1000);
 			}
 			else
 			{
-				wait 0.05;
-				// iPrintLn("waiting");
-				continue;
+				while ( 1 )
+				{
+					if (!flag( "game_paused" ))
+					{
+						break;
+					}
+					wait 0.05;
+				}
+				rt_start = int(getTime() / 1000);
 			}
-			// Get zombie count from current round
-			zc_current = level.zombie_total + get_enemy_count();
-
-			// Calculate and display SPH
-			wait 7;
-			y_offset = 0;
-			if(getDvarInt("hud_round_timer"))
-			{
-				y_offset = 15;
-			}
-			level.sph_hud.y = (18 + y_offset);
-
-			if (level.round_number > sph_round_display && isdefined(round_time))
-			{
-				sph = round_time / (zc_last / 24);
-				level.sph_hud setValue(sph);
-				hud_fade(level.sph_hud, 1, 0.15);
-				wait 6;
-				hud_fade(level.sph_hud, 0, 0.15);
-			}
-
-			level waittill( "end_of_round" );
-			if(flag( "enter_nml" ))
-			{
-				level waittill( "end_of_round" ); //end no man's land
-				level waittill( "end_of_round" ); //end actual round
-			}			
-			
-			zc_last = zc_current;	// Save zc from this round to separate var
-			rt_end = int(getTime() / 1000);
-			round_time = rt_end - rt_start;
-			// iPrintLn("debug_rt: ^5" + round_time);
 		}
+		else
+		{
+			wait 0.05;
+			// iPrintLn("waiting");
+			continue;
+		}
+		// Get zombie count from current round
+		zc_current = level.zombie_total + get_enemy_count();
+
+		// Calculate and display SPH
+		wait 7;
+		y_offset = 0;
+		if(getDvarInt("hud_round_timer"))
+		{
+			y_offset = 15;
+		}
+		level.sph_hud.y = (18 + y_offset);
+
+		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
+		{
+			sph = round_time / (zc_last / 24);
+			level.sph_hud setValue(sph);
+			hud_fade(level.sph_hud, 1, 0.15);
+			wait 6;
+			hud_fade(level.sph_hud, 0, 0.15);
+		}
+
+		level waittill( "end_of_round" );
+		if(flag( "enter_nml" ))
+		{
+			level waittill( "end_of_round" ); //end no man's land
+			level waittill( "end_of_round" ); //end actual round
+		}			
+		
+		zc_last = zc_current;	// Save zc from this round to separate var
+		rt_end = int(getTime() / 1000);
+		round_time = rt_end - rt_start;
+		// iPrintLn("debug_rt: ^5" + round_time);
 		wait 0.05;
 	}
 }

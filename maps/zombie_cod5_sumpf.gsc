@@ -85,6 +85,8 @@ main()
 
 	maps\_zombiemode::main();
 
+	level thread special_round_watcher();
+
 	level.zone_manager_init_func = ::sumpf_zone_init;
 	init_zones[0] = "center_building_upstairs";
 	level thread maps\_zombiemode_zone_manager::manage_zones( init_zones );
