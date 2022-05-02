@@ -846,7 +846,7 @@ george_health_bar()
 			if (current_george_hp == 0)
 			{
 				self.george_bar updateHealth(width);	// Smallest possible size
-				self.george_bar.alpha = 1;
+				self.george_bar.alpha = 0;
 			}
 			else
 				self.george_bar updateHealth(current_george_hp / george_max_health);	
@@ -874,7 +874,7 @@ george_health_bar()
 
 		if(!getDvarInt("hud_george_bar"))
 		{
-			if(self.george_health.alpha != 0)
+			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
 			{
 				hud_fade(self.george_health, 0, 0.3);
 				hud_fade(self.george_bar, 0, 0.3);
