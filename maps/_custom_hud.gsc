@@ -23,13 +23,12 @@ timer_hud()
 	level.timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
-	level.paused_time = 0;
 	level thread coop_pause(level.timer, start_time);
 
 	while(1)
 	{
 		current_time = int(getTime() / 1000);
-		level.total_time = current_time - level.paused_time - start_time;
+		level.total_time = current_time - level.total_pause_time - start_time;
 
 		// reset
 		if (level.total_time >= 43200) // 12h
@@ -146,7 +145,7 @@ coop_pause(timer_hud, start_time)
 
 			paused = true;
 			paused_start_time = int(getTime() / 1000);
-			total_time = 0 - (paused_start_time - level.paused_time - start_time) - 0.05;
+			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
 			previous_paused_time = level.paused_time;
 
 			while(paused)
@@ -156,11 +155,11 @@ coop_pause(timer_hud, start_time)
 
 				current_time = int(getTime() / 1000);
 				current_paused_time = current_time - paused_start_time;
-				level.paused_time = previous_paused_time + current_paused_time;
 
 				if( !getDvarInt( "coop_pause" ) )
 				{
 					paused = false;
+					level.total_pause_time += current_paused_time;
 
 					for(i = 0; players.size > i; i++)
 					{
@@ -219,28 +218,10 @@ round_timer()
 		// Exclude time spent in pause
 		if (isdefined(flag( "game_paused" )))
 		{
-			if (!flag( "game_paused" ))
-			{		
-				timestamp_start = int(getTime() / 1000);
-			}
-			else
-			{
-				while ( 1 )
-				{
-					if (!flag( "game_paused" ))
-					{
-						break;
-					}
-					wait 0.05;
-				}
-				timestamp_start = int(getTime() / 1000);
-			}
+			while (flag("game_paused"))
+				wait 0.05;
 		}
-		else
-		{
-			wait 0.05;
-			continue;
-		}
+		timestamp_start = int(getTime() / 1000);
 
 		// Setup round timer if always show rt dvar is true
 		if (!getDvarInt("hud_round_timer"))
@@ -256,7 +237,7 @@ round_timer()
 
 		// Print total time
 		timestamp_current = int(getTime() / 1000);
-		total_time = timestamp_current - timestamp_game;
+		total_time = (timestamp_current - level.total_pause_time) - timestamp_game;
 
 		if (level.round_number > 1)
 		{		
