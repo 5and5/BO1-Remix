@@ -47,6 +47,9 @@ main()
 	level.zombie_visionset = "zombie_neutral";
 	level.global_print_hud_color = (1, 1, 1);
 
+	level.total_pause_time = 0;
+	level.last_special_round = 0;
+
 	if(GetDvar("anim_intro") == "1")
 	{
 		level.zombie_anim_intro = 1;
@@ -1629,6 +1632,24 @@ onPlayerConnect_clientDvars()
 		self setClientDvar("hud_round_timer", 0);
 	}
 
+	if(getDvarInt("hud_oxygen_timer") == 1)
+	{
+		self setClientDvar("hud_oxygen_timer", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_oxygen_timer", 0);
+	}
+
+	if(getDvarInt("hud_excavator_timer") == 1)
+	{
+		self setClientDvar("hud_excavator_timer", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_excavator_timer", 0);
+	}
+	
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
 	self setClientDvar("aim_lockon_pitch_strength", 0.0 );

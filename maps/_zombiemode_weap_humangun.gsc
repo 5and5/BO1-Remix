@@ -230,7 +230,7 @@ humangun_on_player_connect()
 	{
 		level waittill( "connecting", player );
 		player thread wait_for_humangun_fired();
-        player thread instakill_timer_hud();
+        player thread maps\_custom_hud::instakill_timer_hud();
 	}
 }
 
@@ -881,37 +881,5 @@ humangun_play_zombie_hit_vox()
     if( rand >= 20 )
     {
         self maps\_zombiemode_audio::create_and_play_dialog( "kill", "human" );
-    }
-}
-
-instakill_timer_hud()
-{
-    timer = NewClientHudElem( self );
-    timer.horzAlign = "right";
-    timer.vertAlign = "bottom";
-    timer.alignX = "right";
-    timer.alignY = "bottom";
-    timer.alpha = 1.3;
-    timer.fontscale = 1.0;
-    timer.foreground = true;
-    timer.y -= 57;
-    timer.x -= 86;
-    timer.color = ( 1.0, 1.0, 1.0 );
-    timer.hidewheninmenu = 1;
-    timer.alpha = 0;
-
-    while(1)
-    {
-        insta_time = self.humangun_player_ignored_timer - level.total_time;
-        //iprintln(insta_time);
-        if(self.personal_instakill)
-        {
-            timer.alpha = 1;
-        }
-        else{
-            timer.alpha = 0;
-        }
-        timer setTimer(insta_time - 0.1);
-        wait 0.05;
     }
 }

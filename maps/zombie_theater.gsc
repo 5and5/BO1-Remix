@@ -88,6 +88,7 @@ main()
 	battlechatter_off("axis");
 
 	maps\_zombiemode_ai_dogs::enable_dog_rounds();
+	level thread special_round_watcher();
 
 	init_zombie_theater();
 

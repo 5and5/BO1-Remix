@@ -23,13 +23,12 @@ timer_hud()
 	level.timer SetTimerUp(0);
 
 	start_time = int(getTime() / 1000);
-	level.paused_time = 0;
 	level thread coop_pause(level.timer, start_time);
 
 	while(1)
 	{
 		current_time = int(getTime() / 1000);
-		level.total_time = current_time - level.paused_time - start_time;
+		level.total_time = current_time - level.total_pause_time - start_time;
 
 		// reset
 		if (level.total_time >= 43200) // 12h
@@ -86,8 +85,8 @@ coop_pause(timer_hud, start_time)
 			// Don't allow breaks while George is alive or is possible to spawn
 
 			// debug
-			iPrintLn("director_alive", flag("director_alive"));
-			iPrintLn("potential_director", flag("potential_director"));
+			// iPrintLn("director_alive", flag("director_alive"));
+			// iPrintLn("potential_director", flag("potential_director"));
 
 			flagged = false;
 			director_exception = false;
@@ -146,7 +145,7 @@ coop_pause(timer_hud, start_time)
 
 			paused = true;
 			paused_start_time = int(getTime() / 1000);
-			total_time = 0 - (paused_start_time - level.paused_time - start_time) - 0.05;
+			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
 			previous_paused_time = level.paused_time;
 
 			while(paused)
@@ -156,11 +155,11 @@ coop_pause(timer_hud, start_time)
 
 				current_time = int(getTime() / 1000);
 				current_paused_time = current_time - paused_start_time;
-				level.paused_time = previous_paused_time + current_paused_time;
 
 				if( !getDvarInt( "coop_pause" ) )
 				{
 					paused = false;
+					level.total_pause_time += current_paused_time;
 
 					for(i = 0; players.size > i; i++)
 					{
@@ -219,28 +218,10 @@ round_timer()
 		// Exclude time spent in pause
 		if (isdefined(flag( "game_paused" )))
 		{
-			if (!flag( "game_paused" ))
-			{		
-				timestamp_start = int(getTime() / 1000);
-			}
-			else
-			{
-				while ( 1 )
-				{
-					if (!flag( "game_paused" ))
-					{
-						break;
-					}
-					wait 0.05;
-				}
-				timestamp_start = int(getTime() / 1000);
-			}
+			while (flag("game_paused"))
+				wait 0.05;
 		}
-		else
-		{
-			wait 0.05;
-			continue;
-		}
+		timestamp_start = int(getTime() / 1000);
 
 		// Setup round timer if always show rt dvar is true
 		if (!getDvarInt("hud_round_timer"))
@@ -256,7 +237,7 @@ round_timer()
 
 		// Print total time
 		timestamp_current = int(getTime() / 1000);
-		total_time = timestamp_current - timestamp_game;
+		total_time = (timestamp_current - level.total_pause_time) - timestamp_game;
 
 		if (level.round_number > 1)
 		{		
@@ -379,67 +360,64 @@ display_sph()
 			continue;
 		}
 
-		if (level.round_number >= sph_round_display && !flag( "dog_round" ) && !flag( "thief_round" ) && !flag( "monkey_round" ))
+		// Don't count pause time
+		if (isdefined(flag( "game_paused" )))
 		{
-			// Don't count pause time
-			if (isdefined(flag( "game_paused" )))
-			{
-				if (!flag( "game_paused" ))
-				{		
-					rt_start = int(getTime() / 1000);
-				}
-				else
-				{
-					while ( 1 )
-					{
-						if (!flag( "game_paused" ))
-						{
-							break;
-						}
-						wait 0.05;
-					}
-					rt_start = int(getTime() / 1000);
-				}
+			if (!flag( "game_paused" ))
+			{		
+				rt_start = int(getTime() / 1000);
 			}
 			else
 			{
-				wait 0.05;
-				// iPrintLn("waiting");
-				continue;
+				while ( 1 )
+				{
+					if (!flag( "game_paused" ))
+					{
+						break;
+					}
+					wait 0.05;
+				}
+				rt_start = int(getTime() / 1000);
 			}
-			// Get zombie count from current round
-			zc_current = level.zombie_total + get_enemy_count();
-
-			// Calculate and display SPH
-			wait 7;
-			y_offset = 0;
-			if(getDvarInt("hud_round_timer"))
-			{
-				y_offset = 15;
-			}
-			level.sph_hud.y = (18 + y_offset);
-
-			if (level.round_number > sph_round_display && isdefined(round_time))
-			{
-				sph = round_time / (zc_last / 24);
-				level.sph_hud setValue(sph);
-				hud_fade(level.sph_hud, 1, 0.15);
-				wait 6;
-				hud_fade(level.sph_hud, 0, 0.15);
-			}
-
-			level waittill( "end_of_round" );
-			if(flag( "enter_nml" ))
-			{
-				level waittill( "end_of_round" ); //end no man's land
-				level waittill( "end_of_round" ); //end actual round
-			}			
-			
-			zc_last = zc_current;	// Save zc from this round to separate var
-			rt_end = int(getTime() / 1000);
-			round_time = rt_end - rt_start;
-			// iPrintLn("debug_rt: ^5" + round_time);
 		}
+		else
+		{
+			wait 0.05;
+			// iPrintLn("waiting");
+			continue;
+		}
+		// Get zombie count from current round
+		zc_current = level.zombie_total + get_enemy_count();
+
+		// Calculate and display SPH
+		wait 7;
+		y_offset = 0;
+		if(getDvarInt("hud_round_timer"))
+		{
+			y_offset = 15;
+		}
+		level.sph_hud.y = (18 + y_offset);
+
+		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
+		{
+			sph = round_time / (zc_last / 24);
+			level.sph_hud setValue(sph);
+			hud_fade(level.sph_hud, 1, 0.15);
+			wait 6;
+			hud_fade(level.sph_hud, 0, 0.15);
+		}
+
+		level waittill( "end_of_round" );
+		if(flag( "enter_nml" ))
+		{
+			level waittill( "end_of_round" ); //end no man's land
+			level waittill( "end_of_round" ); //end actual round
+		}			
+		
+		zc_last = zc_current;	// Save zc from this round to separate var
+		rt_end = int(getTime() / 1000);
+		round_time = rt_end - rt_start;
+		// iPrintLn("debug_rt: ^5" + round_time);
 		wait 0.05;
 	}
 }
@@ -447,6 +425,7 @@ display_sph()
 display_times( label, time, duration, delay, col )
 {
 	level endon("end_game");
+	self endon("disconnect");
 
 	y_offset = 0;
 	if (isdefined(col))
@@ -469,8 +448,8 @@ display_times( label, time, duration, delay, col )
 	level.print_hud.fontScale = 1.3;
 	level.print_hud.alpha = 0;
 	level.print_hud.label = (label + ": ");
-    colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-    level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	// Reading it directly will cause it to bug up, middle-man level var required
+	level.print_hud.color = level.global_print_hud_color;
 
 	time_in_mins = print_time_friendly( time );	
 	level.print_hud setText( time_in_mins );
@@ -767,6 +746,160 @@ updateHealth( barFrac )
 	self setShader( self.shader, barWidth, self.height );
 }
 
+instakill_timer_hud()
+{
+    self.vr_timer = NewClientHudElem( self );
+    self.vr_timer.horzAlign = "right";
+    self.vr_timer.vertAlign = "bottom";
+    self.vr_timer.alignX = "right";
+    self.vr_timer.alignY = "bottom";
+    self.vr_timer.alpha = 1.3;
+    self.vr_timer.fontscale = 1.0;
+    self.vr_timer.foreground = true;
+    self.vr_timer.y -= 57;
+    self.vr_timer.x -= 86;
+    self.vr_timer.hidewheninmenu = 1;
+    self.vr_timer.alpha = 0;
+	self.vr_timer.color = (1, 1, 1);
+
+	// colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+
+    while(1)
+    {
+        insta_time = self.humangun_player_ignored_timer - level.total_time;
+        //iprintln(insta_time);
+        if(self.personal_instakill)
+        {
+            self.vr_timer.alpha = 1;
+        }
+        else{
+            self.vr_timer.alpha = 0;
+        }
+        self.vr_timer setTimer(insta_time - 0.1);
+        wait 0.05;
+    }
+}
+
+oxygen_timer_hud()
+{
+	level endon("end_game");
+
+    self.oxygen_timer = NewClientHudElem( self );
+    self.oxygen_timer.horzAlign = "right";
+    self.oxygen_timer.vertAlign = "middle";
+    self.oxygen_timer.alignX = "right";
+    self.oxygen_timer.alignY = "middle";
+    self.oxygen_timer.alpha = 1.4;
+    self.oxygen_timer.fontscale = 1.0;
+    self.oxygen_timer.foreground = true;
+    self.oxygen_timer.y = 8;
+    self.oxygen_timer.x = -10;
+    self.oxygen_timer.hidewheninmenu = 1;
+    self.oxygen_timer.alpha = 0;
+	self.oxygen_timer.label = "Oxygen left: ";
+
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+
+    while(1)
+    {
+		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+		{
+			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
+			self.oxygen_timer setTimer(oxygen_left - 0.05);
+
+			// iprintln(oxygen_left);
+			// iPrintLn("time_to_death" + self.time_to_death);
+			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
+
+			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+			{
+				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+					hud_fade(self.oxygen_timer, 1, 0.15);
+				else
+					hud_fade(self.oxygen_timer, 0, 0.15);
+			}
+
+			else
+				hud_fade(self.oxygen_timer, 0, 0.15);
+		}
+    
+        wait 0.05;
+    }
+}
+
+excavator_timer_hud()
+{
+	level endon("end_game");
+
+    level.excavator_timer = NewHudElem();
+    level.excavator_timer.horzAlign = "right";
+    level.excavator_timer.vertAlign = "middle";
+    level.excavator_timer.alignX = "right";
+    level.excavator_timer.alignY = "middle";
+    level.excavator_timer.alpha = 1.4;
+    level.excavator_timer.fontscale = 1.0;
+    level.excavator_timer.foreground = true;
+    level.excavator_timer.y = -8;
+    level.excavator_timer.x = -10;
+    level.excavator_timer.hidewheninmenu = 1;
+    level.excavator_timer.alpha = 0;
+	level.excavator_timer.label = "Excavator: ";
+
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+
+	current_excavator = "null";
+	excavator_area = "null";
+
+    while(1)
+    {
+		// debug
+		// iprintln("digger_time_left" + level.digger_time_left);
+		// iPrintLn("digger_to_activate" + level.digger_to_activate);
+		
+		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
+		{
+			switch (level.digger_to_activate) 
+			{
+			case "teleporter":
+				current_excavator = "Pi";
+				// excavator_area = "Tunnel 6";
+				break;
+			case "hangar":
+				current_excavator = "Omicron";
+				// excavator_area = "Tunnel 11";
+				break;
+			case "biodome":
+				current_excavator = "Epsilon";
+				// excavator_area = "Biodome";
+				break;
+			}
+
+			if (current_excavator == "null")
+				continue;
+
+			level.excavator_timer.label = "Excavator " + current_excavator + ": ";
+
+			level.excavator_timer setTimer(level.digger_time_left - 0.05);
+
+			if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
+			{
+				if((level.digger_to_activate != "null") && (level.excavator_timer.alpha != 1))
+					hud_fade(level.excavator_timer, 1, 0.15);
+				else if((level.digger_to_activate == "null") && (level.excavator_timer.alpha != 0))
+					hud_fade(level.excavator_timer, 0, 0.15);
+			}
+
+			else
+				hud_fade(level.excavator_timer, 0, 0.15);
+		}
+    
+        wait 0.05;
+    }
+}
+
 george_health_bar()
 {
 	// self endon("disconnect");
@@ -835,7 +968,7 @@ george_health_bar()
 			if (current_george_hp == 0)
 			{
 				self.george_bar updateHealth(width);	// Smallest possible size
-				self.george_bar.alpha = 1;
+				self.george_bar.alpha = 0;
 			}
 			else
 				self.george_bar updateHealth(current_george_hp / george_max_health);	
@@ -863,7 +996,7 @@ george_health_bar()
 
 		if(!getDvarInt("hud_george_bar"))
 		{
-			if(self.george_health.alpha != 0)
+			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
 			{
 				hud_fade(self.george_health, 0, 0.3);
 				hud_fade(self.george_bar, 0, 0.3);
@@ -944,11 +1077,14 @@ color_hud_watcher()
 
 		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.global_print_hud_color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 	}
 }
 
@@ -1050,10 +1186,7 @@ print_time_friendly( seconds )
 		}
 	}
 
-	if( hours < 10 )
-	{
-		hours = "0" + hours; 
-	}
+	hours = "" + hours; 
 
 	if( minutes < 10 )
 	{
@@ -1066,14 +1199,9 @@ print_time_friendly( seconds )
 		seconds = "0" + seconds; 
 	}
 
-	if (hours == 0)
+	if (hours == "0")
 	{
-		combined = "" + minutes  + ":" + seconds; 
+		return "" + minutes  + ":" + seconds; 
 	}
-	else
-	{
-		combined = "" + hours  + ":" + minutes  + ":" + seconds; 
-	}
-
-	return combined; 
+	return "" + hours  + ":" + minutes  + ":" + seconds; 
 }

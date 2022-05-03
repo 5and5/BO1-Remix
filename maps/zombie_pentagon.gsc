@@ -54,6 +54,8 @@ main()
 	// DO ACTUAL ZOMBIEMODE INIT
 	maps\_zombiemode::main();
 
+	level thread special_round_watcher();
+
 	// Init tv screens
 	level maps\zombie_pentagon_magic_box::magic_box_init();
 

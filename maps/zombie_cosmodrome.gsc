@@ -103,6 +103,8 @@ main()
 	// DO ACTUAL ZOMBIEMODE INIT
 	maps\_zombiemode::main();
 
+	level thread special_round_watcher();
+
 	maps\_zombiemode_weap_sickle::init();
 	maps\_zombiemode_weap_black_hole_bomb::init();
 	maps\_zombiemode_weap_nesting_dolls::init();
