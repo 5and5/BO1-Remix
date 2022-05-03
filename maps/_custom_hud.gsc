@@ -748,19 +748,22 @@ updateHealth( barFrac )
 
 instakill_timer_hud()
 {
-    timer = NewClientHudElem( self );
-    timer.horzAlign = "right";
-    timer.vertAlign = "bottom";
-    timer.alignX = "right";
-    timer.alignY = "bottom";
-    timer.alpha = 1.3;
-    timer.fontscale = 1.0;
-    timer.foreground = true;
-    timer.y -= 57;
-    timer.x -= 86;
-    timer.color = ( 1.0, 1.0, 1.0 );
-    timer.hidewheninmenu = 1;
-    timer.alpha = 0;
+    self.vr_timer = NewClientHudElem( self );
+    self.vr_timer.horzAlign = "right";
+    self.vr_timer.vertAlign = "bottom";
+    self.vr_timer.alignX = "right";
+    self.vr_timer.alignY = "bottom";
+    self.vr_timer.alpha = 1.3;
+    self.vr_timer.fontscale = 1.0;
+    self.vr_timer.foreground = true;
+    self.vr_timer.y -= 57;
+    self.vr_timer.x -= 86;
+    self.vr_timer.hidewheninmenu = 1;
+    self.vr_timer.alpha = 0;
+	self.vr_timer.color = (1, 1, 1);
+
+	// colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
     while(1)
     {
@@ -768,12 +771,12 @@ instakill_timer_hud()
         //iprintln(insta_time);
         if(self.personal_instakill)
         {
-            timer.alpha = 1;
+            self.vr_timer.alpha = 1;
         }
         else{
-            timer.alpha = 0;
+            self.vr_timer.alpha = 0;
         }
-        timer setTimer(insta_time - 0.1);
+        self.vr_timer setTimer(insta_time - 0.1);
         wait 0.05;
     }
 }
@@ -1003,6 +1006,7 @@ color_hud_watcher()
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 	}
 }
 
