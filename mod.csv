@@ -74,6 +74,7 @@ rawfile,maps/zombie_temple_pack_a_punch.gsc
 rawfile,maps/zombie_moon.gsc
 rawfile,maps/zombie_moon_utility.gsc
 rawfile,maps/zombie_moon_teleporter.gsc
+rawfile,maps/zombie_moon_gravity.gsc
 rawfile,maps/_zombiemode_hackables_box.gsc
 rawfile,maps/_zombiemode_hackables_powerups.gsc
 
