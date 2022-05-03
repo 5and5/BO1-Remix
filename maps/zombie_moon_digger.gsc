@@ -9,6 +9,8 @@ any flags used to toggle the digger states
 digger_init_flags()
 {
 	level.diggers_global_time = 240.0;
+
+	level.digger_time_left = 0;
 	
 	flag_init("teleporter_digger_hacked");
 	flag_init("teleporter_digger_hacked_before_breached");
@@ -72,6 +74,8 @@ setup_diggers()
 	
 	//controls the digger random activations
 	level thread digger_round_logic();
+
+	level thread maps\_custom_hud::excavator_timer_hud();
 	
 	//sets up their movement
 	diggers = GetEntArray("digger_body","targetname");
@@ -183,6 +187,7 @@ digger_activate(force_digger)
 	{
 		flag_set("start_" + force_digger + "_digger");
 	
+		level thread digger_time(getTime() / 1000);
 		level thread send_clientnotify( force_digger, false );
 		level thread play_digger_start_vox( force_digger );
 		wait(1);
@@ -204,15 +209,16 @@ digger_activate(force_digger)
 	
 	if(non_active.size > 0)
 	{
-		digger_to_activate = random(non_active);
+		level.digger_to_activate = random(non_active);
 	
-		flag_set("start_" + digger_to_activate + "_digger");
-	
-		level thread send_clientnotify( digger_to_activate, false );
-		level thread play_digger_start_vox( digger_to_activate );
+		flag_set("start_" + level.digger_to_activate + "_digger");
+
+		level thread digger_time(getTime() / 1000);
+		level thread send_clientnotify( level.digger_to_activate, false );
+		level thread play_digger_start_vox( level.digger_to_activate );
 		wait(1);
 		
-		level thread play_timer_vox( digger_to_activate );
+		level thread play_timer_vox( level.digger_to_activate );
 	}
 }
 
@@ -810,6 +816,7 @@ digger_hack_func(hacker)
 	flag_set(self.hacked_flag);
 	if ( !flag( self.breached_flag ) )
 	{
+		level.digger_time_left = 0;
 		flag_set( self.hacked_before_breached_flag );
 	}
 
@@ -1771,4 +1778,16 @@ quantum_bomb_remove_digger_result( position )
 	}
 }
 
+digger_time(timestamp)
+{
+	level endon ("end_game");
 
+	excavator_breach = timestamp + level.diggers_global_time;
+	level.digger_time_left = level.diggers_global_time;
+	while(level.digger_time_left > 0)
+	{
+		level.digger_time_left = excavator_breach - (getTime() / 1000);
+		wait 0.05;
+	}
+	level.digger_to_activate = "null";
+}
