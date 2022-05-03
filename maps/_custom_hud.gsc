@@ -787,14 +787,14 @@ oxygen_timer_hud()
 
     self.oxygen_timer = NewClientHudElem( self );
     self.oxygen_timer.horzAlign = "right";
-    self.oxygen_timer.vertAlign = "bottom";
+    self.oxygen_timer.vertAlign = "middle";
     self.oxygen_timer.alignX = "right";
-    self.oxygen_timer.alignY = "bottom";
-    self.oxygen_timer.alpha = 1.3;
+    self.oxygen_timer.alignY = "middle";
+    self.oxygen_timer.alpha = 1.4;
     self.oxygen_timer.fontscale = 1.0;
     self.oxygen_timer.foreground = true;
-    self.oxygen_timer.y -= 57;
-    self.oxygen_timer.x -= 86;
+    self.oxygen_timer.y = 8;
+    self.oxygen_timer.x = -10;
     self.oxygen_timer.hidewheninmenu = 1;
     self.oxygen_timer.alpha = 0;
 	self.oxygen_timer.label = "Oxygen left: ";
@@ -813,10 +813,16 @@ oxygen_timer_hud()
 			// iPrintLn("time_to_death" + self.time_to_death);
 			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
 
-			if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
-				self.oxygen_timer.alpha = 1;
+			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+			{
+				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+					hud_fade(self.oxygen_timer, 1, 0.15);
+				else
+					hud_fade(self.oxygen_timer, 0, 0.15);
+			}
+
 			else
-				self.oxygen_timer.alpha = 0;
+				hud_fade(self.oxygen_timer, 0, 0.15);
 		}
     
         wait 0.05;

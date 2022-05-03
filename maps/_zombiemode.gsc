@@ -1632,6 +1632,15 @@ onPlayerConnect_clientDvars()
 		self setClientDvar("hud_round_timer", 0);
 	}
 
+	if(getDvarInt("hud_oxygen_timer") == 1)
+	{
+		self setClientDvar("hud_oxygen_timer", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_oxygen_timer", 0);
+	}
+
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
 	self setClientDvar("aim_lockon_pitch_strength", 0.0 );
