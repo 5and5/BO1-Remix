@@ -778,6 +778,48 @@ instakill_timer_hud()
     }
 }
 
+oxygen_timer_hud()
+{
+	level endon("end_game");
+
+    self.oxygen_timer = NewClientHudElem( self );
+    self.oxygen_timer.horzAlign = "right";
+    self.oxygen_timer.vertAlign = "bottom";
+    self.oxygen_timer.alignX = "right";
+    self.oxygen_timer.alignY = "bottom";
+    self.oxygen_timer.alpha = 1.3;
+    self.oxygen_timer.fontscale = 1.0;
+    self.oxygen_timer.foreground = true;
+    self.oxygen_timer.y -= 57;
+    self.oxygen_timer.x -= 86;
+    self.oxygen_timer.hidewheninmenu = 1;
+    self.oxygen_timer.alpha = 0;
+	self.oxygen_timer.label = "Oxygen left: ";
+
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+
+    while(1)
+    {
+		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+		{
+			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
+			self.oxygen_timer setTimer(oxygen_left - 0.05);
+
+			// iprintln(oxygen_left);
+			// iPrintLn("time_to_death" + self.time_to_death);
+			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
+
+			if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+				self.oxygen_timer.alpha = 1;
+			else
+				self.oxygen_timer.alpha = 0;
+		}
+    
+        wait 0.05;
+    }
+}
+
 george_health_bar()
 {
 	// self endon("disconnect");
@@ -960,6 +1002,7 @@ color_hud_watcher()
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 	}
 }
 
