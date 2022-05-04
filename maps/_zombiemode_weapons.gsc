@@ -21,6 +21,30 @@ init()
 	PrecacheShader( "specialty_firesale_zombies" );
 
 	level._zombiemode_check_firesale_loc_valid_func = ::default_check_firesale_loc_valid_func;
+
+	level.boxhits = 0;
+	level.setup_box_hits = 0;
+	level.trade_average = 0.0;
+	level.ww_pulled = 0;
+
+	level.box_bow = 0;
+	level.box_raygun = 0;
+	level.box_monkey = 0;
+	level.box_thundergun = 0;
+	level.box_wintershowl = 0;
+	level.box_gersh = 0;
+	level.box_doll = 0;
+	level.box_scavenger = 0;
+	level.box_vr = 0;
+	level.box_babygun = 0;
+	level.box_wavegun = 0;
+	level.box_qed = 0;
+	level.box_waffe = 0;
+
+	flag_init("setup_completed");
+
+	// level thread debug_print_boxes();
+	level thread setup_watcher();
 }
 
 default_check_firesale_loc_valid_func()
@@ -1392,6 +1416,7 @@ treasure_chest_think()
 	}
 
 	flag_set("chest_has_been_used");
+	level.boxhits++;
 
 	self._box_open = true;
 	self._box_opened_by_fire_sale = false;
@@ -1437,6 +1462,8 @@ treasure_chest_think()
 		self.chest_user = user;
 		self sethintstring( &"ZOMBIE_TRADE_WEAPONS" );
 		self setCursorHint( "HINT_NOICON" );
+
+		box_tracker(self.chest_origin.weapon_string, self.chest_user);
 
 		self	thread decide_hide_show_hint( "weapon_grabbed");
 		//self setvisibletoplayer( user );
@@ -3590,7 +3617,7 @@ debug_print_boxes()
 	for (i=0; i<level.chests.size; i++)
 	{
 		iPrintLn(level.chests[i].script_noteworthy);
-		iPrintLn(level.chests[i].targetname);
+		// iPrintLn(level.chests[i].targetname);
 		wait 1;
 	}
 }
@@ -3600,4 +3627,167 @@ remove_melee()
 	melee = self get_player_melee_weapon();
 	self TakeWeapon(melee);
 	return melee;
+}
+
+box_tracker(weapon_string, player_string)
+{
+	level endon("end_game");
+
+	switch(weapon_string)
+	{
+		case "ray_gun_zm":
+			level.box_raygun++;
+			break;
+		case "zombie_cymbal_monkey":
+			level.box_monkey++;
+			break;
+		case "thundergun_zm":
+			level.box_thundergun++;
+			level.ww_pulled++;
+			break;
+		case "freezegun_zm":
+			level.box_wintershowl++;
+			if (level.script == "zombie_pentagon")	// Otherwise won't track trades on five
+				level.ww_pulled++;
+			break;
+		case "zombie_black_hole_bomb":
+			level.box_gersh++;
+			break;
+		case "zombie_nesting_dolls":
+			level.box_doll++;
+			break;
+		case "sniper_explosive_zm":
+			level.box_scavenger++;
+			level.ww_pulled++;
+			break;
+		case "humangun_zm":
+			level.box_vr++;
+			level.ww_pulled++;
+			break;
+		case "shrink_ray_zm":
+			level.box_babygun++;
+			level.ww_pulled++;
+			break;
+		case "microwavegundw_zm":
+			level.box_wavegun++;
+			level.ww_pulled++;
+			break;
+		case "zombie_quantum_bomb":
+			level.box_qed++;
+			level.ww_pulled++;
+			break;
+		case "tesla_gun_zm":
+			level.box_waffe++;
+			level.ww_pulled++;
+			break;
+		case "crossbow_explosive_zm":
+			level.box_bow++;
+			break;
+	}
+
+	if (!flag("setup_completed"))
+		return;
+
+	trade_boxhits = level.boxhits - level.setup_box_hits;
+	switch(level.script)
+	{
+		case "zombie_theater":
+		case "zombie_cosmodrome":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_thundergun + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_thundergun;
+			break;
+		case "zombie_pentagon":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_wintershowl + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_raygun;
+			break;
+		case "zombie_coast":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_scavenger + level.box_vr + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_vr;
+			break;
+		case "zombie_temple":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_babygun + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_babygun;
+			break;
+		case "zombie_moon":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_wavegun + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_wavegun;
+			break;
+		case "zombie_cod5_prototype":
+			level.trade_average = trade_boxhits / level.box_thundergun;
+			break;
+		case "zombie_cod5_asylum":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_waffe + level.box_raygun + level.box_wintershowl);
+			else
+				level.trade_average = trade_boxhits / level.box_waffe;
+			break;
+		case "zombie_cod5_factory":
+			if (getDvarInt("trades_include_all"))
+				level.trade_average = trade_boxhits / (level.box_waffe + level.box_raygun);
+			else
+				level.trade_average = trade_boxhits / level.box_waffe;
+			break;
+		case "zombie_cod5_sumpf":
+			level.trade_average = trade_boxhits / level.box_waffe;
+			break;
+	}
+
+	// debug
+	// iPrintLn(level.trade_average);
+
+	return;
+}
+
+setup_watcher()
+{
+	level endon("end_game");
+
+	while (true)
+	{
+		switch (level.script)
+		{
+			case "zombie_theater":
+			case "zombie_pentagon":
+			case "zombie_cod5_prototype":
+			case "zombie_cod5_asylum":
+			case "zombie_cod5_sumpf":
+			case "zombie_cod5_factory":
+				if ((level.ww_pulled >= 1) && (level.box_raygun >= level.players_playing) && (level.box_monkey >= level.players_playing))
+					if ((level.players_playing == 1) || (level.box_bow >= 1))
+						flag_set("setup_completed");
+				break;
+			case "zombie_cosmodrome":
+			case "zombie_moon":
+				if ((level.ww_pulled >= 1) && (level.box_raygun >= level.players_playing) && (level.box_gersh >= level.players_playing))
+					if ((level.players_playing == 1) || (level.box_bow >= 1))
+						flag_set("setup_completed");
+				break;
+			case "zombie_coast":
+				if ((level.ww_pulled >= 2) && (level.box_raygun >= level.players_playing) && (level.box_doll >= 1))
+					if ((level.players_playing <= 2) || (level.box_bow >= 1))
+						flag_set("setup_completed");
+				break;
+		}
+
+		if (level.round_number >= 30)
+			flag_set("setup_completed");
+
+		if (flag("setup_completed"))
+		{
+			level.setup_box_hits = level.boxhits;
+			break;
+		}
+
+		wait 0.1;
+	}
 }
