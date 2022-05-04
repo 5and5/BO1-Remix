@@ -37,11 +37,13 @@
 - In game timer
 - Round timer (shows at the end of a round)
 - Seconds per horde (shows at the end of a round)
-- Zombie remaining counter
+- Zombie remaining counter / Zombie kill counter (No Man's Land)
 - Health bar
 - Drop cycle tracker
 - COTD: VR11 insta kill timer
 - COTD: George health bar
+- Moon: Oxygen timer
+- Moon: Excavator timer
 
 ## Spawn Delay
 
@@ -142,7 +144,7 @@
 - Removed HS10
 - Removed Dragunov
 - Removed l96a1
-- Removed M72 Law
+- Removed Fal
 - Removed China Lake
 
 #### Animations
@@ -214,6 +216,10 @@
 
 - Kills zombies in 2 bullets at any round
 - No longer damages players
+
+#### Centrifuge (Ascension)
+- Centrifudge can no longer get jammed for 1 full round (0 spin rounds can still happen)
+- Maximum time between spins reduced to 48 seconds from 90
 
 ## Perks
 
@@ -380,6 +386,8 @@
 - `/hud_remaining` - enables/disable zombies counter
 - `/hud_drops` - enables/disable drop tracker
 - `/hud_george_bar` - enables/disable George health bar
+- `/hud_oxygen_timer` - enables/disable oxygen timer on Moon
+- `/hud_excavator_timer` - enables/disable excavator timer on Moon
 - `/hud_color 1 1 1` - changes the color of the custom hud
 - `/hud_color_health 1 1 1` - changes the color of the health bar
 - `/night_mode` - enables/disable Shangri-la's night mode
@@ -403,6 +411,8 @@ seta hud_drops "1"
 seta hud_remaining "1"
 seta hud_round_timer "1"
 seta hud_george_bar "1"
+seta hud_round_timer "1"
+seta hud_excavator_timer "1"
 ```
 
 ## TODO
