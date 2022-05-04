@@ -5549,10 +5549,12 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			break;
 
 		case "ray_gun_zm":
+		case "m72_law_zm":
 			final_damage = int(final_damage * 1.15);
 			break;
 
 		case "ray_gun_upgraded_zm":
+		case "m72_law_upgraded_zm":
 			final_damage = int(final_damage * 1.25);
 			break;
 		}

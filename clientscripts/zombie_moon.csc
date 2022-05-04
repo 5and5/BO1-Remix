@@ -232,7 +232,7 @@ include_weapons()
 	include_weapon( "galil_upgraded_zm", false );
 	include_weapon( "commando_zm" );
 	include_weapon( "commando_upgraded_zm", false );
-	include_weapon( "fnfal_zm" );
+	include_weapon( "fnfal_zm", false );
 	include_weapon( "fnfal_upgraded_zm", false );
 
 	//	Weapons - Sniper Rifles
@@ -248,7 +248,7 @@ include_weapons()
 	include_weapon( "hk21_upgraded_zm", false );
 
 	//	Weapons - Misc
-	include_weapon( "m72_law_zm", false );
+	include_weapon( "m72_law_zm" );
 	include_weapon( "m72_law_upgraded_zm", false );
 	include_weapon( "china_lake_zm", false );
 	include_weapon( "china_lake_upgraded_zm", false );

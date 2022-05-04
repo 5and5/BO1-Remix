@@ -282,12 +282,12 @@ include_weapons()
 	include_weapon("aug_acog_zm");
 	include_weapon("galil_zm");
 	include_weapon("commando_zm");
-	include_weapon("fnfal_zm");
+	include_weapon("fnfal_zm", false);
 	include_weapon("dragunov_zm", false);
 	include_weapon("l96a1_zm", false);
 	include_weapon("rpk_zm");
 	include_weapon("hk21_zm");
-	include_weapon("m72_law_zm", false);
+	include_weapon("m72_law_zm");
 	include_weapon("china_lake_zm", false);
 	include_weapon("zombie_cymbal_monkey", true, false, maps\_zombiemode_weapons::default_cymbal_monkey_weighting_func );
 	include_weapon("ray_gun_zm", true, false, maps\_zombiemode_weapons::default_ray_gun_weighting_func );
