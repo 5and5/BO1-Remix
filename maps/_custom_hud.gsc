@@ -65,7 +65,7 @@ coop_pause(timer_hud, start_time)
 	players = GetPlayers();
 	if( players.size == 1 )
 	{
-		// return;
+		return;
 	}
 
 	while(1)
@@ -138,11 +138,6 @@ coop_pause(timer_hud, start_time)
 			paused_hud FadeOverTime( 1.0 );
 			paused_hud.alpha = 0.8;
 
-			for(i = 0; players.size > i; i++)
-			{
-				players[i] freezecontrols(true);
-			}
-
 			paused = true;
 			paused_start_time = int(getTime() / 1000);
 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
@@ -150,6 +145,11 @@ coop_pause(timer_hud, start_time)
 
 			while(paused)
 			{
+				for(i = 0; players.size > i; i++)
+				{
+					players[i] freezecontrols(true);
+				}
+				
 				timer_hud SetTimerUp(total_time);
 				wait 0.2;
 
