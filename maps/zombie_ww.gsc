@@ -604,7 +604,7 @@ ray_gun_wallbuy()
 	trigger = getent("ray_gun_wallbuy", "targetname");
 	trigger SetCursorHint( "HINT_NOICON" );
 	trigger UseTriggerRequireLookAt();
-	trigger setHintString("Hold ^3[{+activate}]^7 for Ray Gun [15000]");
+	trigger setHintString("Hold ^3[{+activate}]^7 for Ray Gun [5000]");
 
 	cost = 5000;
 	ammo_cost = 5000;
