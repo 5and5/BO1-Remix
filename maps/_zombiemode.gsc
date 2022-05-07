@@ -5680,7 +5680,15 @@ end_game()
 	level waittill ( "end_game" );
 
 	clientnotify( "zesn" );
-	level thread maps\_zombiemode_audio::change_zombie_music( "game_over" );
+
+	if (level.win_game && level.script == "zombie_ww")
+	{
+		level thread maps\_zombiemode_audio::change_zombie_music( "reset" );
+	} 
+	else
+	{
+		level thread maps\_zombiemode_audio::change_zombie_music( "game_over" );
+	}
 
 	//AYERS: Turn off ANY last stand audio at the end of the game
 	players = get_players();
@@ -5718,7 +5726,7 @@ end_game()
 
 		if (level.win_game)
 		{
-			game_over[i] SetText( "YOU WIN" );
+			game_over[i] SetText( "RESET" );
 		} else
 		{
 			game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
@@ -7399,7 +7407,7 @@ give_player_weapons()
 		self giveWeapon( "humangun_upgraded_zm", 0, self maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "humangun_upgraded_zm" ) );
 		self switchToWeapon( "sniper_explosive_upgraded_zm");
 		//self giveWeapon( "ray_gun_upgraded_zm", 0, player maps\_zombiemode_weapons::get_pack_a_punch_weapon_options( "ray_gun_upgraded_zm" ) );
-		self maps\_zombiemode_weap_nesting_dolls::player_give_nesting_dolls();
+		// self maps\_zombiemode_weap_nesting_dolls::player_give_nesting_dolls();
 		break;
 
 	case "zombie_temple":
