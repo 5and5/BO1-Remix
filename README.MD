@@ -4,7 +4,10 @@
 
 [Download](https://www.mediafire.com/file/5u4g0dxdnf7rsjw/BO1-Remix.zip/file)
 
-[How To Install](https://github.com/5and5/BO1-Remix/releases/tag/Installer)
+## How To Install
+
+[Automatic](https://github.com/5and5/BO1-Remix/releases/tag/Installer)
+[Manual](https://github.com/5and5/BO1-Remix/releases/tag/Installer)
 
 ## Leaderboards
 
@@ -376,6 +379,7 @@
 - Thundergun, Wonder Waffe and Blundergat are in the box
 - Blundergat is not limited
 - Mulekick increases weapon swap speed
+- Buyable raygun for 5000
 
 ## Console
 
