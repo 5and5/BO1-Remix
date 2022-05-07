@@ -264,6 +264,7 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
+	// level thread hud_trade_header();	// Hud limit reached :(
 }
 
 zombiemode_melee_miss()
@@ -990,7 +991,7 @@ init_flags()
 	flag_init( "end_round_wait" );
 	flag_init( "wait_and_revive" );
 	flag_init( "instant_revive" );
-	flag_init( "spawn_init" );
+	// flag_init( "spawn_init" );
 	flag_init( "game_paused" );
 	flag_init( "hud_pressed" );
 }
@@ -1649,7 +1650,13 @@ onPlayerConnect_clientDvars()
 	{
 		self setClientDvar("hud_excavator_timer", 0);
 	}
-	
+
+	// Re-enable in case of enabling trade tracker
+	// if(getDvarInt("trades_include_all") == 1)
+	// 	self setClientDvar("trades_include_all", 1);
+	// else
+	// 	self setClientDvar("trades_include_all", 0);
+
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
 	self setClientDvar("aim_lockon_pitch_strength", 0.0 );
@@ -5542,10 +5549,12 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 			break;
 
 		case "ray_gun_zm":
+		case "m72_law_zm":
 			final_damage = int(final_damage * 1.15);
 			break;
 
 		case "ray_gun_upgraded_zm":
+		case "m72_law_upgraded_zm":
 			final_damage = int(final_damage * 1.25);
 			break;
 		}
