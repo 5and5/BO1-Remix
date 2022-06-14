@@ -1588,6 +1588,15 @@ onPlayerConnect_clientDvars()
 	//self setclientdvar( "cg_drawfps", "1" );
 
 	// hud dvars
+	if(getDvarInt("hud_pluto") == 1)
+	{
+		self setClientDvar("hud_pluto", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_pluto", 0);
+	}
+	
 	if(getDvarInt("hud_health_bar") == 1)
 	{
 		self setClientDvar("hud_health_bar", 1);
