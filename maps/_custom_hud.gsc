@@ -30,8 +30,8 @@ timer_hud()
 		current_time = int(getTime() / 1000);
 		level.total_time = current_time - level.total_pause_time - start_time;
 
-		// reset
-		if (level.total_time >= 43200) // 12h
+		// reset 43200
+		if ((level.total_time >= 43200) && (isDefined(level.paused) && !level.paused)) // 12h
 		{
 			level.win_game = true;
 			level notify( "end_game" );
@@ -57,7 +57,7 @@ coop_pause(timer_hud, start_time)
 {
 	paused_time = 0;
 	paused_start_time = 0;
-	paused = false;
+	level.paused = false;
 
     SetDvar( "coop_pause", 0 );
 	flag_clear( "game_paused" );
@@ -138,12 +138,12 @@ coop_pause(timer_hud, start_time)
 			paused_hud FadeOverTime( 1.0 );
 			paused_hud.alpha = 0.8;
 
-			paused = true;
+			level.paused = true;
 			paused_start_time = int(getTime() / 1000);
 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
 			previous_paused_time = level.paused_time;
 
-			while(paused)
+			while(level.paused)
 			{
 				for(i = 0; players.size > i; i++)
 				{
@@ -158,8 +158,8 @@ coop_pause(timer_hud, start_time)
 
 				if( !getDvarInt( "coop_pause" ) )
 				{
-					paused = false;
 					level.total_pause_time += current_paused_time;
+					level.paused = false;
 
 					for(i = 0; players.size > i; i++)
 					{
