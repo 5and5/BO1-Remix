@@ -6,12 +6,17 @@ timer_hud()
 {
 	hud_level_wait();
 
+	if(getDvarInt("hud_pluto"))
+		level.pluto_offset = 12;
+	else
+		level.pluto_offset = 0;
+
 	level.timer = NewHudElem();
 	level.timer.horzAlign = "right";
 	level.timer.vertAlign = "top";
 	level.timer.alignX = "right";
 	level.timer.alignY = "top";
-	level.timer.y += 2;
+	level.timer.y += 2 + level.pluto_offset;
 	level.timer.x -= 5;
 	level.timer.fontScale = 1.3;
 	level.timer.alpha = 1;
@@ -194,7 +199,7 @@ round_timer()
 	level.round_timer.vertAlign = "top";
 	level.round_timer.alignX = "right";
 	level.round_timer.alignY = "top";
-	level.round_timer.y += 18;
+	level.round_timer.y += 18 + level.pluto_offset;
 	level.round_timer.x -= 5;
 	level.round_timer.fontScale = 1.3;
 	level.round_timer.alpha = 0;
@@ -334,7 +339,7 @@ display_sph()
 	level.sph_hud.vertAlign = "top";
 	level.sph_hud.alignX = "right";
 	level.sph_hud.alignY = "top";
-	level.sph_hud.y = 18;
+	level.sph_hud.y = 18 + level.pluto_offset;
 	level.sph_hud.x = -5;
 	level.sph_hud.fontScale = 1.3;
 	level.sph_hud.alpha = 0;
@@ -396,7 +401,7 @@ display_sph()
 		{
 			y_offset = 15;
 		}
-		level.sph_hud.y = (18 + y_offset);
+		level.sph_hud.y = (18 + y_offset + level.pluto_offset);
 
 		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
 		{
@@ -443,13 +448,14 @@ display_times( label, time, duration, delay, col )
 	level.print_hud.vertAlign = "top";
 	level.print_hud.alignX = "right";
 	level.print_hud.alignY = "top";
-	level.print_hud.y = (2 + y_offset);
+	level.print_hud.y = (2 + y_offset + level.pluto_offset);
 	level.print_hud.x = -5;
 	level.print_hud.fontScale = 1.3;
 	level.print_hud.alpha = 0;
 	level.print_hud.label = (label + ": ");
 	// Reading it directly will cause it to bug up, middle-man level var required
-	level.print_hud.color = level.global_print_hud_color;
+	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
 	time_in_mins = print_time_friendly( time );	
 	level.print_hud setText( time_in_mins );
@@ -695,8 +701,8 @@ health_bar_hud()
 	self.health_text.y = -107;
 	self.health_text.fontScale = 1.3;
 
-	hud_fade(self.health_text, 0.8, 0.3);
-	hud_fade(self.barElem, 0.55, 0.3);
+	hud_fade(self.health_text, 0.9, 0.3);
+	hud_fade(self.barElem, 0.75, 0.3);
 	hud_fade(self.barElemBackround, 0.75, 0.3);
 
 	self thread hud_end(self.health_text);
@@ -731,9 +737,9 @@ health_bar_hud()
 
 			if (self.health_text.alpha != 0.8)
 	        {
-	            self.barElem.alpha = 0.55;
+	            self.barElem.alpha = 0.75;
 	            self.barElemBackround.alpha = 0.55;
-				self.health_text.alpha = 0.8;
+				self.health_text.alpha = 0.9;
 	        }
     	}
 		wait 0.05;
@@ -1398,7 +1404,7 @@ color_hud_watcher()
 
 		level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-		level.global_print_hud_color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+		level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 		self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
