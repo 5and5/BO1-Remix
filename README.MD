@@ -418,7 +418,7 @@ seta hud_excavator_timer "1"
 
 - points like reimagined
 - adopted reset sound
-- wwl nades
+- perk_weapRateEnhanced 1 for double tap 2.0
 
 #### Would like to do
 
