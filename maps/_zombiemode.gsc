@@ -1808,6 +1808,7 @@ onPlayerSpawned()
 				self thread zombies_remaining_hud();
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
+				self thread zone_hud();
 				self thread tab_hud();
 				self thread color_hud();
 				if(level.script == "zombie_coast")
