@@ -55,7 +55,7 @@
 		name				"zone_hud"
 		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_BOTTOM
 		fullscreen			0
-		visible				when(dvarBool("hud_zone_name_on") && dvarBool("hud_zone_name_on_game"))
+		visible				when(dvarBool("hud_zone_name_on"))
 
 		itemDef
 		{
