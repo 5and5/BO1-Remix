@@ -666,85 +666,85 @@ box_notifier()
 	}
 }
 
-health_bar_hud()
-{
-	self endon("disconnect");
-	self endon("end_game");
+// health_bar_hud()
+// {
+// 	self endon("disconnect");
+// 	self endon("end_game");
 
-	hud_wait();
+// 	hud_wait();
 
-	width = 113;
-	height = 6;
+// 	width = 113;
+// 	height = 6;
 
-	self.barElemBackround = create_hud( "left", "bottom");
-	self.barElemBackround.x = 0;
-	self.barElemBackround.y = -100;
-	self.barElemBackround.width = width + 2;
-	self.barElemBackround.height = height + 2;
-	self.barElemBackround.foreground = 0;
-	self.barElemBackround.shader = "black";
-	self.barElemBackround setShader( "black", width + 2, height + 2 );
+// 	self.barElemBackround = create_hud( "left", "bottom");
+// 	self.barElemBackround.x = 0;
+// 	self.barElemBackround.y = -100;
+// 	self.barElemBackround.width = width + 2;
+// 	self.barElemBackround.height = height + 2;
+// 	self.barElemBackround.foreground = 0;
+// 	self.barElemBackround.shader = "black";
+// 	self.barElemBackround setShader( "black", width + 2, height + 2 );
 
-	self.barElem = create_hud( "left", "bottom");
-	self.barElem.x = 1;
-	self.barElem.y = -101;
-	self.barElem.width = width;
-	self.barElem.height = height;
-	self.barElem.foreground = 1;
-	self.barElem.shader = "white";
-	self.barElem setShader( "white", width, height );
+// 	self.barElem = create_hud( "left", "bottom");
+// 	self.barElem.x = 1;
+// 	self.barElem.y = -101;
+// 	self.barElem.width = width;
+// 	self.barElem.height = height;
+// 	self.barElem.foreground = 1;
+// 	self.barElem.shader = "white";
+// 	self.barElem setShader( "white", width, height );
 
-	self.health_text = create_hud( "left", "bottom");
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-	self.health_text.x = 49;
-	self.health_text.y = -107;
-	self.health_text.fontScale = 1.3;
+// 	self.health_text = create_hud( "left", "bottom");
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.health_text.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	self.health_text.x = 49;
+// 	self.health_text.y = -107;
+// 	self.health_text.fontScale = 1.3;
 
-	hud_fade(self.health_text, 0.9, 0.3);
-	hud_fade(self.barElem, 0.75, 0.3);
-	hud_fade(self.barElemBackround, 0.75, 0.3);
+// 	hud_fade(self.health_text, 0.9, 0.3);
+// 	hud_fade(self.barElem, 0.75, 0.3);
+// 	hud_fade(self.barElemBackround, 0.75, 0.3);
 
-	self thread hud_end(self.health_text);
-	self thread hud_end(self.barElem);
-	self thread hud_end(self.barElemBackround);
+// 	self thread hud_end(self.health_text);
+// 	self thread hud_end(self.barElem);
+// 	self thread hud_end(self.barElemBackround);
 
-	while (1)
-	{
-		if( getDvarInt( "hud_health_bar" ) == 0)
-		{
-			if(self.barElem.alpha != 0 && self.health_text.alpha != 0)
-			{
-				self.barElem.alpha = 0;
-				self.barElemBackround.alpha = 0;
-				self.health_text.alpha = 0;
-			}
-		}
-		else
-		{
-			self.barElem updateHealth(self.health / self.maxhealth);
-			self.health_text setValue(self.health);
+// 	while (1)
+// 	{
+// 		if( getDvarInt( "hud_health_bar" ) == 0)
+// 		{
+// 			if(self.barElem.alpha != 0 && self.health_text.alpha != 0)
+// 			{
+// 				self.barElem.alpha = 0;
+// 				self.barElemBackround.alpha = 0;
+// 				self.health_text.alpha = 0;
+// 			}
+// 		}
+// 		else
+// 		{
+// 			self.barElem updateHealth(self.health / self.maxhealth);
+// 			self.health_text setValue(self.health);
 
-			if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
-			{
-				self.barElem.alpha = 0;
-				self.barElemBackround.alpha = 0;
-				self.health_text.alpha = 0;
+// 			if(is_true( self.waiting_to_revive ) || self maps\_laststand::player_is_in_laststand())
+// 			{
+// 				self.barElem.alpha = 0;
+// 				self.barElemBackround.alpha = 0;
+// 				self.health_text.alpha = 0;
 
-				wait 0.05;
-				continue;
-			}
+// 				wait 0.05;
+// 				continue;
+// 			}
 
-			if (self.health_text.alpha != 0.8)
-	        {
-	            self.barElem.alpha = 0.75;
-	            self.barElemBackround.alpha = 0.55;
-				self.health_text.alpha = 0.9;
-	        }
-    	}
-		wait 0.05;
-	}
-}
+// 			if (self.health_text.alpha != 0.8)
+// 	        {
+// 	            self.barElem.alpha = 0.75;
+// 	            self.barElemBackround.alpha = 0.55;
+// 				self.health_text.alpha = 0.9;
+// 	        }
+//     	}
+// 		wait 0.05;
+// 	}
+// }
 
 updateHealth( barFrac )
 {
@@ -1921,5 +1921,20 @@ send_message_to_csc(name, message)
 		{
 			setClientSysState("client_systems", csc_message, players[i]);
 		}
+	}
+}
+
+health_bar_hud()
+{
+	health_bar_width_max = 110;
+
+	while (1)
+	{
+		health_ratio = self.health / self.maxhealth;
+
+		self SetClientDvar("health_bar_value_hud", self.health);
+		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+
+		wait 0.05;
 	}
 }
