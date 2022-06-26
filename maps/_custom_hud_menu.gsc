@@ -20,6 +20,22 @@ send_message_to_csc(name, message)
 	}
 }
 
+// show_all_on_tab()
+// {
+// 	current_state = 0;
+// 	while (true)
+// 	{
+// 		wait 0.05;
+// 		if (current_state == getDvarInt("hud_tab"))
+// 			continue;
+
+// 		if (getDvarInt("hud_tab") == 1)
+// 			SetClientDvar("all_hud", 1);
+// 		else
+// 			SetClientDvar("all_hud", 0);
+// 	}
+// }
+
 hud_color_watcher()
 {
 	raw_color = "";
@@ -119,24 +135,6 @@ choose_zone_name(zone, current_name)
 	return name;
 }
 
-remaining_hud()
-// level thread
-{
-	level endon("disconnect");
-	level endon("end_game");
-
-	setDvar("hud_remaining_number", 0);
-	while(true)
-	{
-		wait 0.05;
-		tracked_zombies = level.zombie_total + get_enemy_count();
-		if (tracked_zombies == GetDvarInt("hud_remaining_number"))
-			continue;
-
-		setDvar("hud_remaining_number", tracked_zombies);
-	}
-}
-
 health_bar_hud()
 // player thread
 {
@@ -157,3 +155,43 @@ health_bar_hud()
 		wait 0.05;
 	}
 } 
+
+remaining_hud()
+// level thread
+{
+	level endon("disconnect");
+	level endon("end_game");
+
+	setDvar("hud_remaining_number", 0);
+	while(true)
+	{
+		wait 0.05;
+		tracked_zombies = level.zombie_total + get_enemy_count();
+		if (tracked_zombies == GetDvarInt("hud_remaining_number"))
+			continue;
+
+		setDvar("hud_remaining_number", tracked_zombies);
+	}
+}
+
+drop_tracker_hud()
+// level thread
+{
+	self endon("disconnect");
+	self endon("end_game");
+
+	setDvar("hud_drops_number", 0);
+	while(true)
+	{
+		wait 0.05;
+		if (isDefined(level.drop_tracker_index))
+			tracked_drops = level.drop_tracker_index;
+		else
+			tracked_drops = 0;
+
+		if (tracked_drops == GetDvarInt("hud_drops_number"))
+			continue;
+
+		setDvar("hud_drops_number", tracked_drops);
+	}
+}

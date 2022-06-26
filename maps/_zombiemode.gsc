@@ -266,6 +266,7 @@ post_all_players_connected()
 	level thread round_timer();
 	level thread display_sph();
 	level thread remaining_hud();
+	level thread drop_tracker_hud();
 	// level thread hud_color_watcher();	// For later
 	// level thread hud_trade_header();	// Hud limit reached :(
 }
@@ -1817,13 +1818,16 @@ onPlayerSpawned()
 				self thread player_grenade_watcher();
 
 				// custom HUD
-				self thread drop_tracker_hud();
+				// self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();
-				self thread tab_hud();
-				self thread color_hud();
-				if(level.script == "zombie_coast")
+				if(level.script == "zombie_coast") // move to level?
 					self thread maps\_custom_hud::george_health_bar();
+
+				self thread tab_hud();
+				// self thread show_all_on_tab();
+
+				self thread color_hud();
 
 				// testing only
 				//self thread get_position();

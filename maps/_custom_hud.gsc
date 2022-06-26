@@ -492,53 +492,53 @@ tab_hud()
 	}
 }
 
-drop_tracker_hud()
-{
-	self endon("disconnect");
-	self endon("end_game");
+// drop_tracker_hud()
+// {
+// 	self endon("disconnect");
+// 	self endon("end_game");
 
-	hud_wait();
+// 	hud_wait();
 
-	self.drops_hud = create_hud( "left", "top" );
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-	self.drops_hud.y += 18;
-	self.drops_hud.x += 5;
-	self.drops_hud.label = "Drops: ";
+// 	self.drops_hud = create_hud( "left", "top" );
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	self.drops_hud.y += 18;
+// 	self.drops_hud.x += 5;
+// 	self.drops_hud.label = "Drops: ";
 
-	hud_fade(self.drops_hud, 1 , 0.3);
-	self thread hud_end(self.drops_hud);
+// 	hud_fade(self.drops_hud, 1 , 0.3);
+// 	self thread hud_end(self.drops_hud);
 
-	while(1)
-	{
-		if(getDvarInt( "hud_drops" ) == 0)
-		{
-			if(self.drops_hud.alpha != 0 )
-			{
-				toggled_hud_fade(self.drops_hud, 0);
-			}
-		}
-		else
-		{
-			if(self.drops_hud.alpha != 1 )
-			{
-				toggled_hud_fade(self.drops_hud, 1);
-			}
-			self.drops_hud setValue(level.drop_tracker_index);
-		}
+// 	while(1)
+// 	{
+// 		if(getDvarInt( "hud_drops" ) == 0)
+// 		{
+// 			if(self.drops_hud.alpha != 0 )
+// 			{
+// 				toggled_hud_fade(self.drops_hud, 0);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if(self.drops_hud.alpha != 1 )
+// 			{
+// 				toggled_hud_fade(self.drops_hud, 1);
+// 			}
+// 			self.drops_hud setValue(level.drop_tracker_index);
+// 		}
 
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
-		{
-			if(self.drops_hud.alpha != 1 )
-			{
-                toggled_hud_fade(self.drops_hud, 1);
-			}
-			self.drops_hud setValue(level.drop_tracker_index);
-		}
+// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
+// 		{
+// 			if(self.drops_hud.alpha != 1 )
+// 			{
+//                 toggled_hud_fade(self.drops_hud, 1);
+// 			}
+// 			self.drops_hud setValue(level.drop_tracker_index);
+// 		}
 
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
 zombies_remaining_hud()
 {

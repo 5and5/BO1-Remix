@@ -44,6 +44,8 @@
 
 */
 
+#define NEXT_LINE_OFFSET				15
+
 {
 	assetGlobalDef
 	{
@@ -57,7 +59,7 @@
 		name				"left_bottom_hud"
 		rect				0 132 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_CENTER
 		fullscreen			0
-		visible				1
+		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
 
 		#define HEALTH_BAR_W	110
 		#define HEALTH_BAR_H	4
@@ -80,7 +82,7 @@
 			type				ITEM_TYPE_IMAGE
 			style				WINDOW_STYLE_SHADER
 			rect				0 4 HEALTH_BAR_W HEALTH_BAR_H
-			exp					rect W(dvarInt("health_bar_width_hud"))
+			exp	rect W			(dvarInt("health_bar_width_hud"))
 			foreColor			1 1 1 0.85
 			background			"white"
 			visible				when(dvarBool("hud_health_bar"))
@@ -99,7 +101,7 @@
 			textStyle			ITEM_TEXTSTYLE_SHADOWED
 			textFont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_LEFT
-			exp					text(dvarInt("health_bar_value_hud"))
+			exp	text			(dvarInt("health_bar_value_hud"))
 			visible				when(dvarBool("hud_health_bar"))
 			decoration
 		}
@@ -108,7 +110,7 @@
 		{
 			name				"zone_name_text" 
 			type				ITEM_TYPE_TEXT
-			rect 				2 0 0 0
+			rect 				4 0 0 0
 			forecolor			1 1 1 1
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
@@ -137,23 +139,41 @@
 		name				"left_top_hud"
 		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
 		fullscreen			0
-		visible				1 
+		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
+
+		#define UNI_Y_POS		2
 
 		itemDef
 		{
 			name				"zombie_counter"
 			type				ITEM_TYPE_TEXT
-			rect 				4 2 0 0			
+			rect 				4 UNI_Y_POS 0 0			
 			forecolor			1 1 1 1
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
-			exp 				text(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
-			visible				when(dvarInt(hud_remaining) == 1)
+			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
+			visible				when(dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1)
 			decoration
 		}
-	
+
+		itemDef
+		{
+			name				"zombie_drops"
+			type				ITEM_TYPE_TEXT
+			rect 				4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp text			(locString("@HUD_HUD_ZOMBIES_DROPS") + dvarString("hud_drops_number"))	
+			visible				when(dvarInt(hud_drops) == 1 || dvarInt(hud_tab) == 1)
+			decoration
+		}
+	}
+}
 
 	// 	itemDef 
 	// 	{
@@ -195,52 +215,3 @@
 	// 		visible		1	
 	// 	}
 	// }
-
-	// menuDef
-	// {
-	// 	name				"health_bar"
-	// 	rect				0 -111.5 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_BOTTOM
-	// 	fullscreen			0
-	// 	visible				when(dvarBool("hud_health_bar_on") && dvarBool("hud_health_bar_on_game"))
-
-	// 	itemDef
-	// 	{
-	// 		name				"health_bar_background_image"
-	// 		type				ITEM_TYPE_IMAGE
-	// 		style				WINDOW_STYLE_SHADER
-	// 		rect				0 0 114 14
-	// 		foreColor			0 0 0 0.5
-	// 		background			"white"
-	// 		visible				1
-	// 		decoration
-	// 	}
-
-	// 	itemDef
-	// 	{
-	// 		name				"health_bar_image"
-	// 		type				ITEM_TYPE_IMAGE
-	// 		style				WINDOW_STYLE_SHADER
-	// 		rect				2 2 110 10
-	// 		exp					rect W(dvarInt("hud_health_bar_width"))
-	// 		foreColor			1 1 1 0.85
-	// 		background			"white"
-	// 		visible				1
-	// 		decoration
-	// 	}
-
-	// 	itemDef
-	// 	{
-	// 		name				"health_bar_value"
-	// 		type				ITEM_TYPE_TEXT
-	// 		rect 				57 13 0 0
-	// 		foreColor			1 1 1 1
-	// 		textScale			TEXTSIZE_SMALL
-	// 		textStyle			ITEM_TEXTSTYLE_SHADOWED
-	// 		textFont			UI_FONT_NORMAL
-	// 		textalign			ITEM_ALIGN_CENTER
-	// 		exp					text(dvarInt("hud_health_bar_value"))
-	// 		visible				1
-	// 		decoration
-	// 	}
-	}
-}
