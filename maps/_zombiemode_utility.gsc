@@ -3945,3 +3945,44 @@ special_round_watcher()
 			level.last_special_round = level.round_number;
 	}
 }
+
+// copy of to_mins() with modified output
+get_time_friendly( seconds )
+{
+	hours = 0; 
+	minutes = 0; 
+	
+	if( seconds > 59 )
+	{
+		minutes = int( seconds / 60 );
+
+		seconds = int( seconds * 1000 ) % ( 60 * 1000 );
+		seconds = seconds * 0.001; 
+
+		if( minutes > 59 )
+		{
+			hours = int( minutes / 60 );
+			minutes = int( minutes * 1000 ) % ( 60 * 1000 );
+			minutes = minutes * 0.001; 		
+		}
+	}
+
+	hours = "" + hours; 
+
+	if( minutes < 10 )
+	{
+		minutes = "0" + minutes; 
+	}
+
+	seconds = Int( seconds ); 
+	if( seconds < 10 )
+	{
+		seconds = "0" + seconds; 
+	}
+
+	if (hours == "0")
+	{
+		return "" + minutes  + ":" + seconds; 
+	}
+	return "" + hours  + ":" + minutes  + ":" + seconds; 
+}
