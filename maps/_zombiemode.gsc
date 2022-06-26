@@ -6,6 +6,7 @@
 #include maps\_zombiemode_utility;
 #include maps\_busing;
 #include maps\_custom_hud;
+#include maps\_custom_hud_menu;
 
 #using_animtree( "generic_human" );
 
