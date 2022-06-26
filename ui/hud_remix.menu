@@ -45,9 +45,10 @@
 */
 
 #define NEXT_LINE_OFFSET				15
+#define UNI_Y_POS						2
 
-#if (dvarInt(client_pluto))
-	#define PLUTO_OFFSET				16
+#ifdef dvarInt(hud_pluto)
+	#define PLUTO_OFFSET				12
 #else
 	#define PLUTO_OFFSET				0
 #endif
@@ -147,8 +148,6 @@
 		fullscreen			0
 		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
 
-		#define UNI_Y_POS		2
-
 		itemDef
 		{
 			name				"zombie_counter"
@@ -183,7 +182,7 @@
 	menuDef
 	{
 		name				"right_top_hud"
-		rect				0 PLUTO_OFFSET 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		rect				0 PLUTO_OFFSET 0 0 HORIZONTAL_ALIGN_USER_RIGHT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
 		fullscreen			0
 		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
 

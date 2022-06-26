@@ -149,11 +149,12 @@ remaining_hud()
 	while(true)
 	{
 		wait 0.05;
-		tracked_zombies = level.zombie_total + get_enemy_count();
-		if (tracked_zombies == GetDvarInt("hud_remaining_number"))
+		// Level var for round timer
+		level.tracked_zombies = level.zombie_total + get_enemy_count();
+		if (level.tracked_zombies == GetDvarInt("hud_remaining_number"))
 			continue;
 
-		setDvar("hud_remaining_number", tracked_zombies);
+		setDvar("hud_remaining_number", level.tracked_zombies);
 	}
 }
 
