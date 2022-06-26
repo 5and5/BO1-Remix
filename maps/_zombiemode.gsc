@@ -1596,6 +1596,15 @@ onPlayerConnect_clientDvars()
 	{
 		self setClientDvar("hud_pluto", 0);
 	}
+
+	if(getDvarInt("hud_zone_name_on") == 1)
+	{
+		self setClientDvar("hud_zone_name_on", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_zone_name_on", 0);
+	}
 	
 	if(getDvarInt("hud_health_bar") == 1)
 	{
