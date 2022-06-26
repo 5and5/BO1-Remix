@@ -2,7 +2,6 @@
 #include common_scripts\utility;
 #include maps\_zombiemode_utility;
 
-// WTF
 send_message_to_csc(name, message)
 {
 	csc_message = name + ":" + message;
@@ -19,22 +18,6 @@ send_message_to_csc(name, message)
 		}
 	}
 }
-
-// show_all_on_tab()
-// {
-// 	current_state = 0;
-// 	while (true)
-// 	{
-// 		wait 0.05;
-// 		if (current_state == getDvarInt("hud_tab"))
-// 			continue;
-
-// 		if (getDvarInt("hud_tab") == 1)
-// 			SetClientDvar("all_hud", 1);
-// 		else
-// 			SetClientDvar("all_hud", 0);
-// 	}
-// }
 
 hud_color_watcher()
 {
