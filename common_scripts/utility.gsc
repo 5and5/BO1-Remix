@@ -2468,3 +2468,17 @@ isWeaponEnabled()
 {
 	return ( !self.disabledWeapon );
 }
+
+isClientPluto()
+{
+	if (getDvar("") != "")
+	{
+		setDvar("client_pluto", 1);
+		return true;
+	}
+	else
+	{
+		setDvar("client_pluto", 0);
+		return false;
+	}
+}

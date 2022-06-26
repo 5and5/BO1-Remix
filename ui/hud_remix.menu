@@ -46,6 +46,12 @@
 
 #define NEXT_LINE_OFFSET				15
 
+#if (dvarInt(client_pluto))
+	#define PLUTO_OFFSET				16
+#else
+	#define PLUTO_OFFSET				0
+#endif
+
 {
 	assetGlobalDef
 	{
@@ -173,6 +179,17 @@
 			decoration
 		}
 	}
+
+	menuDef
+	{
+		name				"right_top_hud"
+		rect				0 PLUTO_OFFSET 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
+
+		itemDef
+		{
+		}
 }
 
 	// 	itemDef 

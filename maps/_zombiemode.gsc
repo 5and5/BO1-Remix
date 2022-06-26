@@ -93,6 +93,8 @@ main()
 	init_flags();
 	init_client_flags();
 
+	isClientPluto();
+
 	register_offhand_weapons_for_level_defaults();
 
 	//Limit zombie to 24 max, must have for network purposes
