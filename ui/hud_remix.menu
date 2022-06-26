@@ -1,4 +1,5 @@
 #include "ui/menudef.h"
+#include "ui/hud_color_state.menu"
 
 /*
 	Items are grouped together using a menuDef. A menudef typically has a name, a rect, a fullscreen option and a visible option
@@ -51,10 +52,6 @@
 		fadeAmount						.1
 	}
 
-	// #define HUD_COLOR_R float(dvarString("hud_color_r"))
-	// #define HUD_COLOR_G float(dvarString("hud_color_g"))
-	// #define HUD_COLOR_B float(dvarString("hud_color_b"))
-
 	menuDef
 	{
 		name				"zone_hud"
@@ -67,14 +64,12 @@
 			name				"zone_name_text" 
 			type				ITEM_TYPE_TEXT
 			rect 				4 -112.5 0 0
-			exp					rect Y(-112.5 + (!dvarInt("hud_health_bar_on") * 16))
-			// forecolor			HUD_COLOR_R HUD_COLOR_G HUD_COLOR_B 1
 			forecolor			1 1 1 1
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_LEFT
-			exp					text(locString(toUpper(dvarString("hud_zone_name"))))
+			exp	text			(locString(toUpper(dvarString("hud_zone_name"))))
 			visible				1
 			decoration
 

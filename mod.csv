@@ -180,6 +180,7 @@ menufile,ui/options_game_pc.menu
 menufile,ui/options_shoot_pc.menu
 menufile,ui/hud_zombie.menu
 menufile,ui/hud_remix.menu
+menufile,ui/hud_color_state.menu
 menufile,ui/hud_zombie.txt
 
 //SOUNDS
