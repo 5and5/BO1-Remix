@@ -419,6 +419,13 @@ seta hud_excavator_timer "1"
 - points like reimagined
 - adopted reset sound
 - perk_weapRateEnhanced 1 for double tap 2.0
+- total time bugs on five
+- character select option
+- add new hud menu options page
+- add state color change to .menu
+- import timers to .menu
+- import tab hud to .menu
+
 
 #### Would like to do
 
