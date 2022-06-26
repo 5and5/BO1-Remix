@@ -3,9 +3,10 @@
 
 init_utility()
 {
-//	level thread edge_fog_start(); 
+	//	level thread edge_fog_start(); 
 
-//	level thread hudelem_count(); 
+	//	level thread hudelem_count(); 
+	registerClientSys("client_systems");
 }
 
 

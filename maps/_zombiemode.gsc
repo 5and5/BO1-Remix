@@ -265,7 +265,8 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
-	level thread hud_color_watcher();	// For later
+	level thread remaining_hud();
+	// level thread hud_color_watcher();	// For later
 	// level thread hud_trade_header();	// Hud limit reached :(
 }
 
@@ -1816,7 +1817,6 @@ onPlayerSpawned()
 				self thread player_grenade_watcher();
 
 				// custom HUD
-				self thread remaining_hud();
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();

@@ -120,6 +120,7 @@ choose_zone_name(zone, current_name)
 }
 
 remaining_hud()
+// level thread
 {
 	level endon("disconnect");
 	level endon("end_game");
@@ -135,3 +136,24 @@ remaining_hud()
 		setDvar("hud_remaining_number", tracked_zombies);
 	}
 }
+
+health_bar_hud()
+// player thread
+{
+	health_bar_width_max = 110;
+
+	while (1)
+	{
+		health_ratio = self.health / self.maxhealth;
+
+		// There is a conflict while trying to import _laststand
+		if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
+			self SetClientDvar("health_bar_value_hud", 0);
+		else
+			self SetClientDvar("health_bar_value_hud", self.health);
+
+		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+
+		wait 0.05;
+	}
+} 
