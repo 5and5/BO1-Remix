@@ -1660,6 +1660,15 @@ onPlayerConnect_clientDvars()
 	{
 		self setClientDvar("hud_excavator_timer", 0);
 	}
+	
+	if(getDvarInt("hud_zone_name_on") == 1)
+	{
+		self setClientDvar("hud_zone_name_on", 1);
+	}
+	else
+	{
+		self setClientDvar("hud_zone_name_on", 0);
+	}
 
 	// Re-enable in case of enabling trade tracker
 	// if(getDvarInt("trades_include_all") == 1)
