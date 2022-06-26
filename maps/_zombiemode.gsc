@@ -265,6 +265,7 @@ post_all_players_connected()
 	level thread timer_hud();
 	level thread round_timer();
 	level thread display_sph();
+	level thread hud_color_watcher();	// For later
 	// level thread hud_trade_header();	// Hud limit reached :(
 }
 
@@ -1660,7 +1661,7 @@ onPlayerConnect_clientDvars()
 	{
 		self setClientDvar("hud_excavator_timer", 0);
 	}
-	
+
 	if(getDvarInt("hud_zone_name_on") == 1)
 	{
 		self setClientDvar("hud_zone_name_on", 1);
@@ -1815,7 +1816,7 @@ onPlayerSpawned()
 				self thread player_grenade_watcher();
 
 				// custom HUD
-				self thread zombies_remaining_hud();
+				self thread remaining_hud();
 				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();

@@ -173,6 +173,7 @@ xanim,viewmodel_ppsh_empty_sprint_loop
 //STRINGS
 localize,reimagined
 localize,mod
+localize,hud
 
 //MENU
 menufile,ui/options_game_pc.menu

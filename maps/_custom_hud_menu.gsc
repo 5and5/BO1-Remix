@@ -2,6 +2,41 @@
 #include common_scripts\utility;
 #include maps\_zombiemode_utility;
 
+// WTF
+send_message_to_csc(name, message)
+{
+	csc_message = name + ":" + message;
+
+	if(isdefined(self) && IsPlayer(self))
+		setClientSysState("client_systems", csc_message, self);
+	else
+	{
+		players = get_players();
+
+		for(i = 0; i < players.size; i++)
+		{
+			setClientSysState("client_systems", csc_message, players[i]);
+		}
+	}
+}
+
+hud_color_watcher()
+{
+	raw_color = "";
+	while (true)
+	{
+		wait 0.05;
+		if (raw_color != getDvar("cg_ScoresColor_Gamertag_0"))
+		{
+			raw_color = getDvar("cg_ScoresColor_Gamertag_0");
+			color = strTok(raw_color, " ");
+			SetDvar("hud_color_r", color[0]);
+			SetDvar("hud_color_g", color[1]);
+			SetDvar("hud_color_b", color[2]);
+		}
+	}
+}
+
 zone_hud()
 {
 	self endon("disconnect");
@@ -84,19 +119,19 @@ choose_zone_name(zone, current_name)
 	return name;
 }
 
-send_message_to_csc(name, message)
+remaining_hud()
 {
-	csc_message = name + ":" + message;
+	level endon("disconnect");
+	level endon("end_game");
 
-	if(isdefined(self) && IsPlayer(self))
-		setClientSysState("client_systems", csc_message, self);
-	else
+	setDvar("hud_remaining_number", 0);
+	while(true)
 	{
-		players = get_players();
+		wait 0.05;
+		tracked_zombies = level.zombie_total + get_enemy_count();
+		if (tracked_zombies == GetDvarInt("hud_remaining_number"))
+			continue;
 
-		for(i = 0; i < players.size; i++)
-		{
-			setClientSysState("client_systems", csc_message, players[i]);
-		}
+		setDvar("hud_remaining_number", tracked_zombies);
 	}
 }

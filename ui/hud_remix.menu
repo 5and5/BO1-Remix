@@ -35,6 +35,7 @@
 	some formatting functions:
 		locString() - Grab localized string from key (key MUST start with "<str_filename>_" 
 			where <str_filename> is the name of the .str file that holds the key/value pair)
+			example = @REIMAGINED_HUD_REMAINING ~ Zi0
 		toUpper() - Capitalize first letter of each word in a string
 		dvarString() - get dvar value as a string
 		dvarBool() - get dvar value as a bool
@@ -50,6 +51,10 @@
 		fadeAmount						.1
 	}
 
+	// #define HUD_COLOR_R float(dvarString("hud_color_r"))
+	// #define HUD_COLOR_G float(dvarString("hud_color_g"))
+	// #define HUD_COLOR_B float(dvarString("hud_color_b"))
+
 	menuDef
 	{
 		name				"zone_hud"
@@ -63,6 +68,7 @@
 			type				ITEM_TYPE_TEXT
 			rect 				4 -112.5 0 0
 			exp					rect Y(-112.5 + (!dvarInt("hud_health_bar_on") * 16))
+			// forecolor			HUD_COLOR_R HUD_COLOR_G HUD_COLOR_B 1
 			forecolor			1 1 1 1
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
@@ -86,27 +92,27 @@
 		}
 	}
 
-	// menuDef
-	// {
-	// 	name				"stats_hud"
-	// 	rect				0 50 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
-	// 	fullscreen			0
-	// 	visible				1 
+	menuDef
+	{
+		name				"left_top_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				1 
 
-	// 	itemDef
-	// 	{
-	// 		name				"enemy_counter_text"
-	// 		type				ITEM_TYPE_TEXT
-	// 		rect 				4 2 0 0			
-	// 		forecolor			1 1 1 1
-	// 		textscale			TEXTSIZE_DEFAULT
-	// 		textstyle			ITEM_TEXTSTYLE_SHADOWED
-	// 		textfont			UI_FONT_NORMAL
-	// 		textalign			ITEM_ALIGN_TOP_LEFT
-	// 		exp 				text(locString("MOD_ENEMIES_REMAINING") + dvarString("hud_enemy_counter_value"))	
-	// 		visible				when(dvarInt(hud_enemy_counter_on) > 0)
-	// 		decoration
-	// 	}
+		itemDef
+		{
+			name				"zombie_counter"
+			type				ITEM_TYPE_TEXT
+			rect 				4 2 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp 				text(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
+			visible				when(dvarInt(hud_remaining) == 1)
+			decoration
+		}
 
 	// 	itemDef 
 	// 	{
@@ -123,7 +129,7 @@
 	// 		visible				when(dvarInt(hud_sph_on) > 0)
 	// 		decoration
 	// 	}
-	// }
+		}
 
 	// menuDef 
 	// {
