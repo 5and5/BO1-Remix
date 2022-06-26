@@ -1,4 +1,5 @@
 #include "ui/menudef.h"
+#include "ui/hud_color_state.menu"
 
 /*
 	Items are grouped together using a menuDef. A menudef typically has a name, a rect, a fullscreen option and a visible option
@@ -35,12 +36,15 @@
 	some formatting functions:
 		locString() - Grab localized string from key (key MUST start with "<str_filename>_" 
 			where <str_filename> is the name of the .str file that holds the key/value pair)
+			example = @REIMAGINED_HUD_REMAINING ~ Zi0
 		toUpper() - Capitalize first letter of each word in a string
 		dvarString() - get dvar value as a string
 		dvarBool() - get dvar value as a bool
 		dvarInt() - get dvar value as an int
 
 */
+
+#define NEXT_LINE_OFFSET				15
 
 {
 	assetGlobalDef
@@ -52,24 +56,68 @@
 
 	menuDef
 	{
-		name				"zone_hud"
-		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_BOTTOM
+		name				"left_bottom_hud"
+		rect				0 132 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_CENTER
 		fullscreen			0
-		visible				when(dvarBool("hud_zone_name_on"))
+		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
+
+		#define HEALTH_BAR_W	110
+		#define HEALTH_BAR_H	4
+
+		itemDef
+		{
+			name				"health_bar_background_image"
+			type				ITEM_TYPE_IMAGE
+			style				WINDOW_STYLE_SHADER
+			rect				-2 2 (HEALTH_BAR_W + 4) (HEALTH_BAR_H + 4)
+			foreColor			0 0 0 0.4
+			background			"white"
+			visible				when(dvarBool("hud_health_bar"))
+			decoration
+		}
+
+		itemDef
+		{
+			name				"health_bar_image"
+			type				ITEM_TYPE_IMAGE
+			style				WINDOW_STYLE_SHADER
+			rect				0 4 HEALTH_BAR_W HEALTH_BAR_H
+			exp	rect W			(dvarInt("health_bar_width_hud"))
+			foreColor			1 1 1 0.85
+			background			"white"
+			visible				when(dvarBool("hud_health_bar"))
+			decoration
+		}
+
+		#define HEALTH_VALUE_POS	(HEALTH_BAR_W + 4)
+
+		itemDef
+		{
+			name				"health_bar_value"
+			type				ITEM_TYPE_TEXT
+			rect 				HEALTH_VALUE_POS 11.9 0 0
+			foreColor			1 1 1 1
+			textScale			0.2500
+			textStyle			ITEM_TEXTSTYLE_SHADOWED
+			textFont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_LEFT
+			exp	text			(dvarInt("health_bar_value_hud"))
+			visible				when(dvarBool("hud_health_bar"))
+			decoration
+		}
 
 		itemDef
 		{
 			name				"zone_name_text" 
 			type				ITEM_TYPE_TEXT
-			rect 				2 -96.5 0 0
-			exp					rect Y(-96.5 + (dvarInt("hud_health_bar") * -12))
+			rect 				4 0 0 0
 			forecolor			1 1 1 1
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_LEFT
-			exp					text(locString(toUpper(dvarString("hud_zone_name"))))
-			visible				1
+			exp	text			(locString(toUpper(dvarString("hud_zone_name"))))
+			visible				when(dvarBool("hud_zone_name_on"))
 			decoration
 
 			state
@@ -83,78 +131,49 @@
 				name 			"fadeout"
 				forecolor 		1 1 1 0
 			}
-		}
+		}	
 	}
 
 	menuDef
 	{
-		name				"health_bar"
-		rect				0 -107 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_BOTTOM
+		name				"left_top_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
 		fullscreen			0
-		visible				when(dvarBool("hud_health_bar"))
+		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
+
+		#define UNI_Y_POS		2
 
 		itemDef
 		{
-			name				"health_bar_background_image"
-			type				ITEM_TYPE_IMAGE
-			style				WINDOW_STYLE_SHADER
-			rect				0 0 114 9
-			foreColor			0 0 0 0.4
-			background			"white"
-			visible				1
-			decoration
-		}
-
-		itemDef
-		{
-			name				"health_bar_image"
-			type				ITEM_TYPE_IMAGE
-			style				WINDOW_STYLE_SHADER
-			rect				2 2 110 5
-			exp					rect W(dvarInt("health_bar_width_hud"))
-			foreColor			1 1 1 0.85
-			background			"white"
-			visible				1
-			decoration
-		}
-
-		itemDef
-		{
-			name				"health_bar_value"
+			name				"zombie_counter"
 			type				ITEM_TYPE_TEXT
-			rect 				115.5 11 0 0
-			foreColor			1 1 1 1
-			textScale			TEXTSIZE_SMALL
-			textStyle			ITEM_TEXTSTYLE_SHADOWED
-			textFont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_LEFT
-			exp					text(dvarInt("health_bar_value_hud"))
-			visible				1
+			rect 				4 UNI_Y_POS 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
+			visible				when(dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1)
+			decoration
+		}
+
+		itemDef
+		{
+			name				"zombie_drops"
+			type				ITEM_TYPE_TEXT
+			rect 				4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp text			(locString("@HUD_HUD_ZOMBIES_DROPS") + dvarString("hud_drops_number"))	
+			visible				when(dvarInt(hud_drops) == 1 || dvarInt(hud_tab) == 1)
 			decoration
 		}
 	}
-
-	// menuDef
-	// {
-	// 	name				"stats_hud"
-	// 	rect				0 50 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
-	// 	fullscreen			0
-	// 	visible				1 
-
-	// 	itemDef
-	// 	{
-	// 		name				"enemy_counter_text"
-	// 		type				ITEM_TYPE_TEXT
-	// 		rect 				4 2 0 0			
-	// 		forecolor			1 1 1 1
-	// 		textscale			TEXTSIZE_DEFAULT
-	// 		textstyle			ITEM_TEXTSTYLE_SHADOWED
-	// 		textfont			UI_FONT_NORMAL
-	// 		textalign			ITEM_ALIGN_TOP_LEFT
-	// 		exp 				text(locString("MOD_ENEMIES_REMAINING") + dvarString("hud_enemy_counter_value"))	
-	// 		visible				when(dvarInt(hud_enemy_counter_on) > 0)
-	// 		decoration
-	// 	}
+}
 
 	// 	itemDef 
 	// 	{
@@ -171,7 +190,6 @@
 	// 		visible				when(dvarInt(hud_sph_on) > 0)
 	// 		decoration
 	// 	}
-	// }
 
 	// menuDef 
 	// {
@@ -196,4 +214,3 @@
 	// 		visible		1	
 	// 	}
 	// }
-}

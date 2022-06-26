@@ -15,6 +15,7 @@ rawfile,maps/_zombiemode_audio.gsc
 
 //CUSTOM
 rawfile,maps/_custom_hud.gsc
+rawfile,maps/_custom_hud_menu.gsc
 
 //WEAPONS
 rawfile,maps/_zombiemode_betty.gsc
@@ -172,12 +173,14 @@ xanim,viewmodel_ppsh_empty_sprint_loop
 //STRINGS
 localize,reimagined
 localize,mod
+localize,hud
 
 //MENU
 menufile,ui/options_game_pc.menu
 menufile,ui/options_shoot_pc.menu
 menufile,ui/hud_zombie.menu
 menufile,ui/hud_remix.menu
+menufile,ui/hud_color_state.menu
 menufile,ui/hud_zombie.txt
 
 //SOUNDS

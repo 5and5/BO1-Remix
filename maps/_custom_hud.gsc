@@ -492,53 +492,53 @@ tab_hud()
 	}
 }
 
-drop_tracker_hud()
-{
-	self endon("disconnect");
-	self endon("end_game");
+// drop_tracker_hud()
+// {
+// 	self endon("disconnect");
+// 	self endon("end_game");
 
-	hud_wait();
+// 	hud_wait();
 
-	self.drops_hud = create_hud( "left", "top" );
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-	self.drops_hud.y += 18;
-	self.drops_hud.x += 5;
-	self.drops_hud.label = "Drops: ";
+// 	self.drops_hud = create_hud( "left", "top" );
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.drops_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	self.drops_hud.y += 18;
+// 	self.drops_hud.x += 5;
+// 	self.drops_hud.label = "Drops: ";
 
-	hud_fade(self.drops_hud, 1 , 0.3);
-	self thread hud_end(self.drops_hud);
+// 	hud_fade(self.drops_hud, 1 , 0.3);
+// 	self thread hud_end(self.drops_hud);
 
-	while(1)
-	{
-		if(getDvarInt( "hud_drops" ) == 0)
-		{
-			if(self.drops_hud.alpha != 0 )
-			{
-				toggled_hud_fade(self.drops_hud, 0);
-			}
-		}
-		else
-		{
-			if(self.drops_hud.alpha != 1 )
-			{
-				toggled_hud_fade(self.drops_hud, 1);
-			}
-			self.drops_hud setValue(level.drop_tracker_index);
-		}
+// 	while(1)
+// 	{
+// 		if(getDvarInt( "hud_drops" ) == 0)
+// 		{
+// 			if(self.drops_hud.alpha != 0 )
+// 			{
+// 				toggled_hud_fade(self.drops_hud, 0);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if(self.drops_hud.alpha != 1 )
+// 			{
+// 				toggled_hud_fade(self.drops_hud, 1);
+// 			}
+// 			self.drops_hud setValue(level.drop_tracker_index);
+// 		}
 
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
-		{
-			if(self.drops_hud.alpha != 1 )
-			{
-                toggled_hud_fade(self.drops_hud, 1);
-			}
-			self.drops_hud setValue(level.drop_tracker_index);
-		}
+// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_drops" ) )
+// 		{
+// 			if(self.drops_hud.alpha != 1 )
+// 			{
+//                 toggled_hud_fade(self.drops_hud, 1);
+// 			}
+// 			self.drops_hud setValue(level.drop_tracker_index);
+// 		}
 
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
 zombies_remaining_hud()
 {
@@ -1816,125 +1816,5 @@ box_map()
 
 		default:
 			return box_script;
-	}
-}
-
-/***************
-*
-*	MENU HUD
-*
-****************/
-
-zone_hud()
-{
-	self endon("disconnect");
-
-	current_name = " ";
-
-	while(1)
-	{
-		wait_network_frame();
-
-		name = choose_zone_name(self get_current_zone(), current_name);
-
-		if(current_name == name)
-		{
-			continue;
-		}
-
-		current_name = name;
-
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_out");
-		wait .25;
-		self SetClientDvar("hud_zone_name", name);
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_in");
-	}
-}
-
-choose_zone_name(zone, current_name)
-{
-	if(self.sessionstate == "spectator")
-	{
-		zone = undefined;
-	}
-
-	if(IsDefined(zone))
-	{
-		if(level.script == "zombie_pentagon")
-		{
-			if(zone == "labs_elevator")
-			{
-				zone = "war_room_zone_elevator";
-			}
-		}
-		else if(level.script == "zombie_cosmodrome")
-		{
-			if(IsDefined(self.lander) && self.lander)
-			{
-				zone = undefined;
-			}
-		}
-		else if(level.script == "zombie_coast")
-		{
-			if(IsDefined(self.is_ziplining) && self.is_ziplining)
-			{
-				zone = undefined;
-			}
-		}
-		else if(level.script == "zombie_temple")
-		{
-			if(zone == "waterfall_tunnel_a_zone")
-			{
-				zone = "waterfall_tunnel_zone";
-			}
-		}
-		else if(level.script == "zombie_moon")
-		{
-			if(IsSubStr(zone, "airlock"))
-			{
-				return current_name;
-			}
-		}
-	}
-
-	name = " ";
-
-	if(IsDefined(zone))
-	{
-		name = "reimagined_" + level.script + "_" + zone;
-	}
-
-	return name;
-}
-
-send_message_to_csc(name, message)
-{
-	csc_message = name + ":" + message;
-
-	if(isdefined(self) && IsPlayer(self))
-		setClientSysState("client_systems", csc_message, self);
-	else
-	{
-		players = get_players();
-
-		for(i = 0; i < players.size; i++)
-		{
-			setClientSysState("client_systems", csc_message, players[i]);
-		}
-	}
-}
-
-health_bar_hud()
-{
-	health_bar_width_max = 110;
-
-	while (1)
-	{
-		health_ratio = self.health / self.maxhealth;
-
-		self SetClientDvar("health_bar_value_hud", self.health);
-		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
-
-		wait 0.05;
 	}
 }
