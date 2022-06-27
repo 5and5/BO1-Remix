@@ -22,6 +22,8 @@ init_hud_dvars()
 	setDvar("excavator_name", "null");
 	setDvar("excavator_time_value", 0);
 	setDvar("excavator_time_show", 0);
+	setDvar("show_nml_kill_tracker", 0);
+	setDvar("hud_kills_value", 0);
 }
 
 send_message_to_csc(name, message)
@@ -225,6 +227,35 @@ remaining_hud()
 
 		setDvar("hud_remaining_number", level.tracked_zombies);
 	}
+}
+
+kill_hud()
+// level thread
+{
+	level endon("disconnect");
+	level endon("end_game");
+
+	setDvar("show_nml_kill_tracker", 1);
+
+	while (true)
+	{
+		if (isDefined(level.left_nomans_land) && level.left_nomans_land > 0)
+			break;
+
+		wait 0.05;
+		tracked_kills = 0;
+		
+		players = get_players();
+		for (i = 0; i < players.size; i++)
+			tracked_kills += players[i].kills;
+		iPrintLn(tracked_kills);
+
+		if (tracked_kills == getDvarInt("hud_kills_value"))
+			continue;
+
+		setDvar("hud_kills_value", tracked_kills);
+	}
+	setDvar("show_nml_kill_tracker", 0);
 }
 
 drop_tracker_hud()

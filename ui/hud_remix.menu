@@ -166,7 +166,23 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
-			visible				when(dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1)
+			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 0)
+			decoration
+		}
+
+		itemDef
+		{
+			name				"zombie_kill"
+			type				ITEM_TYPE_TEXT
+			rect 				4 UNI_Y_POS 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp text			(locString("@HUD_HUD_ZOMBIES_KILL") + dvarString("hud_kills_value"))	
+			// Base it on the hud_remaining dvar
+			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 1)
 			decoration
 		}
 
