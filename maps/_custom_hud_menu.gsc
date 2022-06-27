@@ -15,6 +15,7 @@ init_hud_dvars()
 	setDvar("predicted_value", "0");
 	setDvar("sph_value", 0);
 	setDvar("rt_displayed", 0);
+	setDvar("kino_boxset", "^0UNDEFINED");
 }
 
 send_message_to_csc(name, message)
@@ -329,3 +330,32 @@ game_stat_hud()
 	}
 }
 
+box_notifier()
+{
+	maps\_custom_hud::hud_level_wait();
+	
+	i = 0;
+	while(i < 5)
+	{
+		if (isdefined(level.box_set))
+		{
+			// iPrintLn(level.box_set); // debug
+			if (level.box_set == 0)
+				setDvar("kino_boxset", "^2DINING");
+			else if (level.box_set == 1)
+				setDvar("kino_boxset", "^3HELLROOM");
+			else if (level.box_set == 2)
+				setDvar("kino_boxset", "^5NO POWER");
+
+			wait 5;
+			setDvar("kino_boxset", "^0UNDEFINED");
+			break;
+		}
+		else
+		{
+			// iPrintLn("undefined"); // debug
+			wait 0.5;
+			i++;
+		}
+	}
+}

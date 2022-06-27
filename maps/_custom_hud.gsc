@@ -360,104 +360,104 @@ round_timer_hud()
 // 	}
 // }
 
-display_sph()
-{	
-	level endon("end_game");
+// display_sph()
+// {	
+// 	level endon("end_game");
 
-	hud_level_wait();
+// 	hud_level_wait();
 
-	level.sph_hud = NewHudElem();
-	level.sph_hud.horzAlign = "right";
-	level.sph_hud.vertAlign = "top";
-	level.sph_hud.alignX = "right";
-	level.sph_hud.alignY = "top";
-	level.sph_hud.y = 18 + level.pluto_offset;
-	level.sph_hud.x = -5;
-	level.sph_hud.fontScale = 1.3;
-	level.sph_hud.alpha = 0;
-	level.sph_hud.label = "SPH: ";
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	level.sph_hud = NewHudElem();
+// 	level.sph_hud.horzAlign = "right";
+// 	level.sph_hud.vertAlign = "top";
+// 	level.sph_hud.alignX = "right";
+// 	level.sph_hud.alignY = "top";
+// 	level.sph_hud.y = 18 + level.pluto_offset;
+// 	level.sph_hud.x = -5;
+// 	level.sph_hud.fontScale = 1.3;
+// 	level.sph_hud.alpha = 0;
+// 	level.sph_hud.label = "SPH: ";
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	level.sph_hud setValue(0);
-	sph_round_display = 50;		// Start displaying on r50
+// 	level.sph_hud setValue(0);
+// 	sph_round_display = 50;		// Start displaying on r50
 
-	// Initialize variables
-	round_time = 0;			
-	zc_last = 0;
+// 	// Initialize variables
+// 	round_time = 0;			
+// 	zc_last = 0;
 
-	while ( 1 )
-	{
-		level waittill( "start_of_round" );
+// 	while ( 1 )
+// 	{
+// 		level waittill( "start_of_round" );
 
-		// Don't want to start the round if ppl ain't on the moon
-		if (isdefined(level.on_the_moon) && !level.on_the_moon)
-		{
-			wait 0.05;
-			continue;
-		}
+// 		// Don't want to start the round if ppl ain't on the moon
+// 		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+// 		{
+// 			wait 0.05;
+// 			continue;
+// 		}
 
-		// Don't count pause time
-		if (isdefined(flag( "game_paused" )))
-		{
-			if (!flag( "game_paused" ))
-			{		
-				rt_start = int(getTime() / 1000);
-			}
-			else
-			{
-				while ( 1 )
-				{
-					if (!flag( "game_paused" ))
-					{
-						break;
-					}
-					wait 0.05;
-				}
-				rt_start = int(getTime() / 1000);
-			}
-		}
-		else
-		{
-			wait 0.05;
-			// iPrintLn("waiting");
-			continue;
-		}
-		// Get zombie count from current round
-		zc_current = level.zombie_total + get_enemy_count();
+// 		// Don't count pause time
+// 		if (isdefined(flag( "game_paused" )))
+// 		{
+// 			if (!flag( "game_paused" ))
+// 			{		
+// 				rt_start = int(getTime() / 1000);
+// 			}
+// 			else
+// 			{
+// 				while ( 1 )
+// 				{
+// 					if (!flag( "game_paused" ))
+// 					{
+// 						break;
+// 					}
+// 					wait 0.05;
+// 				}
+// 				rt_start = int(getTime() / 1000);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			wait 0.05;
+// 			// iPrintLn("waiting");
+// 			continue;
+// 		}
+// 		// Get zombie count from current round
+// 		zc_current = level.zombie_total + get_enemy_count();
 
-		// Calculate and display SPH
-		wait 7;
-		y_offset = 0;
-		if(getDvarInt("hud_round_timer"))
-		{
-			y_offset = 15;
-		}
-		level.sph_hud.y = (18 + y_offset + level.pluto_offset);
+// 		// Calculate and display SPH
+// 		wait 7;
+// 		y_offset = 0;
+// 		if(getDvarInt("hud_round_timer"))
+// 		{
+// 			y_offset = 15;
+// 		}
+// 		level.sph_hud.y = (18 + y_offset + level.pluto_offset);
 
-		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
-		{
-			sph = round_time / (zc_last / 24);
-			level.sph_hud setValue(sph);
-			hud_fade(level.sph_hud, 1, 0.15);
-			wait 6;
-			hud_fade(level.sph_hud, 0, 0.15);
-		}
+// 		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
+// 		{
+// 			sph = round_time / (zc_last / 24);
+// 			level.sph_hud setValue(sph);
+// 			hud_fade(level.sph_hud, 1, 0.15);
+// 			wait 6;
+// 			hud_fade(level.sph_hud, 0, 0.15);
+// 		}
 
-		level waittill( "end_of_round" );
-		if(flag( "enter_nml" ))
-		{
-			level waittill( "end_of_round" ); //end no man's land
-			level waittill( "end_of_round" ); //end actual round
-		}			
+// 		level waittill( "end_of_round" );
+// 		if(flag( "enter_nml" ))
+// 		{
+// 			level waittill( "end_of_round" ); //end no man's land
+// 			level waittill( "end_of_round" ); //end actual round
+// 		}			
 		
-		zc_last = zc_current;	// Save zc from this round to separate var
-		rt_end = int(getTime() / 1000);
-		round_time = rt_end - rt_start;
-		// iPrintLn("debug_rt: ^5" + round_time);
-		wait 0.05;
-	}
-}
+// 		zc_last = zc_current;	// Save zc from this round to separate var
+// 		rt_end = int(getTime() / 1000);
+// 		round_time = rt_end - rt_start;
+// 		// iPrintLn("debug_rt: ^5" + round_time);
+// 		wait 0.05;
+// 	}
+// }
 
 display_times( label, time, duration, delay, col )
 {
@@ -572,131 +572,131 @@ tab_hud()
 // 	}
 // }
 
-zombies_remaining_hud()
-{
-	level endon("disconnect");
-	level endon("end_game");
+// zombies_remaining_hud()
+// {
+// 	level endon("disconnect");
+// 	level endon("end_game");
 
-	hud_wait();
+// 	hud_wait();
 
-	self.remaining_hud = create_hud("left", "top");
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-	self.remaining_hud.y += 2;
-	self.remaining_hud.x += 5;
-	self.remaining_hud.label = "Remaining: ";
+// 	self.remaining_hud = create_hud("left", "top");
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	self.remaining_hud.y += 2;
+// 	self.remaining_hud.x += 5;
+// 	self.remaining_hud.label = "Remaining: ";
 
-	hud_fade(self.remaining_hud, 1, 0.3);
-	self thread hud_end(self.remaining_hud);
+// 	hud_fade(self.remaining_hud, 1, 0.3);
+// 	self thread hud_end(self.remaining_hud);
 
-	while(1)
-	{
-		// Kill tracker for NML only
-		if (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
-		{
-			self.remaining_hud.label = "Kills: ";
+// 	while(1)
+// 	{
+// 		// Kill tracker for NML only
+// 		if (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+// 		{
+// 			self.remaining_hud.label = "Kills: ";
 
-			if(self.remaining_hud.alpha != 1)
-			{
-				hud_fade(self.remaining_hud, 1, 0.25);			
-			}
+// 			if(self.remaining_hud.alpha != 1)
+// 			{
+// 				hud_fade(self.remaining_hud, 1, 0.25);			
+// 			}
 
-			tracked_kills = 0;
-			players = get_players();
-			for (i = 0; i < players.size; i++)
-			{
-				tracked_kills = players[i].kills;
-			}
+// 			tracked_kills = 0;
+// 			players = get_players();
+// 			for (i = 0; i < players.size; i++)
+// 			{
+// 				tracked_kills = players[i].kills;
+// 			}
 
-			self.remaining_hud setValue(tracked_kills);
-		}
-		// Else use normal remaining tracker
-		else
-		{
-			self.remaining_hud.label = "Remaining: ";
+// 			self.remaining_hud setValue(tracked_kills);
+// 		}
+// 		// Else use normal remaining tracker
+// 		else
+// 		{
+// 			self.remaining_hud.label = "Remaining: ";
 
-			if( !getDvarInt( "hud_remaining" ) )
-			{
-				if(self.remaining_hud.alpha != 0)
-				{
-				    toggled_hud_fade(self.remaining_hud, 0);
-				}
-			}
-			else
-			{
-				if(self.remaining_hud.alpha != 1)
-				{
-					toggled_hud_fade(self.remaining_hud, 1);			
-				}
+// 			if( !getDvarInt( "hud_remaining" ) )
+// 			{
+// 				if(self.remaining_hud.alpha != 0)
+// 				{
+// 				    toggled_hud_fade(self.remaining_hud, 0);
+// 				}
+// 			}
+// 			else
+// 			{
+// 				if(self.remaining_hud.alpha != 1)
+// 				{
+// 					toggled_hud_fade(self.remaining_hud, 1);			
+// 				}
 
-				zombies = level.zombie_total + get_enemy_count();
-				self.remaining_hud setValue(zombies);
-			}
+// 				zombies = level.zombie_total + get_enemy_count();
+// 				self.remaining_hud setValue(zombies);
+// 			}
 
-			if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
-			{
-				if(self.remaining_hud.alpha != 1)
-				{
-                    toggled_hud_fade(self.remaining_hud, 1);
-				}
+// 			if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
+// 			{
+// 				if(self.remaining_hud.alpha != 1)
+// 				{
+//                     toggled_hud_fade(self.remaining_hud, 1);
+// 				}
 
-				zombies = level.zombie_total + get_enemy_count();
-				self.remaining_hud setValue(zombies);
-			}
-		}
+// 				zombies = level.zombie_total + get_enemy_count();
+// 				self.remaining_hud setValue(zombies);
+// 			}
+// 		}
 		
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
-box_notifier()
-{
-	hud_level_wait();
+// box_notifier()
+// {
+// 	hud_level_wait();
 	
-	box_notifier_hud = NewHudElem();
-	box_notifier_hud.horzAlign = "center";
-	box_notifier_hud.vertAlign = "middle";
-	box_notifier_hud.alignX = "center";
-	box_notifier_hud.alignY = "middle";
-	box_notifier_hud.x = 0;
-	box_notifier_hud.y = -150;
-	box_notifier_hud.fontScale = 1.6;
-	box_notifier_hud.alpha = 0;
-	box_notifier_hud.label = "^7BOX SET: ";
-	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
+// 	box_notifier_hud = NewHudElem();
+// 	box_notifier_hud.horzAlign = "center";
+// 	box_notifier_hud.vertAlign = "middle";
+// 	box_notifier_hud.alignX = "center";
+// 	box_notifier_hud.alignY = "middle";
+// 	box_notifier_hud.x = 0;
+// 	box_notifier_hud.y = -150;
+// 	box_notifier_hud.fontScale = 1.6;
+// 	box_notifier_hud.alpha = 0;
+// 	box_notifier_hud.label = "^7BOX SET: ";
+// 	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
 
-	i = 0;
-	while(i < 5)
-	{
-		if (isdefined(level.box_set))
-		{
-			box_notifier_hud setText("^0UNDEFINED");
-			// iPrintLn(level.box_set); // debug
-			if (level.box_set == 0)
-			{
-				box_notifier_hud setText("^2DINING");
-			}
-			else if (level.box_set == 1)
-			{
-				box_notifier_hud setText("^3HELLROOM");
-			}
-			else if (level.box_set == 2)
-			{
-				box_notifier_hud setText("^5NO POWER");
-			}
-			hud_fade(box_notifier_hud, 1, 0.25);
-			wait 4;
-			hud_fade(box_notifier_hud, 0, 0.25);
-			break;
-		}
-		else
-		{
-			// iPrintLn("undefined"); // debug
-			wait 0.5;
-			i++;
-		}
-	}
-}
+// 	i = 0;
+// 	while(i < 5)
+// 	{
+// 		if (isdefined(level.box_set))
+// 		{
+// 			box_notifier_hud setText("^0UNDEFINED");
+// 			// iPrintLn(level.box_set); // debug
+// 			if (level.box_set == 0)
+// 			{
+// 				box_notifier_hud setText("^2DINING");
+// 			}
+// 			else if (level.box_set == 1)
+// 			{
+// 				box_notifier_hud setText("^3HELLROOM");
+// 			}
+// 			else if (level.box_set == 2)
+// 			{
+// 				box_notifier_hud setText("^5NO POWER");
+// 			}
+// 			hud_fade(box_notifier_hud, 1, 0.25);
+// 			wait 4;
+// 			hud_fade(box_notifier_hud, 0, 0.25);
+// 			break;
+// 		}
+// 		else
+// 		{
+// 			// iPrintLn("undefined"); // debug
+// 			wait 0.5;
+// 			i++;
+// 		}
+// 	}
+// }
 
 // health_bar_hud()
 // {
