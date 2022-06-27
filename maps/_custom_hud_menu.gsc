@@ -17,7 +17,7 @@ init_hud_dvars()
 	setDvar("sph_value", 0);
 	setDvar("rt_displayed", 0);
 	setDvar("kino_boxset", "^0UNDEFINED");
-	setDvar("game_in_pause", 0);
+	// setDvar("game_in_pause", 0);
 	setDvar("oxygen_time_value", "0");
 	setDvar("oxygen_time_show", 0);
 	setDvar("excavator_name", "null");
@@ -421,116 +421,6 @@ box_notifier()
 	}
 }
 
-coop_pause(timer_hud, start_time)
-// level thread
-// black background made in gsc, perhaps port it to menus as well
-{
-	level.paused = false;
-
-    SetDvar( "coop_pause", 0 );
-	flag_clear( "game_paused" );
-
-	players = GetPlayers();
-	if( players.size == 1 )
-	{
-		// return;
-	}
-
-	paused_time = 0;
-	paused_start_time = 0;
-
-	if (level.round_number == 1)
-		level waittill ("end_of_round");
-
-	while (true)
-	{
-		if( getDvarInt( "coop_pause" ) )
-		{
-			players = GetPlayers();
-			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
-			{
-				iprintln("finish the round");
-				level waittill( "end_of_round" );
-			}
-			if (!flag("director_alive"))
-				iprintln("wait for the round change");
-
-			wait 1; 	// To make sure the round changes
-			// Don't allow breaks while George is alive or is possible to spawn
-
-			// debug
-			// iPrintLn("director_alive", flag("director_alive"));
-			// iPrintLn("potential_director", flag("potential_director"));
-
-			flagged = false;
-			director_exception = false;
-			if (flag("director_alive") || flag("potential_director"))
-			{
-				while (true)
-				{
-					if (!flag("director_alive") && !flag("potential_director"))
-						break;
-
-					if (!flagged)
-					{
-						iPrintLn("Kill George first");
-						flagged = true;
-					}
-
-					wait 0.1;
-				}
-			}
-			if (flagged)
-				continue;
-
-			players[0] SetClientDvar( "ai_disableSpawn", "1" );
-			flag_set( "game_paused" );
-
-			level waittill( "start_of_round" );
-
-			maps\_custom_hud::generate_background();
-			self thread pause_hud_watcher();
-
-			level.paused = true;
-			paused_start_time = int(getTime() / 1000);
-			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
-			previous_paused_time = level.paused_time;
-
-			while(level.paused)
-			{
-				for(i = 0; players.size > i; i++)
-				{
-					players[i] freezecontrols(true);
-				}
-				
-				timer_hud SetTimerUp(total_time);
-				wait 0.2;
-
-				current_time = int(getTime() / 1000);
-				current_paused_time = current_time - paused_start_time;
-
-				if( !getDvarInt( "coop_pause" ) )
-				{
-					level.total_pause_time += current_paused_time;
-					level.paused = false;
-					maps\_custom_hud::destroy_background();
-
-					for(i = 0; players.size > i; i++)
-					{
-						players[i] freezecontrols(false);
-					}
-
-					players[0] SetClientDvar( "ai_disableSpawn", "0");
-					flag_clear( "game_paused" );
-
-					wait 0.5;
-				}
-			}
-		}
-		wait 0.05;
-	}
-}
-
 oxygen_hud()
 // player thread
 {
@@ -615,3 +505,115 @@ excavator_hud()
 		wait 1;
     }
 }
+
+
+
+// coop_pause(timer_hud, start_time)
+// // level thread
+// // black background made in gsc, perhaps port it to menus as well
+// {
+// 	level.paused = false;
+
+//     SetDvar( "coop_pause", 0 );
+// 	flag_clear( "game_paused" );
+
+// 	players = GetPlayers();
+// 	if( players.size == 1 )
+// 	{
+// 		// return;
+// 	}
+
+// 	paused_time = 0;
+// 	paused_start_time = 0;
+
+// 	if (level.round_number == 1)
+// 		level waittill ("end_of_round");
+
+// 	while (true)
+// 	{
+// 		if( getDvarInt( "coop_pause" ) )
+// 		{
+// 			players = GetPlayers();
+// 			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
+// 			{
+// 				iprintln("finish the round");
+// 				level waittill( "end_of_round" );
+// 			}
+// 			if (!flag("director_alive"))
+// 				iprintln("wait for the round change");
+
+// 			wait 1; 	// To make sure the round changes
+// 			// Don't allow breaks while George is alive or is possible to spawn
+
+// 			// debug
+// 			// iPrintLn("director_alive", flag("director_alive"));
+// 			// iPrintLn("potential_director", flag("potential_director"));
+
+// 			flagged = false;
+// 			director_exception = false;
+// 			if (flag("director_alive") || flag("potential_director"))
+// 			{
+// 				while (true)
+// 				{
+// 					if (!flag("director_alive") && !flag("potential_director"))
+// 						break;
+
+// 					if (!flagged)
+// 					{
+// 						iPrintLn("Kill George first");
+// 						flagged = true;
+// 					}
+
+// 					wait 0.1;
+// 				}
+// 			}
+// 			if (flagged)
+// 				continue;
+
+// 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
+// 			flag_set( "game_paused" );
+
+// 			level waittill( "start_of_round" );
+
+// 			maps\_custom_hud::generate_background();
+// 			self thread pause_hud_watcher();
+
+// 			level.paused = true;
+// 			paused_start_time = int(getTime() / 1000);
+// 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
+// 			previous_paused_time = level.paused_time;
+
+// 			while(level.paused)
+// 			{
+// 				for(i = 0; players.size > i; i++)
+// 				{
+// 					players[i] freezecontrols(true);
+// 				}
+				
+// 				timer_hud SetTimerUp(total_time);
+// 				wait 0.2;
+
+// 				current_time = int(getTime() / 1000);
+// 				current_paused_time = current_time - paused_start_time;
+
+// 				if( !getDvarInt( "coop_pause" ) )
+// 				{
+// 					level.total_pause_time += current_paused_time;
+// 					level.paused = false;
+// 					maps\_custom_hud::destroy_background();
+
+// 					for(i = 0; players.size > i; i++)
+// 					{
+// 						players[i] freezecontrols(false);
+// 					}
+
+// 					players[0] SetClientDvar( "ai_disableSpawn", "0");
+// 					flag_clear( "game_paused" );
+
+// 					wait 0.5;
+// 				}
+// 			}
+// 		}
+// 		wait 0.05;
+// 	}
+// }

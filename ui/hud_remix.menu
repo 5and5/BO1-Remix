@@ -371,19 +371,19 @@
 			decoration
 		}
 
-		itemDef
-		{
-			name				"zombie_coop_pause"
-			type				ITEM_TYPE_TEXT
-			rect 				0 -25 0 0	
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_TITLE
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_CENTER
-			exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
-			visible				when(dvarInt(game_in_pause) == 1)
-			decoration
-		}
+		// itemDef
+		// {
+		// 	name				"zombie_coop_pause"
+		// 	type				ITEM_TYPE_TEXT
+		// 	rect 				0 -25 0 0	
+		// 	forecolor			1 1 1 1
+		// 	textscale			TEXTSIZE_TITLE
+		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
+		// 	textfont			UI_FONT_NORMAL
+		// 	textalign			ITEM_ALIGN_CENTER
+		// 	exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
+		// 	visible				when(dvarInt(game_in_pause) == 1)
+		// 	decoration
+		// }
 	}
 }

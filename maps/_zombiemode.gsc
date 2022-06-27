@@ -566,13 +566,17 @@ init_strings()
 	PrecacheString( &"ZOMBIE_ROUND" );
 	PrecacheString( &"SCRIPT_PLUS" );
 	PrecacheString( &"ZOMBIE_GAME_OVER" );
-	PrecacheString( &"MOD_YOU_WIN" );
-	PrecacheString( &"MOD_NML_END_KILLS" );
-	PrecacheString( &"MOD_NML_END_TIME" );
 	PrecacheString( &"ZOMBIE_SURVIVED_ROUND" );
 	PrecacheString( &"ZOMBIE_SURVIVED_ROUNDS" );
 	PrecacheString( &"ZOMBIE_SURVIVED_NOMANS" );
 	PrecacheString( &"ZOMBIE_EXTRA_LIFE" );
+
+	// Remix strings
+	PreCacheString(&"HUD_HUD_ZOMBIES_COOP_PAUSE");
+	PrecacheString(&"MOD_YOU_WIN");
+	PrecacheString(&"MOD_NML_END_KILLS");
+	PrecacheString(&"MOD_NML_END_TIME");
+
 
 	add_zombie_hint( "undefined", &"ZOMBIE_UNDEFINED" );
 
