@@ -5602,6 +5602,16 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
+	// Absolute multiplier based on max HP of the zombie
+	if (IsDefined(self.animname) && (self.animname == "zombie" || self.animname == "quad_zombie"))
+	{
+		absolute_multiplier = 0.005;
+		if (attacker HasPerk("specialty_rof"))
+			absolute_multiplier = 0.008;
+
+		final_damage += int(self.maxhealth * absolute_multiplier);
+	}
+
 	return int( final_damage );
 
 }
