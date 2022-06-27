@@ -78,29 +78,21 @@ summary_visible(mode, len, sph_round)
 	return;
 }
 
-zone_hud()
+pause_hud_watcher()
 {
-	self endon("disconnect");
-
-	current_name = " ";
-
-	while(1)
+	while (true)
 	{
-		wait_network_frame();
+		wait 0.05;
 
-		name = choose_zone_name(self get_current_zone(), current_name);
-
-		if(current_name == name)
-		{
+		if (!level.paused)
 			continue;
-		}
 
-		current_name = name;
+		setDvar("game_in_pause", 1);
+		while (flag("game_paused"))
+			wait 0.05;
 
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_out");
-		wait .25;
-		self SetClientDvar("hud_zone_name", name);
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_in");
+		setDvar("game_in_pause", 0);
+		break;
 	}
 }
 
@@ -158,6 +150,33 @@ choose_zone_name(zone, current_name)
 	}
 
 	return name;
+}
+
+zone_hud()
+// player thread
+{
+	self endon("disconnect");
+
+	current_name = " ";
+
+	while(1)
+	{
+		wait_network_frame();
+
+		name = choose_zone_name(self get_current_zone(), current_name);
+
+		if(current_name == name)
+		{
+			continue;
+		}
+
+		current_name = name;
+
+		self send_message_to_csc("hud_anim_handler", "hud_zone_name_out");
+		wait .25;
+		self SetClientDvar("hud_zone_name", name);
+		self send_message_to_csc("hud_anim_handler", "hud_zone_name_in");
+	}
 }
 
 health_bar_hud()
@@ -232,8 +251,8 @@ game_stat_hud()
 	level endon("end_game");
 
 	// Settings
-	settings_splits = array(30, 50, 70, 100);
-	settings_sph = 1;
+	settings_splits = array(30, 50, 70, 100);	// For later
+	settings_sph = 50;
 	player_count = get_players().size;
 
 	// Handle round 1 outside of the loop
@@ -470,23 +489,5 @@ coop_pause(timer_hud, start_time)
 			}
 		}
 		wait 0.05;
-	}
-}
-
-pause_hud_watcher()
-{
-	while (true)
-	{
-		wait 0.05;
-
-		if (!level.paused)
-			continue;
-
-		setDvar("game_in_pause", 1);
-		while (flag("game_paused"))
-			wait 0.05;
-
-		setDvar("game_in_pause", 0);
-		break;
 	}
 }

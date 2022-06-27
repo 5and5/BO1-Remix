@@ -79,6 +79,144 @@ destroy_background()
 	level.black_hud destroy();
 }
 
+round_timer_hud()
+{
+	level endon("end_game");
+
+	hud_level_wait();
+
+	if(getDvarInt("hud_pluto"))
+		pluto_offset = 12;
+	else
+		pluto_offset = 0;
+
+	level.round_timer = NewHudElem();
+	level.round_timer.horzAlign = "right";
+	level.round_timer.vertAlign = "top";
+	level.round_timer.alignX = "right";
+	level.round_timer.alignY = "top";
+	level.round_timer.x = -4;
+	level.round_timer.y = 17 + pluto_offset;
+	level.round_timer.fontScale = 1.3;
+	level.round_timer.alpha = 0;
+	level.round_timer.color = (1, 1, 1); // Awaiting new color func
+
+	// Prevent round time from working on first NML
+	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+		wait 0.05;
+
+	while (true)
+	{
+		level waittill ( "start_of_round" );
+
+		// Don't want to start the round if ppl ain't on the moon
+		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+		{
+			wait 0.05;
+			continue;
+		}
+
+		// Exclude time spent in pause
+		if (isdefined(flag( "game_paused" )))
+		{
+			while (flag("game_paused"))
+				wait 0.05;
+		}
+
+		current_round = level.round_number;
+		level.round_timer setTimerUp(0);
+		dvar_state = 0;
+
+		tick = 0;
+		while (current_round == level.round_number)
+		{
+			wait 0.05;
+
+			if (level.tracked_zombies == 0 && tick >= 200)
+			{
+				wait 0.5;
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+				break;
+			}
+			else if (tick < 200)
+				tick++;
+
+			if (dvar_state == getDvarInt("hud_round_timer"))
+				continue;
+
+			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+			{
+				hud_fade(level.round_timer, 1, 0.25);
+				setDvar("rt_displayed", 1);
+			}
+			else
+			{
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+			}
+
+			dvar_state = getDvarInt("hud_round_timer");
+		}
+		hud_fade(level.round_timer, 0, 0.25);
+	}
+}
+
+tab_hud()
+{	
+	self endon("disconnect");
+	level endon("end_game");
+	
+	if(getDvar( "hud_button" ) == "")
+		self setClientDvar( "hud_button", "tab" );
+
+	while(1)
+	{	
+		if(self buttonPressed( getDvar( "hud_button" ) ))
+		{	
+			flag_set( "hud_pressed" );
+			self setClientDvar( "hud_tab", 1 );
+		}
+		else
+		{
+			flag_clear( "hud_pressed" );
+			self setClientDvar( "hud_tab", 0 );
+		}
+
+		wait 0.05;
+	}
+}
+
+instakill_timer_hud()
+{
+    self.vr_timer = NewClientHudElem( self );
+    self.vr_timer.horzAlign = "right";
+    self.vr_timer.vertAlign = "bottom";
+    self.vr_timer.alignX = "right";
+    self.vr_timer.alignY = "bottom";
+    self.vr_timer.alpha = 1.3;
+    self.vr_timer.fontscale = 1.0;
+    self.vr_timer.foreground = true;
+    self.vr_timer.y = -57;
+    self.vr_timer.x = -86;
+    self.vr_timer.hidewheninmenu = 1;
+    self.vr_timer.alpha = 0;
+	self.vr_timer.color = (1, 1, 1);
+
+    while (true)
+    {
+        insta_time = self.humangun_player_ignored_timer - level.total_time;
+        //iprintln(insta_time);
+        if(self.personal_instakill)
+            self.vr_timer.alpha = 1;
+        else
+            self.vr_timer.alpha = 0;
+
+        self.vr_timer setTimer(insta_time - 0.1);
+        wait 0.05;
+    }
+}
+
 // coop_pause(timer_hud, start_time)
 // {
 // 	level.paused = false;
@@ -481,70 +619,45 @@ round_timer_hud()
 // 	}
 // }
 
-display_times( label, time, duration, delay, col )
-{
-	level endon("end_game");
-	self endon("disconnect");
+// display_times( label, time, duration, delay, col )
+// {
+// 	level endon("end_game");
+// 	self endon("disconnect");
 
-	y_offset = 0;
-	if (isdefined(col))
-	{
-		while (col > 1)
-		{
-			y_offset += 15;
-			col--;
-		}
-	}
+// 	y_offset = 0;
+// 	if (isdefined(col))
+// 	{
+// 		while (col > 1)
+// 		{
+// 			y_offset += 15;
+// 			col--;
+// 		}
+// 	}
 
-	wait delay;
-	level.print_hud = NewHudElem();
-	level.print_hud.horzAlign = "right";
-	level.print_hud.vertAlign = "top";
-	level.print_hud.alignX = "right";
-	level.print_hud.alignY = "top";
-	level.print_hud.y = (2 + y_offset + level.pluto_offset);
-	level.print_hud.x = -5;
-	level.print_hud.fontScale = 1.3;
-	level.print_hud.alpha = 0;
-	level.print_hud.label = (label + ": ");
-	// Reading it directly will cause it to bug up, middle-man level var required
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	wait delay;
+// 	level.print_hud = NewHudElem();
+// 	level.print_hud.horzAlign = "right";
+// 	level.print_hud.vertAlign = "top";
+// 	level.print_hud.alignX = "right";
+// 	level.print_hud.alignY = "top";
+// 	level.print_hud.y = (2 + y_offset + level.pluto_offset);
+// 	level.print_hud.x = -5;
+// 	level.print_hud.fontScale = 1.3;
+// 	level.print_hud.alpha = 0;
+// 	level.print_hud.label = (label + ": ");
+// 	// Reading it directly will cause it to bug up, middle-man level var required
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	time_in_mins = get_time_friendly( time );	
-	level.print_hud setText( time_in_mins );
+// 	time_in_mins = get_time_friendly( time );	
+// 	level.print_hud setText( time_in_mins );
 
-	hud_fade( level.print_hud, 1, 0.25 );
-	wait duration;
-	hud_fade( level.print_hud, 0, 0.25 );
-	wait 2;
-	level.print_hud destroy_hud();
-}
-
-tab_hud()
-{	
-	self endon("disconnect");
-	level endon("end_game");
-	
-	if(getDvar( "hud_button" ) == "")
-		self setClientDvar( "hud_button", "tab" );
-
-	while(1)
-	{	
-		if(self buttonPressed( getDvar( "hud_button" ) ))
-		{	
-			flag_set( "hud_pressed" );
-			self setClientDvar( "hud_tab", 1 );
-		}
-		else
-		{
-			flag_clear( "hud_pressed" );
-			self setClientDvar( "hud_tab", 0 );
-		}
-
-		wait 0.05;
-	}
-}
+// 	hud_fade( level.print_hud, 1, 0.25 );
+// 	wait duration;
+// 	hud_fade( level.print_hud, 0, 0.25 );
+// 	wait 2;
+// 	level.print_hud destroy_hud();
+// }
 
 // drop_tracker_hud()
 // {
@@ -804,41 +917,6 @@ updateHealth( barFrac )
 {
 	barWidth = int(self.width * barFrac);
 	self setShader( self.shader, barWidth, self.height );
-}
-
-instakill_timer_hud()
-{
-    self.vr_timer = NewClientHudElem( self );
-    self.vr_timer.horzAlign = "right";
-    self.vr_timer.vertAlign = "bottom";
-    self.vr_timer.alignX = "right";
-    self.vr_timer.alignY = "bottom";
-    self.vr_timer.alpha = 1.3;
-    self.vr_timer.fontscale = 1.0;
-    self.vr_timer.foreground = true;
-    self.vr_timer.y -= 57;
-    self.vr_timer.x -= 86;
-    self.vr_timer.hidewheninmenu = 1;
-    self.vr_timer.alpha = 0;
-	self.vr_timer.color = (1, 1, 1);
-
-	// colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-
-    while(1)
-    {
-        insta_time = self.humangun_player_ignored_timer - level.total_time;
-        //iprintln(insta_time);
-        if(self.personal_instakill)
-        {
-            self.vr_timer.alpha = 1;
-        }
-        else{
-            self.vr_timer.alpha = 0;
-        }
-        self.vr_timer setTimer(insta_time - 0.1);
-        wait 0.05;
-    }
 }
 
 oxygen_timer_hud()
