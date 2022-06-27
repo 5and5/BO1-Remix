@@ -18,8 +18,10 @@ init_hud_dvars()
 	setDvar("kino_boxset", "^0UNDEFINED");
 	setDvar("game_in_pause", 0);
 	setDvar("oxygen_time_value", "0");
-	setDvar("hud_oxygen_timer", 0);
 	setDvar("oxygen_time_show", 0);
+	setDvar("excavator_name", "null");
+	setDvar("excavator_time_value", 0);
+	setDvar("excavator_time_show", 0);
 }
 
 send_message_to_csc(name, message)
@@ -496,6 +498,7 @@ coop_pause(timer_hud, start_time)
 }
 
 oxygen_hud()
+// player thread
 {
 	level endon("end_game");
 
@@ -520,5 +523,61 @@ oxygen_hud()
 		}
     
         wait 1;
+    }
+}
+
+excavator_hud()
+// level thread
+{
+	level endon("end_game");
+
+	current_excavator = "null";
+	saved_excavator = "null";
+	excavator_area = "null";
+
+    while (true)
+    {		
+		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
+		{
+			iPrintLn(level.excavator_timer);
+			switch (level.digger_to_activate) 
+			{
+			case "teleporter":
+				current_excavator = "Pi";
+				// excavator_area = "Tunnel 6";
+				break;
+			case "hangar":
+				current_excavator = "Omicron";
+				// excavator_area = "Tunnel 11";
+				break;
+			case "biodome":
+				current_excavator = "Epsilon";
+				// excavator_area = "Biodome";
+				break;
+			default:
+				current_excavator = "null";
+			}
+
+			if (current_excavator != saved_excavator)
+			{
+				saved_excavator = current_excavator;
+
+				setDvar("excavator_name", current_excavator);
+
+				if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
+				{
+					if(level.digger_to_activate != "null")
+						setDvar("excavator_time_show", 1);
+					else if(level.digger_to_activate == "null")
+						setDvar("excavator_time_show", 0);
+				}
+
+				else
+					setDvar("excavator_time_show", 0);
+			}
+			setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
+		}
+
+		wait 1;
     }
 }

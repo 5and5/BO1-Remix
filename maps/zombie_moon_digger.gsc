@@ -75,7 +75,7 @@ setup_diggers()
 	//controls the digger random activations
 	level thread digger_round_logic();
 
-	level thread maps\_custom_hud::excavator_timer_hud();
+	level thread maps\_custom_hud_menu::excavator_hud();
 	
 	//sets up their movement
 	diggers = GetEntArray("digger_body","targetname");

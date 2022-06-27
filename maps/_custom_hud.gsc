@@ -967,76 +967,76 @@ updateHealth( barFrac )
 //     }
 // }
 
-excavator_timer_hud()
-{
-	level endon("end_game");
+// excavator_timer_hud()
+// {
+// 	level endon("end_game");
 
-    level.excavator_timer = NewHudElem();
-    level.excavator_timer.horzAlign = "right";
-    level.excavator_timer.vertAlign = "middle";
-    level.excavator_timer.alignX = "right";
-    level.excavator_timer.alignY = "middle";
-    level.excavator_timer.alpha = 1.4;
-    level.excavator_timer.fontscale = 1.0;
-    level.excavator_timer.foreground = true;
-    level.excavator_timer.y = -8;
-    level.excavator_timer.x = -10;
-    level.excavator_timer.hidewheninmenu = 1;
-    level.excavator_timer.alpha = 0;
-	level.excavator_timer.label = "Excavator: ";
+//     level.excavator_timer = NewHudElem();
+//     level.excavator_timer.horzAlign = "right";
+//     level.excavator_timer.vertAlign = "middle";
+//     level.excavator_timer.alignX = "right";
+//     level.excavator_timer.alignY = "middle";
+//     level.excavator_timer.alpha = 1.4;
+//     level.excavator_timer.fontscale = 1.0;
+//     level.excavator_timer.foreground = true;
+//     level.excavator_timer.y = -8;
+//     level.excavator_timer.x = -10;
+//     level.excavator_timer.hidewheninmenu = 1;
+//     level.excavator_timer.alpha = 0;
+// 	level.excavator_timer.label = "Excavator: ";
 
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	current_excavator = "null";
-	excavator_area = "null";
+// 	current_excavator = "null";
+// 	excavator_area = "null";
 
-    while(1)
-    {
-		// debug
-		// iprintln("digger_time_left" + level.digger_time_left);
-		// iPrintLn("digger_to_activate" + level.digger_to_activate);
+//     while(1)
+//     {
+// 		// debug
+// 		// iprintln("digger_time_left" + level.digger_time_left);
+// 		// iPrintLn("digger_to_activate" + level.digger_to_activate);
 		
-		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
-		{
-			switch (level.digger_to_activate) 
-			{
-			case "teleporter":
-				current_excavator = "Pi";
-				// excavator_area = "Tunnel 6";
-				break;
-			case "hangar":
-				current_excavator = "Omicron";
-				// excavator_area = "Tunnel 11";
-				break;
-			case "biodome":
-				current_excavator = "Epsilon";
-				// excavator_area = "Biodome";
-				break;
-			}
+// 		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
+// 		{
+// 			switch (level.digger_to_activate) 
+// 			{
+// 			case "teleporter":
+// 				current_excavator = "Pi";
+// 				// excavator_area = "Tunnel 6";
+// 				break;
+// 			case "hangar":
+// 				current_excavator = "Omicron";
+// 				// excavator_area = "Tunnel 11";
+// 				break;
+// 			case "biodome":
+// 				current_excavator = "Epsilon";
+// 				// excavator_area = "Biodome";
+// 				break;
+// 			}
 
-			if (current_excavator == "null")
-				continue;
+// 			if (current_excavator == "null")
+// 				continue;
 
-			level.excavator_timer.label = "Excavator " + current_excavator + ": ";
+// 			level.excavator_timer.label = "Excavator " + current_excavator + ": ";
 
-			level.excavator_timer setTimer(level.digger_time_left - 0.05);
+// 			level.excavator_timer setTimer(level.digger_time_left - 0.05);
 
-			if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
-			{
-				if((level.digger_to_activate != "null") && (level.excavator_timer.alpha != 1))
-					hud_fade(level.excavator_timer, 1, 0.15);
-				else if((level.digger_to_activate == "null") && (level.excavator_timer.alpha != 0))
-					hud_fade(level.excavator_timer, 0, 0.15);
-			}
+// 			if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
+// 			{
+// 				if((level.digger_to_activate != "null") && (level.excavator_timer.alpha != 1))
+// 					hud_fade(level.excavator_timer, 1, 0.15);
+// 				else if((level.digger_to_activate == "null") && (level.excavator_timer.alpha != 0))
+// 					hud_fade(level.excavator_timer, 0, 0.15);
+// 			}
 
-			else
-				hud_fade(level.excavator_timer, 0, 0.15);
-		}
+// 			else
+// 				hud_fade(level.excavator_timer, 0, 0.15);
+// 		}
     
-        wait 0.05;
-    }
-}
+//         wait 0.05;
+//     }
+// }
 
 george_health_bar()
 {
