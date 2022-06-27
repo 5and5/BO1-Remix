@@ -24,6 +24,9 @@ init_hud_dvars()
 	setDvar("excavator_time_show", 0);
 	setDvar("show_nml_kill_tracker", 0);
 	setDvar("hud_kills_value", 0);
+	setDvar("custom_nml_end", 0);
+	setDvar("nml_end_kills", 0);
+	setDvar("nml_end_time", 0);
 }
 
 send_message_to_csc(name, message)
@@ -244,11 +247,10 @@ kill_hud()
 
 		wait 0.05;
 		tracked_kills = 0;
-		
+
 		players = get_players();
 		for (i = 0; i < players.size; i++)
 			tracked_kills += players[i].kills;
-		iPrintLn(tracked_kills);
 
 		if (tracked_kills == getDvarInt("hud_kills_value"))
 			continue;

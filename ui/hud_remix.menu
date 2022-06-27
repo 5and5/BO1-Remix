@@ -357,6 +357,21 @@
 
 		itemDef
 		{
+			name				"nml_summary"
+			type				ITEM_TYPE_TEXT
+			rect 				0 -100 0 0
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_CENTER
+			exp text			(locString("@MOD_NML_END_KILLS") + dvarString("nml_end_kills") + locString("@MOD_NML_END_TIME") + dvarString("nml_end_time"))
+			visible				when(dvarInt(custom_nml_end) == 1)
+			decoration
+		}
+
+		itemDef
+		{
 			name				"zombie_coop_pause"
 			type				ITEM_TYPE_TEXT
 			rect 				0 -25 0 0	
