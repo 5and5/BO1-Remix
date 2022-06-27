@@ -246,16 +246,16 @@ kill_hud()
 			break;
 
 		wait 0.05;
-		tracked_kills = 0;
+		level.total_nml_kills = 0;
 
 		players = get_players();
 		for (i = 0; i < players.size; i++)
-			tracked_kills += players[i].kills;
+			level.total_nml_kills += players[i].kills;
 
-		if (tracked_kills == getDvarInt("hud_kills_value"))
+		if (level.total_nml_kills == getDvarInt("hud_kills_value"))
 			continue;
 
-		setDvar("hud_kills_value", tracked_kills);
+		setDvar("hud_kills_value", level.total_nml_kills);
 	}
 	setDvar("show_nml_kill_tracker", 0);
 }

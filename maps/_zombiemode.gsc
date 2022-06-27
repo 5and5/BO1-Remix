@@ -566,6 +566,9 @@ init_strings()
 	PrecacheString( &"ZOMBIE_ROUND" );
 	PrecacheString( &"SCRIPT_PLUS" );
 	PrecacheString( &"ZOMBIE_GAME_OVER" );
+	PrecacheString( &"MOD_YOU_WIN" );
+	PrecacheString( &"MOD_NML_END_KILLS" );
+	PrecacheString( &"MOD_NML_END_TIME" );
 	PrecacheString( &"ZOMBIE_SURVIVED_ROUND" );
 	PrecacheString( &"ZOMBIE_SURVIVED_ROUNDS" );
 	PrecacheString( &"ZOMBIE_SURVIVED_NOMANS" );
@@ -5763,81 +5766,71 @@ end_game()
 	survived = [];
 
 	players = get_players();
-	for( i = 0; i < players.size; i++ )
+
+	game_over_hud = newHudElem();
+	game_over_hud.alignX = "center";
+	game_over_hud.alignY = "middle";
+	game_over_hud.horzAlign = "center";
+	game_over_hud.vertAlign = "middle";
+	game_over_hud.y = -130;
+	game_over_hud.foreground = true;
+	game_over_hud.fontScale = 3;
+	game_over_hud.alpha = 0;
+	game_over_hud.color = (1.0, 1.0, 1.0);
+
+	survived_hud = newHudElem();
+	survived_hud.alignX = "center";
+	survived_hud.alignY = "middle";
+	survived_hud.horzAlign = "center";
+	survived_hud.vertAlign = "middle";
+	survived_hud.y = -100;
+	survived_hud.foreground = true;
+	survived_hud.fontScale = 2;
+	survived_hud.alpha = 0;
+	survived_hud.color = (1.0, 1.0, 1.0);
+
+	// Split screen ain't on PC anyways, no need to scan all the players
+	if (players[0] isSplitScreen())
 	{
-		game_over[i] = NewClientHudElem( players[i] );
-		game_over[i].alignX = "center";
-		game_over[i].alignY = "middle";
-		game_over[i].horzAlign = "center";
-		game_over[i].vertAlign = "middle";
-		game_over[i].y -= 130;
-		game_over[i].foreground = true;
-		game_over[i].fontScale = 3;
-		game_over[i].alpha = 0;
-		game_over[i].color = ( 1.0, 1.0, 1.0 );
+		game_over_hud.y += 40;
+		survived_hud.y += 40;
+	}
 
-		if (level.win_game)
-		{
-			game_over[i] SetText( "RESET" );
-		} else
-		{
-			game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
-		}
+	if (level.win_game)
+		game_over_hud SetText(&"MOD_YOU_WIN");
+	else
+		game_over_hud SetText(&"ZOMBIE_GAME_OVER");
 
-		game_over[i] FadeOverTime( 1 );
-		game_over[i].alpha = 1;
-		if ( players[i] isSplitScreen() )
+	//OLD COUNT METHOD
+	if( level.round_number < 2 )
+	{
+		if( level.script == "zombie_moon" )
 		{
-			game_over[i].y += 40;
-		}
-
-		survived[i] = NewClientHudElem( players[i] );
-		survived[i].alignX = "center";
-		survived[i].alignY = "middle";
-		survived[i].horzAlign = "center";
-		survived[i].vertAlign = "middle";
-		survived[i].y -= 100;
-		survived[i].foreground = true;
-		survived[i].fontScale = 2;
-		survived[i].alpha = 0;
-		survived[i].color = ( 1.0, 1.0, 1.0 );
-		if ( players[i] isSplitScreen() )
-		{
-			survived[i].y += 40;
-		}
-
-		//OLD COUNT METHOD
-		if( level.round_number < 2 )
-		{
-			if( level.script == "zombie_moon" )
+			if( !isdefined(level.left_nomans_land) )
 			{
-				if( !isdefined(level.left_nomans_land) )
-				{
-					nomanslandtime = level.nml_best_time;
-					nomanslandkills = level.total_nml_kills;
-					player_survival_time = int( nomanslandtime/1000 );
-					player_survival_time_in_mins = maps\_zombiemode::to_mins( player_survival_time );
-					survived[i] SetText("Kills: ", nomanslandkills, " / Time: ", player_survival_time_in_mins);
-				}
-				else if( level.left_nomans_land == 2 )
-				{
-					survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
-				}
+				player_survival_time_in_mins = maps\_zombiemode::to_mins(int(level.nml_best_time / 1000));
+				survived_hud SetText(&"MOD_NML_END_KILLS", level.total_nml_kills, &"MOD_NML_END_TIME", player_survival_time_in_mins);
 			}
-			else
+			else if( level.left_nomans_land == 2 )
 			{
-				survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
+				survived_hud SetText( &"ZOMBIE_SURVIVED_ROUND" );
 			}
 		}
 		else
 		{
-			survived[i] SetText( &"ZOMBIE_SURVIVED_ROUNDS", level.round_number );
+			survived_hud SetText( &"ZOMBIE_SURVIVED_ROUND" );
 		}
-
-		survived[i] FadeOverTime( 1 );
-		survived[i].alpha = 1;
+	}
+	else
+	{
+		survived_hud SetText( &"ZOMBIE_SURVIVED_ROUNDS", level.round_number );
 	}
 
+	game_over_hud FadeOverTime(1);
+	game_over_hud.alpha = 1;
+	survived_hud FadeOverTime(1);
+	survived_hud.alpha = 1;
+		
 	players = get_players();
 	for (i = 0; i < players.size; i++)
 	{
@@ -5862,14 +5855,10 @@ end_game()
 
 	bbPrint( "zombie_epilogs: rounds %d", level.round_number );
 
-	players = get_players();
-	for (i = 0; i < players.size; i++)
-	{
-		survived[i] FadeOverTime( 1 );
-		survived[i].alpha = 0;
-		game_over[i] FadeOverTime( 1 );
-		game_over[i].alpha = 0;
-	}
+	survived_hud FadeOverTime(1);
+	survived_hud.alpha = 0;
+	game_over_hud FadeOverTime(1);
+	game_over_hud.alpha = 0;
 
 	wait( 1.5 );
 
