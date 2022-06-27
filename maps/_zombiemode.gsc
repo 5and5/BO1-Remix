@@ -92,6 +92,7 @@ main()
 	init_shellshocks();
 	init_flags();
 	init_client_flags();
+	init_hud_dvars();
 
 	isClientPluto("com_useConfig", "");
 
@@ -265,10 +266,12 @@ post_all_players_connected()
 	}
 
 	level thread timer_hud();
-	level thread round_timer();
-	level thread display_sph();
+	level thread round_timer_hud();
+	level thread game_stat_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
+
+	// level thread display_sph();
 	// level thread hud_color_watcher();	// For later
 	// level thread hud_trade_header();	// Hud limit reached :(
 }

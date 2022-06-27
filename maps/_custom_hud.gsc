@@ -25,14 +25,14 @@ timer_hud()
 	level.timer.color = (1, 1, 1); // Awaiting new color func
 
 	level.timer SetTimerUp(0);
+	level.beginning_timestamp = int(getTime() / 1000);
 
-	start_time = int(getTime() / 1000);
-	level thread coop_pause(level.timer, start_time);
+	level thread coop_pause(level.timer, level.beginning_timestamp);
 
 	while (true)
 	{
 		current_time = int(getTime() / 1000);
-		level.total_time = current_time - level.total_pause_time - start_time;
+		level.total_time = current_time - level.total_pause_time - level.beginning_timestamp;
 
 		// reset 43200
 		if ((level.total_time >= 43200) && (isDefined(level.paused) && !level.paused)) // 12h
@@ -188,7 +188,7 @@ coop_pause(timer_hud, start_time)
 	}
 }
 
-round_timer()
+round_timer_hud()
 {
 	level endon("end_game");
 
@@ -248,6 +248,7 @@ round_timer()
 			{
 				wait 0.5;
 				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
 				break;
 			}
 			else if (tick < 200)
@@ -257,27 +258,19 @@ round_timer()
 				continue;
 
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+			{
 				hud_fade(level.round_timer, 1, 0.25);
+				setDvar("rt_displayed", 1);
+			}
 			else
+			{
 				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+			}
 
 			dvar_state = getDvarInt("hud_round_timer");
 		}
 		hud_fade(level.round_timer, 0, 0.25);
-
-		// timestamp_start = int(getTime() / 1000);
-
-		// // Setup round timer if always show rt dvar is true
-		// if (!getDvarInt("hud_round_timer"))
-		// {
-		// 	hud_fade(level.round_timer, 0, 0.25);
-		// }
-		// else
-		// {
-		// 	hud_fade(level.round_timer, 1, 0.25);
-		// }
-		// current_round = level.round_number;
-		// level.round_timer setTimerUp(0);
 
 		// // Print total time
 		// timestamp_current = int(getTime() / 1000);
@@ -496,7 +489,7 @@ display_times( label, time, duration, delay, col )
 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
 	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	time_in_mins = print_time_friendly( time );	
+	time_in_mins = get_time_friendly( time );	
 	level.print_hud setText( time_in_mins );
 
 	hud_fade( level.print_hud, 1, 0.25 );
@@ -1530,47 +1523,6 @@ toggled_hud_fade(hud, alpha)
     duration = 0.1;
 	hud fadeOverTime(duration);
 	hud.alpha = alpha;
-}
-
-// copy of to_mins() with modified output
-print_time_friendly( seconds )
-{
-	hours = 0; 
-	minutes = 0; 
-	
-	if( seconds > 59 )
-	{
-		minutes = int( seconds / 60 );
-
-		seconds = int( seconds * 1000 ) % ( 60 * 1000 );
-		seconds = seconds * 0.001; 
-
-		if( minutes > 59 )
-		{
-			hours = int( minutes / 60 );
-			minutes = int( minutes * 1000 ) % ( 60 * 1000 );
-			minutes = minutes * 0.001; 		
-		}
-	}
-
-	hours = "" + hours; 
-
-	if( minutes < 10 )
-	{
-		minutes = "0" + minutes; 
-	}
-
-	seconds = Int( seconds ); 
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds; 
-	}
-
-	if (hours == "0")
-	{
-		return "" + minutes  + ":" + seconds; 
-	}
-	return "" + hours  + ":" + minutes  + ":" + seconds; 
 }
 
 hud_trades_label_handler(label)
