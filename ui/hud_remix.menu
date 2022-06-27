@@ -258,6 +258,25 @@
 		}
 	}
 
+	// menuDef
+	// {
+	// /	name				"middle_hud_fullscreen"
+	// 	rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP
+	// 	fullscreen			1
+	// 	visible				1
+
+	// 	itemDef
+	// 	{
+	// 		name				"zombie_coop_pause_filler"
+	// 		style				WINDOW_STYLE_SHADER
+	// 		rect 				0 0 3440 2160
+	// 		background			"black"
+	// 		forecolor			0 0 0 0.4
+	// 		visible				when(dvarInt(game_in_pause) == 1)
+	// 		decoration
+	// 	}
+	// }
+
 	menuDef
 	{
 		name				"middle_hud"
@@ -279,4 +298,20 @@
 			visible				when(dvarString(kino_boxset) != "^0UNDEFINED")
 			decoration
 		}
+
+		itemDef
+		{
+			name				"zombie_coop_pause"
+			type				ITEM_TYPE_TEXT
+			rect 				0 -25 0 0	
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_TITLE
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_CENTER
+			exp text			(locString("@HUD_HUD_COOP_PAUSE"))
+			visible				when(dvarInt(game_in_pause) == 1)
+			decoration
+		}
+	}
 }

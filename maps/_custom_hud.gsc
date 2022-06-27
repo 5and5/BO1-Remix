@@ -27,7 +27,7 @@ timer_hud()
 	level.timer SetTimerUp(0);
 	level.beginning_timestamp = int(getTime() / 1000);
 
-	level thread coop_pause(level.timer, level.beginning_timestamp);
+	level thread maps\_custom_hud_menu::coop_pause(level.timer, level.beginning_timestamp);
 
 	while (true)
 	{
@@ -57,136 +57,158 @@ timer_hud()
 	}
 }
 
-coop_pause(timer_hud, start_time)
+generate_background()
 {
-	level.paused = false;
+	if (isDefined(level.black_hud))
+		level.black_hud destroy();
+		
+	level.black_hud = newhudelem();
+	level.black_hud.horzAlign = "fullscreen";
+	level.black_hud.vertAlign = "fullscreen";
+	level.black_hud SetShader( "black", 640, 480 );
+	level.black_hud.alpha = 0;
 
-    SetDvar( "coop_pause", 0 );
-	flag_clear( "game_paused" );
-
-	players = GetPlayers();
-	if( players.size == 1 )
-	{
-		return;
-	}
-
-	paused_time = 0;
-	paused_start_time = 0;
-
-	while (true)
-	{
-		if( getDvarInt( "coop_pause" ) )
-		{
-			players = GetPlayers();
-			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
-			{
-				iprintln("finish the round");
-				level waittill( "end_of_round" );
-			}
-			if (!flag("director_alive"))
-				iprintln("wait for the round change");
-
-			wait 1; 	// To make sure the round changes
-			// Don't allow breaks while George is alive or is possible to spawn
-
-			// debug
-			// iPrintLn("director_alive", flag("director_alive"));
-			// iPrintLn("potential_director", flag("potential_director"));
-
-			flagged = false;
-			director_exception = false;
-			if (flag("director_alive") || flag("potential_director"))
-			{
-				while (true)
-				{
-					if (!flag("director_alive") && !flag("potential_director"))
-						break;
-
-					if (!flagged)
-					{
-						iPrintLn("Kill George first");
-						flagged = true;
-					}
-
-					wait 0.1;
-				}
-			}
-			if (flagged)
-				continue;
-
-			players[0] SetClientDvar( "ai_disableSpawn", "1" );
-			flag_set( "game_paused" );
-
-			level waittill( "start_of_round" );
-
-			black_hud = newhudelem();
-			black_hud.horzAlign = "fullscreen";
-			black_hud.vertAlign = "fullscreen";
-			//black_hud.foreground = true;
-			black_hud SetShader( "black", 640, 480 );
-			black_hud.alpha = 0;
-
-			black_hud FadeOverTime( 1.0 );
-			black_hud.alpha = 0.65;
-
-			paused_hud = newhudelem();
-			paused_hud.horzAlign = "center";
-			paused_hud.vertAlign = "middle";
-			paused_hud setText("GAME PAUSED");
-			paused_hud.foreground = true;
-			paused_hud.fontScale = 2.3;
-			paused_hud.x -= 63;
-			paused_hud.y -= 20;
-			paused_hud.alpha = 0;
-			paused_hud.color = ( 1.0, 1.0, 1.0 );
-
-			paused_hud FadeOverTime( 1.0 );
-			paused_hud.alpha = 0.8;
-
-			level.paused = true;
-			paused_start_time = int(getTime() / 1000);
-			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
-			previous_paused_time = level.paused_time;
-
-			while(level.paused)
-			{
-				for(i = 0; players.size > i; i++)
-				{
-					players[i] freezecontrols(true);
-				}
-				
-				timer_hud SetTimerUp(total_time);
-				wait 0.2;
-
-				current_time = int(getTime() / 1000);
-				current_paused_time = current_time - paused_start_time;
-
-				if( !getDvarInt( "coop_pause" ) )
-				{
-					level.total_pause_time += current_paused_time;
-					level.paused = false;
-
-					for(i = 0; players.size > i; i++)
-					{
-						players[i] freezecontrols(false);
-					}
-
-					players[0] SetClientDvar( "ai_disableSpawn", "0");
-					flag_clear( "game_paused" );
-
-					paused_hud FadeOverTime( 0.5 );
-					paused_hud.alpha = 0;
-					black_hud FadeOverTime( 0.5 );
-					black_hud.alpha = 0;
-					wait 0.5;
-					black_hud destroy();
-					paused_hud destroy();
-				}
-			}
-		}
-		wait 0.05;
-	}
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0.65;
 }
+
+destroy_background()
+{
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0;
+	level.black_hud destroy();
+}
+
+// coop_pause(timer_hud, start_time)
+// {
+// 	level.paused = false;
+
+//     SetDvar( "coop_pause", 0 );
+// 	flag_clear( "game_paused" );
+
+// 	players = GetPlayers();
+// 	if( players.size == 1 )
+// 	{
+// 		return;
+// 	}
+
+// 	paused_time = 0;
+// 	paused_start_time = 0;
+
+// 	while (true)
+// 	{
+// 		if( getDvarInt( "coop_pause" ) )
+// 		{
+// 			players = GetPlayers();
+// 			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
+// 			{
+// 				iprintln("finish the round");
+// 				level waittill( "end_of_round" );
+// 			}
+// 			if (!flag("director_alive"))
+// 				iprintln("wait for the round change");
+
+// 			wait 1; 	// To make sure the round changes
+// 			// Don't allow breaks while George is alive or is possible to spawn
+
+// 			// debug
+// 			// iPrintLn("director_alive", flag("director_alive"));
+// 			// iPrintLn("potential_director", flag("potential_director"));
+
+// 			flagged = false;
+// 			director_exception = false;
+// 			if (flag("director_alive") || flag("potential_director"))
+// 			{
+// 				while (true)
+// 				{
+// 					if (!flag("director_alive") && !flag("potential_director"))
+// 						break;
+
+// 					if (!flagged)
+// 					{
+// 						iPrintLn("Kill George first");
+// 						flagged = true;
+// 					}
+
+// 					wait 0.1;
+// 				}
+// 			}
+// 			if (flagged)
+// 				continue;
+
+// 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
+// 			flag_set( "game_paused" );
+
+// 			level waittill( "start_of_round" );
+
+// 			black_hud = newhudelem();
+// 			black_hud.horzAlign = "fullscreen";
+// 			black_hud.vertAlign = "fullscreen";
+// 			//black_hud.foreground = true;
+// 			black_hud SetShader( "black", 640, 480 );
+// 			black_hud.alpha = 0;
+
+// 			black_hud FadeOverTime( 1.0 );
+// 			black_hud.alpha = 0.65;
+
+// 			paused_hud = newhudelem();
+// 			paused_hud.horzAlign = "center";
+// 			paused_hud.vertAlign = "middle";
+// 			paused_hud setText("GAME PAUSED");
+// 			paused_hud.foreground = true;
+// 			paused_hud.fontScale = 2.3;
+// 			paused_hud.x -= 63;
+// 			paused_hud.y -= 20;
+// 			paused_hud.alpha = 0;
+// 			paused_hud.color = ( 1.0, 1.0, 1.0 );
+
+// 			paused_hud FadeOverTime( 1.0 );
+// 			paused_hud.alpha = 0.8;
+
+// 			level.paused = true;
+// 			paused_start_time = int(getTime() / 1000);
+// 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
+// 			previous_paused_time = level.paused_time;
+
+// 			while(level.paused)
+// 			{
+// 				for(i = 0; players.size > i; i++)
+// 				{
+// 					players[i] freezecontrols(true);
+// 				}
+				
+// 				timer_hud SetTimerUp(total_time);
+// 				wait 0.2;
+
+// 				current_time = int(getTime() / 1000);
+// 				current_paused_time = current_time - paused_start_time;
+
+// 				if( !getDvarInt( "coop_pause" ) )
+// 				{
+// 					level.total_pause_time += current_paused_time;
+// 					level.paused = false;
+
+// 					for(i = 0; players.size > i; i++)
+// 					{
+// 						players[i] freezecontrols(false);
+// 					}
+
+// 					players[0] SetClientDvar( "ai_disableSpawn", "0");
+// 					flag_clear( "game_paused" );
+
+// 					paused_hud FadeOverTime( 0.5 );
+// 					paused_hud.alpha = 0;
+// 					black_hud FadeOverTime( 0.5 );
+// 					black_hud.alpha = 0;
+// 					wait 0.5;
+// 					black_hud destroy();
+// 					paused_hud destroy();
+// 				}
+// 			}
+// 		}
+// 		wait 0.05;
+// 	}
+// }
 
 round_timer_hud()
 {
