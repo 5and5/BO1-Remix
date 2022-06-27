@@ -7,33 +7,32 @@ timer_hud()
 	hud_level_wait();
 
 	if(getDvarInt("hud_pluto"))
-		level.pluto_offset = 12;
+		pluto_offset = 12;
 	else
-		level.pluto_offset = 0;
+		pluto_offset = 0;
 
 	level.timer = NewHudElem();
 	level.timer.horzAlign = "right";
 	level.timer.vertAlign = "top";
 	level.timer.alignX = "right";
 	level.timer.alignY = "top";
-	level.timer.y += 2 + level.pluto_offset;
-	level.timer.x -= 5;
+	level.timer.x = -4;
+	level.timer.y = 2 + pluto_offset;
 	level.timer.fontScale = 1.3;
 	level.timer.alpha = 1;
 	level.timer.hidewheninmenu = 0;
 	level.timer.foreground = 1;
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	level.timer.color = (1, 1, 1); // Awaiting new color func
 
 	level.timer SetTimerUp(0);
+	level.beginning_timestamp = int(getTime() / 1000);
 
-	start_time = int(getTime() / 1000);
-	level thread coop_pause(level.timer, start_time);
+	level thread coop_pause(level.timer, level.beginning_timestamp);
 
-	while(1)
+	while (true)
 	{
 		current_time = int(getTime() / 1000);
-		level.total_time = current_time - level.total_pause_time - start_time;
+		level.total_time = current_time - level.total_pause_time - level.beginning_timestamp;
 
 		// reset 43200
 		if ((level.total_time >= 43200) && (isDefined(level.paused) && !level.paused)) // 12h
@@ -51,7 +50,7 @@ timer_hud()
 		wait 0.05;
 	}
 
-	while (1)
+	while (true)
 	{
 		level.timer setTimer(level.total_time - 0.1);
 		wait 0.5;
@@ -60,8 +59,6 @@ timer_hud()
 
 coop_pause(timer_hud, start_time)
 {
-	paused_time = 0;
-	paused_start_time = 0;
 	level.paused = false;
 
     SetDvar( "coop_pause", 0 );
@@ -73,7 +70,10 @@ coop_pause(timer_hud, start_time)
 		return;
 	}
 
-	while(1)
+	paused_time = 0;
+	paused_start_time = 0;
+
+	while (true)
 	{
 		if( getDvarInt( "coop_pause" ) )
 		{
@@ -188,28 +188,36 @@ coop_pause(timer_hud, start_time)
 	}
 }
 
-round_timer()
+round_timer_hud()
 {
 	level endon("end_game");
 
 	hud_level_wait();
+
+	if(getDvarInt("hud_pluto"))
+		pluto_offset = 12;
+	else
+		pluto_offset = 0;
 
 	level.round_timer = NewHudElem();
 	level.round_timer.horzAlign = "right";
 	level.round_timer.vertAlign = "top";
 	level.round_timer.alignX = "right";
 	level.round_timer.alignY = "top";
-	level.round_timer.y += 18 + level.pluto_offset;
-	level.round_timer.x -= 5;
+	level.round_timer.x = -4;
+	level.round_timer.y = 17 + pluto_offset;
 	level.round_timer.fontScale = 1.3;
 	level.round_timer.alpha = 0;
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.round_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+	level.round_timer.color = (1, 1, 1); // Awaiting new color func
 
-	timestamp_game = int(getTime() / 1000);
-	level thread round_timer_watcher( level.round_timer );
+	// timestamp_game = int(getTime() / 1000);
+	// level thread round_timer_watcher( level.round_timer );
 
-	while(1)
+	// Prevent round time from working on first NML
+	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+		wait 0.05;
+
+	while (true)
 	{
 		level waittill ( "start_of_round" );
 
@@ -226,107 +234,131 @@ round_timer()
 			while (flag("game_paused"))
 				wait 0.05;
 		}
-		timestamp_start = int(getTime() / 1000);
 
-		// Setup round timer if always show rt dvar is true
-		if (!getDvarInt("hud_round_timer"))
-		{
-			hud_fade(level.round_timer, 0, 0.25);
-		}
-		else
-		{
-			hud_fade(level.round_timer, 1, 0.25);
-		}
 		current_round = level.round_number;
 		level.round_timer setTimerUp(0);
+		dvar_state = 0;
 
-		// Print total time
-		timestamp_current = int(getTime() / 1000);
-		total_time = (timestamp_current - level.total_pause_time) - timestamp_game;
+		tick = 0;
+		while (current_round == level.round_number)
+		{
+			wait 0.05;
 
-		if (level.round_number > 1)
-		{		
-			col = 2;
-			if (getDvarInt("hud_round_timer"))
+			if (level.tracked_zombies == 0 && tick >= 200)
 			{
-				col++;
+				wait 0.5;
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+				break;
 			}
-			level thread display_times( "Total time", total_time, 5, 0.5, col );
-		}
-		if (!getDvarInt("hud_round_timer"))
-		{
-			wait 6;
-		}
-		level.displaying_time = 0;
+			else if (tick < 200)
+				tick++;
 
-		// Exceptions for special round cases
-		if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
-		{
-			level waittill( "last_dog_down" );
-		}
-		else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
-		{
-			flag_wait( "last_thief_down" );
-		}
-		else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
-		{
-			flag_wait( "last_monkey_down" );
-		}
-		else
-		{
-			level waittill( "end_of_round" );
-		}
+			if (dvar_state == getDvarInt("hud_round_timer"))
+				continue;
 
-		if(flag( "enter_nml" ))
-		{
-			level waittill( "end_of_round" ); //end no man's land
-			level waittill( "end_of_round" ); //end actual round
-		}
+			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+			{
+				hud_fade(level.round_timer, 1, 0.25);
+				setDvar("rt_displayed", 1);
+			}
+			else
+			{
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+			}
 
-		// Print round time
-		if (getDvarInt("hud_round_timer") && (level.round_timer.alpha != 0))
-		{
-			hud_fade(level.round_timer, 0, 0.25);
+			dvar_state = getDvarInt("hud_round_timer");
 		}
-		level.displaying_time = 1;
-		timestamp_end = int(getTime() / 1000);
-		round_time = timestamp_end - timestamp_start;
-		level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
+		hud_fade(level.round_timer, 0, 0.25);
+
+		// // Print total time
+		// timestamp_current = int(getTime() / 1000);
+		// total_time = (timestamp_current - level.total_pause_time) - timestamp_game;
+
+		// if (level.round_number > 1)
+		// {		
+		// 	col = 2;
+		// 	if (getDvarInt("hud_round_timer"))
+		// 	{
+		// 		col++;
+		// 	}
+		// 	level thread display_times( "Total time", total_time, 5, 0.5, col );
+		// }
+		// if (!getDvarInt("hud_round_timer"))
+		// {
+		// 	wait 6;
+		// }
+		// level.displaying_time = 0;
+
+		// // Exceptions for special round cases
+		// if((level.script == "zombie_cod5_sumpf" || level.script == "zombie_cod5_factory" || level.script == "zombie_theater") && flag( "dog_round" ))
+		// {
+		// 	level waittill( "last_dog_down" );
+		// }
+		// else if(level.script == "zombie_pentagon" && flag( "thief_round" ))
+		// {
+		// 	flag_wait( "last_thief_down" );
+		// }
+		// else if(level.script == "zombie_cosmodrome" && flag( "monkey_round" ))
+		// {
+		// 	flag_wait( "last_monkey_down" );
+		// }
+		// else
+		// {
+		// 	level waittill( "end_of_round" );
+		// }
+
+		// if(flag( "enter_nml" ))
+		// {
+		// 	level waittill( "end_of_round" ); //end no man's land
+		// 	level waittill( "end_of_round" ); //end actual round
+		// }
+
+		// // Print round time
+		// if (getDvarInt("hud_round_timer") && (level.round_timer.alpha != 0))
+		// {
+		// 	hud_fade(level.round_timer, 0, 0.25);
+		// }
+		// level.displaying_time = 1;
+		// timestamp_end = int(getTime() / 1000);
+		// round_time = timestamp_end - timestamp_start;
+		// level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
 	}
 }
 
-round_timer_watcher( hud )
-{
-	level.displaying_time = 0;
+// round_timer_watcher( hud )
+// {
+// 	level.displaying_time = 0;
 
-	while(1)
-	{
-		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
-		{
-			if(hud.alpha != 1)
-			{
-                toggled_hud_fade(hud, 1);
-			}
-		}
-		else
-		{
-			if(hud.alpha != 0)
-			{
-                toggled_hud_fade(hud, 0);
-			}
-		}
+// 	while(1)
+// 	{
+// 		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if(hud.alpha != 0)
+// 			{
+//                 toggled_hud_fade(hud, 0);
+// 			}
+// 		}
 
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
-		{
-			if(hud.alpha != 1)
-			{
-                toggled_hud_fade(hud, 1);
-			}
-		}
+// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
 		
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
 display_sph()
 {	
@@ -457,7 +489,7 @@ display_times( label, time, duration, delay, col )
 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
 	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	time_in_mins = print_time_friendly( time );	
+	time_in_mins = get_time_friendly( time );	
 	level.print_hud setText( time_in_mins );
 
 	hud_fade( level.print_hud, 1, 0.25 );
@@ -1491,47 +1523,6 @@ toggled_hud_fade(hud, alpha)
     duration = 0.1;
 	hud fadeOverTime(duration);
 	hud.alpha = alpha;
-}
-
-// copy of to_mins() with modified output
-print_time_friendly( seconds )
-{
-	hours = 0; 
-	minutes = 0; 
-	
-	if( seconds > 59 )
-	{
-		minutes = int( seconds / 60 );
-
-		seconds = int( seconds * 1000 ) % ( 60 * 1000 );
-		seconds = seconds * 0.001; 
-
-		if( minutes > 59 )
-		{
-			hours = int( minutes / 60 );
-			minutes = int( minutes * 1000 ) % ( 60 * 1000 );
-			minutes = minutes * 0.001; 		
-		}
-	}
-
-	hours = "" + hours; 
-
-	if( minutes < 10 )
-	{
-		minutes = "0" + minutes; 
-	}
-
-	seconds = Int( seconds ); 
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds; 
-	}
-
-	if (hours == "0")
-	{
-		return "" + minutes  + ":" + seconds; 
-	}
-	return "" + hours  + ":" + minutes  + ":" + seconds; 
 }
 
 hud_trades_label_handler(label)

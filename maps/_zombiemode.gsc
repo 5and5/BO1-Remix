@@ -92,6 +92,9 @@ main()
 	init_shellshocks();
 	init_flags();
 	init_client_flags();
+	init_hud_dvars();
+
+	isClientPluto("com_useConfig", "");
 
 	register_offhand_weapons_for_level_defaults();
 
@@ -263,10 +266,12 @@ post_all_players_connected()
 	}
 
 	level thread timer_hud();
-	level thread round_timer();
-	level thread display_sph();
+	level thread round_timer_hud();
+	level thread game_stat_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
+
+	// level thread display_sph();
 	// level thread hud_color_watcher();	// For later
 	// level thread hud_trade_header();	// Hud limit reached :(
 }
@@ -809,6 +814,8 @@ init_dvars()
 	SetDvar( "player_lastStandBleedoutTime", "45" );
 
 	SetDvar( "scr_deleteexplosivesonspawn", "0" );
+
+	SetDvar( "hud_pluto", "0" );
 
 	// HACK: To avoid IK crash in zombiemode: MikeA 9/18/2009
 	//setDvar( "ik_enable", "0" );
@@ -1592,14 +1599,15 @@ onPlayerConnect_clientDvars()
 	//self setclientdvar( "cg_drawfps", "1" );
 
 	// hud dvars
-	if(getDvarInt("hud_pluto") == 1)
-	{
-		self setClientDvar("hud_pluto", 1);
-	}
-	else
-	{
-		self setClientDvar("hud_pluto", 0);
-	}
+
+	// if(getDvarInt("hud_pluto") == 1)
+	// {
+	// 	self setClientDvar("hud_pluto", 1);
+	// }
+	// else
+	// {
+	// 	self setClientDvar("hud_pluto", 0);
+	// }
 
 	if(getDvarInt("hud_zone_name_on") == 1)
 	{
