@@ -258,6 +258,29 @@
 		}
 	}
 
+	menuDef
+	{
+		name				"right_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_RIGHT VERTICAL_ALIGN_USER_CENTER //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				when( DEFAULT_VISIBILITY );
+
+		itemDef
+		{
+			name				"zombie_oxygen"
+			type				ITEM_TYPE_TEXT
+			rect 				-4 -5 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_SMALL
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_RIGHT
+			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_OXYGEN") + dvarString("oxygen_time_value"))	
+			visible				when(dvarInt(oxygen_time_show) == 1)
+			decoration
+		}
+	}
+
 	// menuDef
 	// {
 	// /	name				"middle_hud_fullscreen"
@@ -309,7 +332,7 @@
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_CENTER
-			exp text			(locString("@HUD_HUD_COOP_PAUSE"))
+			exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
 			visible				when(dvarInt(game_in_pause) == 1)
 			decoration
 		}

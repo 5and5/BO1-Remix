@@ -348,89 +348,89 @@ instakill_timer_hud()
 // 	}
 // }
 
-round_timer_hud()
-{
-	level endon("end_game");
+// round_timer_hud()
+// {
+// 	level endon("end_game");
 
-	hud_level_wait();
+// 	hud_level_wait();
 
-	if(getDvarInt("hud_pluto"))
-		pluto_offset = 12;
-	else
-		pluto_offset = 0;
+// 	if(getDvarInt("hud_pluto"))
+// 		pluto_offset = 12;
+// 	else
+// 		pluto_offset = 0;
 
-	level.round_timer = NewHudElem();
-	level.round_timer.horzAlign = "right";
-	level.round_timer.vertAlign = "top";
-	level.round_timer.alignX = "right";
-	level.round_timer.alignY = "top";
-	level.round_timer.x = -4;
-	level.round_timer.y = 17 + pluto_offset;
-	level.round_timer.fontScale = 1.3;
-	level.round_timer.alpha = 0;
-	level.round_timer.color = (1, 1, 1); // Awaiting new color func
+// 	level.round_timer = NewHudElem();
+// 	level.round_timer.horzAlign = "right";
+// 	level.round_timer.vertAlign = "top";
+// 	level.round_timer.alignX = "right";
+// 	level.round_timer.alignY = "top";
+// 	level.round_timer.x = -4;
+// 	level.round_timer.y = 17 + pluto_offset;
+// 	level.round_timer.fontScale = 1.3;
+// 	level.round_timer.alpha = 0;
+// 	level.round_timer.color = (1, 1, 1); // Awaiting new color func
 
-	// timestamp_game = int(getTime() / 1000);
-	// level thread round_timer_watcher( level.round_timer );
+// 	// timestamp_game = int(getTime() / 1000);
+// 	// level thread round_timer_watcher( level.round_timer );
 
-	// Prevent round time from working on first NML
-	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
-		wait 0.05;
+// 	// Prevent round time from working on first NML
+// 	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+// 		wait 0.05;
 
-	while (true)
-	{
-		level waittill ( "start_of_round" );
+// 	while (true)
+// 	{
+// 		level waittill ( "start_of_round" );
 
-		// Don't want to start the round if ppl ain't on the moon
-		if (isdefined(level.on_the_moon) && !level.on_the_moon)
-		{
-			wait 0.05;
-			continue;
-		}
+// 		// Don't want to start the round if ppl ain't on the moon
+// 		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+// 		{
+// 			wait 0.05;
+// 			continue;
+// 		}
 
-		// Exclude time spent in pause
-		if (isdefined(flag( "game_paused" )))
-		{
-			while (flag("game_paused"))
-				wait 0.05;
-		}
+// 		// Exclude time spent in pause
+// 		if (isdefined(flag( "game_paused" )))
+// 		{
+// 			while (flag("game_paused"))
+// 				wait 0.05;
+// 		}
 
-		current_round = level.round_number;
-		level.round_timer setTimerUp(0);
-		dvar_state = 0;
+// 		current_round = level.round_number;
+// 		level.round_timer setTimerUp(0);
+// 		dvar_state = 0;
 
-		tick = 0;
-		while (current_round == level.round_number)
-		{
-			wait 0.05;
+// 		tick = 0;
+// 		while (current_round == level.round_number)
+// 		{
+// 			wait 0.05;
 
-			if (level.tracked_zombies == 0 && tick >= 200)
-			{
-				wait 0.5;
-				hud_fade(level.round_timer, 0, 0.25);
-				setDvar("rt_displayed", 0);
-				break;
-			}
-			else if (tick < 200)
-				tick++;
+// 			if (level.tracked_zombies == 0 && tick >= 200)
+// 			{
+// 				wait 0.5;
+// 				hud_fade(level.round_timer, 0, 0.25);
+// 				setDvar("rt_displayed", 0);
+// 				break;
+// 			}
+// 			else if (tick < 200)
+// 				tick++;
 
-			if (dvar_state == getDvarInt("hud_round_timer"))
-				continue;
+// 			if (dvar_state == getDvarInt("hud_round_timer"))
+// 				continue;
 
-			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
-			{
-				hud_fade(level.round_timer, 1, 0.25);
-				setDvar("rt_displayed", 1);
-			}
-			else
-			{
-				hud_fade(level.round_timer, 0, 0.25);
-				setDvar("rt_displayed", 0);
-			}
+// 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+// 			{
+// 				hud_fade(level.round_timer, 1, 0.25);
+// 				setDvar("rt_displayed", 1);
+// 			}
+// 			else
+// 			{
+// 				hud_fade(level.round_timer, 0, 0.25);
+// 				setDvar("rt_displayed", 0);
+// 			}
 
-			dvar_state = getDvarInt("hud_round_timer");
-		}
-		hud_fade(level.round_timer, 0, 0.25);
+// 			dvar_state = getDvarInt("hud_round_timer");
+// 		}
+// 		hud_fade(level.round_timer, 0, 0.25);
 
 		// // Print total time
 		// timestamp_current = int(getTime() / 1000);
@@ -484,8 +484,8 @@ round_timer_hud()
 		// timestamp_end = int(getTime() / 1000);
 		// round_time = timestamp_end - timestamp_start;
 		// level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
-	}
-}
+// 	}
+// }
 
 // round_timer_watcher( hud )
 // {
@@ -919,53 +919,53 @@ updateHealth( barFrac )
 	self setShader( self.shader, barWidth, self.height );
 }
 
-oxygen_timer_hud()
-{
-	level endon("end_game");
+// oxygen_timer_hud()
+// {
+// 	level endon("end_game");
 
-    self.oxygen_timer = NewClientHudElem( self );
-    self.oxygen_timer.horzAlign = "right";
-    self.oxygen_timer.vertAlign = "middle";
-    self.oxygen_timer.alignX = "right";
-    self.oxygen_timer.alignY = "middle";
-    self.oxygen_timer.alpha = 1.4;
-    self.oxygen_timer.fontscale = 1.0;
-    self.oxygen_timer.foreground = true;
-    self.oxygen_timer.y = 8;
-    self.oxygen_timer.x = -10;
-    self.oxygen_timer.hidewheninmenu = 1;
-    self.oxygen_timer.alpha = 0;
-	self.oxygen_timer.label = "Oxygen left: ";
+//     self.oxygen_timer = NewClientHudElem( self );
+//     self.oxygen_timer.horzAlign = "right";
+//     self.oxygen_timer.vertAlign = "middle";
+//     self.oxygen_timer.alignX = "right";
+//     self.oxygen_timer.alignY = "middle";
+//     self.oxygen_timer.alpha = 1.4;
+//     self.oxygen_timer.fontscale = 1.0;
+//     self.oxygen_timer.foreground = true;
+//     self.oxygen_timer.y = 8;
+//     self.oxygen_timer.x = -10;
+//     self.oxygen_timer.hidewheninmenu = 1;
+//     self.oxygen_timer.alpha = 0;
+// 	self.oxygen_timer.label = "Oxygen left: ";
 
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-    while(1)
-    {
-		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
-		{
-			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
-			self.oxygen_timer setTimer(oxygen_left - 0.05);
+//     while(1)
+//     {
+// 		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+// 		{
+// 			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
+// 			self.oxygen_timer setTimer(oxygen_left - 0.05);
 
-			// iprintln(oxygen_left);
-			// iPrintLn("time_to_death" + self.time_to_death);
-			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
+// 			// iprintln(oxygen_left);
+// 			// iPrintLn("time_to_death" + self.time_to_death);
+// 			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
 
-			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
-			{
-				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
-					hud_fade(self.oxygen_timer, 1, 0.15);
-				else
-					hud_fade(self.oxygen_timer, 0, 0.15);
-			}
+// 			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+// 			{
+// 				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+// 					hud_fade(self.oxygen_timer, 1, 0.15);
+// 				else
+// 					hud_fade(self.oxygen_timer, 0, 0.15);
+// 			}
 
-			else
-				hud_fade(self.oxygen_timer, 0, 0.15);
-		}
+// 			else
+// 				hud_fade(self.oxygen_timer, 0, 0.15);
+// 		}
     
-        wait 0.05;
-    }
-}
+//         wait 0.05;
+//     }
+// }
 
 excavator_timer_hud()
 {

@@ -17,6 +17,9 @@ init_hud_dvars()
 	setDvar("rt_displayed", 0);
 	setDvar("kino_boxset", "^0UNDEFINED");
 	setDvar("game_in_pause", 0);
+	setDvar("oxygen_time_value", "0");
+	setDvar("hud_oxygen_timer", 0);
+	setDvar("oxygen_time_show", 0);
 }
 
 send_message_to_csc(name, message)
@@ -490,4 +493,32 @@ coop_pause(timer_hud, start_time)
 		}
 		wait 0.05;
 	}
+}
+
+oxygen_hud()
+{
+	level endon("end_game");
+
+    while (true)
+    {
+		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+		{
+			oxygen_time = (self.time_to_death - self.time_in_low_gravity) / 1000;
+			oxygen_left = get_time_friendly(oxygen_time);
+			self setClientDvar("oxygen_time_value", oxygen_left);
+
+			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+			{
+				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+					self setClientDvar("oxygen_time_show", 1);
+				else
+					self setClientDvar("oxygen_time_show", 0);
+			}
+
+			else
+				self setClientDvar("oxygen_time_show", 0);
+		}
+    
+        wait 1;
+    }
 }
