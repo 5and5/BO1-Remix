@@ -355,6 +355,7 @@
 			decoration
 		}
 
+		// Triggered in zombie_moon_teleporter
 		itemDef
 		{
 			name				"nml_summary"

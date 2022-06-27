@@ -270,10 +270,10 @@ post_all_players_connected()
 	level thread game_stat_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
+	level thread hud_trade_header();
 
 	// level thread display_sph();
 	// level thread hud_color_watcher();	// For later
-	// level thread hud_trade_header();	// Hud limit reached :(
 }
 
 zombiemode_melee_miss()
