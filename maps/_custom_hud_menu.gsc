@@ -3,6 +3,7 @@
 #include maps\_zombiemode_utility;
 
 init_hud_dvars()
+// They hold values for menu files, not used for triggering HUD elements
 {
 	setDvar("summary_visible0", 0);
 	setDvar("summary_visible1", 0);

@@ -1598,106 +1598,67 @@ onPlayerConnect_clientDvars()
 
 	self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
-	// Enabling the FPS counter in ship for now
-	//self setclientdvar( "cg_drawfps", "1" );
+	////// HUD DVARS //////
 
-	// hud dvars
-
+	// Pluto HUD
 	// if(getDvarInt("hud_pluto") == 1)
-	// {
 	// 	self setClientDvar("hud_pluto", 1);
-	// }
 	// else
-	// {
 	// 	self setClientDvar("hud_pluto", 0);
-	// }
 
-	if(getDvarInt("hud_zone_name_on") == 1)
-	{
-		self setClientDvar("hud_zone_name_on", 1);
-	}
-	else
-	{
-		self setClientDvar("hud_zone_name_on", 0);
-	}
-	
+	// Health Bar	
 	if(getDvarInt("hud_health_bar") == 1)
-	{
 		self setClientDvar("hud_health_bar", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_health_bar", 0);
-	}
 
+	// Drops counter
 	if(getDvarInt("hud_drops") == 1)
-	{
 		self setClientDvar("hud_drops", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_drops", 0);
-	}
 
+	// Zombie counter
 	if(getDvarInt("hud_remaining") == 1)
-	{
 		self setClientDvar("hud_remaining", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_remaining", 0);
-	}
 
+	// George Health Bar
 	if(getDvarInt("hud_george_bar") == 1)
-	{
 		self setClientDvar("hud_george_bar", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_george_bar", 0);
-	}
 
+	// Static round timer
 	if(getDvarInt("hud_round_timer") == 1)
-	{
 		self setClientDvar("hud_round_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_round_timer", 0);
-	}
 
+	// Moon oxygen timer
 	if(getDvarInt("hud_oxygen_timer") == 1)
-	{
 		self setClientDvar("hud_oxygen_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_oxygen_timer", 0);
-	}
 
+	// Moon excavator timer
 	if(getDvarInt("hud_excavator_timer") == 1)
-	{
 		self setClientDvar("hud_excavator_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_excavator_timer", 0);
-	}
 
+	// Zone HUD
 	if(getDvarInt("hud_zone_name_on") == 1)
-	{
 		self setClientDvar("hud_zone_name_on", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_zone_name_on", 0);
-	}
 
 	// Re-enable in case of enabling trade tracker
-	// if(getDvarInt("trades_include_all") == 1)
-	// 	self setClientDvar("trades_include_all", 1);
-	// else
-	// 	self setClientDvar("trades_include_all", 0);
+	if(getDvarInt("trades_include_all") == 1)
+		self setClientDvar("trades_include_all", 1);
+	else
+		self setClientDvar("trades_include_all", 0);
 
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
