@@ -211,7 +211,7 @@ round_timer_hud()
 	level.round_timer.color = (1, 1, 1); // Awaiting new color func
 
 	// timestamp_game = int(getTime() / 1000);
-	// level thread round_timer_watcher( level.round_timer );
+	level thread round_timer_watcher( level.round_timer );
 
 	// Prevent round time from working on first NML
 	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
@@ -327,38 +327,38 @@ round_timer_hud()
 	}
 }
 
-// round_timer_watcher( hud )
-// {
-// 	level.displaying_time = 0;
+round_timer_watcher( hud )
+{
+	level.displaying_time = 0;
 
-// 	while(1)
-// 	{
-// 		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
-// 		{
-// 			if(hud.alpha != 1)
-// 			{
-//                 toggled_hud_fade(hud, 1);
-// 			}
-// 		}
-// 		else
-// 		{
-// 			if(hud.alpha != 0)
-// 			{
-//                 toggled_hud_fade(hud, 0);
-// 			}
-// 		}
+	while(1)
+	{
+		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
+		{
+			if(hud.alpha != 1)
+			{
+                toggled_hud_fade(hud, 1);
+			}
+		}
+		else
+		{
+			if(hud.alpha != 0)
+			{
+                toggled_hud_fade(hud, 0);
+			}
+		}
 
-// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
-// 		{
-// 			if(hud.alpha != 1)
-// 			{
-//                 toggled_hud_fade(hud, 1);
-// 			}
-// 		}
+		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
+		{
+			if(hud.alpha != 1)
+			{
+                toggled_hud_fade(hud, 1);
+			}
+		}
 		
-// 		wait 0.05;
-// 	}
-// }
+		wait 0.05;
+	}
+}
 
 display_sph()
 {	

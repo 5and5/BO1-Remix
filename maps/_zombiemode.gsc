@@ -94,7 +94,7 @@ main()
 	init_client_flags();
 	init_hud_dvars();
 
-	isClientPluto("com_useConfig", "");
+	//isClientPluto("com_useConfig", "");
 
 	register_offhand_weapons_for_level_defaults();
 

@@ -36,6 +36,7 @@
 - Round timer (shows at the end of a round)
 - Seconds per horde (shows at the end of a round)
 - Zombie remaining counter / Zombie kill counter (No Man's Land)
+- Zone name
 - Health bar
 - Drop cycle tracker
 - COTD: VR11 insta kill timer
