@@ -28,6 +28,9 @@ init_hud_dvars()
 	setDvar("custom_nml_end", 0);
 	setDvar("nml_end_kills", 0);
 	setDvar("nml_end_time", 0);
+	setDvar("george_bar_show", 0);
+	setDvar("george_bar_ratio", 0);
+	setDvar("george_bar_health", 0);
 }
 
 send_message_to_csc(name, message)
@@ -506,7 +509,66 @@ excavator_hud()
     }
 }
 
+george_health_bar()
+{
+	// self endon("disconnect");
+	level endon("end_game");
 
+	level thread maps\_zombiemode_powerups::cotd_powerup_offset();
+
+	// hud_wait();
+	level waittill("start_of_round");
+
+	george_max_health = 250000 * level.players_playing;
+
+	george_bar_width_max = 250;	// Make sure it matches with menu file
+
+	// while (1)
+	// {
+	// 	health_ratio = self.health / self.maxhealth;
+
+	// 	// There is a conflict while trying to import _laststand
+	// 	if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
+	// 		self SetClientDvar("health_bar_value_hud", 0);
+	// 	else
+	// 		self SetClientDvar("health_bar_value_hud", self.health);
+
+	// 	self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+
+	// 	wait 0.05;
+	// }
+
+	while (true)
+	{
+		wait 0.05;
+		// iPrintLn(flag("director_alive"));	// debug
+		// iPrintLn(flag("spawn_init"));		// debug
+
+		// Amount of damage dealt to director, prevent going beyond the scale
+		if (isDefined(level.director_damage))
+			local_director_damage = level.director_damage;
+		else
+			local_director_damage = 0;
+
+		if (local_director_damage > george_max_health)
+			local_director_damage = george_max_health;
+
+		george_health = george_max_health - local_director_damage;
+		george_ratio = (george_health / george_max_health) * george_bar_width_max;
+
+		self setClientDvar("george_bar_ratio", george_ratio);
+		self setClientDvar("george_bar_health", george_health);
+
+		if (flag("director_alive") && (getDvarInt("hud_george_bar") || getDvarInt("hud_tab")))
+		{
+			self setClientDvar("george_bar_show", 1);
+		}
+		else
+		{
+			self setClientDvar("george_bar_show", 0);
+		}
+	}
+}
 
 // coop_pause(timer_hud, start_time)
 // // level thread

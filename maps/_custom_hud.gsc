@@ -1041,137 +1041,137 @@ updateHealth( barFrac )
 //     }
 // }
 
-george_health_bar()
-{
-	// self endon("disconnect");
-	level endon("end_game");
+// george_health_bar()
+// {
+// 	// self endon("disconnect");
+// 	level endon("end_game");
 
-	// hud_wait();
-	level waittill("start_of_round");
+// 	// hud_wait();
+// 	level waittill("start_of_round");
 
-	george_max_health = 250000 * level.players_playing;
+// 	george_max_health = 250000 * level.players_playing;
 
-	width = 250;
-	height = 8;
-	hudx = "center";
-	hudy = "bottom";
-	posx = 0;
-	posy = -3;
+// 	width = 250;
+// 	height = 8;
+// 	hudx = "center";
+// 	hudy = "bottom";
+// 	posx = 0;
+// 	posy = -3;
 
-	self.george_bar_background = create_hud(hudx, hudy);
-	self.george_bar_background.x = posx;
-	self.george_bar_background.y = posy;
-	self.george_bar_background.width = width + 2;
-	self.george_bar_background.height = height + 1;
-	self.george_bar_background.foreground = 0;
-	self.george_bar_background.shader = "black";
-	self.george_bar_background.alpha = 0;
-	self.george_bar_background setShader( "black", width + 2, height + 2 );
+// 	self.george_bar_background = create_hud(hudx, hudy);
+// 	self.george_bar_background.x = posx;
+// 	self.george_bar_background.y = posy;
+// 	self.george_bar_background.width = width + 2;
+// 	self.george_bar_background.height = height + 1;
+// 	self.george_bar_background.foreground = 0;
+// 	self.george_bar_background.shader = "black";
+// 	self.george_bar_background.alpha = 0;
+// 	self.george_bar_background setShader( "black", width + 2, height + 2 );
 
-	self.george_bar = create_hud(hudx, hudy);
-	self.george_bar.x = posx;
-	self.george_bar.y = posy - 1;
-	self.george_bar.width = width;
-	self.george_bar.height = height;
-	self.george_bar.foreground = 1;
-	self.george_bar.shader = "white";
-	self.george_bar.alpha = 0;
-	self.george_bar setShader( "white", width, height );
+// 	self.george_bar = create_hud(hudx, hudy);
+// 	self.george_bar.x = posx;
+// 	self.george_bar.y = posy - 1;
+// 	self.george_bar.width = width;
+// 	self.george_bar.height = height;
+// 	self.george_bar.foreground = 1;
+// 	self.george_bar.shader = "white";
+// 	self.george_bar.alpha = 0;
+// 	self.george_bar setShader( "white", width, height );
 
-	self.george_health = create_hud(hudx, hudy);
-	self.george_health.x = posx;
-	self.george_health.y = posy - 8;
-	self.george_health.fontScale = 1.3;
-	self.george_health.alpha = 0;
+// 	self.george_health = create_hud(hudx, hudy);
+// 	self.george_health.x = posx;
+// 	self.george_health.y = posy - 8;
+// 	self.george_health.fontScale = 1.3;
+// 	self.george_health.alpha = 0;
 
-	self thread hud_end(self.george_health);
-	self thread hud_end(self.george_bar);
-	self thread hud_end(self.george_bar_background);
+// 	self thread hud_end(self.george_health);
+// 	self thread hud_end(self.george_bar);
+// 	self thread hud_end(self.george_bar_background);
 
-	current_george_hp = 0;
+// 	current_george_hp = 0;
 
-	while (1)
-	{
-		// iPrintLn(flag("director_alive"));	// debug
-		// iPrintLn(flag("spawn_init"));		// debug
+// 	while (1)
+// 	{
+// 		// iPrintLn(flag("director_alive"));	// debug
+// 		// iPrintLn(flag("spawn_init"));		// debug
 
-		// Amount of damage dealt to director, prevent going beyond the scale
-		local_director_damage = level.director_damage;
-		if (local_director_damage > george_max_health)
-			local_director_damage = george_max_health;
+// 		// Amount of damage dealt to director, prevent going beyond the scale
+// 		local_director_damage = level.director_damage;
+// 		if (local_director_damage > george_max_health)
+// 			local_director_damage = george_max_health;
 
-		current_george_hp = (george_max_health - local_director_damage);
+// 		current_george_hp = (george_max_health - local_director_damage);
 
-		if (flag( "director_alive" ))
-		{
-			self.george_health setValue(current_george_hp);
-			// Prevent visual glitches with bar while george has 0 health
-			if (current_george_hp == 0)
-			{
-				self.george_bar updateHealth(width);	// Smallest possible size
-				self.george_bar.alpha = 0;
-			}
-			else
-				self.george_bar updateHealth(current_george_hp / george_max_health);	
+// 		if (flag( "director_alive" ))
+// 		{
+// 			self.george_health setValue(current_george_hp);
+// 			// Prevent visual glitches with bar while george has 0 health
+// 			if (current_george_hp == 0)
+// 			{
+// 				self.george_bar updateHealth(width);	// Smallest possible size
+// 				self.george_bar.alpha = 0;
+// 			}
+// 			else
+// 				self.george_bar updateHealth(current_george_hp / george_max_health);	
 					
-			self.george_health.color = (0.2, 0.6, 1);				// Blue
-			if (current_george_hp < george_max_health * .66)
-			{
-				self.george_health.color = (1, 1, 0.2);				// Yellow
-				if (current_george_hp < george_max_health * .33)
-				{
-					self.george_health.color = (1, 0.6, 0.2);		// Orange
-					if (current_george_hp <= 1)
-					{
-						self.george_health.color = (1, 0.2, 0.2);	// Red
-					}
-				}
-			}
-		}
-		else
-		{
-			hud_fade(self.george_bar, 0, 0.3);
-			self.george_health setValue(0);
-			self.george_health.color = (1, 0.2, 0.2);				// Red
-		}
+// 			self.george_health.color = (0.2, 0.6, 1);				// Blue
+// 			if (current_george_hp < george_max_health * .66)
+// 			{
+// 				self.george_health.color = (1, 1, 0.2);				// Yellow
+// 				if (current_george_hp < george_max_health * .33)
+// 				{
+// 					self.george_health.color = (1, 0.6, 0.2);		// Orange
+// 					if (current_george_hp <= 1)
+// 					{
+// 						self.george_health.color = (1, 0.2, 0.2);	// Red
+// 					}
+// 				}
+// 			}
+// 		}
+// 		else
+// 		{
+// 			hud_fade(self.george_bar, 0, 0.3);
+// 			self.george_health setValue(0);
+// 			self.george_health.color = (1, 0.2, 0.2);				// Red
+// 		}
 
-		if(!getDvarInt("hud_george_bar"))
-		{
-			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
-			{
-				hud_fade(self.george_health, 0, 0.3);
-				hud_fade(self.george_bar, 0, 0.3);
-				hud_fade(self.george_bar_background, 0, 0.3);
-			}
-		}
-		else
-		{
-			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
-			if (self.george_bar.alpha != 0.5 && current_george_hp > 0)
-			{
-				hud_fade(self.george_health, 0.8, 0.3);
-				hud_fade(self.george_bar, 0.55, 0.3);
-				hud_fade(self.george_bar_background, 0.55, 0.3);
-			}
-			else if (self.george_health.alpha != 0 && !flag("director_alive")) //temp_director
-			{
-				wait 5;
-				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
-				hud_fade(self.george_health, 0, 0.3);
-				hud_fade(self.george_bar_background, 0, 0.3);
-			}
-    	}
+// 		if(!getDvarInt("hud_george_bar"))
+// 		{
+// 			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
+// 			{
+// 				hud_fade(self.george_health, 0, 0.3);
+// 				hud_fade(self.george_bar, 0, 0.3);
+// 				hud_fade(self.george_bar_background, 0, 0.3);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
+// 			if (self.george_bar.alpha != 0.5 && current_george_hp > 0)
+// 			{
+// 				hud_fade(self.george_health, 0.8, 0.3);
+// 				hud_fade(self.george_bar, 0.55, 0.3);
+// 				hud_fade(self.george_bar_background, 0.55, 0.3);
+// 			}
+// 			else if (self.george_health.alpha != 0 && !flag("director_alive")) //temp_director
+// 			{
+// 				wait 5;
+// 				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
+// 				hud_fade(self.george_health, 0, 0.3);
+// 				hud_fade(self.george_bar_background, 0, 0.3);
+// 			}
+//     	}
 
-		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
-		{
-			hud_fade(self.george_health, 0.8, 0.3);
-			hud_fade(self.george_bar_background, 0.55, 0.3);	
-			if (current_george_hp > 0)
-				hud_fade(self.george_bar, 0.55, 0.3);
-		}
-		wait 0.05;
-	}
-}
+// 		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
+// 		{
+// 			hud_fade(self.george_health, 0.8, 0.3);
+// 			hud_fade(self.george_bar_background, 0.55, 0.3);	
+// 			if (current_george_hp > 0)
+// 				hud_fade(self.george_bar, 0.55, 0.3);
+// 		}
+// 		wait 0.05;
+// 	}
+// }
 
 hud_trade_header()
 {

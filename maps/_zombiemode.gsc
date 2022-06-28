@@ -1806,8 +1806,8 @@ onPlayerSpawned()
 				// self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();
-				if(level.script == "zombie_coast") // move to level?
-					self thread maps\_custom_hud::george_health_bar();
+				if(level.script == "zombie_coast")
+					self thread maps\_custom_hud_menu::george_health_bar();
 
 				self thread tab_hud();
 				// self thread show_all_on_tab();

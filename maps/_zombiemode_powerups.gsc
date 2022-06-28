@@ -182,8 +182,50 @@ init_player_zombie_vars()
 	}
 }
 
+cotd_powerup_offset()
+{
+	level endon ("disconnect");
 
-//
+	if (level.script != "zombie_coast")
+		return;
+	dvar_state = 0;
+
+	while (true)
+	{
+		wait 0.05;
+
+		if (dvar_state == getDvarInt("george_bar_show"))
+			continue;
+
+		if (getDvarInt("george_bar_show") == 1)
+		{
+			for(i = 0; i < 4; i++)
+				level.powerup_hud[i].y = -25;		
+
+			players = get_players();
+			for( p = 0; p < players.size; p++ )
+			{
+				for(i = 0; i < players[p].solo_powerup_hud_array.size; i++)
+					players[p].solo_powerup_hud[i].y = -25;
+			}
+		}
+		else
+		{
+			for(i = 0; i < 4; i++)
+				level.powerup_hud[i].y = -5;			
+
+			players = get_players();
+			for( p = 0; p < players.size; p++ )
+			{
+				for(i = 0; i < players[p].solo_powerup_hud_array.size; i++)
+					players[p].solo_powerup_hud[i].y = -5;
+			}
+		}
+
+		dvar_state = getDvarInt("george_bar_show");
+	}
+}
+
 powerup_hud_overlay()
 {
 	level endon ("disconnect");
@@ -194,12 +236,8 @@ powerup_hud_overlay()
 	level.powerup_hud_array[2] = true;
 	level.powerup_hud_array[3] = true;
 
-
-
 	level.powerup_hud = [];
 	level.powerup_hud_cover = [];
-
-
 
 	for(i = 0; i < 4; i++)
 	{
@@ -212,7 +250,8 @@ powerup_hud_overlay()
 		level.powerup_hud[i].horzAlign = "user_center";
 		level.powerup_hud[i].vertAlign = "user_bottom";
 		level.powerup_hud[i].x = -32 + (i * 15);
-		level.powerup_hud[i].y = level.powerup_hud[i].y - 5; // ww: used to offset by - 78
+		// level.powerup_hud[i].y = level.powerup_hud[i].y - 5; // ww: used to offset by - 78
+		level.powerup_hud[i].y = -5;
 		level.powerup_hud[i].alpha = 0.8;
 	}
 
@@ -289,7 +328,7 @@ solo_powerup_hud_overlay()
 			players[p].solo_powerup_hud[i].horzAlign = "user_center";
 			players[p].solo_powerup_hud[i].vertAlign = "user_bottom";
 			players[p].solo_powerup_hud[i].x = -32 + (i * 15);
-			players[p].solo_powerup_hud[i].y = players[p].solo_powerup_hud[i].y - 5; // ww: used to offset by - 78
+			players[p].solo_powerup_hud[i].y = -5;
 			players[p].solo_powerup_hud[i].alpha = 0.8;
 		}
 
