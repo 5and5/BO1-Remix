@@ -5,10 +5,11 @@
 init_hud_dvars()
 // They hold values for menu files, not used for triggering HUD elements
 {
-	setDvar("summary_visible0", 0);
-	setDvar("summary_visible1", 0);
-	setDvar("summary_visible2", 0);
-	setDvar("summary_visible3", 0);
+	setDvar("time_summary_text", " ");
+	setDvar("time_summary_value", 0);
+	// setDvar("summary_visible1", 0);
+	// setDvar("summary_visible2", 0);
+	// setDvar("summary_visible3", 0);
 	setDvar("hud_remaining_number", 0);
 	setDvar("hud_drops_number", 0);
 	setDvar("round_time_value", "0");
@@ -48,6 +49,41 @@ send_message_to_csc(name, message)
 			setClientSysState("client_systems", csc_message, players[i]);
 		}
 	}
+}
+
+set_summary_text( text, dvar )
+{
+	setDvar("time_summary_text", text);
+	setDvar("time_summary_value", getDvar(dvar) );
+}
+
+hud_menu_fade( name, time )
+{
+	send_message_to_csc("hud_anim_handler", name);
+	wait time;
+}
+
+display_time_summary()
+{
+	level endon("end_of_round");
+
+	wait_time = 5;
+	fade_time = 0.75;
+
+	set_summary_text("Round Time: ", "round_time_value");
+	hud_menu_fade("hud_time_summary_in", fade_time);
+	wait wait_time;
+	hud_menu_fade("hud_time_summary_out", fade_time);
+
+	set_summary_text("SPH: ", "sph_value");
+	hud_menu_fade("hud_time_summary_in", fade_time);
+	wait wait_time;
+	hud_menu_fade("hud_time_summary_out", fade_time);
+
+	set_summary_text("Total Time: ", "total_time_value");
+	hud_menu_fade("hud_time_summary_in", fade_time);
+	wait wait_time;
+	hud_menu_fade("hud_time_summary_out", fade_time);
 }
 
 summary_visible(mode, len, sph_round)
@@ -318,7 +354,7 @@ game_stat_hud()
 	setDvar("round_time_value", get_time_friendly(rt));
 
 	wait 0.05;
-	thread summary_visible("end", 6, settings_sph);	// Keep it on 6 for this one
+	// thread summary_visible("end", 6, settings_sph);	// Keep it on 6 for this one
 
 	while (true)
 	{
@@ -364,7 +400,7 @@ game_stat_hud()
 		predicted = (rt / last_zombie_count) * current_zombie_count;
 		setDvar("predicted_value", get_time_friendly(int(predicted)));
 
-		thread summary_visible("start", 6, settings_sph);	// Trigger HUD
+		// thread summary_visible("start", 6, settings_sph);	// Trigger HUD
 
 		level waittill("end_of_round");
 
@@ -388,8 +424,9 @@ game_stat_hud()
 			
 		// Save last rounds zombie count
 		last_zombie_count = current_zombie_count;
-
-		thread summary_visible("end", 6, settings_sph);	// Trigger HUD
+		
+		thread display_time_summary();
+		// thread summary_visible("end", 6, settings_sph);	// Trigger HUD
 	}
 }
 

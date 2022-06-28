@@ -102,34 +102,21 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 250;
 	}
-	else if(state == "hud_round_time_in")
+	else if(state == "hud_time_summary_in")
 	{
-		menu_name = "timer";
-		item_name = "round_timer";
+		menu_name = "right_top_hud";
+		item_name = "time_summary";
 		fade_type = "fadein";
-		fade_time = 1000;
+		fade_time = 750;
 	}
-	else if(state == "hud_round_time_out")
+	else if(state == "hud_time_summary_out")
 	{
-		menu_name = "timer";
-		item_name = "round_timer";
+		menu_name = "right_top_hud";
+		item_name = "time_summary";
 		fade_type = "fadeout";
-		fade_time = 1000;
+		fade_time = 750;
 	}
-	else if(state == "hud_round_total_time_in")
-	{
-		menu_name = "timer";
-		item_name = "round_total_timer";
-		fade_type = "fadein";
-		fade_time = 1000;
-	}
-	else if(state == "hud_round_total_time_out")
-	{
-		menu_name = "timer";
-		item_name = "round_total_timer";
-		fade_type = "fadeout";
-		fade_time = 1000;
-	}
+
 
 	AnimateUI(clientnum, menu_name, item_name, fade_type, fade_time);
 }

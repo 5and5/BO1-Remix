@@ -44,6 +44,17 @@
 
 */
 
+#define FADE_STATES state							\
+					{								\
+						name			"fadein"	\
+						forecolor 		1 1 1 1		\
+					}								\
+					state							\
+					{								\
+						name 			"fadeout"	\
+						forecolor 		1 1 1 0		\
+					}
+
 #define DEFAULT_VISIBILITY dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" )
 #define NEXT_LINE_OFFSET				15
 #define UNI_Y_POS						2
@@ -94,17 +105,7 @@
 			visible				when(dvarBool("hud_zone_name_on"))
 			decoration
 
-			state
-			{
-				name			"fadein"
-				forecolor 		1 1 1 1
-			}
-			
-			state
-			{
-				name 			"fadeout"
-				forecolor 		1 1 1 0
-			}
+			FADE_STATES
 		}
 
 		itemDef
@@ -211,67 +212,69 @@
 
 		itemDef
 		{
-			name				"zombie_roundtime"
+			name				"time_summary"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
 			exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-			forecolor			1 1 1 1
+			forecolor			1 1 1 0
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(locString("@HUD_HUD_ZOMBIES_ROUNDTIME") + dvarString("round_time_value"))	
-			visible				when(dvarInt(summary_visible0) == 1)
+			exp text			(dvarString("time_summary_text") + dvarString("time_summary_value"))	
+			visible				1
 			decoration
+
+			FADE_STATES
 		}
 
-		itemDef
-		{
-			name				"zombie_sph"
-			type				ITEM_TYPE_TEXT
-			rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-			exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_DEFAULT
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(locString("@HUD_HUD_ZOMBIES_SPH") + dvarString("sph_value"))	
-			visible				when(dvarInt(summary_visible1) == 1)
-			decoration
-		}
+		// itemDef
+		// {
+		// 	name				"zombie_sph"
+		// 	type				ITEM_TYPE_TEXT
+		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
+		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
+		// 	forecolor			1 1 1 1
+		// 	textscale			TEXTSIZE_DEFAULT
+		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
+		// 	textfont			UI_FONT_NORMAL
+		// 	textalign			ITEM_ALIGN_TOP_RIGHT
+		// 	exp text			(locString("@HUD_HUD_ZOMBIES_SPH") + dvarString("sph_value"))	
+		// 	visible				when(dvarInt(summary_visible1) == 1)
+		// 	decoration
+		// }
 
-		itemDef
-		{
-			name				"zombie_totaltime"
-			type				ITEM_TYPE_TEXT
-			rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-			exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_DEFAULT
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(locString("@HUD_HUD_ZOMBIES_TOTALTIME") + dvarString("total_time_value"))	
-			visible				when(dvarInt(summary_visible2) == 1)
-			decoration
-		}
+		// itemDef
+		// {
+		// 	name				"zombie_totaltime"
+		// 	type				ITEM_TYPE_TEXT
+		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
+		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
+		// 	forecolor			1 1 1 1
+		// 	textscale			TEXTSIZE_DEFAULT
+		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
+		// 	textfont			UI_FONT_NORMAL
+		// 	textalign			ITEM_ALIGN_TOP_RIGHT
+		// 	exp text			(locString("@HUD_HUD_ZOMBIES_TOTALTIME") + dvarString("total_time_value"))	
+		// 	visible				when(dvarInt(summary_visible2) == 1)
+		// 	decoration
+		// }
 
-		itemDef
-		{
-			name				"zombie_predicted"
-			type				ITEM_TYPE_TEXT
-			rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-			exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_DEFAULT
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(locString("@HUD_HUD_ZOMBIES_PREDICTED") + dvarString("predicted_value"))	
-			visible				when(dvarInt(summary_visible3) == 1)
-			decoration
-		}
+		// itemDef
+		// {
+		// 	name				"zombie_predicted"
+		// 	type				ITEM_TYPE_TEXT
+		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
+		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
+		// 	forecolor			1 1 1 1
+		// 	textscale			TEXTSIZE_DEFAULT
+		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
+		// 	textfont			UI_FONT_NORMAL
+		// 	textalign			ITEM_ALIGN_TOP_RIGHT
+		// 	exp text			(locString("@HUD_HUD_ZOMBIES_PREDICTED") + dvarString("predicted_value"))	
+		// 	visible				when(dvarInt(summary_visible3) == 1)
+		// 	decoration
+		// }
 	}
 
 	menuDef
