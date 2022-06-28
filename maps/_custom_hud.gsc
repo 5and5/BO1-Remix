@@ -126,12 +126,14 @@ round_timer_hud()
 		current_round = level.round_number;
 		level.round_timer setTimerUp(0);
 		dvar_state = 0;
+		tab_state = 0;
 
 		tick = 0;
 		while (current_round == level.round_number)
 		{
 			wait 0.05;
 
+			// Ticks so the timer doesn't dissapear immidiately
 			if (level.tracked_zombies == 0 && tick >= 200)
 			{
 				wait 0.5;
@@ -142,7 +144,7 @@ round_timer_hud()
 			else if (tick < 200)
 				tick++;
 
-			if (dvar_state == getDvarInt("hud_round_timer"))
+			if (dvar_state == getDvarInt("hud_round_timer") && tab_state == getDvarInt("hud_tab"))
 				continue;
 
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
@@ -157,6 +159,7 @@ round_timer_hud()
 			}
 
 			dvar_state = getDvarInt("hud_round_timer");
+			tab_state = getDvarInt("hud_tab");
 		}
 		hud_fade(level.round_timer, 0, 0.25);
 	}
@@ -227,7 +230,7 @@ coop_pause(timer_hud, start_time)
 	players = GetPlayers();
 	if( players.size == 1 )
 	{
-		// return;
+		return;
 	}
 
 	paused_time = 0;
