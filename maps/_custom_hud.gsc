@@ -490,38 +490,38 @@ coop_pause(timer_hud, start_time)
 // 	}
 // }
 
-round_timer_watcher( hud )
-{
-	level.displaying_time = 0;
+// round_timer_watcher( hud )
+// {
+// 	level.displaying_time = 0;
 
-	while(1)
-	{
-		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
-		{
-			if(hud.alpha != 1)
-			{
-                toggled_hud_fade(hud, 1);
-			}
-		}
-		else
-		{
-			if(hud.alpha != 0)
-			{
-                toggled_hud_fade(hud, 0);
-			}
-		}
+// 	while(1)
+// 	{
+// 		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if(hud.alpha != 0)
+// 			{
+//                 toggled_hud_fade(hud, 0);
+// 			}
+// 		}
 
-		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
-		{
-			if(hud.alpha != 1)
-			{
-                toggled_hud_fade(hud, 1);
-			}
-		}
+// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
 		
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
 // display_sph()
 // {	
