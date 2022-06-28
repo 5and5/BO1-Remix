@@ -57,6 +57,28 @@ timer_hud()
 	}
 }
 
+generate_background()
+{
+	if (isDefined(level.black_hud))
+		level.black_hud destroy();
+		
+	level.black_hud = newhudelem();
+	level.black_hud.horzAlign = "fullscreen";
+	level.black_hud.vertAlign = "fullscreen";
+	level.black_hud SetShader( "black", 640, 480 );
+	level.black_hud.alpha = 0;
+
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0.65;
+}
+
+destroy_background()
+{
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0;
+	level.black_hud destroy();
+}
+
 round_timer_hud()
 {
 	level endon("end_game");
@@ -110,11 +132,12 @@ round_timer_hud()
 		while (current_round == level.round_number)
 		{
 			wait 0.05;
+
 			// Ticks so the timer doesn't dissapear immidiately
 			if (level.tracked_zombies == 0 && tick >= 200)
 			{
 				wait 0.5;
-				hud_fade(level.round_timer, 0, 0.075);
+				hud_fade(level.round_timer, 0, 0.25);
 				setDvar("rt_displayed", 0);
 				break;
 			}
@@ -126,12 +149,12 @@ round_timer_hud()
 
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
 			{
-				hud_fade(level.round_timer, 1, 0.075);
+				hud_fade(level.round_timer, 1, 0.25);
 				setDvar("rt_displayed", 1);
 			}
 			else
 			{
-				hud_fade(level.round_timer, 0, 0.075);
+				hud_fade(level.round_timer, 0, 0.25);
 				setDvar("rt_displayed", 0);
 			}
 
@@ -464,6 +487,39 @@ coop_pause(timer_hud, start_time)
 		// timestamp_end = int(getTime() / 1000);
 		// round_time = timestamp_end - timestamp_start;
 		// level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
+// 	}
+// }
+
+// round_timer_watcher( hud )
+// {
+// 	level.displaying_time = 0;
+
+// 	while(1)
+// 	{
+// 		if(getDvarInt( "hud_round_timer") && !level.displaying_time)
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			if(hud.alpha != 0)
+// 			{
+//                 toggled_hud_fade(hud, 0);
+// 			}
+// 		}
+
+// 		if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_round_timer" ) && !level.displaying_time )
+// 		{
+// 			if(hud.alpha != 1)
+// 			{
+//                 toggled_hud_fade(hud, 1);
+// 			}
+// 		}
+		
+// 		wait 0.05;
 // 	}
 // }
 
