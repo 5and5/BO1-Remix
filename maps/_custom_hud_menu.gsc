@@ -272,22 +272,23 @@ health_bar_hud()
 
 		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
 
-
 		if (dvar_state == getDvarInt("hud_health_bar"))
 			continue;
 
-		if (getDvarInt("hud_health_bar") || (!getDvarInt("hud_health_bar") && getDvarInt("hud_tab")))
+		if (getDvarInt("hud_health_bar"))
 		{
-			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_in");
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_in");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_in");
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_in");
 		}
 		else
 		{
-			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_out");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_out");
 		}
+
+		dvar_state = getDvarInt("hud_health_bar");
 	}
 } 
 
@@ -297,16 +298,35 @@ remaining_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
-	setDvar("hud_remaining_number", 0);
-	while(true)
+	dvar_state = -1;
+	tab_state = -1;
+
+	while (true)
 	{
+		if (getDvarInt("show_nml_kill_tracker"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_remaining_out");
+			
+			while (getDvarInt("show_nml_kill_tracker"))
+				wait 0.05;
+		}
+
 		wait 0.05;
 		// Level var for round timer
 		level.tracked_zombies = level.zombie_total + get_enemy_count();
-		if (level.tracked_zombies == GetDvarInt("hud_remaining_number"))
+		if (level.tracked_zombies != GetDvarInt("hud_remaining_number"))
+			setDvar("hud_remaining_number", level.tracked_zombies);
+
+		if (dvar_state == getDvarInt("hud_remaining") && tab_state == getDvarInt("hud_tab"))
 			continue;
 
-		setDvar("hud_remaining_number", level.tracked_zombies);
+		if (getDvarInt("hud_remaining") || (!getDvarInt("hud_remaining") && getDvarInt("hud_tab")))
+			send_message_to_csc("hud_anim_handler", "hud_remaining_in");
+		else
+			send_message_to_csc("hud_anim_handler", "hud_remaining_out");
+
+		dvar_state = getDvarInt("hud_remaining");
+		tab_state = getDvarInt("hud_tab");
 	}
 }
 

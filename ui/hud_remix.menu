@@ -119,7 +119,16 @@
 			visible				1
 			decoration
 
-			FADE_STATES
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.35
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -134,7 +143,16 @@
 			visible				1
 			decoration
 
-			FADE_STATES
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.85
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -175,6 +193,8 @@
 			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
 			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 0)
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
