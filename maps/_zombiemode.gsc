@@ -270,10 +270,10 @@ post_all_players_connected()
 	level thread game_stat_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
+	level thread hud_trade_header();
 
 	// level thread display_sph();
 	// level thread hud_color_watcher();	// For later
-	// level thread hud_trade_header();	// Hud limit reached :(
 }
 
 zombiemode_melee_miss()
@@ -570,6 +570,13 @@ init_strings()
 	PrecacheString( &"ZOMBIE_SURVIVED_ROUNDS" );
 	PrecacheString( &"ZOMBIE_SURVIVED_NOMANS" );
 	PrecacheString( &"ZOMBIE_EXTRA_LIFE" );
+
+	// Remix strings
+	PreCacheString(&"HUD_HUD_ZOMBIES_COOP_PAUSE");
+	PrecacheString(&"MOD_YOU_WIN");
+	PrecacheString(&"MOD_NML_END_KILLS");
+	PrecacheString(&"MOD_NML_END_TIME");
+
 
 	add_zombie_hint( "undefined", &"ZOMBIE_UNDEFINED" );
 
@@ -1595,106 +1602,67 @@ onPlayerConnect_clientDvars()
 
 	self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
-	// Enabling the FPS counter in ship for now
-	//self setclientdvar( "cg_drawfps", "1" );
+	////// HUD DVARS //////
 
-	// hud dvars
-
+	// Pluto HUD
 	// if(getDvarInt("hud_pluto") == 1)
-	// {
 	// 	self setClientDvar("hud_pluto", 1);
-	// }
 	// else
-	// {
 	// 	self setClientDvar("hud_pluto", 0);
-	// }
 
-	if(getDvarInt("hud_zone_name_on") == 1)
-	{
-		self setClientDvar("hud_zone_name_on", 1);
-	}
-	else
-	{
-		self setClientDvar("hud_zone_name_on", 0);
-	}
-	
+	// Health Bar	
 	if(getDvarInt("hud_health_bar") == 1)
-	{
 		self setClientDvar("hud_health_bar", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_health_bar", 0);
-	}
 
+	// Drops counter
 	if(getDvarInt("hud_drops") == 1)
-	{
 		self setClientDvar("hud_drops", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_drops", 0);
-	}
 
+	// Zombie counter
 	if(getDvarInt("hud_remaining") == 1)
-	{
 		self setClientDvar("hud_remaining", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_remaining", 0);
-	}
 
+	// George Health Bar
 	if(getDvarInt("hud_george_bar") == 1)
-	{
 		self setClientDvar("hud_george_bar", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_george_bar", 0);
-	}
 
+	// Static round timer
 	if(getDvarInt("hud_round_timer") == 1)
-	{
 		self setClientDvar("hud_round_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_round_timer", 0);
-	}
 
+	// Moon oxygen timer
 	if(getDvarInt("hud_oxygen_timer") == 1)
-	{
 		self setClientDvar("hud_oxygen_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_oxygen_timer", 0);
-	}
 
+	// Moon excavator timer
 	if(getDvarInt("hud_excavator_timer") == 1)
-	{
 		self setClientDvar("hud_excavator_timer", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_excavator_timer", 0);
-	}
 
+	// Zone HUD
 	if(getDvarInt("hud_zone_name_on") == 1)
-	{
 		self setClientDvar("hud_zone_name_on", 1);
-	}
 	else
-	{
 		self setClientDvar("hud_zone_name_on", 0);
-	}
 
 	// Re-enable in case of enabling trade tracker
-	// if(getDvarInt("trades_include_all") == 1)
-	// 	self setClientDvar("trades_include_all", 1);
-	// else
-	// 	self setClientDvar("trades_include_all", 0);
+	if(getDvarInt("trades_include_all") == 1)
+		self setClientDvar("trades_include_all", 1);
+	else
+		self setClientDvar("trades_include_all", 0);
 
 	self setClientDvar("cg_drawFriendlyFireCrosshair", "1");
 
@@ -1838,8 +1806,8 @@ onPlayerSpawned()
 				// self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();
-				if(level.script == "zombie_coast") // move to level?
-					self thread maps\_custom_hud::george_health_bar();
+				if(level.script == "zombie_coast")
+					self thread maps\_custom_hud_menu::george_health_bar();
 
 				self thread tab_hud();
 				// self thread show_all_on_tab();
@@ -5602,6 +5570,16 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
+	// Absolute multiplier based on max HP of the zombie
+	if (IsDefined(self.animname) && (self.animname == "zombie" || self.animname == "quad_zombie"))
+	{
+		// absolute_multiplier = 0.0033;
+		// if (attacker HasPerk("specialty_rof"))
+		// 	absolute_multiplier = 0.0066;
+
+		// final_damage += int(self.maxhealth * absolute_multiplier);
+	}
+
 	return int( final_damage );
 
 }
@@ -5753,81 +5731,71 @@ end_game()
 	survived = [];
 
 	players = get_players();
-	for( i = 0; i < players.size; i++ )
+
+	game_over_hud = newHudElem();
+	game_over_hud.alignX = "center";
+	game_over_hud.alignY = "middle";
+	game_over_hud.horzAlign = "center";
+	game_over_hud.vertAlign = "middle";
+	game_over_hud.y = -130;
+	game_over_hud.foreground = true;
+	game_over_hud.fontScale = 3;
+	game_over_hud.alpha = 0;
+	game_over_hud.color = (1.0, 1.0, 1.0);
+
+	survived_hud = newHudElem();
+	survived_hud.alignX = "center";
+	survived_hud.alignY = "middle";
+	survived_hud.horzAlign = "center";
+	survived_hud.vertAlign = "middle";
+	survived_hud.y = -100;
+	survived_hud.foreground = true;
+	survived_hud.fontScale = 2;
+	survived_hud.alpha = 0;
+	survived_hud.color = (1.0, 1.0, 1.0);
+
+	// Split screen ain't on PC anyways, no need to scan all the players
+	if (players[0] isSplitScreen())
 	{
-		game_over[i] = NewClientHudElem( players[i] );
-		game_over[i].alignX = "center";
-		game_over[i].alignY = "middle";
-		game_over[i].horzAlign = "center";
-		game_over[i].vertAlign = "middle";
-		game_over[i].y -= 130;
-		game_over[i].foreground = true;
-		game_over[i].fontScale = 3;
-		game_over[i].alpha = 0;
-		game_over[i].color = ( 1.0, 1.0, 1.0 );
+		game_over_hud.y += 40;
+		survived_hud.y += 40;
+	}
 
-		if (level.win_game)
-		{
-			game_over[i] SetText( "RESET" );
-		} else
-		{
-			game_over[i] SetText( &"ZOMBIE_GAME_OVER" );
-		}
+	if (level.win_game)
+		game_over_hud SetText(&"MOD_YOU_WIN");
+	else
+		game_over_hud SetText(&"ZOMBIE_GAME_OVER");
 
-		game_over[i] FadeOverTime( 1 );
-		game_over[i].alpha = 1;
-		if ( players[i] isSplitScreen() )
+	//OLD COUNT METHOD
+	if( level.round_number < 2 )
+	{
+		if( level.script == "zombie_moon" )
 		{
-			game_over[i].y += 40;
-		}
-
-		survived[i] = NewClientHudElem( players[i] );
-		survived[i].alignX = "center";
-		survived[i].alignY = "middle";
-		survived[i].horzAlign = "center";
-		survived[i].vertAlign = "middle";
-		survived[i].y -= 100;
-		survived[i].foreground = true;
-		survived[i].fontScale = 2;
-		survived[i].alpha = 0;
-		survived[i].color = ( 1.0, 1.0, 1.0 );
-		if ( players[i] isSplitScreen() )
-		{
-			survived[i].y += 40;
-		}
-
-		//OLD COUNT METHOD
-		if( level.round_number < 2 )
-		{
-			if( level.script == "zombie_moon" )
+			if( !isdefined(level.left_nomans_land) )
 			{
-				if( !isdefined(level.left_nomans_land) )
-				{
-					nomanslandtime = level.nml_best_time;
-					nomanslandkills = level.total_nml_kills;
-					player_survival_time = int( nomanslandtime/1000 );
-					player_survival_time_in_mins = maps\_zombiemode::to_mins( player_survival_time );
-					survived[i] SetText("Kills: ", nomanslandkills, " / Time: ", player_survival_time_in_mins);
-				}
-				else if( level.left_nomans_land == 2 )
-				{
-					survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
-				}
+				player_survival_time_in_mins = maps\_zombiemode::to_mins(int(level.nml_best_time / 1000));
+				survived_hud SetText(&"MOD_NML_END_KILLS", level.total_nml_kills, &"MOD_NML_END_TIME", player_survival_time_in_mins);
 			}
-			else
+			else if( level.left_nomans_land == 2 )
 			{
-				survived[i] SetText( &"ZOMBIE_SURVIVED_ROUND" );
+				survived_hud SetText( &"ZOMBIE_SURVIVED_ROUND" );
 			}
 		}
 		else
 		{
-			survived[i] SetText( &"ZOMBIE_SURVIVED_ROUNDS", level.round_number );
+			survived_hud SetText( &"ZOMBIE_SURVIVED_ROUND" );
 		}
-
-		survived[i] FadeOverTime( 1 );
-		survived[i].alpha = 1;
+	}
+	else
+	{
+		survived_hud SetText( &"ZOMBIE_SURVIVED_ROUNDS", level.round_number );
 	}
 
+	game_over_hud FadeOverTime(1);
+	game_over_hud.alpha = 1;
+	survived_hud FadeOverTime(1);
+	survived_hud.alpha = 1;
+		
 	players = get_players();
 	for (i = 0; i < players.size; i++)
 	{
@@ -5852,14 +5820,10 @@ end_game()
 
 	bbPrint( "zombie_epilogs: rounds %d", level.round_number );
 
-	players = get_players();
-	for (i = 0; i < players.size; i++)
-	{
-		survived[i] FadeOverTime( 1 );
-		survived[i].alpha = 0;
-		game_over[i] FadeOverTime( 1 );
-		game_over[i].alpha = 0;
-	}
+	survived_hud FadeOverTime(1);
+	survived_hud.alpha = 0;
+	game_over_hud FadeOverTime(1);
+	game_over_hud.alpha = 0;
 
 	wait( 1.5 );
 

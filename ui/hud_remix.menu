@@ -166,7 +166,23 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
-			visible				when(dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1)
+			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 0)
+			decoration
+		}
+
+		itemDef
+		{
+			name				"zombie_kill"
+			type				ITEM_TYPE_TEXT
+			rect 				4 UNI_Y_POS 0 0			
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_LEFT
+			exp text			(locString("@HUD_HUD_ZOMBIES_KILL") + dvarString("hud_kills_value"))	
+			// Base it on the hud_remaining dvar
+			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 1)
 			decoration
 		}
 
@@ -257,4 +273,167 @@
 			decoration
 		}
 	}
+
+	menuDef
+	{
+		name				"right_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_RIGHT VERTICAL_ALIGN_USER_CENTER //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				when( DEFAULT_VISIBILITY );
+
+		#define MOON_HUD_GAP	8
+
+		itemDef
+		{
+			name				"zombie_oxygen"
+			type				ITEM_TYPE_TEXT
+			rect 				-4 -MOON_HUD_GAP 0 0			
+			forecolor			1 1 1 0.8
+			textscale			TEXTSIZE_SMALL
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_RIGHT
+			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_OXYGEN") + dvarString("oxygen_time_value"))	
+			visible				when(dvarInt(oxygen_time_show) == 1)
+			decoration
+		}
+
+		itemDef
+		{
+			name				"zombie_excavator"
+			type				ITEM_TYPE_TEXT
+			rect 				-4 MOON_HUD_GAP 0 0			
+			forecolor			1 1 1 0.8
+			textscale			TEXTSIZE_SMALL
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_TOP_RIGHT
+			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_EXCAVATOR") + dvarString("excavator_name") + ": " + dvarString("excavator_time_value"))	
+			visible				when(dvarInt(excavator_time_show) == 1)
+			decoration
+		}
+	}
+
+	// menuDef
+	// {
+	// /	name				"middle_hud_fullscreen"
+	// 	rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP
+	// 	fullscreen			1
+	// 	visible				1
+
+	// 	itemDef
+	// 	{
+	// 		name				"zombie_coop_pause_filler"
+	// 		style				WINDOW_STYLE_SHADER
+	// 		rect 				0 0 3440 2160
+	// 		background			"black"
+	// 		forecolor			0 0 0 0.4
+	// 		visible				when(dvarInt(game_in_pause) == 1)
+	// 		decoration
+	// 	}
+	// }
+
+	menuDef
+	{
+		name				"middle_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_CENTER //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				1;
+
+		itemDef
+		{
+			name				"kino_box_indicator"
+			type				ITEM_TYPE_TEXT
+			rect 				0 -100 0 0	
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_TITLE
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_CENTER
+			exp text			(locString("@HUD_HUD_ZOMBIES_KINO_BOX") + dvarString("kino_boxset"))	
+			visible				when(dvarString(kino_boxset) != "^0UNDEFINED")
+			decoration
+		}
+
+		// Triggered in zombie_moon_teleporter
+		itemDef
+		{
+			name				"nml_summary"
+			type				ITEM_TYPE_TEXT
+			rect 				0 -100 0 0
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_CENTER
+			exp text			(locString("@MOD_NML_END_KILLS") + dvarString("nml_end_kills") + locString("@MOD_NML_END_TIME") + dvarString("nml_end_time"))
+			visible				when(dvarInt(custom_nml_end) == 1)
+			decoration
+		}
+
+		// itemDef
+		// {
+		// 	name				"zombie_coop_pause"
+		// 	type				ITEM_TYPE_TEXT
+		// 	rect 				0 -25 0 0	
+		// 	forecolor			1 1 1 1
+		// 	textscale			TEXTSIZE_TITLE
+		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
+		// 	textfont			UI_FONT_NORMAL
+		// 	textalign			ITEM_ALIGN_CENTER
+		// 	exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
+		// 	visible				when(dvarInt(game_in_pause) == 1)
+		// 	decoration
+		// }
+	}
+
+	menuDef
+	{
+		name				"bottom_hud"
+		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM //x-pos y-pos width height horizontal_alignment vertical_alignmnet
+		fullscreen			0
+		visible				when( DEFAULT_VISIBILITY );
+
+		#define GEORGE_BAR_W	250
+		#define GEORGE_BAR_H	8
+
+		itemDef
+		{
+			name				"george_health"
+			type				ITEM_TYPE_TEXT
+			rect 				0 -12 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM		
+			forecolor			1 1 1 1
+			textscale			TEXTSIZE_DEFAULT
+			textstyle			ITEM_TEXTSTYLE_SHADOWED
+			textfont			UI_FONT_NORMAL
+			textalign			ITEM_ALIGN_CENTER
+			exp text			(dvarString("george_bar_health"))	
+			visible				when(dvarBool("george_bar_show"))
+			decoration
+		}
+
+		itemDef
+		{
+			name				"george_health_background"
+			type				ITEM_TYPE_IMAGE
+			style				WINDOW_STYLE_SHADER
+			rect				(-(GEORGE_BAR_W / 2) - 2) -11 (GEORGE_BAR_W + 4) (GEORGE_BAR_H + 2) HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
+			foreColor			0 0 0 0.55
+			background			"black"
+			visible				when(dvarBool("george_bar_show"))
+			decoration
+		}
+
+		itemDef
+		{
+			name				"george_health_bar"
+			type				ITEM_TYPE_IMAGE
+			style				WINDOW_STYLE_SHADER
+			rect				(-GEORGE_BAR_W / 2) -10 GEORGE_BAR_W GEORGE_BAR_H HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
+			exp					rect W(dvarInt("george_bar_ratio"))
+			foreColor			1 1 1 1
+			background			"white"
+			visible				when(dvarBool("george_bar_show"))
+			decoration
+		}
 }

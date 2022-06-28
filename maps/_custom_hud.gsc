@@ -57,6 +57,169 @@ timer_hud()
 	}
 }
 
+generate_background()
+{
+	if (isDefined(level.black_hud))
+		level.black_hud destroy();
+		
+	level.black_hud = newhudelem();
+	level.black_hud.horzAlign = "fullscreen";
+	level.black_hud.vertAlign = "fullscreen";
+	level.black_hud SetShader( "black", 640, 480 );
+	level.black_hud.alpha = 0;
+
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0.65;
+}
+
+destroy_background()
+{
+	level.black_hud FadeOverTime( 1.0 );
+	level.black_hud.alpha = 0;
+	level.black_hud destroy();
+}
+
+round_timer_hud()
+{
+	level endon("end_game");
+
+	hud_level_wait();
+
+	if(getDvarInt("hud_pluto"))
+		pluto_offset = 12;
+	else
+		pluto_offset = 0;
+
+	level.round_timer = NewHudElem();
+	level.round_timer.horzAlign = "right";
+	level.round_timer.vertAlign = "top";
+	level.round_timer.alignX = "right";
+	level.round_timer.alignY = "top";
+	level.round_timer.x = -4;
+	level.round_timer.y = 17 + pluto_offset;
+	level.round_timer.fontScale = 1.3;
+	level.round_timer.alpha = 0;
+	level.round_timer.color = (1, 1, 1); // Awaiting new color func
+
+	// Prevent round time from working on first NML
+	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+		wait 0.05;
+
+	while (true)
+	{
+		level waittill ( "start_of_round" );
+
+		// Don't want to start the round if ppl ain't on the moon
+		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+		{
+			wait 0.05;
+			continue;
+		}
+
+		// Exclude time spent in pause
+		if (isdefined(flag( "game_paused" )))
+		{
+			while (flag("game_paused"))
+				wait 0.05;
+		}
+
+		current_round = level.round_number;
+		level.round_timer setTimerUp(0);
+		dvar_state = 0;
+		tab_state = 0;
+
+		tick = 0;
+		while (current_round == level.round_number)
+		{
+			wait 0.05;
+
+			// Ticks so the timer doesn't dissapear immidiately
+			if (level.tracked_zombies == 0 && tick >= 200)
+			{
+				wait 0.5;
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+				break;
+			}
+			else if (tick < 200)
+				tick++;
+
+			if (dvar_state == getDvarInt("hud_round_timer") && tab_state == getDvarInt("hud_tab"))
+				continue;
+
+			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+			{
+				hud_fade(level.round_timer, 1, 0.25);
+				setDvar("rt_displayed", 1);
+			}
+			else
+			{
+				hud_fade(level.round_timer, 0, 0.25);
+				setDvar("rt_displayed", 0);
+			}
+
+			dvar_state = getDvarInt("hud_round_timer");
+			tab_state = getDvarInt("hud_tab");
+		}
+		hud_fade(level.round_timer, 0, 0.25);
+	}
+}
+
+tab_hud()
+{	
+	self endon("disconnect");
+	level endon("end_game");
+	
+	if(getDvar( "hud_button" ) == "")
+		self setClientDvar( "hud_button", "tab" );
+
+	while(1)
+	{	
+		if(self buttonPressed( getDvar( "hud_button" ) ))
+		{	
+			flag_set( "hud_pressed" );
+			self setClientDvar( "hud_tab", 1 );
+		}
+		else
+		{
+			flag_clear( "hud_pressed" );
+			self setClientDvar( "hud_tab", 0 );
+		}
+
+		wait 0.05;
+	}
+}
+
+instakill_timer_hud()
+{
+    self.vr_timer = NewClientHudElem( self );
+    self.vr_timer.horzAlign = "right";
+    self.vr_timer.vertAlign = "bottom";
+    self.vr_timer.alignX = "right";
+    self.vr_timer.alignY = "bottom";
+    self.vr_timer.alpha = 1.3;
+    self.vr_timer.fontscale = 1.0;
+    self.vr_timer.foreground = true;
+    self.vr_timer.y = -57;
+    self.vr_timer.x = -86;
+    self.vr_timer.hidewheninmenu = 1;
+    self.vr_timer.alpha = 0;
+	self.vr_timer.color = (1, 1, 1);
+
+    while (true)
+    {
+        insta_time = self.humangun_player_ignored_timer - level.total_time;
+        //iprintln(insta_time);
+        if(self.personal_instakill)
+            self.vr_timer.alpha = 1;
+        else
+            self.vr_timer.alpha = 0;
+
+        self.vr_timer setTimer(insta_time - 0.1);
+        wait 0.05;
+    }
+}
+
 coop_pause(timer_hud, start_time)
 {
 	level.paused = false;
@@ -132,11 +295,11 @@ coop_pause(timer_hud, start_time)
 			paused_hud = newhudelem();
 			paused_hud.horzAlign = "center";
 			paused_hud.vertAlign = "middle";
-			paused_hud setText("GAME PAUSED");
+			paused_hud setText(&"HUD_HUD_ZOMBIES_COOP_PAUSE");
 			paused_hud.foreground = true;
 			paused_hud.fontScale = 2.3;
-			paused_hud.x -= 63;
-			paused_hud.y -= 20;
+			paused_hud.x = -63;
+			paused_hud.y = -20;
 			paused_hud.alpha = 0;
 			paused_hud.color = ( 1.0, 1.0, 1.0 );
 
@@ -188,89 +351,89 @@ coop_pause(timer_hud, start_time)
 	}
 }
 
-round_timer_hud()
-{
-	level endon("end_game");
+// round_timer_hud()
+// {
+// 	level endon("end_game");
 
-	hud_level_wait();
+// 	hud_level_wait();
 
-	if(getDvarInt("hud_pluto"))
-		pluto_offset = 12;
-	else
-		pluto_offset = 0;
+// 	if(getDvarInt("hud_pluto"))
+// 		pluto_offset = 12;
+// 	else
+// 		pluto_offset = 0;
 
-	level.round_timer = NewHudElem();
-	level.round_timer.horzAlign = "right";
-	level.round_timer.vertAlign = "top";
-	level.round_timer.alignX = "right";
-	level.round_timer.alignY = "top";
-	level.round_timer.x = -4;
-	level.round_timer.y = 17 + pluto_offset;
-	level.round_timer.fontScale = 1.3;
-	level.round_timer.alpha = 0;
-	level.round_timer.color = (1, 1, 1); // Awaiting new color func
+// 	level.round_timer = NewHudElem();
+// 	level.round_timer.horzAlign = "right";
+// 	level.round_timer.vertAlign = "top";
+// 	level.round_timer.alignX = "right";
+// 	level.round_timer.alignY = "top";
+// 	level.round_timer.x = -4;
+// 	level.round_timer.y = 17 + pluto_offset;
+// 	level.round_timer.fontScale = 1.3;
+// 	level.round_timer.alpha = 0;
+// 	level.round_timer.color = (1, 1, 1); // Awaiting new color func
 
-	// timestamp_game = int(getTime() / 1000);
-	level thread round_timer_watcher( level.round_timer );
+// 	// timestamp_game = int(getTime() / 1000);
+// 	// level thread round_timer_watcher( level.round_timer );
 
-	// Prevent round time from working on first NML
-	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
-		wait 0.05;
+// 	// Prevent round time from working on first NML
+// 	while (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+// 		wait 0.05;
 
-	while (true)
-	{
-		level waittill ( "start_of_round" );
+// 	while (true)
+// 	{
+// 		level waittill ( "start_of_round" );
 
-		// Don't want to start the round if ppl ain't on the moon
-		if (isdefined(level.on_the_moon) && !level.on_the_moon)
-		{
-			wait 0.05;
-			continue;
-		}
+// 		// Don't want to start the round if ppl ain't on the moon
+// 		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+// 		{
+// 			wait 0.05;
+// 			continue;
+// 		}
 
-		// Exclude time spent in pause
-		if (isdefined(flag( "game_paused" )))
-		{
-			while (flag("game_paused"))
-				wait 0.05;
-		}
+// 		// Exclude time spent in pause
+// 		if (isdefined(flag( "game_paused" )))
+// 		{
+// 			while (flag("game_paused"))
+// 				wait 0.05;
+// 		}
 
-		current_round = level.round_number;
-		level.round_timer setTimerUp(0);
-		dvar_state = 0;
+// 		current_round = level.round_number;
+// 		level.round_timer setTimerUp(0);
+// 		dvar_state = 0;
 
-		tick = 0;
-		while (current_round == level.round_number)
-		{
-			wait 0.05;
+// 		tick = 0;
+// 		while (current_round == level.round_number)
+// 		{
+// 			wait 0.05;
 
-			if (level.tracked_zombies == 0 && tick >= 200)
-			{
-				wait 0.5;
-				hud_fade(level.round_timer, 0, 0.25);
-				setDvar("rt_displayed", 0);
-				break;
-			}
-			else if (tick < 200)
-				tick++;
+// 			if (level.tracked_zombies == 0 && tick >= 200)
+// 			{
+// 				wait 0.5;
+// 				hud_fade(level.round_timer, 0, 0.25);
+// 				setDvar("rt_displayed", 0);
+// 				break;
+// 			}
+// 			else if (tick < 200)
+// 				tick++;
 
-			if (dvar_state == getDvarInt("hud_round_timer"))
-				continue;
+// 			if (dvar_state == getDvarInt("hud_round_timer"))
+// 				continue;
 
-			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
-			{
-				hud_fade(level.round_timer, 1, 0.25);
-				setDvar("rt_displayed", 1);
-			}
-			else
-			{
-				hud_fade(level.round_timer, 0, 0.25);
-				setDvar("rt_displayed", 0);
-			}
+// 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
+// 			{
+// 				hud_fade(level.round_timer, 1, 0.25);
+// 				setDvar("rt_displayed", 1);
+// 			}
+// 			else
+// 			{
+// 				hud_fade(level.round_timer, 0, 0.25);
+// 				setDvar("rt_displayed", 0);
+// 			}
 
-			dvar_state = getDvarInt("hud_round_timer");
-		}
-		hud_fade(level.round_timer, 0, 0.25);
+// 			dvar_state = getDvarInt("hud_round_timer");
+// 		}
+// 		hud_fade(level.round_timer, 0, 0.25);
 
 		// // Print total time
 		// timestamp_current = int(getTime() / 1000);
@@ -324,8 +487,8 @@ round_timer_hud()
 		// timestamp_end = int(getTime() / 1000);
 		// round_time = timestamp_end - timestamp_start;
 		// level thread display_times( "Round time", round_time, 5, 0.5, 2 );		
-	}
-}
+// 	}
+// }
 
 round_timer_watcher( hud )
 {
@@ -360,169 +523,144 @@ round_timer_watcher( hud )
 	}
 }
 
-display_sph()
-{	
-	level endon("end_game");
+// display_sph()
+// {	
+// 	level endon("end_game");
 
-	hud_level_wait();
+// 	hud_level_wait();
 
-	level.sph_hud = NewHudElem();
-	level.sph_hud.horzAlign = "right";
-	level.sph_hud.vertAlign = "top";
-	level.sph_hud.alignX = "right";
-	level.sph_hud.alignY = "top";
-	level.sph_hud.y = 18 + level.pluto_offset;
-	level.sph_hud.x = -5;
-	level.sph_hud.fontScale = 1.3;
-	level.sph_hud.alpha = 0;
-	level.sph_hud.label = "SPH: ";
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	level.sph_hud = NewHudElem();
+// 	level.sph_hud.horzAlign = "right";
+// 	level.sph_hud.vertAlign = "top";
+// 	level.sph_hud.alignX = "right";
+// 	level.sph_hud.alignY = "top";
+// 	level.sph_hud.y = 18 + level.pluto_offset;
+// 	level.sph_hud.x = -5;
+// 	level.sph_hud.fontScale = 1.3;
+// 	level.sph_hud.alpha = 0;
+// 	level.sph_hud.label = "SPH: ";
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.sph_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	level.sph_hud setValue(0);
-	sph_round_display = 50;		// Start displaying on r50
+// 	level.sph_hud setValue(0);
+// 	sph_round_display = 50;		// Start displaying on r50
 
-	// Initialize variables
-	round_time = 0;			
-	zc_last = 0;
+// 	// Initialize variables
+// 	round_time = 0;			
+// 	zc_last = 0;
 
-	while ( 1 )
-	{
-		level waittill( "start_of_round" );
+// 	while ( 1 )
+// 	{
+// 		level waittill( "start_of_round" );
 
-		// Don't want to start the round if ppl ain't on the moon
-		if (isdefined(level.on_the_moon) && !level.on_the_moon)
-		{
-			wait 0.05;
-			continue;
-		}
+// 		// Don't want to start the round if ppl ain't on the moon
+// 		if (isdefined(level.on_the_moon) && !level.on_the_moon)
+// 		{
+// 			wait 0.05;
+// 			continue;
+// 		}
 
-		// Don't count pause time
-		if (isdefined(flag( "game_paused" )))
-		{
-			if (!flag( "game_paused" ))
-			{		
-				rt_start = int(getTime() / 1000);
-			}
-			else
-			{
-				while ( 1 )
-				{
-					if (!flag( "game_paused" ))
-					{
-						break;
-					}
-					wait 0.05;
-				}
-				rt_start = int(getTime() / 1000);
-			}
-		}
-		else
-		{
-			wait 0.05;
-			// iPrintLn("waiting");
-			continue;
-		}
-		// Get zombie count from current round
-		zc_current = level.zombie_total + get_enemy_count();
+// 		// Don't count pause time
+// 		if (isdefined(flag( "game_paused" )))
+// 		{
+// 			if (!flag( "game_paused" ))
+// 			{		
+// 				rt_start = int(getTime() / 1000);
+// 			}
+// 			else
+// 			{
+// 				while ( 1 )
+// 				{
+// 					if (!flag( "game_paused" ))
+// 					{
+// 						break;
+// 					}
+// 					wait 0.05;
+// 				}
+// 				rt_start = int(getTime() / 1000);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			wait 0.05;
+// 			// iPrintLn("waiting");
+// 			continue;
+// 		}
+// 		// Get zombie count from current round
+// 		zc_current = level.zombie_total + get_enemy_count();
 
-		// Calculate and display SPH
-		wait 7;
-		y_offset = 0;
-		if(getDvarInt("hud_round_timer"))
-		{
-			y_offset = 15;
-		}
-		level.sph_hud.y = (18 + y_offset + level.pluto_offset);
+// 		// Calculate and display SPH
+// 		wait 7;
+// 		y_offset = 0;
+// 		if(getDvarInt("hud_round_timer"))
+// 		{
+// 			y_offset = 15;
+// 		}
+// 		level.sph_hud.y = (18 + y_offset + level.pluto_offset);
 
-		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
-		{
-			sph = round_time / (zc_last / 24);
-			level.sph_hud setValue(sph);
-			hud_fade(level.sph_hud, 1, 0.15);
-			wait 6;
-			hud_fade(level.sph_hud, 0, 0.15);
-		}
+// 		if ((level.round_number != (level.last_special_round + 1)) && (level.round_number >= sph_round_display))
+// 		{
+// 			sph = round_time / (zc_last / 24);
+// 			level.sph_hud setValue(sph);
+// 			hud_fade(level.sph_hud, 1, 0.15);
+// 			wait 6;
+// 			hud_fade(level.sph_hud, 0, 0.15);
+// 		}
 
-		level waittill( "end_of_round" );
-		if(flag( "enter_nml" ))
-		{
-			level waittill( "end_of_round" ); //end no man's land
-			level waittill( "end_of_round" ); //end actual round
-		}			
+// 		level waittill( "end_of_round" );
+// 		if(flag( "enter_nml" ))
+// 		{
+// 			level waittill( "end_of_round" ); //end no man's land
+// 			level waittill( "end_of_round" ); //end actual round
+// 		}			
 		
-		zc_last = zc_current;	// Save zc from this round to separate var
-		rt_end = int(getTime() / 1000);
-		round_time = rt_end - rt_start;
-		// iPrintLn("debug_rt: ^5" + round_time);
-		wait 0.05;
-	}
-}
+// 		zc_last = zc_current;	// Save zc from this round to separate var
+// 		rt_end = int(getTime() / 1000);
+// 		round_time = rt_end - rt_start;
+// 		// iPrintLn("debug_rt: ^5" + round_time);
+// 		wait 0.05;
+// 	}
+// }
 
-display_times( label, time, duration, delay, col )
-{
-	level endon("end_game");
-	self endon("disconnect");
+// display_times( label, time, duration, delay, col )
+// {
+// 	level endon("end_game");
+// 	self endon("disconnect");
 
-	y_offset = 0;
-	if (isdefined(col))
-	{
-		while (col > 1)
-		{
-			y_offset += 15;
-			col--;
-		}
-	}
+// 	y_offset = 0;
+// 	if (isdefined(col))
+// 	{
+// 		while (col > 1)
+// 		{
+// 			y_offset += 15;
+// 			col--;
+// 		}
+// 	}
 
-	wait delay;
-	level.print_hud = NewHudElem();
-	level.print_hud.horzAlign = "right";
-	level.print_hud.vertAlign = "top";
-	level.print_hud.alignX = "right";
-	level.print_hud.alignY = "top";
-	level.print_hud.y = (2 + y_offset + level.pluto_offset);
-	level.print_hud.x = -5;
-	level.print_hud.fontScale = 1.3;
-	level.print_hud.alpha = 0;
-	level.print_hud.label = (label + ": ");
-	// Reading it directly will cause it to bug up, middle-man level var required
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	wait delay;
+// 	level.print_hud = NewHudElem();
+// 	level.print_hud.horzAlign = "right";
+// 	level.print_hud.vertAlign = "top";
+// 	level.print_hud.alignX = "right";
+// 	level.print_hud.alignY = "top";
+// 	level.print_hud.y = (2 + y_offset + level.pluto_offset);
+// 	level.print_hud.x = -5;
+// 	level.print_hud.fontScale = 1.3;
+// 	level.print_hud.alpha = 0;
+// 	level.print_hud.label = (label + ": ");
+// 	// Reading it directly will cause it to bug up, middle-man level var required
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.print_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	time_in_mins = get_time_friendly( time );	
-	level.print_hud setText( time_in_mins );
+// 	time_in_mins = get_time_friendly( time );	
+// 	level.print_hud setText( time_in_mins );
 
-	hud_fade( level.print_hud, 1, 0.25 );
-	wait duration;
-	hud_fade( level.print_hud, 0, 0.25 );
-	wait 2;
-	level.print_hud destroy_hud();
-}
-
-tab_hud()
-{	
-	self endon("disconnect");
-	level endon("end_game");
-	
-	if(getDvar( "hud_button" ) == "")
-		self setClientDvar( "hud_button", "tab" );
-
-	while(1)
-	{	
-		if(self buttonPressed( getDvar( "hud_button" ) ))
-		{	
-			flag_set( "hud_pressed" );
-			self setClientDvar( "hud_tab", 1 );
-		}
-		else
-		{
-			flag_clear( "hud_pressed" );
-			self setClientDvar( "hud_tab", 0 );
-		}
-
-		wait 0.05;
-	}
-}
+// 	hud_fade( level.print_hud, 1, 0.25 );
+// 	wait duration;
+// 	hud_fade( level.print_hud, 0, 0.25 );
+// 	wait 2;
+// 	level.print_hud destroy_hud();
+// }
 
 // drop_tracker_hud()
 // {
@@ -572,131 +710,131 @@ tab_hud()
 // 	}
 // }
 
-zombies_remaining_hud()
-{
-	level endon("disconnect");
-	level endon("end_game");
+// zombies_remaining_hud()
+// {
+// 	level endon("disconnect");
+// 	level endon("end_game");
 
-	hud_wait();
+// 	hud_wait();
 
-	self.remaining_hud = create_hud("left", "top");
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
-	self.remaining_hud.y += 2;
-	self.remaining_hud.x += 5;
-	self.remaining_hud.label = "Remaining: ";
+// 	self.remaining_hud = create_hud("left", "top");
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.remaining_hud.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	self.remaining_hud.y += 2;
+// 	self.remaining_hud.x += 5;
+// 	self.remaining_hud.label = "Remaining: ";
 
-	hud_fade(self.remaining_hud, 1, 0.3);
-	self thread hud_end(self.remaining_hud);
+// 	hud_fade(self.remaining_hud, 1, 0.3);
+// 	self thread hud_end(self.remaining_hud);
 
-	while(1)
-	{
-		// Kill tracker for NML only
-		if (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
-		{
-			self.remaining_hud.label = "Kills: ";
+// 	while(1)
+// 	{
+// 		// Kill tracker for NML only
+// 		if (!isDefined(level.left_nomans_land) && level.script == "zombie_moon")
+// 		{
+// 			self.remaining_hud.label = "Kills: ";
 
-			if(self.remaining_hud.alpha != 1)
-			{
-				hud_fade(self.remaining_hud, 1, 0.25);			
-			}
+// 			if(self.remaining_hud.alpha != 1)
+// 			{
+// 				hud_fade(self.remaining_hud, 1, 0.25);			
+// 			}
 
-			tracked_kills = 0;
-			players = get_players();
-			for (i = 0; i < players.size; i++)
-			{
-				tracked_kills = players[i].kills;
-			}
+// 			tracked_kills = 0;
+// 			players = get_players();
+// 			for (i = 0; i < players.size; i++)
+// 			{
+// 				tracked_kills = players[i].kills;
+// 			}
 
-			self.remaining_hud setValue(tracked_kills);
-		}
-		// Else use normal remaining tracker
-		else
-		{
-			self.remaining_hud.label = "Remaining: ";
+// 			self.remaining_hud setValue(tracked_kills);
+// 		}
+// 		// Else use normal remaining tracker
+// 		else
+// 		{
+// 			self.remaining_hud.label = "Remaining: ";
 
-			if( !getDvarInt( "hud_remaining" ) )
-			{
-				if(self.remaining_hud.alpha != 0)
-				{
-				    toggled_hud_fade(self.remaining_hud, 0);
-				}
-			}
-			else
-			{
-				if(self.remaining_hud.alpha != 1)
-				{
-					toggled_hud_fade(self.remaining_hud, 1);			
-				}
+// 			if( !getDvarInt( "hud_remaining" ) )
+// 			{
+// 				if(self.remaining_hud.alpha != 0)
+// 				{
+// 				    toggled_hud_fade(self.remaining_hud, 0);
+// 				}
+// 			}
+// 			else
+// 			{
+// 				if(self.remaining_hud.alpha != 1)
+// 				{
+// 					toggled_hud_fade(self.remaining_hud, 1);			
+// 				}
 
-				zombies = level.zombie_total + get_enemy_count();
-				self.remaining_hud setValue(zombies);
-			}
+// 				zombies = level.zombie_total + get_enemy_count();
+// 				self.remaining_hud setValue(zombies);
+// 			}
 
-			if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
-			{
-				if(self.remaining_hud.alpha != 1)
-				{
-                    toggled_hud_fade(self.remaining_hud, 1);
-				}
+// 			if( getDvarInt( "hud_tab" ) && !getDvarInt( "hud_remaining" ) )
+// 			{
+// 				if(self.remaining_hud.alpha != 1)
+// 				{
+//                     toggled_hud_fade(self.remaining_hud, 1);
+// 				}
 
-				zombies = level.zombie_total + get_enemy_count();
-				self.remaining_hud setValue(zombies);
-			}
-		}
+// 				zombies = level.zombie_total + get_enemy_count();
+// 				self.remaining_hud setValue(zombies);
+// 			}
+// 		}
 		
-		wait 0.05;
-	}
-}
+// 		wait 0.05;
+// 	}
+// }
 
-box_notifier()
-{
-	hud_level_wait();
+// box_notifier()
+// {
+// 	hud_level_wait();
 	
-	box_notifier_hud = NewHudElem();
-	box_notifier_hud.horzAlign = "center";
-	box_notifier_hud.vertAlign = "middle";
-	box_notifier_hud.alignX = "center";
-	box_notifier_hud.alignY = "middle";
-	box_notifier_hud.x = 0;
-	box_notifier_hud.y = -150;
-	box_notifier_hud.fontScale = 1.6;
-	box_notifier_hud.alpha = 0;
-	box_notifier_hud.label = "^7BOX SET: ";
-	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
+// 	box_notifier_hud = NewHudElem();
+// 	box_notifier_hud.horzAlign = "center";
+// 	box_notifier_hud.vertAlign = "middle";
+// 	box_notifier_hud.alignX = "center";
+// 	box_notifier_hud.alignY = "middle";
+// 	box_notifier_hud.x = 0;
+// 	box_notifier_hud.y = -150;
+// 	box_notifier_hud.fontScale = 1.6;
+// 	box_notifier_hud.alpha = 0;
+// 	box_notifier_hud.label = "^7BOX SET: ";
+// 	box_notifier_hud.color = ( 1.0, 1.0, 1.0 );
 
-	i = 0;
-	while(i < 5)
-	{
-		if (isdefined(level.box_set))
-		{
-			box_notifier_hud setText("^0UNDEFINED");
-			// iPrintLn(level.box_set); // debug
-			if (level.box_set == 0)
-			{
-				box_notifier_hud setText("^2DINING");
-			}
-			else if (level.box_set == 1)
-			{
-				box_notifier_hud setText("^3HELLROOM");
-			}
-			else if (level.box_set == 2)
-			{
-				box_notifier_hud setText("^5NO POWER");
-			}
-			hud_fade(box_notifier_hud, 1, 0.25);
-			wait 4;
-			hud_fade(box_notifier_hud, 0, 0.25);
-			break;
-		}
-		else
-		{
-			// iPrintLn("undefined"); // debug
-			wait 0.5;
-			i++;
-		}
-	}
-}
+// 	i = 0;
+// 	while(i < 5)
+// 	{
+// 		if (isdefined(level.box_set))
+// 		{
+// 			box_notifier_hud setText("^0UNDEFINED");
+// 			// iPrintLn(level.box_set); // debug
+// 			if (level.box_set == 0)
+// 			{
+// 				box_notifier_hud setText("^2DINING");
+// 			}
+// 			else if (level.box_set == 1)
+// 			{
+// 				box_notifier_hud setText("^3HELLROOM");
+// 			}
+// 			else if (level.box_set == 2)
+// 			{
+// 				box_notifier_hud setText("^5NO POWER");
+// 			}
+// 			hud_fade(box_notifier_hud, 1, 0.25);
+// 			wait 4;
+// 			hud_fade(box_notifier_hud, 0, 0.25);
+// 			break;
+// 		}
+// 		else
+// 		{
+// 			// iPrintLn("undefined"); // debug
+// 			wait 0.5;
+// 			i++;
+// 		}
+// 	}
+// }
 
 // health_bar_hud()
 // {
@@ -784,291 +922,256 @@ updateHealth( barFrac )
 	self setShader( self.shader, barWidth, self.height );
 }
 
-instakill_timer_hud()
-{
-    self.vr_timer = NewClientHudElem( self );
-    self.vr_timer.horzAlign = "right";
-    self.vr_timer.vertAlign = "bottom";
-    self.vr_timer.alignX = "right";
-    self.vr_timer.alignY = "bottom";
-    self.vr_timer.alpha = 1.3;
-    self.vr_timer.fontscale = 1.0;
-    self.vr_timer.foreground = true;
-    self.vr_timer.y -= 57;
-    self.vr_timer.x -= 86;
-    self.vr_timer.hidewheninmenu = 1;
-    self.vr_timer.alpha = 0;
-	self.vr_timer.color = (1, 1, 1);
+// oxygen_timer_hud()
+// {
+// 	level endon("end_game");
 
-	// colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	// self.vr_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+//     self.oxygen_timer = NewClientHudElem( self );
+//     self.oxygen_timer.horzAlign = "right";
+//     self.oxygen_timer.vertAlign = "middle";
+//     self.oxygen_timer.alignX = "right";
+//     self.oxygen_timer.alignY = "middle";
+//     self.oxygen_timer.alpha = 1.4;
+//     self.oxygen_timer.fontscale = 1.0;
+//     self.oxygen_timer.foreground = true;
+//     self.oxygen_timer.y = 8;
+//     self.oxygen_timer.x = -10;
+//     self.oxygen_timer.hidewheninmenu = 1;
+//     self.oxygen_timer.alpha = 0;
+// 	self.oxygen_timer.label = "Oxygen left: ";
 
-    while(1)
-    {
-        insta_time = self.humangun_player_ignored_timer - level.total_time;
-        //iprintln(insta_time);
-        if(self.personal_instakill)
-        {
-            self.vr_timer.alpha = 1;
-        }
-        else{
-            self.vr_timer.alpha = 0;
-        }
-        self.vr_timer setTimer(insta_time - 0.1);
-        wait 0.05;
-    }
-}
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-oxygen_timer_hud()
-{
-	level endon("end_game");
+//     while(1)
+//     {
+// 		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+// 		{
+// 			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
+// 			self.oxygen_timer setTimer(oxygen_left - 0.05);
 
-    self.oxygen_timer = NewClientHudElem( self );
-    self.oxygen_timer.horzAlign = "right";
-    self.oxygen_timer.vertAlign = "middle";
-    self.oxygen_timer.alignX = "right";
-    self.oxygen_timer.alignY = "middle";
-    self.oxygen_timer.alpha = 1.4;
-    self.oxygen_timer.fontscale = 1.0;
-    self.oxygen_timer.foreground = true;
-    self.oxygen_timer.y = 8;
-    self.oxygen_timer.x = -10;
-    self.oxygen_timer.hidewheninmenu = 1;
-    self.oxygen_timer.alpha = 0;
-	self.oxygen_timer.label = "Oxygen left: ";
+// 			// iprintln(oxygen_left);
+// 			// iPrintLn("time_to_death" + self.time_to_death);
+// 			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
 
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	self.oxygen_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+// 			{
+// 				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+// 					hud_fade(self.oxygen_timer, 1, 0.15);
+// 				else
+// 					hud_fade(self.oxygen_timer, 0, 0.15);
+// 			}
 
-    while(1)
-    {
-		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
-		{
-			oxygen_left = (self.time_to_death - self.time_in_low_gravity) / 1000;
-			self.oxygen_timer setTimer(oxygen_left - 0.05);
-
-			// iprintln(oxygen_left);
-			// iPrintLn("time_to_death" + self.time_to_death);
-			// iPrintLn("time_in_low_gravity" + self.time_in_low_gravity);
-
-			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
-			{
-				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
-					hud_fade(self.oxygen_timer, 1, 0.15);
-				else
-					hud_fade(self.oxygen_timer, 0, 0.15);
-			}
-
-			else
-				hud_fade(self.oxygen_timer, 0, 0.15);
-		}
+// 			else
+// 				hud_fade(self.oxygen_timer, 0, 0.15);
+// 		}
     
-        wait 0.05;
-    }
-}
+//         wait 0.05;
+//     }
+// }
 
-excavator_timer_hud()
-{
-	level endon("end_game");
+// excavator_timer_hud()
+// {
+// 	level endon("end_game");
 
-    level.excavator_timer = NewHudElem();
-    level.excavator_timer.horzAlign = "right";
-    level.excavator_timer.vertAlign = "middle";
-    level.excavator_timer.alignX = "right";
-    level.excavator_timer.alignY = "middle";
-    level.excavator_timer.alpha = 1.4;
-    level.excavator_timer.fontscale = 1.0;
-    level.excavator_timer.foreground = true;
-    level.excavator_timer.y = -8;
-    level.excavator_timer.x = -10;
-    level.excavator_timer.hidewheninmenu = 1;
-    level.excavator_timer.alpha = 0;
-	level.excavator_timer.label = "Excavator: ";
+//     level.excavator_timer = NewHudElem();
+//     level.excavator_timer.horzAlign = "right";
+//     level.excavator_timer.vertAlign = "middle";
+//     level.excavator_timer.alignX = "right";
+//     level.excavator_timer.alignY = "middle";
+//     level.excavator_timer.alpha = 1.4;
+//     level.excavator_timer.fontscale = 1.0;
+//     level.excavator_timer.foreground = true;
+//     level.excavator_timer.y = -8;
+//     level.excavator_timer.x = -10;
+//     level.excavator_timer.hidewheninmenu = 1;
+//     level.excavator_timer.alpha = 0;
+// 	level.excavator_timer.label = "Excavator: ";
 
-	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
-	level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
+// 	colors = strTok( getDvar( "cg_ScoresColor_Gamertag_0"), " " ); //default 1 1 1 1
+// 	level.excavator_timer.color = ( string_to_float(colors[0]), string_to_float(colors[1]), string_to_float(colors[2]) );
 
-	current_excavator = "null";
-	excavator_area = "null";
+// 	current_excavator = "null";
+// 	excavator_area = "null";
 
-    while(1)
-    {
-		// debug
-		// iprintln("digger_time_left" + level.digger_time_left);
-		// iPrintLn("digger_to_activate" + level.digger_to_activate);
+//     while(1)
+//     {
+// 		// debug
+// 		// iprintln("digger_time_left" + level.digger_time_left);
+// 		// iPrintLn("digger_to_activate" + level.digger_to_activate);
 		
-		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
-		{
-			switch (level.digger_to_activate) 
-			{
-			case "teleporter":
-				current_excavator = "Pi";
-				// excavator_area = "Tunnel 6";
-				break;
-			case "hangar":
-				current_excavator = "Omicron";
-				// excavator_area = "Tunnel 11";
-				break;
-			case "biodome":
-				current_excavator = "Epsilon";
-				// excavator_area = "Biodome";
-				break;
-			}
+// 		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
+// 		{
+// 			switch (level.digger_to_activate) 
+// 			{
+// 			case "teleporter":
+// 				current_excavator = "Pi";
+// 				// excavator_area = "Tunnel 6";
+// 				break;
+// 			case "hangar":
+// 				current_excavator = "Omicron";
+// 				// excavator_area = "Tunnel 11";
+// 				break;
+// 			case "biodome":
+// 				current_excavator = "Epsilon";
+// 				// excavator_area = "Biodome";
+// 				break;
+// 			}
 
-			if (current_excavator == "null")
-				continue;
+// 			if (current_excavator == "null")
+// 				continue;
 
-			level.excavator_timer.label = "Excavator " + current_excavator + ": ";
+// 			level.excavator_timer.label = "Excavator " + current_excavator + ": ";
 
-			level.excavator_timer setTimer(level.digger_time_left - 0.05);
+// 			level.excavator_timer setTimer(level.digger_time_left - 0.05);
 
-			if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
-			{
-				if((level.digger_to_activate != "null") && (level.excavator_timer.alpha != 1))
-					hud_fade(level.excavator_timer, 1, 0.15);
-				else if((level.digger_to_activate == "null") && (level.excavator_timer.alpha != 0))
-					hud_fade(level.excavator_timer, 0, 0.15);
-			}
+// 			if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
+// 			{
+// 				if((level.digger_to_activate != "null") && (level.excavator_timer.alpha != 1))
+// 					hud_fade(level.excavator_timer, 1, 0.15);
+// 				else if((level.digger_to_activate == "null") && (level.excavator_timer.alpha != 0))
+// 					hud_fade(level.excavator_timer, 0, 0.15);
+// 			}
 
-			else
-				hud_fade(level.excavator_timer, 0, 0.15);
-		}
+// 			else
+// 				hud_fade(level.excavator_timer, 0, 0.15);
+// 		}
     
-        wait 0.05;
-    }
-}
+//         wait 0.05;
+//     }
+// }
 
-george_health_bar()
-{
-	// self endon("disconnect");
-	level endon("end_game");
+// george_health_bar()
+// {
+// 	// self endon("disconnect");
+// 	level endon("end_game");
 
-	// hud_wait();
-	level waittill("start_of_round");
+// 	// hud_wait();
+// 	level waittill("start_of_round");
 
-	george_max_health = 250000 * level.players_playing;
+// 	george_max_health = 250000 * level.players_playing;
 
-	width = 250;
-	height = 8;
-	hudx = "center";
-	hudy = "bottom";
-	posx = 0;
-	posy = -3;
+// 	width = 250;
+// 	height = 8;
+// 	hudx = "center";
+// 	hudy = "bottom";
+// 	posx = 0;
+// 	posy = -3;
 
-	self.george_bar_background = create_hud(hudx, hudy);
-	self.george_bar_background.x = posx;
-	self.george_bar_background.y = posy;
-	self.george_bar_background.width = width + 2;
-	self.george_bar_background.height = height + 1;
-	self.george_bar_background.foreground = 0;
-	self.george_bar_background.shader = "black";
-	self.george_bar_background.alpha = 0;
-	self.george_bar_background setShader( "black", width + 2, height + 2 );
+// 	self.george_bar_background = create_hud(hudx, hudy);
+// 	self.george_bar_background.x = posx;
+// 	self.george_bar_background.y = posy;
+// 	self.george_bar_background.width = width + 2;
+// 	self.george_bar_background.height = height + 1;
+// 	self.george_bar_background.foreground = 0;
+// 	self.george_bar_background.shader = "black";
+// 	self.george_bar_background.alpha = 0;
+// 	self.george_bar_background setShader( "black", width + 2, height + 2 );
 
-	self.george_bar = create_hud(hudx, hudy);
-	self.george_bar.x = posx;
-	self.george_bar.y = posy - 1;
-	self.george_bar.width = width;
-	self.george_bar.height = height;
-	self.george_bar.foreground = 1;
-	self.george_bar.shader = "white";
-	self.george_bar.alpha = 0;
-	self.george_bar setShader( "white", width, height );
+// 	self.george_bar = create_hud(hudx, hudy);
+// 	self.george_bar.x = posx;
+// 	self.george_bar.y = posy - 1;
+// 	self.george_bar.width = width;
+// 	self.george_bar.height = height;
+// 	self.george_bar.foreground = 1;
+// 	self.george_bar.shader = "white";
+// 	self.george_bar.alpha = 0;
+// 	self.george_bar setShader( "white", width, height );
 
-	self.george_health = create_hud(hudx, hudy);
-	self.george_health.x = posx;
-	self.george_health.y = posy - 8;
-	self.george_health.fontScale = 1.3;
-	self.george_health.alpha = 0;
+// 	self.george_health = create_hud(hudx, hudy);
+// 	self.george_health.x = posx;
+// 	self.george_health.y = posy - 8;
+// 	self.george_health.fontScale = 1.3;
+// 	self.george_health.alpha = 0;
 
-	self thread hud_end(self.george_health);
-	self thread hud_end(self.george_bar);
-	self thread hud_end(self.george_bar_background);
+// 	self thread hud_end(self.george_health);
+// 	self thread hud_end(self.george_bar);
+// 	self thread hud_end(self.george_bar_background);
 
-	current_george_hp = 0;
+// 	current_george_hp = 0;
 
-	while (1)
-	{
-		// iPrintLn(flag("director_alive"));	// debug
-		// iPrintLn(flag("spawn_init"));		// debug
+// 	while (1)
+// 	{
+// 		// iPrintLn(flag("director_alive"));	// debug
+// 		// iPrintLn(flag("spawn_init"));		// debug
 
-		// Amount of damage dealt to director, prevent going beyond the scale
-		local_director_damage = level.director_damage;
-		if (local_director_damage > george_max_health)
-			local_director_damage = george_max_health;
+// 		// Amount of damage dealt to director, prevent going beyond the scale
+// 		local_director_damage = level.director_damage;
+// 		if (local_director_damage > george_max_health)
+// 			local_director_damage = george_max_health;
 
-		current_george_hp = (george_max_health - local_director_damage);
+// 		current_george_hp = (george_max_health - local_director_damage);
 
-		if (flag( "director_alive" ))
-		{
-			self.george_health setValue(current_george_hp);
-			// Prevent visual glitches with bar while george has 0 health
-			if (current_george_hp == 0)
-			{
-				self.george_bar updateHealth(width);	// Smallest possible size
-				self.george_bar.alpha = 0;
-			}
-			else
-				self.george_bar updateHealth(current_george_hp / george_max_health);	
+// 		if (flag( "director_alive" ))
+// 		{
+// 			self.george_health setValue(current_george_hp);
+// 			// Prevent visual glitches with bar while george has 0 health
+// 			if (current_george_hp == 0)
+// 			{
+// 				self.george_bar updateHealth(width);	// Smallest possible size
+// 				self.george_bar.alpha = 0;
+// 			}
+// 			else
+// 				self.george_bar updateHealth(current_george_hp / george_max_health);	
 					
-			self.george_health.color = (0.2, 0.6, 1);				// Blue
-			if (current_george_hp < george_max_health * .66)
-			{
-				self.george_health.color = (1, 1, 0.2);				// Yellow
-				if (current_george_hp < george_max_health * .33)
-				{
-					self.george_health.color = (1, 0.6, 0.2);		// Orange
-					if (current_george_hp <= 1)
-					{
-						self.george_health.color = (1, 0.2, 0.2);	// Red
-					}
-				}
-			}
-		}
-		else
-		{
-			hud_fade(self.george_bar, 0, 0.3);
-			self.george_health setValue(0);
-			self.george_health.color = (1, 0.2, 0.2);				// Red
-		}
+// 			self.george_health.color = (0.2, 0.6, 1);				// Blue
+// 			if (current_george_hp < george_max_health * .66)
+// 			{
+// 				self.george_health.color = (1, 1, 0.2);				// Yellow
+// 				if (current_george_hp < george_max_health * .33)
+// 				{
+// 					self.george_health.color = (1, 0.6, 0.2);		// Orange
+// 					if (current_george_hp <= 1)
+// 					{
+// 						self.george_health.color = (1, 0.2, 0.2);	// Red
+// 					}
+// 				}
+// 			}
+// 		}
+// 		else
+// 		{
+// 			hud_fade(self.george_bar, 0, 0.3);
+// 			self.george_health setValue(0);
+// 			self.george_health.color = (1, 0.2, 0.2);				// Red
+// 		}
 
-		if(!getDvarInt("hud_george_bar"))
-		{
-			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
-			{
-				hud_fade(self.george_health, 0, 0.3);
-				hud_fade(self.george_bar, 0, 0.3);
-				hud_fade(self.george_bar_background, 0, 0.3);
-			}
-		}
-		else
-		{
-			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
-			if (self.george_bar.alpha != 0.5 && current_george_hp > 0)
-			{
-				hud_fade(self.george_health, 0.8, 0.3);
-				hud_fade(self.george_bar, 0.55, 0.3);
-				hud_fade(self.george_bar_background, 0.55, 0.3);
-			}
-			else if (self.george_health.alpha != 0 && !flag("director_alive")) //temp_director
-			{
-				wait 5;
-				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
-				hud_fade(self.george_health, 0, 0.3);
-				hud_fade(self.george_bar_background, 0, 0.3);
-			}
-    	}
+// 		if(!getDvarInt("hud_george_bar"))
+// 		{
+// 			if(self.george_health.alpha != 0 || self.george_bar != 0 || self.george_bar_background != 0)
+// 			{
+// 				hud_fade(self.george_health, 0, 0.3);
+// 				hud_fade(self.george_bar, 0, 0.3);
+// 				hud_fade(self.george_bar_background, 0, 0.3);
+// 			}
+// 		}
+// 		else
+// 		{
+// 			// If it's not asked for alpha of that particular hud it won't reappear after george health is set
+// 			if (self.george_bar.alpha != 0.5 && current_george_hp > 0)
+// 			{
+// 				hud_fade(self.george_health, 0.8, 0.3);
+// 				hud_fade(self.george_bar, 0.55, 0.3);
+// 				hud_fade(self.george_bar_background, 0.55, 0.3);
+// 			}
+// 			else if (self.george_health.alpha != 0 && !flag("director_alive")) //temp_director
+// 			{
+// 				wait 5;
+// 				// hud_fade(george_bar, 0, 0.3);	// Not needed anymore
+// 				hud_fade(self.george_health, 0, 0.3);
+// 				hud_fade(self.george_bar_background, 0, 0.3);
+// 			}
+//     	}
 
-		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
-		{
-			hud_fade(self.george_health, 0.8, 0.3);
-			hud_fade(self.george_bar_background, 0.55, 0.3);	
-			if (current_george_hp > 0)
-				hud_fade(self.george_bar, 0.55, 0.3);
-		}
-		wait 0.05;
-	}
-}
+// 		if (flag("director_alive") && !getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))
+// 		{
+// 			hud_fade(self.george_health, 0.8, 0.3);
+// 			hud_fade(self.george_bar_background, 0.55, 0.3);	
+// 			if (current_george_hp > 0)
+// 				hud_fade(self.george_bar, 0.55, 0.3);
+// 		}
+// 		wait 0.05;
+// 	}
+// }
 
 hud_trade_header()
 {

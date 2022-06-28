@@ -8,6 +8,12 @@ LANG_ENGLISH    "Winter Wunderland"
 REFERENCE       "ZOMBIE_WWL_DESC_CAPS"
 LANG_ENGLISH    "In an abandoned town deep in the mountains, the frozen undead rise from the snow..."
 
+REFERENCE       "NML_END_KILLS"
+LANG_ENGLISH    "Kills: "
+
+REFERENCE       "NML_END_TIME"
+LANG_ENGLISH    " / Time: "
+
 REFERENCE       HUD_FOV_ENABLE
 LANG_ENGLISH    "FOV ENABLED"
 
@@ -49,9 +55,6 @@ LANG_ENGLISH    "TOGGLE HUD"
 
 REFERENCE       GAMEMODE
 LANG_ENGLISH    "GAMEMODE"
-
-REFERENCE       COOP_PAUSE
-LANG_ENGLISH    "COOP PAUSE"
 
 REFERENCE       START_ROUND
 LANG_ENGLISH    "START ROUND"

@@ -3,6 +3,7 @@
 #include maps\_zombiemode_utility;
 
 init_hud_dvars()
+// They hold values for menu files, not used for triggering HUD elements
 {
 	setDvar("summary_visible0", 0);
 	setDvar("summary_visible1", 0);
@@ -15,6 +16,21 @@ init_hud_dvars()
 	setDvar("predicted_value", "0");
 	setDvar("sph_value", 0);
 	setDvar("rt_displayed", 0);
+	setDvar("kino_boxset", "^0UNDEFINED");
+	// setDvar("game_in_pause", 0);
+	setDvar("oxygen_time_value", "0");
+	setDvar("oxygen_time_show", 0);
+	setDvar("excavator_name", "null");
+	setDvar("excavator_time_value", 0);
+	setDvar("excavator_time_show", 0);
+	setDvar("show_nml_kill_tracker", 0);
+	setDvar("hud_kills_value", 0);
+	setDvar("custom_nml_end", 0);
+	setDvar("nml_end_kills", 0);
+	setDvar("nml_end_time", 0);
+	setDvar("george_bar_show", 0);
+	setDvar("george_bar_ratio", 0);
+	setDvar("george_bar_health", 0);
 }
 
 send_message_to_csc(name, message)
@@ -76,29 +92,21 @@ summary_visible(mode, len, sph_round)
 	return;
 }
 
-zone_hud()
+pause_hud_watcher()
 {
-	self endon("disconnect");
-
-	current_name = " ";
-
-	while(1)
+	while (true)
 	{
-		wait_network_frame();
+		wait 0.05;
 
-		name = choose_zone_name(self get_current_zone(), current_name);
-
-		if(current_name == name)
-		{
+		if (!level.paused)
 			continue;
-		}
 
-		current_name = name;
+		setDvar("game_in_pause", 1);
+		while (flag("game_paused"))
+			wait 0.05;
 
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_out");
-		wait .25;
-		self SetClientDvar("hud_zone_name", name);
-		self send_message_to_csc("hud_anim_handler", "hud_zone_name_in");
+		setDvar("game_in_pause", 0);
+		break;
 	}
 }
 
@@ -158,6 +166,33 @@ choose_zone_name(zone, current_name)
 	return name;
 }
 
+zone_hud()
+// player thread
+{
+	self endon("disconnect");
+
+	current_name = " ";
+
+	while(1)
+	{
+		wait_network_frame();
+
+		name = choose_zone_name(self get_current_zone(), current_name);
+
+		if(current_name == name)
+		{
+			continue;
+		}
+
+		current_name = name;
+
+		self send_message_to_csc("hud_anim_handler", "hud_zone_name_out");
+		wait .25;
+		self SetClientDvar("hud_zone_name", name);
+		self send_message_to_csc("hud_anim_handler", "hud_zone_name_in");
+	}
+}
+
 health_bar_hud()
 // player thread
 {
@@ -201,6 +236,34 @@ remaining_hud()
 	}
 }
 
+kill_hud()
+// level thread
+{
+	level endon("disconnect");
+	level endon("end_game");
+
+	setDvar("show_nml_kill_tracker", 1);
+
+	while (true)
+	{
+		if (isDefined(level.left_nomans_land) && level.left_nomans_land > 0)
+			break;
+
+		wait 0.05;
+		level.total_nml_kills = 0;
+
+		players = get_players();
+		for (i = 0; i < players.size; i++)
+			level.total_nml_kills += players[i].kills;
+
+		if (level.total_nml_kills == getDvarInt("hud_kills_value"))
+			continue;
+
+		setDvar("hud_kills_value", level.total_nml_kills);
+	}
+	setDvar("show_nml_kill_tracker", 0);
+}
+
 drop_tracker_hud()
 // level thread
 {
@@ -230,8 +293,8 @@ game_stat_hud()
 	level endon("end_game");
 
 	// Settings
-	settings_splits = array(30, 50, 70, 100);
-	settings_sph = 1;
+	settings_splits = array(30, 50, 70, 100);	// For later
+	settings_sph = 50;
 	player_count = get_players().size;
 
 	// Handle round 1 outside of the loop
@@ -268,22 +331,23 @@ game_stat_hud()
 		// Pause handle
 		if (isdefined(flag("game_paused")))
 		{
-			if (!flag("game_paused"))
-				round_start_time = int(getTime() / 1000);
-			else
+			round_start_time = int(getTime() / 1000);
+			// Calculate total time at the beginning of next round
+			gt = round_start_time - level.beginning_timestamp;
+			setDvar("total_time_value", get_time_friendly(gt));
+
+			if (flag("game_paused"))
 			{
 				while (flag("game_paused"))
 					wait 0.05;
 
+				// Overwrite the variable if coop pause was active
 				round_start_time = int(getTime() / 1000);
 			}
 		}
 		else
 			continue;
 
-		// Calculate total time at the beginning of next round
-		gt = round_start_time - level.beginning_timestamp;
-		setDvar("total_time_value", get_time_friendly(gt));
 
 		// Grab zombie count from current round for SPH
 		if(flag("dog_round") || flag("thief_round") || flag("monkey_round"))
@@ -329,3 +393,289 @@ game_stat_hud()
 	}
 }
 
+box_notifier()
+// level thread
+{
+	maps\_custom_hud::hud_level_wait();
+	
+	i = 0;
+	while(i < 5)
+	{
+		if (isdefined(level.box_set))
+		{
+			// iPrintLn(level.box_set); // debug
+			if (level.box_set == 0)
+				setDvar("kino_boxset", "^2DINING");
+			else if (level.box_set == 1)
+				setDvar("kino_boxset", "^3HELLROOM");
+			else if (level.box_set == 2)
+				setDvar("kino_boxset", "^5NO POWER");
+
+			wait 5;
+			setDvar("kino_boxset", "^0UNDEFINED");
+			break;
+		}
+		else
+		{
+			// iPrintLn("undefined"); // debug
+			wait 0.5;
+			i++;
+		}
+	}
+}
+
+oxygen_hud()
+// player thread
+{
+	level endon("end_game");
+
+    while (true)
+    {
+		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
+		{
+			oxygen_time = (self.time_to_death - self.time_in_low_gravity) / 1000;
+			oxygen_left = get_time_friendly(oxygen_time);
+			self setClientDvar("oxygen_time_value", oxygen_left);
+
+			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
+			{
+				if(self.time_in_low_gravity > 0 && !self maps\_laststand::player_is_in_laststand() && isAlive(self))
+					self setClientDvar("oxygen_time_show", 1);
+				else
+					self setClientDvar("oxygen_time_show", 0);
+			}
+
+			else
+				self setClientDvar("oxygen_time_show", 0);
+		}
+    
+        wait 1;
+    }
+}
+
+excavator_hud()
+// level thread
+{
+	level endon("end_game");
+
+	current_excavator = "null";
+	saved_excavator = "null";
+	excavator_area = "null";
+
+    while (true)
+    {		
+		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
+		{
+			iPrintLn(level.excavator_timer);
+			switch (level.digger_to_activate) 
+			{
+			case "teleporter":
+				current_excavator = "Pi";
+				// excavator_area = "Tunnel 6";
+				break;
+			case "hangar":
+				current_excavator = "Omicron";
+				// excavator_area = "Tunnel 11";
+				break;
+			case "biodome":
+				current_excavator = "Epsilon";
+				// excavator_area = "Biodome";
+				break;
+			default:
+				current_excavator = "null";
+			}
+
+			if (current_excavator != saved_excavator)
+			{
+				saved_excavator = current_excavator;
+
+				setDvar("excavator_name", current_excavator);
+
+				if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
+				{
+					if(level.digger_to_activate != "null")
+						setDvar("excavator_time_show", 1);
+					else if(level.digger_to_activate == "null")
+						setDvar("excavator_time_show", 0);
+				}
+
+				else
+					setDvar("excavator_time_show", 0);
+			}
+			setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
+		}
+
+		wait 1;
+    }
+}
+
+george_health_bar()
+{
+	// self endon("disconnect");
+	level endon("end_game");
+
+	level thread maps\_zombiemode_powerups::cotd_powerup_offset();
+
+	// hud_wait();
+	level waittill("start_of_round");
+
+	george_max_health = 250000 * level.players_playing;
+
+	george_bar_width_max = 250;	// Make sure it matches with menu file
+
+	// while (1)
+	// {
+	// 	health_ratio = self.health / self.maxhealth;
+
+	// 	// There is a conflict while trying to import _laststand
+	// 	if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
+	// 		self SetClientDvar("health_bar_value_hud", 0);
+	// 	else
+	// 		self SetClientDvar("health_bar_value_hud", self.health);
+
+	// 	self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+
+	// 	wait 0.05;
+	// }
+
+	while (true)
+	{
+		wait 0.05;
+		// iPrintLn(flag("director_alive"));	// debug
+		// iPrintLn(flag("spawn_init"));		// debug
+
+		// Amount of damage dealt to director, prevent going beyond the scale
+		if (isDefined(level.director_damage))
+			local_director_damage = level.director_damage;
+		else
+			local_director_damage = 0;
+
+		if (local_director_damage > george_max_health)
+			local_director_damage = george_max_health;
+
+		george_health = george_max_health - local_director_damage;
+		george_ratio = (george_health / george_max_health) * george_bar_width_max;
+
+		self setClientDvar("george_bar_ratio", george_ratio);
+		self setClientDvar("george_bar_health", george_health);
+
+		if (flag("director_alive") && (getDvarInt("hud_george_bar") || getDvarInt("hud_tab")))
+		{
+			self setClientDvar("george_bar_show", 1);
+		}
+		else
+		{
+			self setClientDvar("george_bar_show", 0);
+		}
+	}
+}
+
+// coop_pause(timer_hud, start_time)
+// // level thread
+// // black background made in gsc, perhaps port it to menus as well
+// {
+// 	level.paused = false;
+
+//     SetDvar( "coop_pause", 0 );
+// 	flag_clear( "game_paused" );
+
+// 	players = GetPlayers();
+// 	if( players.size == 1 )
+// 	{
+// 		// return;
+// 	}
+
+// 	paused_time = 0;
+// 	paused_start_time = 0;
+
+// 	if (level.round_number == 1)
+// 		level waittill ("end_of_round");
+
+// 	while (true)
+// 	{
+// 		if( getDvarInt( "coop_pause" ) )
+// 		{
+// 			players = GetPlayers();
+// 			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
+// 			{
+// 				iprintln("finish the round");
+// 				level waittill( "end_of_round" );
+// 			}
+// 			if (!flag("director_alive"))
+// 				iprintln("wait for the round change");
+
+// 			wait 1; 	// To make sure the round changes
+// 			// Don't allow breaks while George is alive or is possible to spawn
+
+// 			// debug
+// 			// iPrintLn("director_alive", flag("director_alive"));
+// 			// iPrintLn("potential_director", flag("potential_director"));
+
+// 			flagged = false;
+// 			director_exception = false;
+// 			if (flag("director_alive") || flag("potential_director"))
+// 			{
+// 				while (true)
+// 				{
+// 					if (!flag("director_alive") && !flag("potential_director"))
+// 						break;
+
+// 					if (!flagged)
+// 					{
+// 						iPrintLn("Kill George first");
+// 						flagged = true;
+// 					}
+
+// 					wait 0.1;
+// 				}
+// 			}
+// 			if (flagged)
+// 				continue;
+
+// 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
+// 			flag_set( "game_paused" );
+
+// 			level waittill( "start_of_round" );
+
+// 			maps\_custom_hud::generate_background();
+// 			self thread pause_hud_watcher();
+
+// 			level.paused = true;
+// 			paused_start_time = int(getTime() / 1000);
+// 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
+// 			previous_paused_time = level.paused_time;
+
+// 			while(level.paused)
+// 			{
+// 				for(i = 0; players.size > i; i++)
+// 				{
+// 					players[i] freezecontrols(true);
+// 				}
+				
+// 				timer_hud SetTimerUp(total_time);
+// 				wait 0.2;
+
+// 				current_time = int(getTime() / 1000);
+// 				current_paused_time = current_time - paused_start_time;
+
+// 				if( !getDvarInt( "coop_pause" ) )
+// 				{
+// 					level.total_pause_time += current_paused_time;
+// 					level.paused = false;
+// 					maps\_custom_hud::destroy_background();
+
+// 					for(i = 0; players.size > i; i++)
+// 					{
+// 						players[i] freezecontrols(false);
+// 					}
+
+// 					players[0] SetClientDvar( "ai_disableSpawn", "0");
+// 					flag_clear( "game_paused" );
+
+// 					wait 0.5;
+// 				}
+// 			}
+// 		}
+// 		wait 0.05;
+// 	}
+// }

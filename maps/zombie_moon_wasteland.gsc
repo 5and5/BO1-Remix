@@ -2,6 +2,7 @@
 #include common_scripts\utility;
 #include maps\_utility;
 #include maps\_zombiemode_utility;
+#include maps\_custom_hud_menu;
 
 #include maps\zombie_moon_teleporter;
 
@@ -44,6 +45,7 @@ init_no_mans_land()
 	
 	init_teleporter_message();
 	level thread init_supersprint_anims();
+	level thread kill_hud();
 	
 	maps\_zombiemode_zone_manager::zone_init( "nml_zone" );
 
