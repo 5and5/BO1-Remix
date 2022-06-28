@@ -221,8 +221,8 @@
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(dvarString("time_summary_text") + dvarString("time_summary_value"))	
-			visible				1
+			exp text			(locString(dvarString("time_summary_text")) + dvarString("time_summary_value"))	
+			visible				when(dvarInt(show_time_summary) == 1)
 			decoration
 
 			FADE_STATES

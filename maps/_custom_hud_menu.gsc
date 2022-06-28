@@ -7,6 +7,7 @@ init_hud_dvars()
 {
 	setDvar("time_summary_text", " ");
 	setDvar("time_summary_value", 0);
+	setDvar("show_time_summary", 0);
 	// setDvar("summary_visible1", 0);
 	// setDvar("summary_visible2", 0);
 	// setDvar("summary_visible3", 0);
@@ -63,70 +64,89 @@ hud_menu_fade( name, time )
 	wait time;
 }
 
-display_time_summary()
+display_time_summary(sph_round)
 {
 	level endon("end_of_round");
+	level endon("disconnect");
+	level endon("end_game");
 
 	wait_time = 5;
 	fade_time = 0.75;
 
-	set_summary_text("Round Time: ", "round_time_value");
+	setDvar("show_time_summary", 1);	// Prevents bugs with fast restart
+	wait 0.15; 	// Prevents the timer from sliding between positions
+
+	set_summary_text("@HUD_HUD_ZOMBIES_ROUNDTIME", "round_time_value");
 	hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
 	hud_menu_fade("hud_time_summary_out", fade_time);
 
-	set_summary_text("SPH: ", "sph_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
-	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
-
-	set_summary_text("Total Time: ", "total_time_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
-	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
-}
-
-summary_visible(mode, len, sph_round)
-{
-	level endon("start_of_round");
-	level endon("end_of_round");
-	level endon("disconnected");
-
-	if (len > 5.5)
-		len = 5.25;
-
-	if (mode == "start")
+	if ((level.round_number >= sph_round) && (level.round_number != level.last_special_round + 1))
 	{
-		setDvar("summary_visible2", 1);
-		wait len;
-		setDvar("summary_visible2", 0);
-		wait 0.75;
-
-		if (level.round_number % 4 != 1)
-		{
-			setDvar("summary_visible3", 1);
-			wait len;
-		}
-		setDvar("summary_visible3", 0);
+		set_summary_text("@HUD_HUD_ZOMBIES_SPH", "sph_value");
+		hud_menu_fade("hud_time_summary_in", fade_time);
+		wait wait_time;
+		hud_menu_fade("hud_time_summary_out", fade_time);
 	}
-
 	else
+		wait wait_time + (2 * fade_time);
+
+	set_summary_text("@HUD_HUD_ZOMBIES_TOTALTIME", "total_time_value");
+	hud_menu_fade("hud_time_summary_in", fade_time);
+	wait wait_time;
+	hud_menu_fade("hud_time_summary_out", fade_time);
+
+	if (level.round_number != level.last_special_round)
 	{
-		setDvar("summary_visible0", 1);
-		wait len;
-		setDvar("summary_visible0", 0);
-		wait 0.75;
-
-		if ((level.round_number >= sph_round) && (level.round_number % 4 != 1))
-		{
-			setDvar("summary_visible1", 1);
-			wait len;
-		}
-		setDvar("summary_visible1", 0);
+		set_summary_text("@HUD_HUD_ZOMBIES_PREDICTED", "predicted_value");
+		hud_menu_fade("hud_time_summary_in", fade_time);
+		wait wait_time;
+		hud_menu_fade("hud_time_summary_out", fade_time);
 	}
-
-	return;
+	setDvar("show_time_summary", 0);
 }
+
+// summary_visible(mode, len, sph_round)
+// {
+// 	level endon("start_of_round");
+// 	level endon("end_of_round");
+// 	level endon("disconnected");
+
+// 	if (len > 5.5)
+// 		len = 5.25;
+
+// 	if (mode == "start")
+// 	{
+// 		setDvar("summary_visible2", 1);
+// 		wait len;
+// 		setDvar("summary_visible2", 0);
+// 		wait 0.75;
+
+// 		if (level.round_number % 4 != 1)
+// 		{
+// 			setDvar("summary_visible3", 1);
+// 			wait len;
+// 		}
+// 		setDvar("summary_visible3", 0);
+// 	}
+
+// 	else
+// 	{
+// 		setDvar("summary_visible0", 1);
+// 		wait len;
+// 		setDvar("summary_visible0", 0);
+// 		wait 0.75;
+
+// 		if ((level.round_number >= sph_round) && (level.round_number % 4 != 1))
+// 		{
+// 			setDvar("summary_visible1", 1);
+// 			wait len;
+// 		}
+// 		setDvar("summary_visible1", 0);
+// 	}
+
+// 	return;
+// }
 
 pause_hud_watcher()
 {
@@ -331,30 +351,15 @@ game_stat_hud()
 	// Settings
 	settings_splits = array(30, 50, 70, 100);	// For later
 	settings_sph = 50;
-	player_count = get_players().size;
 
-	// Handle round 1 outside of the loop
-	level waittill("start_of_round");
-	// NML handle
-	while (isdefined(level.on_the_moon) && !level.on_the_moon)
-		wait 0.05;
-
-	round_start_time = int(getTime() / 1000);
-
-	current_zombie_count = level.zombie_total + get_enemy_count();
-	last_zombie_count = level.zombie_total + get_enemy_count();
-	sph = 0;
-	predicted = "0";
+	// Initialize vars
+	last_zombie_count = get_zombie_number(1);
 	rt_array = array();
+	rt = 0;
 
-	level waittill("end_of_round");
-	round_end_time = int(getTime() / 1000);
-
-	rt = round_end_time - round_start_time;
-	setDvar("round_time_value", get_time_friendly(rt));
-
-	wait 0.05;
-	// thread summary_visible("end", 6, settings_sph);	// Keep it on 6 for this one
+	// NML handle
+	while (!isdefined(level.left_nomans_land) && level.script == "zombie_moon")
+		wait 0.05;
 
 	while (true)
 	{
@@ -384,7 +389,6 @@ game_stat_hud()
 		else
 			continue;
 
-
 		// Grab zombie count from current round for SPH
 		if(flag("dog_round") || flag("thief_round") || flag("monkey_round"))
 			current_zombie_count = get_zombie_number(level.round_number - 1);
@@ -392,10 +396,10 @@ game_stat_hud()
 			current_zombie_count = get_zombie_number();
 
 		// Calculate predicted round time
-		if (level.round_number % 4 == 2 && level.round_number > 4)
+		if ((level.round_number == level.last_special_round + 1) && (level.round_number > 4))
 		{
 			rt = rt_array[rt_array.size - 1];
-			rt_array = array();
+			rt_array = array();		// Reset the array
 		}
 		predicted = (rt / last_zombie_count) * current_zombie_count;
 		setDvar("predicted_value", get_time_friendly(int(predicted)));
@@ -425,7 +429,7 @@ game_stat_hud()
 		// Save last rounds zombie count
 		last_zombie_count = current_zombie_count;
 		
-		thread display_time_summary();
+		thread display_time_summary(settings_sph);
 		// thread summary_visible("end", 6, settings_sph);	// Trigger HUD
 	}
 }
