@@ -57,27 +57,27 @@ timer_hud()
 	}
 }
 
-generate_background()
-{
-	if (isDefined(level.black_hud))
-		level.black_hud destroy();
+// generate_background()
+// {
+// 	if (isDefined(level.black_hud))
+// 		level.black_hud destroy();
 		
-	level.black_hud = newhudelem();
-	level.black_hud.horzAlign = "fullscreen";
-	level.black_hud.vertAlign = "fullscreen";
-	level.black_hud SetShader( "black", 640, 480 );
-	level.black_hud.alpha = 0;
+// 	level.black_hud = newhudelem();
+// 	level.black_hud.horzAlign = "fullscreen";
+// 	level.black_hud.vertAlign = "fullscreen";
+// 	level.black_hud SetShader( "black", 640, 480 );
+// 	level.black_hud.alpha = 0;
 
-	level.black_hud FadeOverTime( 1.0 );
-	level.black_hud.alpha = 0.65;
-}
+// 	level.black_hud FadeOverTime( 1.0 );
+// 	level.black_hud.alpha = 0.65;
+// }
 
-destroy_background()
-{
-	level.black_hud FadeOverTime( 1.0 );
-	level.black_hud.alpha = 0;
-	level.black_hud destroy();
-}
+// destroy_background()
+// {
+// 	level.black_hud FadeOverTime( 1.0 );
+// 	level.black_hud.alpha = 0;
+// 	level.black_hud destroy();
+// }
 
 round_timer_hud()
 {
@@ -137,7 +137,7 @@ round_timer_hud()
 			if (level.tracked_zombies == 0 && tick >= 200)
 			{
 				wait 0.5;
-				hud_fade(level.round_timer, 0, 0.25);
+				hud_fade(level.round_timer, 0, 0.075);
 				setDvar("rt_displayed", 0);
 				break;
 			}
@@ -149,19 +149,19 @@ round_timer_hud()
 
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
 			{
-				hud_fade(level.round_timer, 1, 0.25);
+				hud_fade(level.round_timer, 1, 0.075);
 				setDvar("rt_displayed", 1);
 			}
 			else
 			{
-				hud_fade(level.round_timer, 0, 0.25);
+				hud_fade(level.round_timer, 0, 075.25);
 				setDvar("rt_displayed", 0);
 			}
 
 			dvar_state = getDvarInt("hud_round_timer");
 			tab_state = getDvarInt("hud_tab");
 		}
-		hud_fade(level.round_timer, 0, 0.25);
+		hud_fade(level.round_timer, 0, 0.075);
 	}
 }
 
