@@ -1814,8 +1814,7 @@ onPlayerSpawned()
 
 				self thread tab_hud();
 				// self thread show_all_on_tab();
-
-				self thread color_hud();
+				// self thread color_hud();
 
 				// testing only
 				//self thread get_position();
