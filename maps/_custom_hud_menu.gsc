@@ -256,9 +256,12 @@ health_bar_hud()
 	self endon("end_game");
 
 	health_bar_width_max = 110;
+	dvar_state = -1;
 
-	while (1)
+	while (true)
 	{
+		wait 0.05;
+
 		health_ratio = self.health / self.maxhealth;
 
 		// There is a conflict while trying to import _laststand
@@ -269,7 +272,22 @@ health_bar_hud()
 
 		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
 
-		wait 0.05;
+
+		if (dvar_state == getDvarInt("hud_health_bar"))
+			continue;
+
+		if (getDvarInt("hud_health_bar") || (!getDvarInt("hud_health_bar") && getDvarInt("hud_tab")))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_in");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_in");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_in");
+		}
+		else
+		{
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_out");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_out");
+		}
 	}
 } 
 

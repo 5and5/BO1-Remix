@@ -102,6 +102,48 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 250;
 	}
+	else if(state == "hud_healthbar_image_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadein";
+		fade_time = 50;
+	}
+	else if(state == "hud_healthbar_image_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadeout";
+		fade_time = 50;
+	}
+	else if(state == "hud_healthbar_background_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadein";
+		fade_time = 50;
+	}
+	else if(state == "hud_healthbar_background_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadeout";
+		fade_time = 50;
+	}
+	else if(state == "hud_healthbar_value_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
+		fade_type = "fadein";
+		fade_time = 50;
+	}
+	else if(state == "hud_healthbar_value_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
+		fade_type = "fadeout";
+		fade_time = 50;
+	}
 	else if(state == "hud_time_summary_in")
 	{
 		menu_name = "right_top_hud";
