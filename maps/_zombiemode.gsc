@@ -5518,7 +5518,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		final_damage = int(final_damage * 2);
 	}
 
-	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && (self.animname != "thief_zombie" || self.animname != "director_zombie"))
+	if((is_placeable_mine(weapon) && (meansofdeath == "MOD_GRENADE" || meansofdeath == "MOD_GRENADE_SPLASH")) && self.animname != "thief_zombie" && self.animname != "director_zombie")
 	{
 		// fix for grenades doing 1/2 zombies health when holding mines
 		if(flags == 5)
@@ -5537,8 +5537,7 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		final_damage = int(self.maxhealth) + 666;
 	}
 
-
-	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && (self.animname == "thief_zombie" || self.animname == "director_zombie"))
+	if((weapon == "tesla_gun_zm" || weapon == "tesla_gun_upgraded_zm") && self.animname == "thief_zombie" && self.animname == "director_zombie")
 	{
 		final_damage = 1500;
 	}
@@ -5573,14 +5572,15 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 	}
 
 	// Absolute multiplier based on max HP of the zombie
-	if (IsDefined(self.animname) && (self.animname == "zombie" || self.animname == "quad_zombie"))
-	{
+	// if (IsDefined(self.animname) && (self.animname == "zombie" || self.animname == "quad_zombie"))
+	// {
 		// absolute_multiplier = 0.0033;
 		// if (attacker HasPerk("specialty_rof"))
 		// 	absolute_multiplier = 0.0066;
 
 		// final_damage += int(self.maxhealth * absolute_multiplier);
-	}
+	// }
+	// iPrintLn("final damage: " + final_damage);
 
 	return int( final_damage );
 
