@@ -305,10 +305,12 @@ remaining_hud()
 	{
 		if (getDvarInt("show_nml_kill_tracker"))
 		{
+			wait 0.5;
 			send_message_to_csc("hud_anim_handler", "hud_remaining_out");
-			
+
 			while (getDvarInt("show_nml_kill_tracker"))
 				wait 0.05;
+			dvar_state = -1;		// Reset this to make sure it won't get stuck
 		}
 
 		wait 0.05;
@@ -336,7 +338,12 @@ kill_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
+	flag_wait( "all_players_spawned" );
+
+	// Tracker always on while on NML
 	setDvar("show_nml_kill_tracker", 1);
+	wait 0.5;
+	send_message_to_csc("hud_anim_handler", "hud_kills_in");
 
 	while (true)
 	{
@@ -355,6 +362,8 @@ kill_hud()
 
 		setDvar("hud_kills_value", level.total_nml_kills);
 	}
+	send_message_to_csc("hud_anim_handler", "hud_kills_out");
+	wait 0.5;
 	setDvar("show_nml_kill_tracker", 0);
 }
 

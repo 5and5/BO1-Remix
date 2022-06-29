@@ -115,7 +115,7 @@
 			style				WINDOW_STYLE_SHADER
 			rect				0 HEALTH_Y (HEALTH_BAR_W + HEALTH_BOARDER) (HEALTH_BAR_H + HEALTH_BOARDER)
 			foreColor			0 0 0 0.35
-			background			"white"
+			background			"black"
 			visible				1
 			decoration
 
@@ -191,7 +191,7 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
-			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 0)
+			visible				1
 			decoration
 
 			FADE_STATES
@@ -209,8 +209,10 @@
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_KILL") + dvarString("hud_kills_value"))	
 			// Base it on the hud_remaining dvar
-			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 1)
+			visible				when(dvarInt(show_nml_kill_tracker) == 1)
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
