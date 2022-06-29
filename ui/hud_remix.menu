@@ -386,6 +386,8 @@
 			exp text			(locString("@HUD_HUD_ZOMBIES_KINO_BOX") + dvarString("kino_boxset"))	
 			visible				when(dvarString(kino_boxset) != "^0UNDEFINED")
 			decoration
+
+			FADE_STATES
 		}
 
 		// Triggered in zombie_moon_teleporter

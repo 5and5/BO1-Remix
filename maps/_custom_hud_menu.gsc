@@ -499,15 +499,18 @@ box_notifier()
 	{
 		if (isdefined(level.box_set))
 		{
-			// iPrintLn(level.box_set); // debug
 			if (level.box_set == 0)
 				setDvar("kino_boxset", "^2DINING");
 			else if (level.box_set == 1)
 				setDvar("kino_boxset", "^3HELLROOM");
 			else if (level.box_set == 2)
 				setDvar("kino_boxset", "^5NO POWER");
+			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
 
 			wait 5;
+			
+			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
+			wait 0.2;
 			setDvar("kino_boxset", "^0UNDEFINED");
 			break;
 		}
