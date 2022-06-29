@@ -361,8 +361,10 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_CENTER
 			exp text			(dvarString("george_bar_health"))	
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -373,8 +375,10 @@
 			rect				(-(GEORGE_BAR_W / 2) - 2) -11 (GEORGE_BAR_W + 4) (GEORGE_BAR_H + 2) HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
 			foreColor			0 0 0 0.55
 			background			"black"
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -386,8 +390,10 @@
 			exp					rect W(dvarInt("george_bar_ratio"))
 			foreColor			1 1 1 1
 			background			"white"
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			FADE_STATES
 		}
 	}
 }

@@ -508,7 +508,7 @@ box_notifier()
 			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
 
 			wait 5;
-			
+
 			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
 			wait 0.2;
 			setDvar("kino_boxset", "^0UNDEFINED");
@@ -614,28 +614,13 @@ george_health_bar()
 	level endon("end_game");
 
 	level thread maps\_zombiemode_powerups::cotd_powerup_offset();
+	self thread george_health_bar_watcher();	// Watcher to not block main thread
 
 	// hud_wait();
 	level waittill("start_of_round");
 
 	george_max_health = 250000 * level.players_playing;
-
 	george_bar_width_max = 250;	// Make sure it matches with menu file
-
-	// while (1)
-	// {
-	// 	health_ratio = self.health / self.maxhealth;
-
-	// 	// There is a conflict while trying to import _laststand
-	// 	if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
-	// 		self SetClientDvar("health_bar_value_hud", 0);
-	// 	else
-	// 		self SetClientDvar("health_bar_value_hud", self.health);
-
-	// 	self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
-
-	// 	wait 0.05;
-	// }
 
 	while (true)
 	{
@@ -658,14 +643,37 @@ george_health_bar()
 		self setClientDvar("george_bar_ratio", george_ratio);
 		self setClientDvar("george_bar_health", george_health);
 
-		if (flag("director_alive") && (getDvarInt("hud_george_bar") || getDvarInt("hud_tab")))
-		{
+		if (flag("director_alive") && (getDvarInt("hud_george_bar") || (!getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))))
 			self setClientDvar("george_bar_show", 1);
+		else
+			self setClientDvar("george_bar_show", 0);
+	}
+}
+
+george_health_bar_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		wait 0.05;
+		current = getDvarInt("george_bar_show");
+		if (dvar_state == current)
+			continue;
+
+		if (getDvarInt("george_bar_show"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_in");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_in");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_in");
 		}
 		else
 		{
-			self setClientDvar("george_bar_show", 0);
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_out");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_out");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_out");
 		}
+
+		dvar_state = current;
 	}
 }
 
