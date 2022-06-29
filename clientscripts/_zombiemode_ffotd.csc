@@ -216,6 +216,48 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 250;
 	}
+	else if(state == "hud_georgebar_image_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_bar";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_image_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_bar";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_value_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_value_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_background_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_background";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_background_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_background";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
 
 	AnimateUI(clientnum, menu_name, item_name, fade_type, fade_time);
 }

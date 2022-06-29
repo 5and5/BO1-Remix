@@ -360,8 +360,8 @@
 		{
 			name				"george_health"
 			type				ITEM_TYPE_TEXT
-			rect 				0 -12 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM		
-			forecolor			1 1 1 1
+			rect 				0 -10 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM		
+			forecolor			1 1 1 0
 			textscale			TEXTSIZE_DEFAULT
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
@@ -379,7 +379,7 @@
 			type				ITEM_TYPE_IMAGE
 			style				WINDOW_STYLE_SHADER
 			rect				(-(GEORGE_BAR_W / 2) - 2) -11 (GEORGE_BAR_W + 4) (GEORGE_BAR_H + 2) HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
-			foreColor			0 0 0 0.55
+			foreColor			0 0 0 0
 			background			"black"
 			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
@@ -403,7 +403,7 @@
 			style				WINDOW_STYLE_SHADER
 			rect				(-GEORGE_BAR_W / 2) -10 GEORGE_BAR_W GEORGE_BAR_H HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
 			exp					rect W(dvarInt("george_bar_ratio"))
-			foreColor			1 1 1 0.85
+			foreColor			1 1 1 0
 			background			"white"
 			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration

@@ -672,9 +672,7 @@ george_health_bar()
 	level endon("end_game");
 
 	level thread maps\_zombiemode_powerups::cotd_powerup_offset();
-	self thread george_health_bar_watcher();	// Watcher to not block main thread
 
-	// hud_wait();
 	level waittill("start_of_round");
 
 	george_max_health = 250000 * level.players_playing;
@@ -683,8 +681,6 @@ george_health_bar()
 	while (true)
 	{
 		wait 0.05;
-		// iPrintLn(flag("director_alive"));	// debug
-		// iPrintLn(flag("spawn_init"));		// debug
 
 		// Amount of damage dealt to director, prevent going beyond the scale
 		if (isDefined(level.director_damage))
@@ -698,27 +694,28 @@ george_health_bar()
 		george_health = george_max_health - local_director_damage;
 		george_ratio = (george_health / george_max_health) * george_bar_width_max;
 
-		self setClientDvar("george_bar_ratio", george_ratio);
-		self setClientDvar("george_bar_health", george_health);
-
-		if (flag("director_alive") && (getDvarInt("hud_george_bar") || (!getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))))
-			self setClientDvar("george_bar_show", 1);
+		if (flag("director_alive") && getDvarInt("hud_george_bar"))
+		{
+			self setClientDvar("george_bar_ratio", george_ratio);
+			self setClientDvar("george_bar_health", george_health);
+			if(!getDvarInt("george_bar_show"))
+			{
+				self setClientDvar("george_bar_show", 1);
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_background_in");
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_image_in");
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_value_in");
+			}
+		}
 		else
-			self setClientDvar("george_bar_show", 0);
-	}
-}
-
-george_health_bar_watcher()
-{
-	dvar_state = -1;
-	while (true)
-	{
-		wait 0.05;
-		current = getDvarInt("george_bar_show");
-		if (dvar_state == current)
-			continue;
-
-		dvar_state = current;
+		{
+			if(getDvarInt("george_bar_show"))
+			{
+				self setClientDvar("george_bar_show", 0);
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_background_out");
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_image_out");
+				send_message_to_csc("hud_anim_handler", "hud_georgebar_value_out");
+			}
+		}
 	}
 }
 
