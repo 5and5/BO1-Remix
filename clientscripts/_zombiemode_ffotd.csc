@@ -102,6 +102,188 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 250;
 	}
+	else if(state == "hud_healthbar_image_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_image_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_background_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_background_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_value_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_value_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_remaining_in")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_counter";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_remaining_out")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_counter";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_kills_in")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_kill";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_kills_out")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_kill";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_drops_in")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_drops";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_drops_out")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_drops";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_kinobox_in")
+	{
+		menu_name = "middle_hud";
+		item_name = "kino_box_indicator";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_kinobox_out")
+	{
+		menu_name = "middle_hud";
+		item_name = "kino_box_indicator";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_nml_summary_in")
+	{
+		menu_name = "middle_hud";
+		item_name = "nml_summary";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_nml_summary_out")
+	{
+		menu_name = "middle_hud";
+		item_name = "nml_summary";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_background_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_background";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_background_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_background";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_image_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_bar";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_image_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health_bar";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_value_in")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_georgebar_value_out")
+	{
+		menu_name = "bottom_hud";
+		item_name = "george_health";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_oxygen_in")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_oxygen";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_oxygen_out")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_oxygen";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_excavator_in")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_excavator";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_excavator_out")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_excavator";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
 	else if(state == "hud_time_summary_in")
 	{
 		menu_name = "right_top_hud";

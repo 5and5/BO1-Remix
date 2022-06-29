@@ -7,6 +7,7 @@ init_hud_dvars()
 {
 	setDvar("time_summary_text", " ");
 	setDvar("time_summary_value", 0);
+	setDvar("show_time_summary", 0);
 	// setDvar("summary_visible1", 0);
 	// setDvar("summary_visible2", 0);
 	// setDvar("summary_visible3", 0);
@@ -63,70 +64,89 @@ hud_menu_fade( name, time )
 	wait time;
 }
 
-display_time_summary()
+display_time_summary(sph_round)
 {
 	level endon("end_of_round");
+	level endon("disconnect");
+	level endon("end_game");
 
 	wait_time = 5;
 	fade_time = 0.75;
 
-	set_summary_text("Round Time: ", "round_time_value");
+	setDvar("show_time_summary", 1);	// Prevents bugs with fast restart
+	wait 0.15; 	// Prevents the timer from sliding between positions
+
+	set_summary_text("@HUD_HUD_ZOMBIES_ROUNDTIME", "round_time_value");
 	hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
 	hud_menu_fade("hud_time_summary_out", fade_time);
 
-	set_summary_text("SPH: ", "sph_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
-	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
-
-	set_summary_text("Total Time: ", "total_time_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
-	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
-}
-
-summary_visible(mode, len, sph_round)
-{
-	level endon("start_of_round");
-	level endon("end_of_round");
-	level endon("disconnected");
-
-	if (len > 5.5)
-		len = 5.25;
-
-	if (mode == "start")
+	if ((level.round_number >= sph_round) && (level.round_number != level.last_special_round + 1))
 	{
-		setDvar("summary_visible2", 1);
-		wait len;
-		setDvar("summary_visible2", 0);
-		wait 0.75;
-
-		if (level.round_number % 4 != 1)
-		{
-			setDvar("summary_visible3", 1);
-			wait len;
-		}
-		setDvar("summary_visible3", 0);
+		set_summary_text("@HUD_HUD_ZOMBIES_SPH", "sph_value");
+		hud_menu_fade("hud_time_summary_in", fade_time);
+		wait wait_time;
+		hud_menu_fade("hud_time_summary_out", fade_time);
 	}
-
 	else
+		wait wait_time + (2 * fade_time);
+
+	set_summary_text("@HUD_HUD_ZOMBIES_TOTALTIME", "total_time_value");
+	hud_menu_fade("hud_time_summary_in", fade_time);
+	wait wait_time;
+	hud_menu_fade("hud_time_summary_out", fade_time);
+
+	if (level.round_number != level.last_special_round)
 	{
-		setDvar("summary_visible0", 1);
-		wait len;
-		setDvar("summary_visible0", 0);
-		wait 0.75;
-
-		if ((level.round_number >= sph_round) && (level.round_number % 4 != 1))
-		{
-			setDvar("summary_visible1", 1);
-			wait len;
-		}
-		setDvar("summary_visible1", 0);
+		set_summary_text("@HUD_HUD_ZOMBIES_PREDICTED", "predicted_value");
+		hud_menu_fade("hud_time_summary_in", fade_time);
+		wait wait_time;
+		hud_menu_fade("hud_time_summary_out", fade_time);
 	}
-
-	return;
+	setDvar("show_time_summary", 0);
 }
+
+// summary_visible(mode, len, sph_round)
+// {
+// 	level endon("start_of_round");
+// 	level endon("end_of_round");
+// 	level endon("disconnected");
+
+// 	if (len > 5.5)
+// 		len = 5.25;
+
+// 	if (mode == "start")
+// 	{
+// 		setDvar("summary_visible2", 1);
+// 		wait len;
+// 		setDvar("summary_visible2", 0);
+// 		wait 0.75;
+
+// 		if (level.round_number % 4 != 1)
+// 		{
+// 			setDvar("summary_visible3", 1);
+// 			wait len;
+// 		}
+// 		setDvar("summary_visible3", 0);
+// 	}
+
+// 	else
+// 	{
+// 		setDvar("summary_visible0", 1);
+// 		wait len;
+// 		setDvar("summary_visible0", 0);
+// 		wait 0.75;
+
+// 		if ((level.round_number >= sph_round) && (level.round_number % 4 != 1))
+// 		{
+// 			setDvar("summary_visible1", 1);
+// 			wait len;
+// 		}
+// 		setDvar("summary_visible1", 0);
+// 	}
+
+// 	return;
+// }
 
 pause_hud_watcher()
 {
@@ -236,9 +256,12 @@ health_bar_hud()
 	self endon("end_game");
 
 	health_bar_width_max = 110;
+	dvar_state = -1;
 
-	while (1)
+	while (true)
 	{
+		wait 0.05;
+
 		health_ratio = self.health / self.maxhealth;
 
 		// There is a conflict while trying to import _laststand
@@ -249,7 +272,23 @@ health_bar_hud()
 
 		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
 
-		wait 0.05;
+		if (dvar_state == getDvarInt("hud_health_bar"))
+			continue;
+
+		if (getDvarInt("hud_health_bar"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_in");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_in");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_in");
+		}
+		else
+		{
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_out");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
+			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_out");
+		}
+
+		dvar_state = getDvarInt("hud_health_bar");
 	}
 } 
 
@@ -259,16 +298,37 @@ remaining_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
-	setDvar("hud_remaining_number", 0);
-	while(true)
+	dvar_state = -1;
+	tab_state = -1;
+
+	while (true)
 	{
+		if (getDvarInt("show_nml_kill_tracker"))
+		{
+			wait 0.5;
+			send_message_to_csc("hud_anim_handler", "hud_remaining_out");
+
+			while (getDvarInt("show_nml_kill_tracker"))
+				wait 0.05;
+			dvar_state = -1;		// Reset this to make sure it won't get stuck
+		}
+
 		wait 0.05;
 		// Level var for round timer
 		level.tracked_zombies = level.zombie_total + get_enemy_count();
-		if (level.tracked_zombies == GetDvarInt("hud_remaining_number"))
+		if (level.tracked_zombies != GetDvarInt("hud_remaining_number"))
+			setDvar("hud_remaining_number", level.tracked_zombies);
+
+		if (dvar_state == getDvarInt("hud_remaining") && tab_state == getDvarInt("hud_tab"))
 			continue;
 
-		setDvar("hud_remaining_number", level.tracked_zombies);
+		if (getDvarInt("hud_remaining") || (!getDvarInt("hud_remaining") && getDvarInt("hud_tab")))
+			send_message_to_csc("hud_anim_handler", "hud_remaining_in");
+		else
+			send_message_to_csc("hud_anim_handler", "hud_remaining_out");
+
+		dvar_state = getDvarInt("hud_remaining");
+		tab_state = getDvarInt("hud_tab");
 	}
 }
 
@@ -278,7 +338,12 @@ kill_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
+	flag_wait( "all_players_spawned" );
+
+	// Tracker always on while on NML
 	setDvar("show_nml_kill_tracker", 1);
+	wait 0.5;
+	send_message_to_csc("hud_anim_handler", "hud_kills_in");
 
 	while (true)
 	{
@@ -297,6 +362,8 @@ kill_hud()
 
 		setDvar("hud_kills_value", level.total_nml_kills);
 	}
+	send_message_to_csc("hud_anim_handler", "hud_kills_out");
+	wait 0.5;
 	setDvar("show_nml_kill_tracker", 0);
 }
 
@@ -306,8 +373,10 @@ drop_tracker_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
-	setDvar("hud_drops_number", 0);
-	while(true)
+	dvar_state = -1;
+	tab_state = -1;
+
+	while (true)
 	{
 		wait 0.05;
 		if (isDefined(level.drop_tracker_index))
@@ -315,10 +384,19 @@ drop_tracker_hud()
 		else
 			tracked_drops = 0;
 
-		if (tracked_drops == GetDvarInt("hud_drops_number"))
+		if (tracked_drops != GetDvarInt("hud_drops_number"))
+			setDvar("hud_drops_number", tracked_drops);
+
+		if (dvar_state == getDvarInt("hud_drops") && tab_state == getDvarInt("hud_tab"))
 			continue;
 
-		setDvar("hud_drops_number", tracked_drops);
+		if (getDvarInt("hud_drops") || (!getDvarInt("hud_drops") && getDvarInt("hud_tab")))
+			send_message_to_csc("hud_anim_handler", "hud_drops_in");
+		else
+			send_message_to_csc("hud_anim_handler", "hud_drops_out");
+
+		dvar_state = getDvarInt("hud_drops");
+		tab_state = getDvarInt("hud_tab");
 	}
 }
 
@@ -331,30 +409,15 @@ game_stat_hud()
 	// Settings
 	settings_splits = array(30, 50, 70, 100);	// For later
 	settings_sph = 50;
-	player_count = get_players().size;
 
-	// Handle round 1 outside of the loop
-	level waittill("start_of_round");
-	// NML handle
-	while (isdefined(level.on_the_moon) && !level.on_the_moon)
-		wait 0.05;
-
-	round_start_time = int(getTime() / 1000);
-
-	current_zombie_count = level.zombie_total + get_enemy_count();
-	last_zombie_count = level.zombie_total + get_enemy_count();
-	sph = 0;
-	predicted = "0";
+	// Initialize vars
+	last_zombie_count = get_zombie_number(1);
 	rt_array = array();
+	rt = 0;
 
-	level waittill("end_of_round");
-	round_end_time = int(getTime() / 1000);
-
-	rt = round_end_time - round_start_time;
-	setDvar("round_time_value", get_time_friendly(rt));
-
-	wait 0.05;
-	// thread summary_visible("end", 6, settings_sph);	// Keep it on 6 for this one
+	// NML handle
+	while (!isdefined(level.left_nomans_land) && level.script == "zombie_moon")
+		wait 0.05;
 
 	while (true)
 	{
@@ -384,7 +447,6 @@ game_stat_hud()
 		else
 			continue;
 
-
 		// Grab zombie count from current round for SPH
 		if(flag("dog_round") || flag("thief_round") || flag("monkey_round"))
 			current_zombie_count = get_zombie_number(level.round_number - 1);
@@ -392,15 +454,13 @@ game_stat_hud()
 			current_zombie_count = get_zombie_number();
 
 		// Calculate predicted round time
-		if (level.round_number % 4 == 2 && level.round_number > 4)
+		if ((level.round_number == level.last_special_round + 1) && (level.round_number > 4))
 		{
 			rt = rt_array[rt_array.size - 1];
-			rt_array = array();
+			rt_array = array();		// Reset the array
 		}
 		predicted = (rt / last_zombie_count) * current_zombie_count;
 		setDvar("predicted_value", get_time_friendly(int(predicted)));
-
-		// thread summary_visible("start", 6, settings_sph);	// Trigger HUD
 
 		level waittill("end_of_round");
 
@@ -425,8 +485,7 @@ game_stat_hud()
 		// Save last rounds zombie count
 		last_zombie_count = current_zombie_count;
 		
-		thread display_time_summary();
-		// thread summary_visible("end", 6, settings_sph);	// Trigger HUD
+		thread display_time_summary(settings_sph);
 	}
 }
 
@@ -440,15 +499,18 @@ box_notifier()
 	{
 		if (isdefined(level.box_set))
 		{
-			// iPrintLn(level.box_set); // debug
 			if (level.box_set == 0)
 				setDvar("kino_boxset", "^2DINING");
 			else if (level.box_set == 1)
 				setDvar("kino_boxset", "^3HELLROOM");
 			else if (level.box_set == 2)
 				setDvar("kino_boxset", "^5NO POWER");
+			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
 
 			wait 5;
+
+			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
+			wait 0.2;
 			setDvar("kino_boxset", "^0UNDEFINED");
 			break;
 		}
@@ -465,6 +527,8 @@ oxygen_hud()
 // player thread
 {
 	level endon("end_game");
+
+	self thread oxygen_hud_watcher();
 
     while (true)
     {
@@ -486,14 +550,40 @@ oxygen_hud()
 				self setClientDvar("oxygen_time_show", 0);
 		}
     
-        wait 1;
+        wait 0.5;
     }
+}
+
+oxygen_hud_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		if (getDvarInt("oxygen_time_show"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_oxygen_in");
+
+			while (getDvarInt("oxygen_time_show"))
+				wait 0.05;
+		}
+		else
+		{
+			send_message_to_csc("hud_anim_handler", "hud_oxygen_out");
+
+			while (!getDvarInt("oxygen_time_show"))
+				wait 0.05;
+		}
+
+		wait 0.05;
+	}
 }
 
 excavator_hud()
 // level thread
 {
 	level endon("end_game");
+
+	self thread excavator_hud_watcher();
 
 	current_excavator = "null";
 	saved_excavator = "null";
@@ -503,7 +593,7 @@ excavator_hud()
     {		
 		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
 		{
-			iPrintLn(level.excavator_timer);
+			// iPrintLn(level.excavator_timer);
 			switch (level.digger_to_activate) 
 			{
 			case "teleporter":
@@ -522,10 +612,8 @@ excavator_hud()
 				current_excavator = "null";
 			}
 
-			if (current_excavator != saved_excavator)
+			if (current_excavator != "null")
 			{
-				saved_excavator = current_excavator;
-
 				setDvar("excavator_name", current_excavator);
 
 				if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
@@ -538,12 +626,43 @@ excavator_hud()
 
 				else
 					setDvar("excavator_time_show", 0);
+
+				setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
 			}
-			setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
+			else
+			{
+				setDvar("excavator_time_show", 0);
+
+				while (current_excavator == "null")
+					wait 0.05;
+			}
+		}
+		wait 0.5;
+    }
+}
+
+excavator_hud_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		if (getDvarInt("excavator_time_show"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_excavator_in");
+
+			while (getDvarInt("excavator_time_show"))
+				wait 0.05;
+		}
+		else
+		{
+			send_message_to_csc("hud_anim_handler", "hud_excavator_out");
+
+			while (!getDvarInt("excavator_time_show"))
+				wait 0.05;
 		}
 
-		wait 1;
-    }
+		wait 0.05;
+	}
 }
 
 george_health_bar()
@@ -552,28 +671,13 @@ george_health_bar()
 	level endon("end_game");
 
 	level thread maps\_zombiemode_powerups::cotd_powerup_offset();
+	self thread george_health_bar_watcher();	// Watcher to not block main thread
 
 	// hud_wait();
 	level waittill("start_of_round");
 
 	george_max_health = 250000 * level.players_playing;
-
 	george_bar_width_max = 250;	// Make sure it matches with menu file
-
-	// while (1)
-	// {
-	// 	health_ratio = self.health / self.maxhealth;
-
-	// 	// There is a conflict while trying to import _laststand
-	// 	if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
-	// 		self SetClientDvar("health_bar_value_hud", 0);
-	// 	else
-	// 		self SetClientDvar("health_bar_value_hud", self.health);
-
-	// 	self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
-
-	// 	wait 0.05;
-	// }
 
 	while (true)
 	{
@@ -596,14 +700,37 @@ george_health_bar()
 		self setClientDvar("george_bar_ratio", george_ratio);
 		self setClientDvar("george_bar_health", george_health);
 
-		if (flag("director_alive") && (getDvarInt("hud_george_bar") || getDvarInt("hud_tab")))
-		{
+		if (flag("director_alive") && (getDvarInt("hud_george_bar") || (!getDvarInt("hud_george_bar") && getDvarInt("hud_tab"))))
 			self setClientDvar("george_bar_show", 1);
+		else
+			self setClientDvar("george_bar_show", 0);
+	}
+}
+
+george_health_bar_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		wait 0.05;
+		current = getDvarInt("george_bar_show");
+		if (dvar_state == current)
+			continue;
+
+		if (getDvarInt("george_bar_show"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_in");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_in");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_in");
 		}
 		else
 		{
-			self setClientDvar("george_bar_show", 0);
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_out");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_out");
+			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_out");
 		}
+
+		dvar_state = current;
 	}
 }
 

@@ -33,8 +33,10 @@
 ## HUD
 
 - In game timer
-- Round timer (shows at the end of a round)
+- Round timer (shows at the end of a round - can be toggled to show mid round)
 - Seconds per horde (shows at the end of a round)
+- Total time (shows at the beginning a round - for round srs)
+- Predicted round (shows at the beginning a round)
 - Zombie remaining counter / Zombie kill counter (No Man's Land)
 - Zone name
 - Health bar
@@ -43,6 +45,10 @@
 - COTD: George health bar
 - Moon: Oxygen timer
 - Moon: Excavator timer
+
+#### Incoming HUD
+- Trade tracker
+- Trap timers
 
 ## Spawn Delay
 
@@ -53,11 +59,8 @@
 
 ### Insta Kill Rounds
 
-- Insta kill rounds happen every other round after:
-- Solo: 99
-- Coop: 89
-- 3p: 79
-- 4p: 69
+- Insta kill rounds happen every other round after:<br/>
+- Solo: 99 | Coop: 89 | 3p: 79 | 4p: 69
 
 ### Dogs
 
@@ -217,6 +220,7 @@
 - No longer damages players
 
 #### Centrifuge (Ascension)
+
 - Centrifudge can no longer get jammed for 1 full round (0 spin rounds can still happen)
 - Maximum time between spins reduced to 48 seconds from 90
 
@@ -388,8 +392,8 @@
 - `/hud_george_bar` - enables/disable George health bar
 - `/hud_oxygen_timer` - enables/disable oxygen timer on Moon
 - `/hud_excavator_timer` - enables/disable excavator timer on Moon
-- `/hud_color 1 1 1` - changes the color of the custom hud
-- `/hud_color_health 1 1 1` - changes the color of the health bar
+- `/hud_oxygen_timer` - enables/disable oxygen timer on Moon
+- `/hud_zone_name_on` - enables/disable displaying of zone names
 - `/night_mode` - enables/disable Shangri-la's night mode
 - `/coop_pause` - can be used to pause in coop (pause starts at the beginning of the next round)
 - `/start_round <round number>` - can be used to change start round for strat tester
@@ -413,6 +417,8 @@ seta hud_round_timer "1"
 seta hud_george_bar "1"
 seta hud_round_timer "1"
 seta hud_excavator_timer "1"
+seta hud_oxygen_timer "1"
+seta hud_zone_name_on "1"
 ```
 
 ## TODO
@@ -424,8 +430,7 @@ seta hud_excavator_timer "1"
 - character select option
 - add new hud menu options page
 - add state color change to .menu
-- import timers to .menu
-- import tab hud to .menu
+- automate Pluto detection
 
 
 #### Would like to do

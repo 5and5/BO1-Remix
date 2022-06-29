@@ -115,9 +115,20 @@
 			style				WINDOW_STYLE_SHADER
 			rect				0 HEALTH_Y (HEALTH_BAR_W + HEALTH_BOARDER) (HEALTH_BAR_H + HEALTH_BOARDER)
 			foreColor			0 0 0 0.35
-			background			"white"
-			visible				when(dvarBool("hud_health_bar"))
+			background			"black"
+			visible				1
 			decoration
+
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.35
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -129,8 +140,19 @@
 			exp					rect W(dvarInt("health_bar_width_hud"))
 			foreColor			1 1 1 0.85
 			background			"white"
-			visible				when(dvarBool("hud_health_bar"))
+			visible				1
 			decoration
+
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.85
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -144,8 +166,10 @@
 			textFont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_LEFT
 			exp					text(dvarInt("health_bar_value_hud"))
-			visible				when(dvarBool("hud_health_bar"))
+			visible				1
 			decoration
+
+			FADE_STATES
 		}
 	}
 
@@ -167,8 +191,10 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_REMAINING") + dvarString("hud_remaining_number"))	
-			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 0)
+			visible				1
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -183,8 +209,10 @@
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_KILL") + dvarString("hud_kills_value"))	
 			// Base it on the hud_remaining dvar
-			visible				when((dvarInt(hud_remaining) == 1 || dvarInt(hud_tab) == 1) && dvarInt(show_nml_kill_tracker) == 1)
+			visible				when(dvarInt(show_nml_kill_tracker) == 1)
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -198,8 +226,10 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_DROPS") + dvarString("hud_drops_number"))	
-			visible				when(dvarInt(hud_drops) == 1 || dvarInt(hud_tab) == 1)
+			visible				1
 			decoration
+
+			FADE_STATES
 		}
 	}
 
@@ -221,60 +251,12 @@
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(dvarString("time_summary_text") + dvarString("time_summary_value"))	
-			visible				1
+			exp text			(locString(dvarString("time_summary_text")) + dvarString("time_summary_value"))	
+			visible				when(dvarInt(show_time_summary) == 1)
 			decoration
 
 			FADE_STATES
 		}
-
-		// itemDef
-		// {
-		// 	name				"zombie_sph"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_SPH") + dvarString("sph_value"))	
-		// 	visible				when(dvarInt(summary_visible1) == 1)
-		// 	decoration
-		// }
-
-		// itemDef
-		// {
-		// 	name				"zombie_totaltime"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_TOTALTIME") + dvarString("total_time_value"))	
-		// 	visible				when(dvarInt(summary_visible2) == 1)
-		// 	decoration
-		// }
-
-		// itemDef
-		// {
-		// 	name				"zombie_predicted"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_PREDICTED") + dvarString("predicted_value"))	
-		// 	visible				when(dvarInt(summary_visible3) == 1)
-		// 	decoration
-		// }
 	}
 
 	menuDef
@@ -291,14 +273,16 @@
 			name				"zombie_oxygen"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 -MOON_HUD_GAP 0 0			
-			forecolor			1 1 1 0.8
+			forecolor			1 1 1 1
 			textscale			TEXTSIZE_SMALL
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_OXYGEN") + dvarString("oxygen_time_value"))	
-			visible				when(dvarInt(oxygen_time_show) == 1)
+			visible				when(dvarString("mapname") == "zombie_moon")
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -306,35 +290,18 @@
 			name				"zombie_excavator"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 MOON_HUD_GAP 0 0			
-			forecolor			1 1 1 0.8
+			forecolor			1 1 1 0		//Keep alpha on 0 here
 			textscale			TEXTSIZE_SMALL
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_EXCAVATOR") + dvarString("excavator_name") + ": " + dvarString("excavator_time_value"))	
-			visible				when(dvarInt(excavator_time_show) == 1)
+			visible				when(dvarString("mapname") == "zombie_moon")
 			decoration
+
+			FADE_STATES
 		}
 	}
-
-	// menuDef
-	// {
-	// /	name				"middle_hud_fullscreen"
-	// 	rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP
-	// 	fullscreen			1
-	// 	visible				1
-
-	// 	itemDef
-	// 	{
-	// 		name				"zombie_coop_pause_filler"
-	// 		style				WINDOW_STYLE_SHADER
-	// 		rect 				0 0 3440 2160
-	// 		background			"black"
-	// 		forecolor			0 0 0 0.4
-	// 		visible				when(dvarInt(game_in_pause) == 1)
-	// 		decoration
-	// 	}
-	// }
 
 	menuDef
 	{
@@ -356,6 +323,8 @@
 			exp text			(locString("@HUD_HUD_ZOMBIES_KINO_BOX") + dvarString("kino_boxset"))	
 			visible				when(dvarString(kino_boxset) != "^0UNDEFINED")
 			decoration
+
+			FADE_STATES
 		}
 
 		// Triggered in zombie_moon_teleporter
@@ -372,22 +341,9 @@
 			exp text			(locString("@MOD_NML_END_KILLS") + dvarString("nml_end_kills") + locString("@MOD_NML_END_TIME") + dvarString("nml_end_time"))
 			visible				when(dvarInt(custom_nml_end) == 1)
 			decoration
-		}
 
-		// itemDef
-		// {
-		// 	name				"zombie_coop_pause"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				0 -25 0 0	
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_TITLE
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_CENTER
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
-		// 	visible				when(dvarInt(game_in_pause) == 1)
-		// 	decoration
-		// }
+			FADE_STATES
+		}
 	}
 
 	menuDef
@@ -411,8 +367,10 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_CENTER
 			exp text			(dvarString("george_bar_health"))	
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -423,8 +381,19 @@
 			rect				(-(GEORGE_BAR_W / 2) - 2) -11 (GEORGE_BAR_W + 4) (GEORGE_BAR_H + 2) HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
 			foreColor			0 0 0 0.55
 			background			"black"
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.55
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -434,9 +403,21 @@
 			style				WINDOW_STYLE_SHADER
 			rect				(-GEORGE_BAR_W / 2) -10 GEORGE_BAR_W GEORGE_BAR_H HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
 			exp					rect W(dvarInt("george_bar_ratio"))
-			foreColor			1 1 1 1
+			foreColor			1 1 1 0.85
 			background			"white"
-			visible				when(dvarBool("george_bar_show"))
+			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
+
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.85
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
+	}
 }

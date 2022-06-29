@@ -433,12 +433,13 @@ display_time_survived()
 
 	player_survival_time_in_mins = maps\_zombiemode::to_mins(int(level.nml_best_time / 1000));
 	setDvar("custom_nml_end", 1);
+	maps\_custom_hud_menu::send_message_to_csc("hud_anim_handler", "hud_nml_summary_in");
 	setDvar("nml_end_kills", level.total_nml_kills);
 	setDvar("nml_end_time", player_survival_time_in_mins);
-	// iPrintLn(level.total_nml_kills);
-	// iPrintLn(player_survival_time_in_mins);
 
 	wait 4;	
+	maps\_custom_hud_menu::send_message_to_csc("hud_anim_handler", "hud_nml_summary_out");
+	wait 0.2;
 	setDvar("custom_nml_end", 0);
 	level.left_nomans_land = 2;
 }

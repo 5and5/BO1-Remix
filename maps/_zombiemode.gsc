@@ -49,7 +49,7 @@ main()
 	level.global_print_hud_color = (1, 1, 1);
 
 	level.total_pause_time = 0;
-	level.last_special_round = 0;
+	level.last_special_round = -1;	// Set to negative to not mess with hud
 
 	if(GetDvar("anim_intro") == "1")
 	{
@@ -572,11 +572,14 @@ init_strings()
 	PrecacheString( &"ZOMBIE_EXTRA_LIFE" );
 
 	// Remix strings
-	PreCacheString(&"HUD_HUD_ZOMBIES_COOP_PAUSE");
+	PrecacheString(&"HUD_HUD_ZOMBIES_COOP_PAUSE");
+	PrecacheString(&"HUD_HUD_ZOMBIES_ROUNDTIME");
+	PrecacheString(&"HUD_HUD_ZOMBIES_SPH");
+	PrecacheString(&"HUD_HUD_ZOMBIES_TOTALTIME");
+	PrecacheString(&"HUD_HUD_ZOMBIES_PREDICTED");
 	PrecacheString(&"MOD_YOU_WIN");
 	PrecacheString(&"MOD_NML_END_KILLS");
 	PrecacheString(&"MOD_NML_END_TIME");
-
 
 	add_zombie_hint( "undefined", &"ZOMBIE_UNDEFINED" );
 
@@ -1811,8 +1814,7 @@ onPlayerSpawned()
 
 				self thread tab_hud();
 				// self thread show_all_on_tab();
-
-				self thread color_hud();
+				// self thread color_hud();
 
 				// testing only
 				//self thread get_position();
