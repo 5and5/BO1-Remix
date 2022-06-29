@@ -257,54 +257,6 @@
 
 			FADE_STATES
 		}
-
-		// itemDef
-		// {
-		// 	name				"zombie_sph"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_SPH") + dvarString("sph_value"))	
-		// 	visible				when(dvarInt(summary_visible1) == 1)
-		// 	decoration
-		// }
-
-		// itemDef
-		// {
-		// 	name				"zombie_totaltime"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_TOTALTIME") + dvarString("total_time_value"))	
-		// 	visible				when(dvarInt(summary_visible2) == 1)
-		// 	decoration
-		// }
-
-		// itemDef
-		// {
-		// 	name				"zombie_predicted"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-		// 	exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_DEFAULT
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_TOP_RIGHT
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_PREDICTED") + dvarString("predicted_value"))	
-		// 	visible				when(dvarInt(summary_visible3) == 1)
-		// 	decoration
-		// }
 	}
 
 	menuDef
@@ -347,25 +299,6 @@
 		}
 	}
 
-	// menuDef
-	// {
-	// /	name				"middle_hud_fullscreen"
-	// 	rect				0 0 0 0 HORIZONTAL_ALIGN_USER_LEFT VERTICAL_ALIGN_USER_TOP
-	// 	fullscreen			1
-	// 	visible				1
-
-	// 	itemDef
-	// 	{
-	// 		name				"zombie_coop_pause_filler"
-	// 		style				WINDOW_STYLE_SHADER
-	// 		rect 				0 0 3440 2160
-	// 		background			"black"
-	// 		forecolor			0 0 0 0.4
-	// 		visible				when(dvarInt(game_in_pause) == 1)
-	// 		decoration
-	// 	}
-	// }
-
 	menuDef
 	{
 		name				"middle_hud"
@@ -405,21 +338,6 @@
 			visible				when(dvarInt(custom_nml_end) == 1)
 			decoration
 		}
-
-		// itemDef
-		// {
-		// 	name				"zombie_coop_pause"
-		// 	type				ITEM_TYPE_TEXT
-		// 	rect 				0 -25 0 0	
-		// 	forecolor			1 1 1 1
-		// 	textscale			TEXTSIZE_TITLE
-		// 	textstyle			ITEM_TEXTSTYLE_SHADOWED
-		// 	textfont			UI_FONT_NORMAL
-		// 	textalign			ITEM_ALIGN_CENTER
-		// 	exp text			(locString("@HUD_HUD_ZOMBIES_COOP_PAUSE"))
-		// 	visible				when(dvarInt(game_in_pause) == 1)
-		// 	decoration
-		// }
 	}
 
 	menuDef
@@ -471,4 +389,5 @@
 			visible				when(dvarBool("george_bar_show"))
 			decoration
 		}
+	}
 }
