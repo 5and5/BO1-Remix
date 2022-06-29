@@ -380,7 +380,16 @@
 			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
 
-			FADE_STATES
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.55
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 
 		itemDef
@@ -390,12 +399,21 @@
 			style				WINDOW_STYLE_SHADER
 			rect				(-GEORGE_BAR_W / 2) -10 GEORGE_BAR_W GEORGE_BAR_H HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_BOTTOM
 			exp					rect W(dvarInt("george_bar_ratio"))
-			foreColor			1 1 1 1
+			foreColor			1 1 1 0.85
 			background			"white"
 			visible				when(dvarString("mapname") == "zombie_coast")
 			decoration
 
-			FADE_STATES
+			state
+			{
+				name			"fadein"
+				forecolor 		1 1 1 0.85
+			}							
+			state						
+			{							
+				name 			"fadeout"
+				forecolor 		1 1 1 0	
+			}
 		}
 	}
 }
