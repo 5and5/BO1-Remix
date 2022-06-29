@@ -270,6 +270,20 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 125;
 	}
+	else if(state == "hud_excavator_in")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_excavator";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_excavator_out")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_excavator";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
 	else if(state == "hud_time_summary_in")
 	{
 		menu_name = "right_top_hud";

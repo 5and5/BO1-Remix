@@ -550,7 +550,7 @@ oxygen_hud()
 				self setClientDvar("oxygen_time_show", 0);
 		}
     
-        wait 1;
+        wait 0.5;
     }
 }
 
@@ -559,17 +559,22 @@ oxygen_hud_watcher()
 	dvar_state = -1;
 	while (true)
 	{
-		wait 0.05;
-		current = getDvarInt("oxygen_time_show");
-		if (dvar_state == current)
-			continue;
-
 		if (getDvarInt("oxygen_time_show"))
+		{
 			send_message_to_csc("hud_anim_handler", "hud_oxygen_in");
+
+			while (getDvarInt("oxygen_time_show"))
+				wait 0.05;
+		}
 		else
+		{
 			send_message_to_csc("hud_anim_handler", "hud_oxygen_out");
 
-		dvar_state = current;
+			while (!getDvarInt("oxygen_time_show"))
+				wait 0.05;
+		}
+
+		wait 0.05;
 	}
 }
 
@@ -577,6 +582,8 @@ excavator_hud()
 // level thread
 {
 	level endon("end_game");
+
+	self thread excavator_hud_watcher();
 
 	current_excavator = "null";
 	saved_excavator = "null";
@@ -586,7 +593,7 @@ excavator_hud()
     {		
 		if (isDefined(level.digger_time_left) && isDefined(level.digger_to_activate))
 		{
-			iPrintLn(level.excavator_timer);
+			// iPrintLn(level.excavator_timer);
 			switch (level.digger_to_activate) 
 			{
 			case "teleporter":
@@ -605,10 +612,8 @@ excavator_hud()
 				current_excavator = "null";
 			}
 
-			if (current_excavator != saved_excavator)
+			if (current_excavator != "null")
 			{
-				saved_excavator = current_excavator;
-
 				setDvar("excavator_name", current_excavator);
 
 				if (getDvarInt("hud_excavator_timer") || (!getDvarInt("hud_excavator_timer") && getDvarInt("hud_tab")))
@@ -621,12 +626,43 @@ excavator_hud()
 
 				else
 					setDvar("excavator_time_show", 0);
+
+				setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
 			}
-			setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
+			else
+			{
+				setDvar("excavator_time_show", 0);
+
+				while (current_excavator == "null")
+					wait 0.05;
+			}
+		}
+		wait 0.5;
+    }
+}
+
+excavator_hud_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		if (getDvarInt("excavator_time_show"))
+		{
+			send_message_to_csc("hud_anim_handler", "hud_excavator_in");
+
+			while (getDvarInt("excavator_time_show"))
+				wait 0.05;
+		}
+		else
+		{
+			send_message_to_csc("hud_anim_handler", "hud_excavator_out");
+
+			while (!getDvarInt("excavator_time_show"))
+				wait 0.05;
 		}
 
-		wait 1;
-    }
+		wait 0.05;
+	}
 }
 
 george_health_bar()

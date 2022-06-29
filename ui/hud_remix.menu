@@ -279,7 +279,7 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_OXYGEN") + dvarString("oxygen_time_value"))	
-			visible				when(dvarInt(oxygen_time_show) == 1)
+			visible				when(dvarString("mapname") == "zombie_moon")
 			decoration
 
 			FADE_STATES
@@ -290,13 +290,13 @@
 			name				"zombie_excavator"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 MOON_HUD_GAP 0 0			
-			forecolor			1 1 1 1
+			forecolor			1 1 1 0		//Keep alpha on 0 here
 			textscale			TEXTSIZE_SMALL
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_RIGHT
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_EXCAVATOR") + dvarString("excavator_name") + ": " + dvarString("excavator_time_value"))	
-			visible				when(dvarInt(excavator_time_show) == 1)
+			visible				when(dvarString("mapname") == "zombie_moon")
 			decoration
 
 			FADE_STATES
