@@ -172,6 +172,21 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 125;
 	}
+	else if(state == "hud_drops_in")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_drops";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_drops_out")
+	{
+		menu_name = "left_top_hud";
+		item_name = "zombie_drops";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+
 	else if(state == "hud_time_summary_in")
 	{
 		menu_name = "right_top_hud";

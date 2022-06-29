@@ -226,8 +226,10 @@
 			textfont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_TOP_LEFT
 			exp text			(locString("@HUD_HUD_ZOMBIES_DROPS") + dvarString("hud_drops_number"))	
-			visible				when(dvarInt(hud_drops) == 1 || dvarInt(hud_tab) == 1)
+			visible				1
 			decoration
+
+			FADE_STATES
 		}
 	}
 

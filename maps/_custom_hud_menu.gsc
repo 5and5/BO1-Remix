@@ -373,8 +373,10 @@ drop_tracker_hud()
 	level endon("disconnect");
 	level endon("end_game");
 
-	setDvar("hud_drops_number", 0);
-	while(true)
+	dvar_state = -1;
+	tab_state = -1;
+
+	while (true)
 	{
 		wait 0.05;
 		if (isDefined(level.drop_tracker_index))
@@ -382,10 +384,19 @@ drop_tracker_hud()
 		else
 			tracked_drops = 0;
 
-		if (tracked_drops == GetDvarInt("hud_drops_number"))
+		if (tracked_drops != GetDvarInt("hud_drops_number"))
+			setDvar("hud_drops_number", tracked_drops);
+
+		if (dvar_state == getDvarInt("hud_drops") && tab_state == getDvarInt("hud_tab"))
 			continue;
 
-		setDvar("hud_drops_number", tracked_drops);
+		if (getDvarInt("hud_drops") || (!getDvarInt("hud_drops") && getDvarInt("hud_tab")))
+			send_message_to_csc("hud_anim_handler", "hud_drops_in");
+		else
+			send_message_to_csc("hud_anim_handler", "hud_drops_out");
+
+		dvar_state = getDvarInt("hud_drops");
+		tab_state = getDvarInt("hud_tab");
 	}
 }
 
