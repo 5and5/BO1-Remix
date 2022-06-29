@@ -200,6 +200,20 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 125;
 	}
+	else if(state == "hud_nml_summary_in")
+	{
+		menu_name = "middle_hud";
+		item_name = "nml_summary";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_nml_summary_out")
+	{
+		menu_name = "middle_hud";
+		item_name = "nml_summary";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
 	else if(state == "hud_georgebar_background_in")
 	{
 		menu_name = "bottom_hud";

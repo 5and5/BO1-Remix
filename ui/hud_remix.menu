@@ -337,6 +337,8 @@
 			exp text			(locString("@MOD_NML_END_KILLS") + dvarString("nml_end_kills") + locString("@MOD_NML_END_TIME") + dvarString("nml_end_time"))
 			visible				when(dvarInt(custom_nml_end) == 1)
 			decoration
+
+			FADE_STATES
 		}
 	}
 
