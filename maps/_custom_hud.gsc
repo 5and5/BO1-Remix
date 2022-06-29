@@ -199,7 +199,7 @@ round_timer_hud()
 			if (level.tracked_zombies == 0 && tick >= 200)
 			{
 				wait 0.5;
-				hud_fade(level.round_timer, 0, 0.075);
+				hud_fade(level.round_timer, 0, 0.125);
 				setDvar("rt_displayed", 0);
 				break;
 			}
@@ -211,19 +211,19 @@ round_timer_hud()
 
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
 			{
-				hud_fade(level.round_timer, 1, 0.075);
+				hud_fade(level.round_timer, 1, 0.125);
 				setDvar("rt_displayed", 1);
 			}
 			else
 			{
-				hud_fade(level.round_timer, 0, 075.25);
+				hud_fade(level.round_timer, 0, 0.125);
 				setDvar("rt_displayed", 0);
 			}
 
 			dvar_state = getDvarInt("hud_round_timer");
 			tab_state = getDvarInt("hud_tab");
 		}
-		hud_fade(level.round_timer, 0, 0.075);
+		hud_fade(level.round_timer, 0, 0.125);
 	}
 }
 
@@ -423,9 +423,9 @@ hud_trade_header()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab") || ((level.script == "zombie_pentagon") && !getDvarInt("trades_include_all")))
-			hud_fade(level.trade_header, 0, 0.1);	
+			hud_fade(level.trade_header, 0, 0.125);	
 		else
-			hud_fade(level.trade_header, 1, 0.2);
+			hud_fade(level.trade_header, 1, 0.125);
 
 		wait 0.05;
 	}
@@ -454,11 +454,11 @@ hud_trade_weapons1()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab") || (hud_traces_pulls_handler(1) == -1))
-			hud_fade(self.trade_weapon1, 0, 0.1);	
+			hud_fade(self.trade_weapon1, 0, 0.125);	
 		else if (getDvarInt("hud_tab"))
 		{
 			self.trade_weapon1 setValue(hud_traces_pulls_handler(1));
-			hud_fade(self.trade_weapon1, 1, 0.2);
+			hud_fade(self.trade_weapon1, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -488,11 +488,11 @@ hud_trade_weapons2()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab") || (hud_traces_pulls_handler(2) == -1))
-			hud_fade(self.trade_weapon2, 0, 0.1);	
+			hud_fade(self.trade_weapon2, 0, 0.125);	
 		else if (getDvarInt("hud_tab"))
 		{
 			self.trade_weapon2 setValue(hud_traces_pulls_handler(2));
-			hud_fade(self.trade_weapon2, 1, 0.2);
+			hud_fade(self.trade_weapon2, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -522,11 +522,11 @@ hud_trade_weapons3()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab") || (hud_traces_pulls_handler(3) == -1))
-			hud_fade(self.trade_weapon3, 0, 0.1);	
+			hud_fade(self.trade_weapon3, 0, 0.125);	
 		else if (getDvarInt("hud_tab"))
 		{
 			self.trade_weapon3 setValue(hud_traces_pulls_handler(3));
-			hud_fade(self.trade_weapon3, 1, 0.2);
+			hud_fade(self.trade_weapon3, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -556,11 +556,11 @@ hud_trade_weapons4()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab") || (hud_traces_pulls_handler(4) == -1))
-			hud_fade(self.trade_weapon4, 0, 0.1);	
+			hud_fade(self.trade_weapon4, 0, 0.125);	
 		else if (getDvarInt("hud_tab"))
 		{
 			self.trade_weapon4 setValue(hud_traces_pulls_handler(4));
-			hud_fade(self.trade_weapon4, 1, 0.2);
+			hud_fade(self.trade_weapon4, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -590,11 +590,11 @@ hud_trade_boxhits()
 	while(true)
 	{		
 		if (!getDvarInt("hud_tab"))
-			hud_fade(self.trade_boxhits, 0, 0.1);	
+			hud_fade(self.trade_boxhits, 0, 0.125);	
 		else
 		{
 			self.trade_boxhits setValue(level.boxhits);
-			hud_fade(self.trade_boxhits, 1, 0.2);
+			hud_fade(self.trade_boxhits, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -624,11 +624,11 @@ hud_trade_average()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab"))
-			hud_fade(self.trade_ww_average, 0, 0.1);	
+			hud_fade(self.trade_ww_average, 0, 0.125);	
 		else
 		{
 			self.trade_ww_average setValue(level.trade_average);
-			hud_fade(self.trade_ww_average, 1, 0.2);
+			hud_fade(self.trade_ww_average, 1, 0.125);
 		}
 
 		wait 0.05;
@@ -658,10 +658,10 @@ hud_current_box()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab"))
-			hud_fade(self.trade_current_box_location, 0, 0.1);	
+			hud_fade(self.trade_current_box_location, 0, 0.125);	
 		else
 		{
-			hud_fade(self.trade_current_box_location, 1, 0.2);
+			hud_fade(self.trade_current_box_location, 1, 0.125);
 
 			// Set current box location
 			self.trade_current_box_location setText(box_map());
@@ -694,7 +694,7 @@ hud_setup_boxhits()
 	while(true)
 	{
 		if (!getDvarInt("hud_tab"))
-			hud_fade(self.trade_setup_boxhits, 0, 0.1);	
+			hud_fade(self.trade_setup_boxhits, 0, 0.125);	
 		else
 		{
 			if (flag("setup_completed"))
@@ -702,7 +702,7 @@ hud_setup_boxhits()
 			else
 				self.trade_setup_boxhits setText(level.boxhits);
 
-			hud_fade(self.trade_setup_boxhits, 1, 0.2);
+			hud_fade(self.trade_setup_boxhits, 1, 0.125);
 		}
 
 		wait 0.05;
