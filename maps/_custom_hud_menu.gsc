@@ -462,8 +462,6 @@ game_stat_hud()
 		predicted = (rt / last_zombie_count) * current_zombie_count;
 		setDvar("predicted_value", get_time_friendly(int(predicted)));
 
-		// thread summary_visible("start", 6, settings_sph);	// Trigger HUD
-
 		level waittill("end_of_round");
 
 		// NML Handle
@@ -488,7 +486,6 @@ game_stat_hud()
 		last_zombie_count = current_zombie_count;
 		
 		thread display_time_summary(settings_sph);
-		// thread summary_visible("end", 6, settings_sph);	// Trigger HUD
 	}
 }
 
