@@ -64,10 +64,9 @@ hud_menu_fade( name, time )
 	wait time;
 }
 
-display_time_summary(sph_round)
+display_time_summary()
 {
 	level endon("end_of_round");
-	level endon("disconnect");
 	level endon("end_game");
 
 	wait_time = 5;
@@ -79,30 +78,33 @@ display_time_summary(sph_round)
 	set_summary_text("@HUD_HUD_ZOMBIES_ROUNDTIME", "round_time_value");
 	hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
 
-	if ((level.round_number >= sph_round) && (level.round_number != level.last_special_round + 1))
+	if ((level.round_number >= 50) && (level.round_number != level.last_special_round + 1))
 	{
+		hud_menu_fade("hud_time_summary_out", fade_time);
 		set_summary_text("@HUD_HUD_ZOMBIES_SPH", "sph_value");
 		hud_menu_fade("hud_time_summary_in", fade_time);
 		wait wait_time;
 		hud_menu_fade("hud_time_summary_out", fade_time);
 	}
 	else
+	{
 		wait wait_time + (2 * fade_time);
+		hud_menu_fade("hud_time_summary_out", fade_time);
+	}
 
 	set_summary_text("@HUD_HUD_ZOMBIES_TOTALTIME", "total_time_value");
 	hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
 	hud_menu_fade("hud_time_summary_out", fade_time);
 
-	if (level.round_number != level.last_special_round)
-	{
-		set_summary_text("@HUD_HUD_ZOMBIES_PREDICTED", "predicted_value");
-		hud_menu_fade("hud_time_summary_in", fade_time);
-		wait wait_time;
-		hud_menu_fade("hud_time_summary_out", fade_time);
-	}
+	// if (level.round_number != level.last_special_round)
+	// {
+	// 	set_summary_text("@HUD_HUD_ZOMBIES_PREDICTED", "predicted_value");
+	// 	hud_menu_fade("hud_time_summary_in", fade_time);
+	// 	wait wait_time;
+	// 	hud_menu_fade("hud_time_summary_out", fade_time);
+	// }
 	setDvar("show_time_summary", 0);
 }
 
@@ -408,7 +410,6 @@ game_stat_hud()
 
 	// Settings
 	settings_splits = array(30, 50, 70, 100);	// For later
-	settings_sph = 50;
 
 	// Initialize vars
 	last_zombie_count = get_zombie_number(1);
@@ -485,7 +486,7 @@ game_stat_hud()
 		// Save last rounds zombie count
 		last_zombie_count = current_zombie_count;
 		
-		thread display_time_summary(settings_sph);
+		thread display_time_summary();
 	}
 }
 
@@ -716,19 +717,6 @@ george_health_bar_watcher()
 		current = getDvarInt("george_bar_show");
 		if (dvar_state == current)
 			continue;
-
-		if (getDvarInt("george_bar_show"))
-		{
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_in");
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_in");
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_in");
-		}
-		else
-		{
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_background_out");
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_image_out");
-			send_message_to_csc("hud_anim_handler", "hud_georgebar_value_out");
-		}
 
 		dvar_state = current;
 	}
