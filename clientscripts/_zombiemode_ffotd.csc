@@ -256,6 +256,20 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 125;
 	}
+	else if(state == "hud_oxygen_in")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_oxygen";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_oxygen_out")
+	{
+		menu_name = "right_hud";
+		item_name = "zombie_oxygen";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
 	else if(state == "hud_time_summary_in")
 	{
 		menu_name = "right_top_hud";

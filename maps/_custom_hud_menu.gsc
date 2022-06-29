@@ -528,6 +528,8 @@ oxygen_hud()
 {
 	level endon("end_game");
 
+	self thread oxygen_hud_watcher();
+
     while (true)
     {
 		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
@@ -550,6 +552,25 @@ oxygen_hud()
     
         wait 1;
     }
+}
+
+oxygen_hud_watcher()
+{
+	dvar_state = -1;
+	while (true)
+	{
+		wait 0.05;
+		current = getDvarInt("oxygen_time_show");
+		if (dvar_state == current)
+			continue;
+
+		if (getDvarInt("oxygen_time_show"))
+			send_message_to_csc("hud_anim_handler", "hud_oxygen_in");
+		else
+			send_message_to_csc("hud_anim_handler", "hud_oxygen_out");
+
+		dvar_state = current;
+	}
 }
 
 excavator_hud()

@@ -273,7 +273,7 @@
 			name				"zombie_oxygen"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 -MOON_HUD_GAP 0 0			
-			forecolor			1 1 1 0.8
+			forecolor			1 1 1 1
 			textscale			TEXTSIZE_SMALL
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
@@ -281,6 +281,8 @@
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_OXYGEN") + dvarString("oxygen_time_value"))	
 			visible				when(dvarInt(oxygen_time_show) == 1)
 			decoration
+
+			FADE_STATES
 		}
 
 		itemDef
@@ -288,7 +290,7 @@
 			name				"zombie_excavator"
 			type				ITEM_TYPE_TEXT
 			rect 				-4 MOON_HUD_GAP 0 0			
-			forecolor			1 1 1 0.8
+			forecolor			1 1 1 1
 			textscale			TEXTSIZE_SMALL
 			textstyle			ITEM_TEXTSTYLE_SHADOWED
 			textfont			UI_FONT_NORMAL
@@ -296,6 +298,8 @@
 			exp text			(locString("@HUD_HUD_ZOMBIES_MOON_EXCAVATOR") + dvarString("excavator_name") + ": " + dvarString("excavator_time_value"))	
 			visible				when(dvarInt(excavator_time_show) == 1)
 			decoration
+
+			FADE_STATES
 		}
 	}
 
