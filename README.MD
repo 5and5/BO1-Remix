@@ -228,7 +228,7 @@
 
 #### Double Tap
 
-- Increases all bullet based weapons damage by 1.5
+- Double Tap 2.0
 
 #### Mule kick
 
@@ -425,8 +425,6 @@ seta hud_zone_name_on "1"
 
 - points like reimagined
 - adopted reset sound
-- perk_weapRateEnhanced 1 for double tap 2.0
-- total time bugs on five
 - character select option
 - add new hud menu options page
 - add state color change to .menu

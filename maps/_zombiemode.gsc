@@ -1690,6 +1690,9 @@ onPlayerConnect_clientDvars()
 
 	// make sure zombies are spawning
 	self SetClientDvar( "ai_disableSpawn", "0");
+
+	// double tap 2.0
+	self SetClientDvar( "perk_weapRateEnhanced", 1 );
 }
 
 checkForAllDead()
@@ -5508,10 +5511,6 @@ actor_damage_override( inflictor, attacker, damage, flags, meansofdeath, weapon,
 		}
 	}
 
-	if(attacker HasPerk("specialty_rof") && (meansofdeath == "MOD_PISTOL_BULLET" || meansofdeath == "MOD_RIFLE_BULLET"))
-	{
-		final_damage = int(final_damage * 1.5);
-	}
 
 	if(attacker HasPerk("specialty_deadshot") && (meansofdeath == "MOD_PISTOL_BULLET" || meansofdeath == "MOD_RIFLE_BULLET") && WeaponClass(weapon) != "spread" && (sHitLoc == "head" || sHitLoc == "helmet" || sHitLoc == "neck"))
 	{
