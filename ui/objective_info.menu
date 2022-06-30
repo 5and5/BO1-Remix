@@ -349,7 +349,7 @@
 		fullScreen		0
 		rect			0 0 640 480
 		focusColor		COLOR_FOCUSED
-		blurWorld		4.8
+		blurWorld		0.5
 		visible 		when( !dvarBool( zombietron ) );
 
 		#define SINGLE_PLAYER	1
