@@ -254,13 +254,9 @@ player_add_points_kill_bonus( mod, hit_location )
 	{
 		case "head":
 		case "helmet":
+		case "neck":
 			score = level.zombie_vars["zombie_score_bonus_head"]; 
 			break; 
-	
-		case "neck":
-			score = level.zombie_vars["zombie_score_bonus_neck"]; 
-			break; 
-	
 		case "torso_upper":
 		case "torso_lower":
 			score = level.zombie_vars["zombie_score_bonus_torso"]; 
@@ -292,7 +288,7 @@ player_reduce_points( event, mod, hit_location )
 			break; 
 
 		case "downed":
-			percent = level.zombie_vars["penalty_downed"];;
+			percent = level.zombie_vars["penalty_downed"];
 			self notify("I_am_down");
 			points = self.score * percent;
 
@@ -438,8 +434,6 @@ player_died_penalty()
 player_downed_penalty()
 {
 	self player_reduce_points( "downed" );
-
-		
 }
 
 
@@ -505,7 +499,6 @@ set_team_score_hud( init )
 // 	self.hud SetValue( self.score );
 }
 
-
 // Creates a hudelem used for the points awarded/taken away
 create_highlight_hud( x, y, value )
 {
@@ -517,7 +510,7 @@ create_highlight_hud( x, y, value )
 
 	hud = create_simple_hud( self );
 
-	level.hudelem_count++; 
+	// level.hudelem_count++; 
 
 	hud.foreground = true; 
 	hud.sort = 0; 
@@ -531,8 +524,8 @@ create_highlight_hud( x, y, value )
 
 	if( value < 1 )
 	{
-		//		hud.color = ( 0.8, 0, 0 ); 
-		hud.color = ( 0.21, 0, 0 );
+		hud.color = ( 0.8, 0, 0 ); 
+		// hud.color = ( 0.21, 0, 0 );
 	}
 	else
 	{
@@ -542,7 +535,7 @@ create_highlight_hud( x, y, value )
 
 	//	hud.glowColor = ( 0.3, 0.6, 0.3 );
 	//	hud.glowAlpha = 1; 
-	hud.hidewheninmenu = false; 
+	hud.hidewheninmenu = true; 
 
 	hud SetValue( value ); 
 
@@ -593,27 +586,99 @@ score_highlight( scoring_player, score, value )
 		y *= 2;
 	}
 
+	if(value < 1)
+	{
+		y += 5;
+	}
+	else
+	{
+		y -= 5;
+	}
+
 	time = 0.5; 
-	half_time = time * 0.5; 
+	half_time = time * 0.5;
+	quarter_time = time * 0.25;
+
+	player_num = scoring_player GetEntityNumber();
+
+	if(value < 1)
+	{
+		if(IsDefined(self.negative_points_hud) && IsDefined(self.negative_points_hud[player_num]))
+		{
+			value += self.negative_points_hud_value[player_num];
+			self.negative_points_hud[player_num] Destroy();
+		}
+	}
+	else if(IsDefined(self.positive_points_hud) && IsDefined(self.positive_points_hud[player_num]))
+	{
+		value += self.positive_points_hud_value[player_num];
+		self.positive_points_hud[player_num] Destroy();
+	}
 
 	hud = self create_highlight_hud( x, y, value ); 
 
+if( value < 1 )
+	{
+		if(!IsDefined(self.negative_points_hud))
+		{
+			self.negative_points_hud = [];
+		}
+		if(!IsDefined(self.negative_points_hud_value))
+		{
+			self.negative_points_hud_value = [];
+		}
+		self.negative_points_hud[player_num] = hud;
+		self.negative_points_hud_value[player_num] = value;
+	}
+	else
+	{
+		if(!IsDefined(self.positive_points_hud))
+		{
+			self.positive_points_hud = [];
+		}
+		if(!IsDefined(self.positive_points_hud_value))
+		{
+			self.positive_points_hud_value = [];
+		}
+		self.positive_points_hud[player_num] = hud;
+		self.positive_points_hud_value[player_num] = value;
+	}
+
 	// Move the hud
 	hud MoveOverTime( time ); 
-	hud.x -= 20 + RandomInt( 40 ); 
-	hud.y -= ( -15 + RandomInt( 30 ) ); 
+	hud.x -= 50;
+	if(value < 1)
+	{
+		hud.y += 5;
+	}
+	else
+	{
+		hud.y -= 5;
+	}
+	// hud.x -= 20 + RandomInt( 40 ); 
+	// hud.y -= ( -15 + RandomInt( 30 ) );
 
 	wait( half_time ); 
+
+	if(!IsDefined(hud))
+	{
+		return;
+	}
 
 	// Fade half-way through the move
 	hud FadeOverTime( half_time ); 
 	hud.alpha = 0; 
 
-	wait( half_time ); 
+	wait( half_time );
 
-	hud Destroy(); 
-	level.hudelem_count--; 
+		if(!IsDefined(hud))
+	{
+		return;
+	}
+
+	hud Destroy();
 }
+
 
 
 //

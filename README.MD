@@ -32,6 +32,7 @@
 
 ## HUD
 
+- Yellow points added stack on top of each other
 - In game timer
 - Round timer (shows at the end of a round - can be toggled to show mid round)
 - Seconds per horde (shows at the end of a round)
@@ -87,7 +88,7 @@
 #### General
 
 - Zombies lose collision as soon as they are killed
-- Increased explosive scaling
+- Increased explosive scaling (raygun buff)
 
 #### Grenades
 
@@ -423,7 +424,6 @@ seta hud_zone_name_on "1"
 
 ## TODO
 
-- points like reimagined
 - adopted reset sound
 - character select option
 - add new hud menu options page
