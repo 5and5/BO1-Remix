@@ -15,7 +15,6 @@ init_hud_dvars()
 	setDvar("predicted_value", "0");
 	setDvar("sph_value", 0);
 	setDvar("rt_displayed", 0);
-	// setDvar("kino_boxset", "^0UNDEFINED");
 	setDvar("oxygen_time_value", "0");
 	setDvar("oxygen_time_show", 0);
 	setDvar("excavator_name", "null");
@@ -23,9 +22,6 @@ init_hud_dvars()
 	setDvar("excavator_time_show", 0);
 	setDvar("show_nml_kill_tracker", 0);
 	setDvar("hud_kills_value", 0);
-	setDvar("custom_nml_end", 0);
-	setDvar("nml_end_kills", 0);
-	setDvar("nml_end_time", 0);
 	setDvar("george_bar_show", 0);
 	setDvar("george_bar_ratio", 0);
 	setDvar("george_bar_health", 0);
@@ -102,66 +98,6 @@ display_time_summary()
 	// 	hud_menu_fade("hud_time_summary_out", fade_time);
 	// }
 	setDvar("show_time_summary", 0);
-}
-
-// summary_visible(mode, len, sph_round)
-// {
-// 	level endon("start_of_round");
-// 	level endon("end_of_round");
-// 	level endon("disconnected");
-
-// 	if (len > 5.5)
-// 		len = 5.25;
-
-// 	if (mode == "start")
-// 	{
-// 		setDvar("summary_visible2", 1);
-// 		wait len;
-// 		setDvar("summary_visible2", 0);
-// 		wait 0.75;
-
-// 		if (level.round_number % 4 != 1)
-// 		{
-// 			setDvar("summary_visible3", 1);
-// 			wait len;
-// 		}
-// 		setDvar("summary_visible3", 0);
-// 	}
-
-// 	else
-// 	{
-// 		setDvar("summary_visible0", 1);
-// 		wait len;
-// 		setDvar("summary_visible0", 0);
-// 		wait 0.75;
-
-// 		if ((level.round_number >= sph_round) && (level.round_number % 4 != 1))
-// 		{
-// 			setDvar("summary_visible1", 1);
-// 			wait len;
-// 		}
-// 		setDvar("summary_visible1", 0);
-// 	}
-
-// 	return;
-// }
-
-pause_hud_watcher()
-{
-	while (true)
-	{
-		wait 0.05;
-
-		if (!level.paused)
-			continue;
-
-		setDvar("game_in_pause", 1);
-		while (flag("game_paused"))
-			wait 0.05;
-
-		setDvar("game_in_pause", 0);
-		break;
-	}
 }
 
 choose_zone_name(zone, current_name)
@@ -397,7 +333,7 @@ drop_tracker_hud()
 	}
 }
 
-game_stat_hud()
+time_summary_hud()
 // level thread
 {
 	level endon("disconnect");
@@ -484,40 +420,6 @@ game_stat_hud()
 		thread display_time_summary();
 	}
 }
-
-// box_notifier()
-// // level thread
-// {
-// 	maps\_custom_hud::hud_level_wait();
-	
-// 	i = 0;
-// 	while(i < 5)
-// 	{
-// 		if (isdefined(level.box_set))
-// 		{
-// 			if (level.box_set == 0)
-// 				setDvar("kino_boxset", "^2DINING");
-// 			else if (level.box_set == 1)
-// 				setDvar("kino_boxset", "^3HELLROOM");
-// 			else if (level.box_set == 2)
-// 				setDvar("kino_boxset", "^5NO POWER");
-// 			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
-
-// 			wait 5;
-
-// 			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
-// 			wait 0.2;
-// 			setDvar("kino_boxset", "^0UNDEFINED");
-// 			break;
-// 		}
-// 		else
-// 		{
-// 			// iPrintLn("undefined"); // debug
-// 			wait 0.5;
-// 			i++;
-// 		}
-// 	}
-// }
 
 oxygen_hud()
 // player thread
@@ -714,112 +616,13 @@ george_health_bar()
 	}
 }
 
-// coop_pause(timer_hud, start_time)
-// // level thread
-// // black background made in gsc, perhaps port it to menus as well
-// {
-// 	level.paused = false;
-
-//     SetDvar( "coop_pause", 0 );
-// 	flag_clear( "game_paused" );
-
-// 	players = GetPlayers();
-// 	if( players.size == 1 )
-// 	{
-// 		// return;
-// 	}
-
-// 	paused_time = 0;
-// 	paused_start_time = 0;
-
-// 	if (level.round_number == 1)
-// 		level waittill ("end_of_round");
-
-// 	while (true)
-// 	{
-// 		if( getDvarInt( "coop_pause" ) )
-// 		{
-// 			players = GetPlayers();
-// 			if(level.zombie_total + get_enemy_count() != 0 || flag( "dog_round" ) || flag( "thief_round" ) || flag( "monkey_round" ))
-// 			{
-// 				iprintln("finish the round");
-// 				level waittill( "end_of_round" );
-// 			}
-// 			if (!flag("director_alive"))
-// 				iprintln("wait for the round change");
-
-// 			wait 1; 	// To make sure the round changes
-// 			// Don't allow breaks while George is alive or is possible to spawn
-
-// 			// debug
-// 			// iPrintLn("director_alive", flag("director_alive"));
-// 			// iPrintLn("potential_director", flag("potential_director"));
-
-// 			flagged = false;
-// 			director_exception = false;
-// 			if (flag("director_alive") || flag("potential_director"))
-// 			{
-// 				while (true)
-// 				{
-// 					if (!flag("director_alive") && !flag("potential_director"))
-// 						break;
-
-// 					if (!flagged)
-// 					{
-// 						iPrintLn("Kill George first");
-// 						flagged = true;
-// 					}
-
-// 					wait 0.1;
-// 				}
-// 			}
-// 			if (flagged)
-// 				continue;
-
-// 			players[0] SetClientDvar( "ai_disableSpawn", "1" );
-// 			flag_set( "game_paused" );
-
-// 			level waittill( "start_of_round" );
-
-// 			maps\_custom_hud::generate_background();
-// 			self thread pause_hud_watcher();
-
-// 			level.paused = true;
-// 			paused_start_time = int(getTime() / 1000);
-// 			total_time = 0 - (paused_start_time - level.total_pause_time - start_time) - 0.05;
-// 			previous_paused_time = level.paused_time;
-
-// 			while(level.paused)
-// 			{
-// 				for(i = 0; players.size > i; i++)
-// 				{
-// 					players[i] freezecontrols(true);
-// 				}
-				
-// 				timer_hud SetTimerUp(total_time);
-// 				wait 0.2;
-
-// 				current_time = int(getTime() / 1000);
-// 				current_paused_time = current_time - paused_start_time;
-
-// 				if( !getDvarInt( "coop_pause" ) )
-// 				{
-// 					level.total_pause_time += current_paused_time;
-// 					level.paused = false;
-// 					maps\_custom_hud::destroy_background();
-
-// 					for(i = 0; players.size > i; i++)
-// 					{
-// 						players[i] freezecontrols(false);
-// 					}
-
-// 					players[0] SetClientDvar( "ai_disableSpawn", "0");
-// 					flag_clear( "game_paused" );
-
-// 					wait 0.5;
-// 				}
-// 			}
-// 		}
-// 		wait 0.05;
-// 	}
-// }
+just_spawned_exception()
+{
+	while (1)
+	{
+		level waittill ("all_players_connected");
+		flag_set ( "spawn_init" );
+		wait 15;
+		flag_clear ( "spawn_init" );
+	}
+}

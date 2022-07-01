@@ -267,7 +267,7 @@ post_all_players_connected()
 
 	level thread timer_hud();
 	level thread round_timer_hud();
-	level thread game_stat_hud();
+	level thread time_summary_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
 	// level thread hud_trade_header();

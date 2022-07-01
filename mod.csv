@@ -15,6 +15,7 @@ rawfile,maps/_zombiemode_audio.gsc
 rawfile,maps/_zombiemode_score.gsc
 
 //CUSTOM
+rawfile,maps/_custom_hud_stats.gsc
 rawfile,maps/_custom_hud.gsc
 rawfile,maps/_custom_hud_menu.gsc
 
