@@ -2,7 +2,7 @@
 
 ## Download
 
-[Download](https://www.mediafire.com/file/5u4g0dxdnf7rsjw/BO1-Remix.zip/file)
+[Download](https://github.com/5and5/BO1-Remix/releases/download/v1.7.0/BO1-Remix.zip)
 
 ## How to Install
 
@@ -380,7 +380,8 @@
 - Thundergun, Wonder Waffe and Blundergat are in the box
 - Blundergat is not limited
 - Mulekick increases weapon swap speed
-- Buyable raygun for 5000
+- Buyable raygun for 5000 in Power Room
+- Three teddybear song easter egg
 
 ## Console
 

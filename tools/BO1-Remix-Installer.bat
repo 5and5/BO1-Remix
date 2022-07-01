@@ -52,14 +52,14 @@ powershell -Command Expand-Archive -Force -LiteralPath game_mod.zip -Destination
 powershell -Command Remove-Item -Force -Recurse "game_mod.zip"
 
 :d
-powershell -Command Start-BitsTransfer -Source "https://download746.mediafire.com/lmlt9tehvvkg/5u4g0dxdnf7rsjw/BO1-Remix.zip"
+powershell -Command Start-BitsTransfer -Source "https://github.com/5and5/BO1-Remix/releases/download/v1.7.0/BO1-Remix.zip"
 powershell -Command Expand-Archive -Force -LiteralPath BO1-Remix.zip -DestinationPath 'C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops'
 powershell -Command Remove-Item -Force -Recurse "BO1-Remix.zip"
 xcopy /i "C:\Program Files (x86)\Steam\steamapps\common\Call of Duty Black Ops\shortcut" "%USERPROFILE%\Desktop" /y
 goto f
 
 :e
-powershell -Command Start-BitsTransfer -Source "https://download746.mediafire.com/lmlt9tehvvkg/5u4g0dxdnf7rsjw/BO1-Remix.zip"
+powershell -Command Start-BitsTransfer -Source "https://github.com/5and5/BO1-Remix/releases/download/v1.7.0/BO1-Remix.zip"
 powershell -Command Expand-Archive -Force -LiteralPath BO1-Remix.zip -DestinationPath '%localappdata%\Plutonium\storage\t5'
 powershell -Command Remove-Item -Force -Recurse "BO1-Remix.zip"
 
