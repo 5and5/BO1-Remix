@@ -1707,9 +1707,6 @@ digger_follow_path(body,reverse,arm)
 		//self.digger_speed;
 
 		self.origin = self.origin + velocity * 0.05;
-		
-		//digger_time_in_mins = maps\_zombiemode::to_mins( GetTime()-self.start_time );
-		//iprintlnbold("DIGGER> Time: " + digger_time_in_mins );
 
 		look_ahead = current_node.lookahead + ( next_node.lookahead - current_node.lookahead ) * fraction;
 

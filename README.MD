@@ -429,12 +429,14 @@ seta hud_zone_name_on "1"
 - add new hud menu options page
 - add state color change to .menu
 - automate Pluto detection
+- move traders to .menu
+- fix blundergat giving 0 points
 
 
 #### Would like to do
 
 - Add chalk to mp5k on Verruckt
-- fix teleporter bug on five (teleports 3 times)
+- fix tree material on winter wunderland
 
 ## Shout out to:
 

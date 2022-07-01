@@ -431,7 +431,7 @@ display_time_survived()
 		}
 	}
 
-	player_survival_time_in_mins = maps\_zombiemode::to_mins(int(level.nml_best_time / 1000));
+	player_survival_time_in_mins = to_mins_short(int(level.nml_best_time / 1000));
 	setDvar("custom_nml_end", 1);
 	maps\_custom_hud_menu::send_message_to_csc("hud_anim_handler", "hud_nml_summary_in");
 	setDvar("nml_end_kills", level.total_nml_kills);

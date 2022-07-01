@@ -3946,45 +3946,33 @@ special_round_watcher()
 	}
 }
 
-// copy of to_mins() with modified output
-get_time_friendly( seconds )
+// print time with leading zeros removed
+to_mins_short(seconds)
 {
-	hours = 0; 
-	minutes = 0; 
-	
-	if( seconds > 59 )
+	hours = int(seconds / 3600);
+	minutes = int((seconds - (hours * 3600)) / 60);
+	seconds = int(seconds - (hours * 3600) - (minutes * 60));
+
+	if( minutes < 10 && hours >= 1 )
 	{
-		minutes = int( seconds / 60 );
-
-		seconds = int( seconds * 1000 ) % ( 60 * 1000 );
-		seconds = seconds * 0.001; 
-
-		if( minutes > 59 )
-		{
-			hours = int( minutes / 60 );
-			minutes = int( minutes * 1000 ) % ( 60 * 1000 );
-			minutes = minutes * 0.001; 		
-		}
+		minutes = "0" + minutes;
 	}
-
-	hours = "" + hours; 
-
-	if( minutes < 10 )
-	{
-		minutes = "0" + minutes; 
-	}
-
-	seconds = Int( seconds ); 
 	if( seconds < 10 )
 	{
-		seconds = "0" + seconds; 
+		seconds = "0" + seconds;
 	}
 
-	if (hours == "0")
+	combined = "";
+	if(hours >= 1)
 	{
-		return "" + minutes  + ":" + seconds; 
+		combined = "" + hours + ":" + minutes + ":" + seconds;
 	}
-	return "" + hours  + ":" + minutes  + ":" + seconds; 
+	else
+	{
+		combined = "" + minutes + ":" + seconds;
+	}
+
+	return combined;
 }
 
 get_zombie_number(round)
