@@ -310,41 +310,6 @@
 		rect				0 0 0 0 HORIZONTAL_ALIGN_USER_CENTER VERTICAL_ALIGN_USER_CENTER //x-pos y-pos width height horizontal_alignment vertical_alignmnet
 		fullscreen			0
 		visible				1;
-
-		itemDef
-		{
-			name				"kino_box_indicator"
-			type				ITEM_TYPE_TEXT
-			rect 				0 -100 0 0	
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_TITLE
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_CENTER
-			exp text			(locString("@HUD_HUD_ZOMBIES_KINO_BOX") + dvarString("kino_boxset"))	
-			visible				when(dvarString(kino_boxset) != "^0UNDEFINED")
-			decoration
-
-			FADE_STATES
-		}
-
-		// Triggered in zombie_moon_teleporter
-		itemDef
-		{
-			name				"nml_summary"
-			type				ITEM_TYPE_TEXT
-			rect 				0 -100 0 0
-			forecolor			1 1 1 1
-			textscale			TEXTSIZE_DEFAULT
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_CENTER
-			exp text			(locString("@MOD_NML_END_KILLS") + dvarString("nml_end_kills") + locString("@MOD_NML_END_TIME") + dvarString("nml_end_time"))
-			visible				when(dvarInt(custom_nml_end) == 1)
-			decoration
-
-			FADE_STATES
-		}
 	}
 
 	menuDef

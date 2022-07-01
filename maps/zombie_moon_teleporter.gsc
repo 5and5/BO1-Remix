@@ -429,22 +429,46 @@ display_time_survived()
 		{
 			level.nml_jugg = 44;
 		}
-	}
-
-	player_survival_time_in_mins = to_mins_short(int(level.nml_best_time / 1000));
-	setDvar("custom_nml_end", 1);
-	maps\_custom_hud_menu::send_message_to_csc("hud_anim_handler", "hud_nml_summary_in");
-	setDvar("nml_end_kills", level.total_nml_kills);
-	setDvar("nml_end_time", player_survival_time_in_mins);
-
-	wait 4;	
-	maps\_custom_hud_menu::send_message_to_csc("hud_anim_handler", "hud_nml_summary_out");
-	wait 0.2;
-	setDvar("custom_nml_end", 0);
-	level.left_nomans_land = 2;
-}
 	
+		survived[i] = NewClientHudElem( players[i] );
+		survived[i].alignX = "center";
+		survived[i].alignY = "middle";
+		survived[i].horzAlign = "center";
+		survived[i].vertAlign = "middle";
+		survived[i].y -= 100;
+		survived[i].foreground = true;
+		survived[i].fontScale = 2;
+		survived[i].alpha = 0;
+		survived[i].color = ( 1.0, 1.0, 1.0 );
+		if ( players[i] isSplitScreen() )
+		{
+			survived[i].y += 40;
+		}
+		
+		nomanslandtime = level.nml_best_time; 
+		player_survival_time = int( nomanslandtime/1000 ); 
+		player_survival_time_in_mins = to_mins_short( player_survival_time );		
+		survived[i] SetText( &"ZOMBIE_SURVIVED_NOMANS", player_survival_time_in_mins );
+		survived[i] FadeOverTime( 1 );
+		survived[i].alpha = 1;
+	}
+	
+	wait( 3.0 );
+	
+	for( i = 0; i < players.size; i++ )
+	{
+		survived[i] FadeOverTime( 1 );
+		survived[i].alpha = 0;
+	}
+	
+	level.left_nomans_land = 2;
 
+	wait 1;
+	for( i = 0; i < players.size; i++ )
+	{
+		survived[i] destroy();
+	}
+}
 	
 teleporter_ending( teleporter_ent, was_aborted )
 {

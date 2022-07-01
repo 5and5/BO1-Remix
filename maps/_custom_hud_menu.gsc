@@ -15,8 +15,7 @@ init_hud_dvars()
 	setDvar("predicted_value", "0");
 	setDvar("sph_value", 0);
 	setDvar("rt_displayed", 0);
-	setDvar("kino_boxset", "^0UNDEFINED");
-	// setDvar("game_in_pause", 0);
+	// setDvar("kino_boxset", "^0UNDEFINED");
 	setDvar("oxygen_time_value", "0");
 	setDvar("oxygen_time_show", 0);
 	setDvar("excavator_name", "null");
@@ -486,39 +485,39 @@ game_stat_hud()
 	}
 }
 
-box_notifier()
-// level thread
-{
-	maps\_custom_hud::hud_level_wait();
+// box_notifier()
+// // level thread
+// {
+// 	maps\_custom_hud::hud_level_wait();
 	
-	i = 0;
-	while(i < 5)
-	{
-		if (isdefined(level.box_set))
-		{
-			if (level.box_set == 0)
-				setDvar("kino_boxset", "^2DINING");
-			else if (level.box_set == 1)
-				setDvar("kino_boxset", "^3HELLROOM");
-			else if (level.box_set == 2)
-				setDvar("kino_boxset", "^5NO POWER");
-			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
+// 	i = 0;
+// 	while(i < 5)
+// 	{
+// 		if (isdefined(level.box_set))
+// 		{
+// 			if (level.box_set == 0)
+// 				setDvar("kino_boxset", "^2DINING");
+// 			else if (level.box_set == 1)
+// 				setDvar("kino_boxset", "^3HELLROOM");
+// 			else if (level.box_set == 2)
+// 				setDvar("kino_boxset", "^5NO POWER");
+// 			send_message_to_csc("hud_anim_handler", "hud_kinobox_in");
 
-			wait 5;
+// 			wait 5;
 
-			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
-			wait 0.2;
-			setDvar("kino_boxset", "^0UNDEFINED");
-			break;
-		}
-		else
-		{
-			// iPrintLn("undefined"); // debug
-			wait 0.5;
-			i++;
-		}
-	}
-}
+// 			send_message_to_csc("hud_anim_handler", "hud_kinobox_out");
+// 			wait 0.2;
+// 			setDvar("kino_boxset", "^0UNDEFINED");
+// 			break;
+// 		}
+// 		else
+// 		{
+// 			// iPrintLn("undefined"); // debug
+// 			wait 0.5;
+// 			i++;
+// 		}
+// 	}
+// }
 
 oxygen_hud()
 // player thread

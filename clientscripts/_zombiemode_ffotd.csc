@@ -160,34 +160,6 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = tab_fade_time;
 	}
-	else if(state == "hud_kinobox_in")
-	{
-		menu_name = "middle_hud";
-		item_name = "kino_box_indicator";
-		fade_type = "fadein";
-		fade_time = 400;
-	}
-	else if(state == "hud_kinobox_out")
-	{
-		menu_name = "middle_hud";
-		item_name = "kino_box_indicator";
-		fade_type = "fadeout";
-		fade_time = 400;
-	}
-	else if(state == "hud_nml_summary_in")
-	{
-		menu_name = "middle_hud";
-		item_name = "nml_summary";
-		fade_type = "fadein";
-		fade_time = 250;
-	}
-	else if(state == "hud_nml_summary_out")
-	{
-		menu_name = "middle_hud";
-		item_name = "nml_summary";
-		fade_type = "fadeout";
-		fade_time = 250;
-	}
 	else if(state == "hud_oxygen_in")
 	{
 		menu_name = "right_hud";
