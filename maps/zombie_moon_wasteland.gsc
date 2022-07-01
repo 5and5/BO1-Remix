@@ -45,7 +45,6 @@ init_no_mans_land()
 	
 	init_teleporter_message();
 	level thread init_supersprint_anims();
-	level thread kill_hud();
 	
 	maps\_zombiemode_zone_manager::zone_init( "nml_zone" );
 
@@ -85,6 +84,12 @@ init_no_mans_land()
 zombie_moon_start_init()
 {
 	flag_wait( "begin_spawning" );
+
+	players = get_players();
+	for(i = 0; i < players.size; i++)
+	{
+		players[i] thread kill_hud();
+	}
 
 	level thread nml_dogs_init();
 

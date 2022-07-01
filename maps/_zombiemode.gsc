@@ -267,9 +267,6 @@ post_all_players_connected()
 
 	level thread timer_hud();
 	level thread round_timer_hud();
-	level thread time_summary_hud();
-	level thread remaining_hud();
-	level thread drop_tracker_hud();
 	// level thread hud_trade_header();
 
 	// level thread display_sph();
@@ -1807,7 +1804,9 @@ onPlayerSpawned()
 				self thread player_grenade_watcher();
 
 				// custom HUD
-				// self thread drop_tracker_hud();
+				self thread time_summary_hud();
+				self thread remaining_hud();
+				self thread drop_tracker_hud();
 				self thread health_bar_hud();
 				self thread zone_hud();
 				if(level.script == "zombie_coast")
