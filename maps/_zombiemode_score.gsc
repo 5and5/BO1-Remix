@@ -528,12 +528,13 @@ create_highlight_hud( x, y, value )
 
 	if( value < 1 )
 	{
-		hud.color = ( 0.8, 0, 0 ); 
+		hud.color = ( 0.15, 0, 0 ); 
 		// hud.color = ( 0.21, 0, 0 );
 	}
 	else
 	{
-		hud.color = ( 0.9, 0.9, 0.0 );
+		hud.color = ( 0.9, 0.8, 0.0 );
+		// hud.color = ( 0.9, 0.9, 0.0 ); 
 		hud.label = &"SCRIPT_PLUS";
 	}
 
