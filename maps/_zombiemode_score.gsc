@@ -110,6 +110,10 @@ player_add_points( event, mod, hit_location ,is_dog)
 			player_points = mod;
 			break;
 
+		case "blundergat_fling":
+			player_points = mod;
+			break;
+
 		default:
 			assertex( 0, "Unknown point event" ); 
 			break; 

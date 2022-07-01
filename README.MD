@@ -430,7 +430,6 @@ seta hud_zone_name_on "1"
 - add state color change to .menu
 - automate Pluto detection
 - move traders to .menu
-- fix blundergat giving 0 points
 
 
 #### Would like to do
