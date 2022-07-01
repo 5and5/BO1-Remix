@@ -825,7 +825,11 @@ init_dvars()
 
 	SetDvar( "scr_deleteexplosivesonspawn", "0" );
 
-	SetDvar( "hud_pluto", "0" );
+	// Pluto HUD
+	if(getDvarInt("hud_pluto") == 1)
+		SetDvar("hud_pluto", 1);
+	else
+		SetDvar("hud_pluto", 0);
 
 	// HACK: To avoid IK crash in zombiemode: MikeA 9/18/2009
 	//setDvar( "ik_enable", "0" );
@@ -1606,12 +1610,6 @@ onPlayerConnect_clientDvars()
 	self SetDepthOfField( 0, 0, 512, 4000, 4, 0 );
 
 	////// HUD DVARS //////
-
-	// Pluto HUD
-	// if(getDvarInt("hud_pluto") == 1)
-	// 	self setClientDvar("hud_pluto", 1);
-	// else
-	// 	self setClientDvar("hud_pluto", 0);
 
 	// Health Bar	
 	if(getDvarInt("hud_health_bar") == 1)

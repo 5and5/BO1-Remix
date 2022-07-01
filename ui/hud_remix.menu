@@ -59,6 +59,7 @@
 #define NEXT_LINE_OFFSET				15
 #define UNI_Y_POS						2
 
+// Need to check if client is pluto here because gsc sets this dvar too late
 #ifdef dvarInt(hud_pluto)
 	#define PLUTO_OFFSET				12
 #else
