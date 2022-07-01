@@ -382,6 +382,7 @@
 - Mulekick increases weapon swap speed
 - Buyable raygun for 5000 in Power Room
 - Three teddybear song easter egg
+- HD textures [download](https://drive.google.com/drive/folders/1-_YSiwqejYjwiJa1VZa4W8M-Iws2wN3K?usp=sharing)
 
 ## Console
 

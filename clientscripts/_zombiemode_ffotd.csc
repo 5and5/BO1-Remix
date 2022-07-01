@@ -216,6 +216,7 @@ hud_message_handler(clientnum, state)
 		fade_type = "fadeout";
 		fade_time = 250;
 	}
+	// george health bar
 	else if(state == "hud_georgebar_image_in")
 	{
 		menu_name = "bottom_hud";
@@ -255,6 +256,49 @@ hud_message_handler(clientnum, state)
 	{
 		menu_name = "bottom_hud";
 		item_name = "george_health_background";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	// health bar
+	else if(state == "hud_healthbar_background_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_background_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_background_image";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_image_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_image_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_image";
+		fade_type = "fadeout";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_value_in")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
+		fade_type = "fadein";
+		fade_time = 125;
+	}
+	else if(state == "hud_healthbar_value_out")
+	{
+		menu_name = "left_bottom_hud";
+		item_name = "health_bar_value";
 		fade_type = "fadeout";
 		fade_time = 125;
 	}
