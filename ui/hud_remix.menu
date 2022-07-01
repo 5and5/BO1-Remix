@@ -117,7 +117,7 @@
 			rect				0 HEALTH_Y (HEALTH_BAR_W + HEALTH_BOARDER) (HEALTH_BAR_H + HEALTH_BOARDER)
 			foreColor			0 0 0 0.35
 			background			"black"
-			visible				1
+			visible				when(dvarBool("hud_health_bar"))
 			decoration
 
 			state
@@ -141,7 +141,7 @@
 			exp					rect W(dvarInt("health_bar_width_hud"))
 			foreColor			1 1 1 0.85
 			background			"white"
-			visible				1
+			visible				when(dvarBool("hud_health_bar"))
 			decoration
 
 			state
@@ -167,7 +167,7 @@
 			textFont			UI_FONT_NORMAL
 			textalign			ITEM_ALIGN_LEFT
 			exp					text(dvarInt("health_bar_value_hud"))
-			visible				1
+			visible				when(dvarBool("hud_health_bar"))
 			decoration
 
 			FADE_STATES
