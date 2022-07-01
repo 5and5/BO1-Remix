@@ -254,8 +254,8 @@ remaining_hud()
 		wait 0.05;
 		// Level var for round timer
 		level.tracked_zombies = level.zombie_total + get_enemy_count();
-		if (level.tracked_zombies != GetDvarInt("hud_remaining_number"))
-			self setClientDvar("hud_remaining_number", level.tracked_zombies);
+
+		self setClientDvar("hud_remaining_number", level.tracked_zombies);
 
 		if (dvar_state == getDvarInt("hud_remaining") && tab_state == getDvarInt("hud_tab"))
 			continue;
@@ -306,7 +306,7 @@ kill_hud()
 
 drop_tracker_hud()
 {
-	level endon("disconnect");
+	self endon("disconnect");
 	level endon("end_game");
 
 	dvar_state = -1;
@@ -320,8 +320,7 @@ drop_tracker_hud()
 		else
 			tracked_drops = 0;
 
-		if (tracked_drops != GetDvarInt("hud_drops_number"))
-			self setClientDvar("hud_drops_number", tracked_drops);
+		self setClientDvar("hud_drops_number", tracked_drops);
 
 		if (dvar_state == getDvarInt("hud_drops") && tab_state == getDvarInt("hud_tab"))
 			continue;
