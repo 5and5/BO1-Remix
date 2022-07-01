@@ -71,6 +71,6 @@ echo.
 @echo ################ Remix Installation Complete ##################
 @echo ###############################################################
 
-timeout 5
+timeout 10
 
 end

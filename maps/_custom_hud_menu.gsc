@@ -8,9 +8,6 @@ init_hud_dvars()
 	setDvar("time_summary_text", " ");
 	setDvar("time_summary_value", 0);
 	setDvar("show_time_summary", 0);
-	// setDvar("summary_visible1", 0);
-	// setDvar("summary_visible2", 0);
-	// setDvar("summary_visible3", 0);
 	setDvar("hud_remaining_number", 0);
 	setDvar("hud_drops_number", 0);
 	setDvar("round_time_value", "0");
@@ -274,9 +271,9 @@ health_bar_hud()
 
 		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
 
+		
 		if (dvar_state == getDvarInt("hud_health_bar"))
 			continue;
-
 		if (getDvarInt("hud_health_bar"))
 		{
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_background_in");
@@ -289,7 +286,6 @@ health_bar_hud()
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
 			send_message_to_csc("hud_anim_handler", "hud_healthbar_value_out");
 		}
-
 		dvar_state = getDvarInt("hud_health_bar");
 	}
 } 
@@ -434,7 +430,7 @@ game_stat_hud()
 			round_start_time = int(getTime() / 1000);
 			// Calculate total time at the beginning of next round
 			gt = round_start_time - level.beginning_timestamp;
-			setDvar("total_time_value", get_time_friendly(gt));
+			setDvar("total_time_value", to_mins_short(gt));
 
 			if (flag("game_paused"))
 			{
@@ -461,7 +457,7 @@ game_stat_hud()
 			rt_array = array();		// Reset the array
 		}
 		predicted = (rt / last_zombie_count) * current_zombie_count;
-		setDvar("predicted_value", get_time_friendly(int(predicted)));
+		setDvar("predicted_value", to_mins_short(int(predicted)));
 
 		level waittill("end_of_round");
 
@@ -476,7 +472,7 @@ game_stat_hud()
 		round_end_time = int(getTime() / 1000);
 		rt = round_end_time - round_start_time;
 		rt_array[rt_array.size] = rt;
-		setDvar("round_time_value", get_time_friendly(rt));
+		setDvar("round_time_value", to_mins_short(rt));
 
 		// Calculate SPH
 		sph = rt / (current_zombie_count / 24);
@@ -536,7 +532,7 @@ oxygen_hud()
 		if (isDefined(self.time_in_low_gravity) && isDefined(self.time_to_death))
 		{
 			oxygen_time = (self.time_to_death - self.time_in_low_gravity) / 1000;
-			oxygen_left = get_time_friendly(oxygen_time);
+			oxygen_left = to_mins_short(oxygen_time);
 			self setClientDvar("oxygen_time_value", oxygen_left);
 
 			if (getDvarInt("hud_oxygen_timer") || (!getDvarInt("hud_oxygen_timer") && getDvarInt("hud_tab")))
@@ -628,7 +624,7 @@ excavator_hud()
 				else
 					setDvar("excavator_time_show", 0);
 
-				setDvar("excavator_time_value", get_time_friendly(int(level.digger_time_left)));
+				setDvar("excavator_time_value", to_mins_short(int(level.digger_time_left)));
 			}
 			else
 			{
