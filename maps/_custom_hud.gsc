@@ -188,7 +188,7 @@ round_timer_hud()
 			{
 				wait 0.5;
 				hud_fade(level.round_timer, 0, 0.125);
-				setDvar("rt_displayed", 0);
+				set_client_dvars("rt_displayed", 0);
 				break;
 			}
 			else if (tick < 200)
@@ -200,18 +200,27 @@ round_timer_hud()
 			if (getDvarInt("hud_round_timer") || getDvarInt("hud_tab"))
 			{
 				hud_fade(level.round_timer, 1, 0.125);
-				setDvar("rt_displayed", 1);
+				set_client_dvars("rt_displayed", 1);
 			}
 			else
 			{
 				hud_fade(level.round_timer, 0, 0.125);
-				setDvar("rt_displayed", 0);
+				set_client_dvars("rt_displayed", 0);
 			}
 
 			dvar_state = getDvarInt("hud_round_timer");
 			tab_state = getDvarInt("hud_tab");
 		}
 		hud_fade(level.round_timer, 0, 0.125);
+	}
+}
+
+set_client_dvars( dvar, value )
+{
+	players = get_players();
+	for(i = 0; i < players.size; i++)
+	{
+		players[i] setClientDvar(dvar, value);
 	}
 }
 

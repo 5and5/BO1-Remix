@@ -17,7 +17,6 @@ init_hud_dvars()
 		players[i] setClientDvar("total_time_value", "0");
 		players[i] setClientDvar("predicted_value", "0");
 		players[i] setClientDvar("sph_value", 0);
-		players[i] setClientDvar("rt_displayed", 0);
 		players[i] setClientDvar("oxygen_time_value", "0");
 		players[i] setClientDvar("oxygen_time_show", 0);
 		players[i] setClientDvar("excavator_name", "null");
@@ -32,6 +31,8 @@ init_hud_dvars()
 		setDvar("show_nml_kill_tracker", 1);
 	else
 		setDvar("show_nml_kill_tracker", 0);
+
+	setDvar("rt_displayed", 0);
 
 }
 
@@ -60,7 +61,7 @@ set_summary_text( text, dvar )
 
 hud_menu_fade( name, time )
 {
-	send_message_to_csc("hud_anim_handler", name);
+	self send_message_to_csc("hud_anim_handler", name);
 	wait time;
 }
 
@@ -75,28 +76,28 @@ display_time_summary()
 	self setClientDvar("show_time_summary", 1);	// Prevents bugs with fast restart
 	wait 0.15; 	// Prevents the timer from sliding between positions
 
-	set_summary_text("@HUD_HUD_ZOMBIES_ROUNDTIME", "round_time_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
+	self set_summary_text("@HUD_HUD_ZOMBIES_ROUNDTIME", "round_time_value");
+	self hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
 
 	if ((level.round_number >= 50) && (level.round_number != level.last_special_round + 1))
 	{
-		hud_menu_fade("hud_time_summary_out", fade_time);
-		set_summary_text("@HUD_HUD_ZOMBIES_SPH", "sph_value");
-		hud_menu_fade("hud_time_summary_in", fade_time);
+		self hud_menu_fade("hud_time_summary_out", fade_time);
+		self set_summary_text("@HUD_HUD_ZOMBIES_SPH", "sph_value");
+		self hud_menu_fade("hud_time_summary_in", fade_time);
 		wait wait_time;
-		hud_menu_fade("hud_time_summary_out", fade_time);
+		self hud_menu_fade("hud_time_summary_out", fade_time);
 	}
 	else
 	{
 		wait wait_time + (2 * fade_time);
-		hud_menu_fade("hud_time_summary_out", fade_time);
+		self hud_menu_fade("hud_time_summary_out", fade_time);
 	}
 
-	set_summary_text("@HUD_HUD_ZOMBIES_TOTALTIME", "total_time_value");
-	hud_menu_fade("hud_time_summary_in", fade_time);
+	self set_summary_text("@HUD_HUD_ZOMBIES_TOTALTIME", "total_time_value");
+	self hud_menu_fade("hud_time_summary_in", fade_time);
 	wait wait_time;
-	hud_menu_fade("hud_time_summary_out", fade_time);
+	self hud_menu_fade("hud_time_summary_out", fade_time);
 
 	// if (level.round_number != level.last_special_round)
 	// {
@@ -196,7 +197,6 @@ health_bar_hud()
 	self endon("end_game");
 
 	health_bar_width_max = 110;
-	dvar_state = -1;
 
 	while (true)
 	{
@@ -211,23 +211,6 @@ health_bar_hud()
 			self SetClientDvar("health_bar_value_hud", self.health);
 
 		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
-
-		
-		if (dvar_state == getDvarInt("hud_health_bar"))
-			continue;
-		if (getDvarInt("hud_health_bar"))
-		{
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_background_in");
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_image_in");
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_value_in");
-		}
-		else
-		{
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_background_out");
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_image_out");
-			self send_message_to_csc("hud_anim_handler", "hud_healthbar_value_out");
-		}
-		dvar_state = getDvarInt("hud_health_bar");
 	}
 } 
 
