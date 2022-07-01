@@ -270,7 +270,7 @@ post_all_players_connected()
 	level thread game_stat_hud();
 	level thread remaining_hud();
 	level thread drop_tracker_hud();
-	level thread hud_trade_header();
+	// level thread hud_trade_header();
 
 	// level thread display_sph();
 	// level thread hud_color_watcher();	// For later
@@ -5772,7 +5772,7 @@ end_game()
 		{
 			if( !isdefined(level.left_nomans_land) )
 			{
-				player_survival_time_in_mins = maps\_zombiemode::to_mins_short(int(level.nml_best_time / 1000));
+				player_survival_time_in_mins = to_mins_short(int(level.nml_best_time / 1000));
 				survived_hud SetText(level.total_nml_kills, " kills in ", player_survival_time_in_mins);
 			}
 			else if( level.left_nomans_land == 2 )
@@ -6238,34 +6238,6 @@ to_mins( seconds )
 	}
 
 	combined = "" + hours  + ":" + minutes  + ":" + seconds;
-
-	return combined;
-}
-
-to_mins_short(seconds)
-{
-	hours = int(seconds / 3600);
-	minutes = int((seconds - (hours * 3600)) / 60);
-	seconds = int(seconds - (hours * 3600) - (minutes * 60));
-
-	if( minutes < 10 && hours >= 1 )
-	{
-		minutes = "0" + minutes;
-	}
-	if( seconds < 10 )
-	{
-		seconds = "0" + seconds;
-	}
-
-	combined = "";
-	if(hours >= 1)
-	{
-		combined = "" + hours + ":" + minutes + ":" + seconds;
-	}
-	else
-	{
-		combined = "" + minutes + ":" + seconds;
-	}
 
 	return combined;
 }
