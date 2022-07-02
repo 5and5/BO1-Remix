@@ -149,7 +149,7 @@ health_bar_hud()
 	self endon("disconnect");
 	self endon("end_game");
 
-	health_bar_width_max = 110;
+	health_bar_width_max = 111;
 
 	while (true)
 	{
@@ -159,11 +159,15 @@ health_bar_hud()
 
 		// There is a conflict while trying to import _laststand
 		if (isDefined(self.revivetrigger) || (isDefined(level.intermission) && level.intermission))
+		{
 			self SetClientDvar("health_bar_value_hud", 0);
+			self SetClientDvar("health_bar_width_hud", 0);
+		}
 		else
+		{
 			self SetClientDvar("health_bar_value_hud", self.health);
-
-		self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+			self SetClientDvar("health_bar_width_hud", health_bar_width_max * health_ratio);
+		}
 	}
 } 
 

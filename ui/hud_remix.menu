@@ -73,10 +73,10 @@
 		fadeAmount						.1
 	}
 
-	#define HEALTH_BAR_W	110
+	#define HEALTH_BAR_W	111
 	#define HEALTH_BAR_H	5
 	#define HEALTH_VALUE_X	(HEALTH_BAR_W + 5.5)
-	#define HEALTH_VALUE_Y	(HEALTH_Y + 10.6)
+	#define HEALTH_VALUE_Y	(HEALTH_Y + 10.2)
 	#define HEALTH_Y		-107
 	#define HEALTH_X		1.5
 	#define HEALTH_BOARDER	(HEALTH_X * 2)
