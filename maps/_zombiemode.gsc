@@ -265,8 +265,14 @@ post_all_players_connected()
 		level.music_override = false;
 	}
 
+	if(getDvarInt("hud_pluto"))
+		level.pluto_offset = 12;
+	else
+		level.pluto_offset = 0;
+
 	level thread timer_hud();
 	level thread round_timer_hud();
+	level thread time_summary_hud();
 	// level thread hud_trade_header();
 
 	// level thread display_sph();

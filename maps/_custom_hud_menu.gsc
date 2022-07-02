@@ -11,7 +11,6 @@ init_hud_dvars()
 		players[i] setClientDvar("time_summary_text", " ");
 		players[i] setClientDvar("time_summary_value", 0);
 		players[i] setClientDvar("show_time_summary", 0);
-		players[i] setClientDvar("rt_displayed", 0);
 		players[i] setClientDvar("hud_remaining_number", 0);
 		players[i] setClientDvar("hud_drops_number", 0);
 		players[i] setClientDvar("round_time_value", "0");
@@ -32,9 +31,6 @@ init_hud_dvars()
 		setDvar("show_nml_kill_tracker", 1);
 	else
 		setDvar("show_nml_kill_tracker", 0);
-
-
-
 }
 
 send_message_to_csc(name, message)

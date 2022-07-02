@@ -1,5 +1,4 @@
 #include "ui/menudef.h"
-#include "ui/hud_color_state.menu"
 
 /*
 	Items are grouped together using a menuDef. A menudef typically has a name, a rect, a fullscreen option and a visible option
@@ -240,24 +239,6 @@
 		rect				0 PLUTO_OFFSET 0 0 HORIZONTAL_ALIGN_USER_RIGHT VERTICAL_ALIGN_USER_TOP //x-pos y-pos width height horizontal_alignment vertical_alignmnet
 		fullscreen			0
 		visible				when( dvarBool( #"ammoCounterHide" ) == 0 && dvarBool( #"hud_missionFailed" ) == 0 && !ui_active() && (dvarint( #"zombiemode" ) == 1 && dvarint( #"zombietron" ) == 0) && !dvarInt( #"splitscreen" ) );
-
-		itemDef
-		{
-			name				"time_summary"
-			type				ITEM_TYPE_TEXT
-			rect 				-4 (UNI_Y_POS + NEXT_LINE_OFFSET) 0 0	
-			exp rect Y			(UNI_Y_POS + NEXT_LINE_OFFSET + (dvarInt("rt_displayed") * NEXT_LINE_OFFSET))
-			forecolor			1 1 1 0
-			textscale			TEXTSIZE_DEFAULT
-			textstyle			ITEM_TEXTSTYLE_SHADOWED
-			textfont			UI_FONT_NORMAL
-			textalign			ITEM_ALIGN_TOP_RIGHT
-			exp text			(locString(dvarString("time_summary_text")) + dvarString("time_summary_value"))	
-			visible				when(dvarInt(show_time_summary) == 1)
-			decoration
-
-			FADE_STATES
-		}
 	}
 
 	menuDef
